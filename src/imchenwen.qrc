@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/imchenwen.icns</file>
+        <file>res/imchenwen.ico</file>
+        <file>res/imchenwen16.png</file>
+        <file>res/imchenwen32.png</file>
+        <file>res/imchenwen48.png</file>
+        <file>res/imchenwen64.png</file>
+        <file>res/imchenwen128.png</file>
+        <file>res/imchenwen256.png</file>
+    </qresource>
+</RCC>
