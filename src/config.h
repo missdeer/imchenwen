@@ -5,9 +5,8 @@ class Config
 {
 public:
     Config();
+    ~Config();
 
-    void load();
-    void save();
     QString read(const QString& key);
     void write(const QString& key, const QString& value);
 };

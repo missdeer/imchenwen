@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include "config.h"
 #include "optiondialog.h"
 #include "ui_optiondialog.h"
 
@@ -8,6 +9,10 @@ OptionDialog::OptionDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedSize( width(), height());
+
+    Config cfg;
+    ui->playerPathEdit->setText(cfg.read("playerPath"));
+    ui->playerArgumentsEdit->setText(cfg.read("playerArguments"));
 }
 
 OptionDialog::~OptionDialog()
@@ -17,7 +22,9 @@ OptionDialog::~OptionDialog()
 
 void OptionDialog::on_buttonBox_accepted()
 {
-
+    Config cfg;
+    cfg.write("playerPath", ui->playerPathEdit->text());
+    cfg.write("playerArguments", ui->playerArgumentsEdit->text());
 }
 
 void OptionDialog::on_browseButton_clicked()
