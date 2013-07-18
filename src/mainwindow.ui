@@ -207,10 +207,16 @@
    <property name="text">
     <string>&amp;Option...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+F11</string>
+   </property>
   </action>
   <action name="actionContent">
    <property name="text">
     <string>&amp;Content...</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionHomepage">

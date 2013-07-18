@@ -18,6 +18,8 @@ public:
 private slots:
     void on_buttonBox_accepted();
 
+    void on_browseButton_clicked();
+
 private:
     Ui::OptionDialog *ui;
 };
