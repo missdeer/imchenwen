@@ -7,6 +7,10 @@ namespace Ui {
 class MainWindow;
 }
 
+QT_BEGIN_NAMESPACE
+class QClipboard;
+QT_END_NAMESPACE
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,6 +20,8 @@ public:
     ~MainWindow();
     
 private slots:
+    void on_clipboard_dataChanged();
+
     void on_parseButton_clicked();
 
     void on_searchButton_clicked();

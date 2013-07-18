@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QUrl>
 #include <QDesktopServices>
+#include <QClipboard>
+#include <QRegExp>
 #include "aboutdialog.h"
 #include "ui_mainwindow.h"
 
@@ -12,11 +14,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->setStretchFactor(0, 0);
     ui->splitter->setStretchFactor(1, 0);
     ui->splitter->setStretchFactor(2, 1);
+
+    connect( QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(on_clipboard_dataChanged()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_clipboard_dataChanged()
+{
+    QString text =  QApplication::clipboard()->text();
+    // regex match
+    QRegExp regex("^http:\\/\\/v\\.qq\\.com.*");
+    if (regex.exactMatch(text))
+    {
+        ui->urlEdit->setText(text);
+    }
 }
 
 void MainWindow::on_parseButton_clicked()
