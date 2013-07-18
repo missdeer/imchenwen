@@ -11,6 +11,11 @@ QT_BEGIN_NAMESPACE
 class QClipboard;
 QT_END_NAMESPACE
 
+class HistoryModel;
+class NavigatorModel;
+class ResourceModel;
+class PlaylistModel;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,8 +26,6 @@ public:
     
 private slots:
     void on_clipboard_dataChanged();
-
-    void on_parseButton_clicked();
 
     void on_searchButton_clicked();
 
@@ -44,7 +47,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-
+    HistoryModel* historyModel_;
+    NavigatorModel* navigatorModel_;
+    ResourceModel* resourceModel_;
+    PlaylistModel* playlistModel_;
 
     void createParseMenu();
 };

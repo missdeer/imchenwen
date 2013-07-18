@@ -139,7 +139,7 @@
          <widget class="QTableView" name="playListView"/>
         </item>
         <item>
-         <widget class="QTableView" name="playedListView"/>
+         <widget class="QTableView" name="historyListView"/>
         </item>
        </layout>
       </widget>

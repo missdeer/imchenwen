@@ -16,12 +16,20 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     aboutdialog.cpp \
     optiondialog.cpp \
-    config.cpp
+    config.cpp \
+    navigatormodel.cpp \
+    resourcemodel.cpp \
+    playlistmodel.cpp \
+    historymodel.cpp
 
 HEADERS  += mainwindow.h \
     aboutdialog.h \
     optiondialog.h \
-    config.h
+    config.h \
+    navigatormodel.h \
+    resourcemodel.h \
+    playlistmodel.h \
+    historymodel.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui \

@@ -1,8 +1,12 @@
-#include "mainwindow.h"
 #include <QUrl>
 #include <QDesktopServices>
 #include <QClipboard>
 #include <QRegExp>
+#include "mainwindow.h"
+#include "historymodel.h"
+#include "navigatormodel.h"
+#include "resourcemodel.h"
+#include "playlistmodel.h"
 #include "optiondialog.h"
 #include "aboutdialog.h"
 #include "ui_mainwindow.h"
@@ -18,6 +22,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createParseMenu();
     connect( QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(on_clipboard_dataChanged()));
+    connect(ui->parseButton, SIGNAL(clicked()), ui->actionParseURL, SIGNAL(triggered()));
+
+    historyModel_ = new HistoryModel(this);
+    navigatorModel_ = new NavigatorModel(this);
+    resourceModel_ = new ResourceModel(this);
+    playlistModel_ = new PlaylistModel(this);
+    ui->historyListView->setModel(historyModel_);
+    ui->navigatorTreeView->setModel(navigatorModel_);
+    ui->resourceListView->setModel(resourceModel_);
+    ui->playListView->setModel(playlistModel_);
 }
 
 MainWindow::~MainWindow()
@@ -82,11 +96,6 @@ void MainWindow::on_actionParseURL_triggered()
 }
 
 void MainWindow::on_actionParsePlaylist_triggered()
-{
-
-}
-
-void MainWindow::on_parseButton_clicked()
 {
 
 }
