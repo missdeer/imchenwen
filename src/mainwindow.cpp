@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->splitter->setStretchFactor(0, 0);
+    ui->splitter->setStretchFactor(1, 0);
+    ui->splitter->setStretchFactor(2, 1);
 }
 
 MainWindow::~MainWindow()
@@ -16,7 +19,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_goButton_clicked()
+void MainWindow::on_parseButton_clicked()
+{
+
+}
+
+void MainWindow::on_searchButton_clicked()
 {
 
 }

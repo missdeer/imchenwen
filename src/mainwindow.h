@@ -16,7 +16,9 @@ public:
     ~MainWindow();
     
 private slots:
-    void on_goButton_clicked();
+    void on_parseButton_clicked();
+
+    void on_searchButton_clicked();
 
     void on_actionExit_triggered();
 
@@ -29,6 +31,7 @@ private slots:
     void on_actionBuy_triggered();
 
     void on_actionAbout_triggered();
+
 
 private:
     Ui::MainWindow *ui;

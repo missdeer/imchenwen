@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>645</width>
-    <height>458</height>
+    <width>580</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,10 +39,20 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="opaqueResize">
+       <bool>true</bool>
+      </property>
       <property name="handleWidth">
        <number>3</number>
       </property>
-      <widget class="QTreeView" name="navigatorTreeView"/>
+      <widget class="QTreeView" name="navigatorTreeView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
       <widget class="QWidget" name="resourceVerticalLayoutWidget">
        <layout class="QVBoxLayout" name="resourceVerticalLayout">
         <item>
@@ -75,7 +85,14 @@
          </layout>
         </item>
         <item>
-      <widget class="QTableView" name="resourceListView"/>
+         <widget class="QTableView" name="resourceListView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -127,7 +144,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>645</width>
+     <width>580</width>
      <height>21</height>
     </rect>
    </property>
