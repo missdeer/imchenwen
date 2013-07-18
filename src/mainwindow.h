@@ -41,6 +41,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+
+    void createParseMenu();
 };
 
 #endif // MAINWINDOW_H

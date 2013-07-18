@@ -120,8 +120,8 @@
               <height>24</height>
              </size>
             </property>
-            <property name="shortcut">
-             <string>Ctrl+G</string>
+            <property name="popupMode">
+             <enum>QToolButton::MenuButtonPopup</enum>
             </property>
            </widget>
           </item>
@@ -148,19 +148,19 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_File">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menu_Tool">
+   <widget class="QMenu" name="menuTool">
     <property name="title">
      <string>&amp;Tool</string>
     </property>
     <addaction name="actionOption"/>
    </widget>
-   <widget class="QMenu" name="menu_Help">
+   <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>&amp;Help</string>
     </property>
@@ -170,9 +170,9 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
-   <addaction name="menu_File"/>
-   <addaction name="menu_Tool"/>
-   <addaction name="menu_Help"/>
+   <addaction name="menuFile"/>
+   <addaction name="menuTool"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="windowTitle">
@@ -225,6 +225,25 @@
    </property>
    <property name="text">
     <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="actionParseURL">
+   <property name="text">
+    <string>Parse URL</string>
+   </property>
+   <property name="toolTip">
+    <string>Parse the URL and invoke external media player</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionParsePlaylist">
+   <property name="text">
+    <string>Parse Playlist</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

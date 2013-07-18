@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->setStretchFactor(1, 0);
     ui->splitter->setStretchFactor(2, 1);
 
+    createParseMenu();
     connect( QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(on_clipboard_dataChanged()));
 }
 
@@ -73,4 +74,12 @@ void MainWindow::on_actionAbout_triggered()
 {
     AboutDialog dlg(this);
     dlg.exec();
+}
+
+void MainWindow::createParseMenu()
+{
+    QMenu* menuParse = new QMenu(this);
+    menuParse->addAction(ui->actionParseURL);
+    menuParse->addAction(ui->actionParsePlaylist);
+    ui->parseButton->setMenu(menuParse);
 }
