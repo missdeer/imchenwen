@@ -3,6 +3,7 @@
 #include <QDesktopServices>
 #include <QClipboard>
 #include <QRegExp>
+#include "optiondialog.h"
 #include "aboutdialog.h"
 #include "ui_mainwindow.h"
 
@@ -24,6 +25,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::createParseMenu()
+{
+    QMenu* menuParse = new QMenu(this);
+    menuParse->addAction(ui->actionParseURL);
+    menuParse->addAction(ui->actionParsePlaylist);
+    ui->parseButton->setMenu(menuParse);
+}
+
 void MainWindow::on_clipboard_dataChanged()
 {
     QString text =  QApplication::clipboard()->text();
@@ -35,16 +44,6 @@ void MainWindow::on_clipboard_dataChanged()
     }
 }
 
-void MainWindow::on_parseButton_clicked()
-{
-
-}
-
-void MainWindow::on_searchButton_clicked()
-{
-
-}
-
 void MainWindow::on_actionExit_triggered()
 {
     qApp->exit();
@@ -52,12 +51,13 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionOption_triggered()
 {
-
+    OptionDialog dlg(this);
+    dlg.exec();
 }
 
 void MainWindow::on_actionContent_triggered()
 {
-
+    QDesktopServices::openUrl(QUrl("http://www.dfordsoft.com/imchenwen/features.htm"));
 }
 
 void MainWindow::on_actionHomepage_triggered()
@@ -76,10 +76,23 @@ void MainWindow::on_actionAbout_triggered()
     dlg.exec();
 }
 
-void MainWindow::createParseMenu()
+void MainWindow::on_actionParseURL_triggered()
 {
-    QMenu* menuParse = new QMenu(this);
-    menuParse->addAction(ui->actionParseURL);
-    menuParse->addAction(ui->actionParsePlaylist);
-    ui->parseButton->setMenu(menuParse);
+
 }
+
+void MainWindow::on_actionParsePlaylist_triggered()
+{
+
+}
+
+void MainWindow::on_parseButton_clicked()
+{
+
+}
+
+void MainWindow::on_searchButton_clicked()
+{
+
+}
+

@@ -71,10 +71,14 @@
             <property name="text">
              <string>Search</string>
             </property>
+            <property name="icon">
+             <iconset resource="imchenwen.qrc">
+              <normaloff>:/res/search.png</normaloff>:/res/search.png</iconset>
+            </property>
             <property name="iconSize">
              <size>
-              <width>24</width>
-              <height>24</height>
+              <width>15</width>
+              <height>14</height>
              </size>
             </property>
             <property name="shortcut">
@@ -114,10 +118,14 @@
             <property name="text">
              <string>Parse</string>
             </property>
+            <property name="icon">
+             <iconset resource="imchenwen.qrc">
+              <normaloff>:/res/parse.png</normaloff>:/res/parse.png</iconset>
+            </property>
             <property name="iconSize">
              <size>
-              <width>24</width>
-              <height>24</height>
+              <width>14</width>
+              <height>14</height>
              </size>
             </property>
             <property name="popupMode">
@@ -228,6 +236,10 @@
    </property>
   </action>
   <action name="actionParseURL">
+   <property name="icon">
+    <iconset resource="imchenwen.qrc">
+     <normaloff>:/res/parseurl.png</normaloff>:/res/parseurl.png</iconset>
+   </property>
    <property name="text">
     <string>Parse URL</string>
    </property>
@@ -239,6 +251,10 @@
    </property>
   </action>
   <action name="actionParsePlaylist">
+   <property name="icon">
+    <iconset resource="imchenwen.qrc">
+     <normaloff>:/res/parseplaylist.png</normaloff>:/res/parseplaylist.png</iconset>
+   </property>
    <property name="text">
     <string>Parse Playlist</string>
    </property>

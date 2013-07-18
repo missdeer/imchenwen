@@ -8,5 +8,9 @@
         <file>res/imchenwen64.png</file>
         <file>res/imchenwen128.png</file>
         <file>res/imchenwen256.png</file>
+        <file>res/parse.png</file>
+        <file>res/parseplaylist.png</file>
+        <file>res/parseurl.png</file>
+        <file>res/search.png</file>
     </qresource>
 </RCC>

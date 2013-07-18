@@ -14,7 +14,7 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "DForD Software"
-            VALUE "FileDescription", "imchenwen"
+            VALUE "FileDescription", "imchenwen - watch online video via your favourite player"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "imchenwen"
             VALUE "LegalCopyright", "Copyright (C) 2013 DForD Software. All rights reserved."

@@ -38,6 +38,9 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_actionParseURL_triggered();
+
+    void on_actionParsePlaylist_triggered();
 
 private:
     Ui::MainWindow *ui;

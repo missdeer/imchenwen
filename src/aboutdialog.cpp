@@ -7,7 +7,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    //window()->layout()->setSizeConstraint( QLayout::SetFixedSize );
     setFixedSize( width(), height());
 }
 
