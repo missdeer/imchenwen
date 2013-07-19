@@ -6,7 +6,10 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): {
+cache()
+QT += widgets
+}
 
 TARGET = imchenwen
 TEMPLATE = app
@@ -42,3 +45,9 @@ OTHER_FILES += \
     imchenwen-win.rc
 
 RC_FILE = imchenwen-win.rc
+
+macx: {
+    ICON = res/imchenwen.icns
+    icon.files += res/imchenwen128.png
+}
+
