@@ -1,5 +1,5 @@
 #include <QSettings>
-#if QT_VERSION < 050000
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QDesktopServices>
 #else
 #include <QStandardPaths>
@@ -17,7 +17,7 @@ Config::~Config()
 
 QString Config::read(const QString &key)
 {
-#if QT_VERSION < 050000
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QString configPath = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
 #else
     QString configPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
@@ -28,7 +28,7 @@ QString Config::read(const QString &key)
 
 void Config::write(const QString &key, const QString &value)
 {
-#if QT_VERSION < 050000
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QString configPath = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
 #else
     QString configPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
