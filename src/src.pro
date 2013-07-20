@@ -7,7 +7,6 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): {
-cache()
 QT += widgets
 }
 

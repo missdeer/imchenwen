@@ -42,11 +42,11 @@
     <set>QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="logoLabel">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>20</y>
+     <y>10</y>
      <width>61</width>
      <height>81</height>
     </rect>
@@ -58,12 +58,12 @@
     <pixmap resource="imchenwen.qrc">:/res/imchenwen64.png</pixmap>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="titleLabel">
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>20</y>
-     <width>231</width>
+     <y>10</y>
+     <width>251</width>
      <height>41</height>
     </rect>
    </property>
@@ -71,13 +71,13 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:28pt; font-weight:600;&quot;&gt;imchenwen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="desribeLabel">
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>60</y>
+     <y>50</y>
      <width>261</width>
-     <height>101</height>
+     <height>111</height>
     </rect>
    </property>
    <property name="text">
