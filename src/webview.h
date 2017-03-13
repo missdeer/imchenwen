@@ -44,6 +44,10 @@
 #include <QIcon>
 #include <QWebEngineView>
 
+QT_BEGIN_NAMESPACE
+class QUrl;
+QT_END_NAMESPACE
+
 class WebPage;
 
 class WebView : public QWebEngineView
@@ -64,11 +68,15 @@ protected:
 signals:
     void webActionEnabledChanged(QWebEnginePage::WebAction webAction, bool enabled);
 
+private slots:
+    void handlePlayLinkByBuiltinPlayer();
+    void handlePlayLinkByExternalPlayer();
 private:
     void createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction);
 
 private:
     int m_loadProgress;
+    QUrl m_rightClickedUrl;
 };
 
 #endif

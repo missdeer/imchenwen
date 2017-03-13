@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
+#include <QWebEngineContextMenuData>
 
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
@@ -99,20 +100,39 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
     return nullptr;
 }
 
+void WebView::handlePlayLinkByBuiltinPlayer()
+{
+    qDebug() << "play " << m_rightClickedUrl << " by built-in player";
+}
+
+void WebView::handlePlayLinkByExternalPlayer()
+{
+    qDebug() << "play " << m_rightClickedUrl << " by external player";
+}
+
 void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menu = page()->createStandardContextMenu();
     const QList<QAction*> actions = menu->actions();
     auto it = std::find(actions.cbegin(), actions.cend(), page()->action(QWebEnginePage::OpenLinkInThisWindow));
-    if (it != actions.cend()) {
+    if (it != actions.cend())
+    {
         (*it)->setText(tr("Open Link in This Tab"));
         ++it;
         QAction *before(it == actions.cend() ? nullptr : *it);
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewWindow));
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
         menu->addSeparator();
-        menu->addAction(tr("Play Link in Built-in Player"));
-        menu->addAction(tr("Play Link in External Player"));
+        QAction* b = menu->addAction(tr("Play Link by Built-in Player"));
+        connect(b, &QAction::triggered, this, &WebView::handlePlayLinkByBuiltinPlayer);
+        QAction* e = menu->addAction(tr("Play Link by External Player"));
+        connect(e, &QAction::triggered, this, &WebView::handlePlayLinkByExternalPlayer);
+        auto contextMenuData = page()->contextMenuData();
+        m_rightClickedUrl = contextMenuData.linkUrl();
+    }
+    else
+    {
+        m_rightClickedUrl = QUrl();
     }
     connect(menu, &QMenu::aboutToHide, menu, &QObject::deleteLater);
     menu->popup(event->globalPos());

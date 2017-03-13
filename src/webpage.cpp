@@ -18,17 +18,8 @@ bool WebPage::certificateError(const QWebEngineCertificateError &error)
 {
     QWidget *mainWindow = view()->window();
     if (error.isOverridable()) {
-        QDialog dialog(mainWindow);
-        dialog.setModal(true);
-        dialog.setWindowFlags(dialog.windowFlags() & ~Qt::WindowContextHelpButtonHint);
-        Ui::CertificateErrorDialog certificateDialog;
-        certificateDialog.setupUi(&dialog);
-        certificateDialog.m_iconLabel->setText(QString());
-        QIcon icon(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxWarning, 0, mainWindow));
-        certificateDialog.m_iconLabel->setPixmap(icon.pixmap(32, 32));
-        certificateDialog.m_errorLabel->setText(error.errorDescription());
-        dialog.setWindowTitle(tr("Certificate Error"));
-        return dialog.exec() == QDialog::Accepted;
+        qDebug() << error.errorDescription();
+        return true;
     }
 
     QMessageBox::critical(mainWindow, tr("Certificate Error"), error.errorDescription());

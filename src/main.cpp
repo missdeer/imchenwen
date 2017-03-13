@@ -1,6 +1,7 @@
 #include "browser.h"
 #include "browserwindow.h"
 #include <QApplication>
+#include <QtWebEngine>
 #include <QWebEngineSettings>
 
 QString getCommandLineUrlArgument()
@@ -21,6 +22,7 @@ int main(int argc, char **argv)
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(QLatin1String(":imchenwen.svg")));
+    QtWebEngine::initialize();
 
     QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
