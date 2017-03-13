@@ -52,7 +52,7 @@ public:
 
 protected:
     bool certificateError(const QWebEngineCertificateError &error) override;
-
+    bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) override;
 private slots:
     void handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth);
     void handleProxyAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth, const QString &proxyHost);

@@ -3,6 +3,7 @@
 #include "tabwidget.h"
 #include "urllineedit.h"
 #include "webview.h"
+#include "optiondialog.h"
 #include "aboutdialog.h"
 #include <QApplication>
 #include <QCloseEvent>
@@ -230,7 +231,11 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
 QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
-    helpMenu->addAction(tr("About &Qt"), qApp, QApplication::aboutQt);
+    QAction *options = helpMenu->addAction(tr("Options..."));
+    connect(options, &QAction::triggered, [this]() {
+        OptionDialog dlg(this);
+        dlg.exec();
+    });
 
     QAction *aboutImchenwen = helpMenu->addAction(tr("About imchenwen"));
     connect(aboutImchenwen, &QAction::triggered, [this]() {

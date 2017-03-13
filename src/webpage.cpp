@@ -35,6 +35,11 @@ bool WebPage::certificateError(const QWebEngineCertificateError &error)
     return false;
 }
 
+bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    return QWebEnginePage::acceptNavigationRequest(url, type, isMainFrame);
+}
+
 void WebPage::handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth)
 {
     QWidget *mainWindow = view()->window();
