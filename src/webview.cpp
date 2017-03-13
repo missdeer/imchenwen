@@ -110,6 +110,9 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         QAction *before(it == actions.cend() ? nullptr : *it);
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewWindow));
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
+        menu->addSeparator();
+        menu->addAction(tr("Play Link in Built-in Player"));
+        menu->addAction(tr("Play Link in External Player"));
     }
     connect(menu, &QMenu::aboutToHide, menu, &QObject::deleteLater);
     menu->popup(event->globalPos());
