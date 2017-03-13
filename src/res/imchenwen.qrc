@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>addtab.png</file>
+        <file>defaulticon.png</file>
+        <file>closetab.png</file>
+        <file>go-next.png</file>
+        <file>go-previous.png</file>
+        <file>process-stop.png</file>
+        <file>imchenwen.svg</file>
+        <file>view-refresh.png</file>
+        <file>imchenwen.icns</file>
+        <file>imchenwen.ico</file>
+        <file>imchenwen16.png</file>
+        <file>imchenwen32.png</file>
+        <file>imchenwen48.png</file>
+        <file>imchenwen64.png</file>
+        <file>imchenwen128.png</file>
+        <file>imchenwen256.png</file>
+        <file>parse.png</file>
+        <file>parseplaylist.png</file>
+        <file>parseurl.png</file>
+        <file>search.png</file>
+    </qresource>
+</RCC>

@@ -3,6 +3,7 @@
 #include "tabwidget.h"
 #include "urllineedit.h"
 #include "webview.h"
+#include "aboutdialog.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -230,6 +231,12 @@ QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
     helpMenu->addAction(tr("About &Qt"), qApp, QApplication::aboutQt);
+
+    QAction *aboutImchenwen = helpMenu->addAction(tr("About imchenwen"));
+    connect(aboutImchenwen, &QAction::triggered, [this]() {
+        AboutDialog dlg(this);
+        dlg.exec();
+    });
     return helpMenu;
 }
 

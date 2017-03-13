@@ -10,7 +10,10 @@ HEADERS += \
     urllineedit.h \
     webview.h \
     webpage.h \
-    webpopupwindow.h
+    webpopupwindow.h \
+    aboutdialog.h \
+    optiondialog.h \
+    config.h
 
 SOURCES += \
     browser.cpp \
@@ -20,13 +23,18 @@ SOURCES += \
     urllineedit.cpp \
     webview.cpp \
     webpage.cpp \
-    webpopupwindow.cpp
+    webpopupwindow.cpp \
+    aboutdialog.cpp \
+    optiondialog.cpp \
+    config.cpp
 
 FORMS += \
     certificateerrordialog.ui \
-    passworddialog.ui
+    passworddialog.ui \
+    aboutdialog.ui \
+    optiondialog.ui
 
-RESOURCES += data/imchenwen.qrc
+RESOURCES += res/imchenwen.qrc
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/webenginewidgets/imchenwen
