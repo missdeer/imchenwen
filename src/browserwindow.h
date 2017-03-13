@@ -80,14 +80,17 @@ private slots:
     void handleWebViewIconChanged(const QIcon &icon);
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
 
+    void handleShortcutInChinaTriggered();
+    void handleShortcutAbroadTriggered();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);
     QMenu *createWindowMenu(TabWidget *tabWidget);
     QMenu *createHelpMenu();
-    QMenu *createShortcutMenu(TabWidget *tabWidget);
+    QMenu *createShortcutMenu();
     QToolBar *createToolBar();
 
+    QString findURL(const QString& area, const QString& name);
 private:
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;

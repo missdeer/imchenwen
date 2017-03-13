@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = imchenwen
-QT += webenginewidgets
+QT += webenginewidgets xml
 CONFIG += c++11
 
 HEADERS += \

@@ -15,6 +15,9 @@
 #include <QStatusBar>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
 
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -34,7 +37,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     addToolBar(toolbar);
     menuBar()->addMenu(createFileMenu(m_tabWidget));
     menuBar()->addMenu(createViewMenu(toolbar));
-    menuBar()->addMenu(createShortcutMenu(m_tabWidget));
+    menuBar()->addMenu(createShortcutMenu());
     menuBar()->addMenu(createWindowMenu(m_tabWidget));
     menuBar()->addMenu(createHelpMenu());
 
@@ -246,92 +249,75 @@ QMenu *BrowserWindow::createHelpMenu()
     return helpMenu;
 }
 
-QMenu *BrowserWindow::createShortcutMenu(TabWidget *tabWidget)
+QMenu *BrowserWindow::createShortcutMenu()
 {
     QMenu *shortcutMenu = new QMenu(tr("&Shortcut"));
+
     QMenu *chinaMenu = new QMenu(tr("In China"));
     QMenu *abroadMenu = new QMenu(tr("Out of China"));
 
-    //-----------------------------------------------------------------------------------------------
-    QAction *youku = shortcutMenu->addAction(tr("Youku 优酷"));
-    connect(youku, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://www.youku.com"));
-    });
-    chinaMenu->addAction(youku);
+    QDomDocument doc("websites");
+    QFile file(":websites.xml");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qCritical() << "can't open websites configuration file";
+        return shortcutMenu;
+    }
 
-    QAction *iqiyi = shortcutMenu->addAction(tr("iQIYI 爱奇艺"));
-    connect(iqiyi, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://www.iqiyi.com"));
-    });
-    chinaMenu->addAction(iqiyi);
+    if (!doc.setContent(&file))
+    {
+        qCritical() << "can't set websites configuration content to dom";
+        file.close();
+        return shortcutMenu;
+    }
+    file.close();
 
-    QAction *qq = shortcutMenu->addAction(tr("QQ 腾讯视频"));
-    connect(qq, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://v.qq.com/"));
-    });
-    chinaMenu->addAction(qq);
+    // print out the element names of all elements that are direct children
+    // of the outermost element.
+    QDomElement docElem = doc.documentElement();
 
-    QAction *sohu = shortcutMenu->addAction(tr("Sohu 搜狐视频"));
-    connect(sohu, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://tv.sohu.com/"));
-    });
-    chinaMenu->addAction(sohu);
+    QDomElement chinaNode = docElem.firstChildElement("china");
+    if (chinaNode.isNull())
+    {
+        qCritical() << "no china node";
+        return shortcutMenu;
+    }
 
-    QAction *tudou = shortcutMenu->addAction(tr("Tudou 土豆"));
-    connect(tudou, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://www.tudou.com/"));
-    });
-    chinaMenu->addAction(tudou);
+    QDomElement website = chinaNode.firstChildElement("website");
+    while(!website.isNull())
+    {
+        QDomElement nameElem = website.firstChildElement("name");
+        QString name = nameElem.text();
+        QAction *action = chinaMenu->addAction(name);
+        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutInChinaTriggered);
+        QDomElement favNode = website.firstChildElement("favourite");
+        if (!favNode.isNull())
+        {
+            shortcutMenu->addAction(action);
+        }
+        website = website.nextSiblingElement("website");
+    }
 
-    //-----------------------------------------------------------------------------------------------
-    QAction *youtube = shortcutMenu->addAction(tr("Youtube"));
-    connect(youtube, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("https://www.youtube.com"));
-    });
-    abroadMenu->addAction(youtube);
+    QDomElement abroadNode = docElem.firstChildElement("abroad");
+    if (abroadNode.isNull())
+    {
+        return shortcutMenu;
+    }
 
-    QAction *twitter = shortcutMenu->addAction(tr("Twitter"));
-    connect(twitter, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("https://twitter.com"));
-    });
-    abroadMenu->addAction(twitter);
-
-    QAction *vk = shortcutMenu->addAction(tr("VK"));
-    connect(vk, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("https://vk.com"));
-    });
-    abroadMenu->addAction(vk);
-
-    QAction *vine = shortcutMenu->addAction(tr("Vine"));
-    connect(vine, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("https://vine.co/"));
-    });
-    abroadMenu->addAction(vine);
-
-    QAction *vimeo = shortcutMenu->addAction(tr("Vimeo"));
-    connect(vimeo, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("https://vimeo.com/"));
-    });
-    abroadMenu->addAction(vimeo);
-
-    QAction *vidto = shortcutMenu->addAction(tr("Vidto"));
-    connect(vidto, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://vidto.me/"));
-    });
-    abroadMenu->addAction(vidto);
-
-    QAction *videomega = shortcutMenu->addAction(tr("Videomega"));
-    connect(videomega, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://videomega.tv/"));
-    });
-    abroadMenu->addAction(videomega);
-
-    QAction *veoh = shortcutMenu->addAction(tr("Veoh"));
-    connect(veoh, &QAction::triggered, [tabWidget]() {
-        tabWidget->navigateInNewTab(QUrl("http://www.veoh.com/"));
-    });
-    abroadMenu->addAction(veoh);
-    //-----------------------------------------------------------------------------------------------
+    website = abroadNode.firstChildElement("website");
+    while(!website.isNull())
+    {
+        QDomElement nameElem = website.firstChildElement("name");
+        QString name = nameElem.text();
+        QAction *action = abroadMenu->addAction(name);
+        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutAbroadTriggered);
+        QDomElement favNode = website.firstChildElement("favourite");
+        if (!favNode.isNull())
+        {
+            shortcutMenu->addAction(action);
+        }
+        website = website.nextSiblingElement("website");
+    }
     shortcutMenu->addSeparator();
     shortcutMenu->addMenu(chinaMenu);
     shortcutMenu->addMenu(abroadMenu);
@@ -391,6 +377,49 @@ QToolBar *BrowserWindow::createToolBar()
     return navigationBar;
 }
 
+QString BrowserWindow::findURL(const QString &area, const QString &name)
+{
+    QDomDocument doc("websites");
+    QFile file(":websites.xml");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qCritical() << "can't open websites configuration file";
+        return QString();
+    }
+
+    if (!doc.setContent(&file))
+    {
+        qCritical() << "can't set websites configuration content to dom";
+        file.close();
+        return QString();
+    }
+    file.close();
+
+    // print out the element names of all elements that are direct children
+    // of the outermost element.
+    QDomElement docElem = doc.documentElement();
+
+    QDomElement chinaNode = docElem.firstChildElement(area);
+    if (chinaNode.isNull())
+    {
+        qCritical() << "no china node";
+        return QString();
+    }
+
+    QDomElement website = chinaNode.firstChildElement("website");
+    while(!website.isNull())
+    {
+        QDomElement nameElem = website.firstChildElement("name");
+        if (name == nameElem.text())
+        {
+            QDomElement urlElem = website.firstChildElement("url");
+            return urlElem.text();
+        }
+        website = website.nextSiblingElement("website");
+    }
+    return QString();
+}
+
 void BrowserWindow::handleWebViewIconChanged(const QIcon &icon)
 {
     m_urlLineEdit->setFavIcon(icon);
@@ -420,6 +449,28 @@ void BrowserWindow::handleWebActionEnabledChanged(QWebEnginePage::WebAction acti
         break;
     default:
         qWarning("Unhandled webActionChanged singal");
+    }
+}
+
+void BrowserWindow::handleShortcutInChinaTriggered()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    Q_ASSERT(action);
+    auto url = findURL("china", action->text());
+    if (!url.isEmpty())
+    {
+        m_tabWidget->navigateInNewTab(url);
+    }
+}
+
+void BrowserWindow::handleShortcutAbroadTriggered()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    Q_ASSERT(action);
+    auto url = findURL("abroad", action->text());
+    if (!url.isEmpty())
+    {
+        m_tabWidget->navigateInNewTab(url);
     }
 }
 
