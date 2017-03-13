@@ -97,7 +97,11 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     connect(newTabAction, &QAction::triggered, tabWidget, &TabWidget::createTab);
     fileMenu->addAction(newTabAction);
 
-    fileMenu->addAction(tr("&Open File..."), this, &BrowserWindow::handleFileOpenTriggered, QKeySequence::Open);
+    QAction *options = fileMenu->addAction(tr("Options..."));
+    connect(options, &QAction::triggered, [this]() {
+        OptionDialog dlg(this);
+        dlg.exec();
+    });
     fileMenu->addSeparator();
 
     QAction *closeTabAction = new QAction(QIcon(QLatin1String(":closetab.png")), tr("&Close Tab"), this);
@@ -107,6 +111,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
         tabWidget->closeTab(tabWidget->currentIndex());
     });
     fileMenu->addAction(closeTabAction);
+
 
     QAction *closeAction = new QAction(tr("&Quit"),this);
     closeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
@@ -235,12 +240,6 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
 QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
-    QAction *options = helpMenu->addAction(tr("Options..."));
-    connect(options, &QAction::triggered, [this]() {
-        OptionDialog dlg(this);
-        dlg.exec();
-    });
-
     QAction *aboutImchenwen = helpMenu->addAction(tr("About imchenwen"));
     connect(aboutImchenwen, &QAction::triggered, [this]() {
         AboutDialog dlg(this);
