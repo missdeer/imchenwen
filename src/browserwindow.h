@@ -85,6 +85,7 @@ private:
     QMenu *createViewMenu(QToolBar *toolBar);
     QMenu *createWindowMenu(TabWidget *tabWidget);
     QMenu *createHelpMenu();
+    QMenu *createShortcutMenu(TabWidget *tabWidget);
     QToolBar *createToolBar();
 
 private:

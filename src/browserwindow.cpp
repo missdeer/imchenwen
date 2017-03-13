@@ -34,6 +34,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     addToolBar(toolbar);
     menuBar()->addMenu(createFileMenu(m_tabWidget));
     menuBar()->addMenu(createViewMenu(toolbar));
+    menuBar()->addMenu(createShortcutMenu(m_tabWidget));
     menuBar()->addMenu(createWindowMenu(m_tabWidget));
     menuBar()->addMenu(createHelpMenu());
 
@@ -243,6 +244,98 @@ QMenu *BrowserWindow::createHelpMenu()
         dlg.exec();
     });
     return helpMenu;
+}
+
+QMenu *BrowserWindow::createShortcutMenu(TabWidget *tabWidget)
+{
+    QMenu *shortcutMenu = new QMenu(tr("&Shortcut"));
+    QMenu *chinaMenu = new QMenu(tr("In China"));
+    QMenu *abroadMenu = new QMenu(tr("Out of China"));
+
+    //-----------------------------------------------------------------------------------------------
+    QAction *youku = shortcutMenu->addAction(tr("Youku 优酷"));
+    connect(youku, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://www.youku.com"));
+    });
+    chinaMenu->addAction(youku);
+
+    QAction *iqiyi = shortcutMenu->addAction(tr("iQIYI 爱奇艺"));
+    connect(iqiyi, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://www.iqiyi.com"));
+    });
+    chinaMenu->addAction(iqiyi);
+
+    QAction *qq = shortcutMenu->addAction(tr("QQ 腾讯视频"));
+    connect(qq, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://v.qq.com/"));
+    });
+    chinaMenu->addAction(qq);
+
+    QAction *sohu = shortcutMenu->addAction(tr("Sohu 搜狐视频"));
+    connect(sohu, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://tv.sohu.com/"));
+    });
+    chinaMenu->addAction(sohu);
+
+    QAction *tudou = shortcutMenu->addAction(tr("Tudou 土豆"));
+    connect(tudou, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://www.tudou.com/"));
+    });
+    chinaMenu->addAction(tudou);
+
+    //-----------------------------------------------------------------------------------------------
+    QAction *youtube = shortcutMenu->addAction(tr("Youtube"));
+    connect(youtube, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("https://www.youtube.com"));
+    });
+    abroadMenu->addAction(youtube);
+
+    QAction *twitter = shortcutMenu->addAction(tr("Twitter"));
+    connect(twitter, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("https://twitter.com"));
+    });
+    abroadMenu->addAction(twitter);
+
+    QAction *vk = shortcutMenu->addAction(tr("VK"));
+    connect(vk, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("https://vk.com"));
+    });
+    abroadMenu->addAction(vk);
+
+    QAction *vine = shortcutMenu->addAction(tr("Vine"));
+    connect(vine, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("https://vine.co/"));
+    });
+    abroadMenu->addAction(vine);
+
+    QAction *vimeo = shortcutMenu->addAction(tr("Vimeo"));
+    connect(vimeo, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("https://vimeo.com/"));
+    });
+    abroadMenu->addAction(vimeo);
+
+    QAction *vidto = shortcutMenu->addAction(tr("Vidto"));
+    connect(vidto, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://vidto.me/"));
+    });
+    abroadMenu->addAction(vidto);
+
+    QAction *videomega = shortcutMenu->addAction(tr("Videomega"));
+    connect(videomega, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://videomega.tv/"));
+    });
+    abroadMenu->addAction(videomega);
+
+    QAction *veoh = shortcutMenu->addAction(tr("Veoh"));
+    connect(veoh, &QAction::triggered, [tabWidget]() {
+        tabWidget->navigateInNewTab(QUrl("http://www.veoh.com/"));
+    });
+    abroadMenu->addAction(veoh);
+    //-----------------------------------------------------------------------------------------------
+    shortcutMenu->addSeparator();
+    shortcutMenu->addMenu(chinaMenu);
+    shortcutMenu->addMenu(abroadMenu);
+    return shortcutMenu;
 }
 
 QToolBar *BrowserWindow::createToolBar()

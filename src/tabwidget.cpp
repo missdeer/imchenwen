@@ -99,6 +99,17 @@ WebView *TabWidget::currentWebView() const
     return webView(currentIndex());
 }
 
+WebView *TabWidget::navigateInNewTab(const QUrl &url, bool makeCurrent)
+{
+    auto v = createTab(makeCurrent);
+    v->setUrl(url);
+    if (makeCurrent)
+    {
+        v->setFocus();
+    }
+    return v;
+}
+
 WebView *TabWidget::webView(int index) const
 {
     return qobject_cast<WebView*>(widget(index));
