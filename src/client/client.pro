@@ -36,6 +36,11 @@ FORMS += \
 
 RESOURCES += res/imchenwen.qrc
 
-# install
-target.path = $$[QT_INSTALL_EXAMPLES]/webenginewidgets/imchenwen
-INSTALLS += target
+
+RC_FILE = imchenwen-win.rc
+
+macx: {
+    ICON = res/imchenwen.icns
+    icon.files += res/imchenwen128.png
+}
+
