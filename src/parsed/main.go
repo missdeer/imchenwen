@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os/exec"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +16,21 @@ var (
 	testAPIKey  = "yb2Q1ozScRfJJ"
 	adminAPIKey = "z77BV0FABp2PU"
 )
+
+type Stream struct {
+	Format       string
+	Container    string
+	VideoProfile string
+	DownloadWith string
+	RealURLs     []string
+}
+
+type CmdResponse struct {
+	Site    string
+	Title   string
+	Artist  string
+	Streams []*Stream
+}
 
 func parseByYouGet(u string, r chan string) {
 	cmd := exec.Command("you-get", "-i", u)
@@ -64,12 +81,41 @@ func parseByYKDL(u string, r chan string) {
 		r <- ""
 		return
 	}
+	scanner := bufio.NewScanner(stdout)
+	scanner.Split(bufio.ScanLines)
+	status := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		switch status {
+		case 0:
+			if strings.HasPrefix(line, "site:") {
+				status = 1
+			}
+		case 1:
+			if strings.HasPrefix(line, "title:") {
+				status = 2
+			}
+		case 2:
+			if strings.HasPrefix(line, "artist:") {
+				status = 3
+			}
+		case 3:
+			if strings.HasPrefix(line, "streams:") {
+				status = 4
+			}
+		case 4:
+			if strings.Contains(line, "- format:") {
+
+			}
+		}
+	}
 	err = cmd.Wait()
 	if err != nil {
 		log.Println("waiting for ykdl exiting failed", err)
 		r <- ""
 		return
 	}
+
 	r <- string(o)
 }
 
