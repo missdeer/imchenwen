@@ -120,20 +120,18 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         (*it)->setText(tr("Open Link in This Tab"));
         ++it;
         QAction *before(it == actions.cend() ? nullptr : *it);
-        menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewWindow));
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
         menu->addSeparator();
-        QAction* b = menu->addAction(tr("Play Link by Built-in Player"));
-        connect(b, &QAction::triggered, this, &WebView::handlePlayLinkByBuiltinPlayer);
-        QAction* e = menu->addAction(tr("Play Link by External Player"));
-        connect(e, &QAction::triggered, this, &WebView::handlePlayLinkByExternalPlayer);
-        auto contextMenuData = page()->contextMenuData();
-        m_rightClickedUrl = contextMenuData.linkUrl();
+        menu->addAction(tr("Play Link by Built-in Player"), this, &WebView::handlePlayLinkByBuiltinPlayer);
+        menu->addAction(tr("Play Link by External Player"), this, &WebView::handlePlayLinkByExternalPlayer);
+        m_rightClickedUrl = page()->contextMenuData().linkUrl();
     }
     else
     {
         m_rightClickedUrl = QUrl();
     }
+    if (page()->contextMenuData().selectedText().isEmpty())
+        menu->addAction(page()->action(QWebEnginePage::SavePage));
     connect(menu, &QMenu::aboutToHide, menu, &QObject::deleteLater);
     menu->popup(event->globalPos());
 }
