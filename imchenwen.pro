@@ -4,8 +4,5 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS += src 
-
-RESOURCES += \
-    src/imchenwen.qrc
+SUBDIRS += src/client/client.pro src/manager/manager.pro
 
