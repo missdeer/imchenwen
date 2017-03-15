@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -62,7 +63,7 @@ func parseByYouGet(u string, r chan string) {
 }
 
 func parseByYKDL(u string, r chan string) {
-	cmd := exec.Command("python3", "/Users/billy/Shareware/ykdl/bin/ykdl.py", "-i", u)
+	cmd := exec.Command("ykdl.py", "-i", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("ykdl stdout pipe failed", err)
@@ -119,6 +120,64 @@ func parseByYKDL(u string, r chan string) {
 	r <- string(o)
 }
 
+func handlePreferredParseRequest(c *gin.Context) {
+	apiKey := c.PostForm("apikey")
+	if apiKey == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "incorrect api key",
+		})
+		return
+	}
+
+	u := c.PostForm("url")
+	if u == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "missing url",
+		})
+		return
+	}
+
+	fromYKDL := make(chan string)
+	go parseByYKDL(u, fromYKDL)
+	resultFromYKDL := <-fromYKDL
+
+	c.JSON(http.StatusOK, gin.H{
+		"Result":    "OK",
+		"Perferred": resultFromYKDL,
+	})
+}
+
+func handleBackupParseRequest(c *gin.Context) {
+	apiKey := c.PostForm("apikey")
+	if apiKey == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "incorrect api key",
+		})
+		return
+	}
+
+	u := c.PostForm("url")
+	if u == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "missing url",
+		})
+		return
+	}
+
+	fromYouGet := make(chan string)
+	go parseByYouGet(u, fromYouGet)
+	resultFromYouGet := <-fromYouGet
+
+	c.JSON(http.StatusOK, gin.H{
+		"Result": "OK",
+		"Backup": resultFromYouGet,
+	})
+}
+
 func handleParseRequest(c *gin.Context) {
 	apiKey := c.PostForm("apikey")
 	if apiKey == "" {
@@ -160,6 +219,7 @@ func handleParseRequest(c *gin.Context) {
 }
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	// Ping test
@@ -170,8 +230,12 @@ func main() {
 	v1 := r.Group("/v1")
 	{
 		v1.POST("/parse", handleParseRequest)
+		v1.POST("/parse/all", handleParseRequest)
+		v1.POST("/parse/preferred", handlePreferredParseRequest)
+		v1.POST("/parse/backup", handleBackupParseRequest)
 	}
 
+	ginpprof.Wrapper(r)
 	// Listen and Server in 127.0.0.1:8765
 	r.Run("127.0.0.1:8765")
 }
