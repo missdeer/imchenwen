@@ -11,6 +11,8 @@ import (
 
 func getRealURLsByYouGet(u string, s *Stream, wg *sync.WaitGroup) {
 	defer wg.Done()
+	tryCount := 1
+startProcess:
 	downloadURL := strings.Replace(s.DownloadWith, "[URL]", u, -1)
 	c := strings.Split(downloadURL, " ")
 	c[0] = "-u"
@@ -30,30 +32,42 @@ func getRealURLsByYouGet(u string, s *Stream, wg *sync.WaitGroup) {
 	scanner.Split(bufio.ScanLines)
 	start := false
 	var rawURLs string
+	var urls []string
 	for scanner.Scan() {
 		line := scanner.Text()
 		if start {
 			rawURLs += line
+			urls = append(urls, line)
 			continue
 		}
-		if strings.HasPrefix(line, "Real URL:") {
+		if strings.HasPrefix(line, "Real URL") {
 			start = true
 		}
 	}
 	err = cmd.Wait()
 	if err != nil {
+		if tryCount < 3 {
+			tryCount++
+			goto startProcess
+		}
 		log.Println("waiting for you-get exiting failed", err)
 		return
 	}
 	rawURLs = strings.Replace(rawURLs, "'", "\"", -1)
 	err = json.Unmarshal([]byte(rawURLs), &s.RealURLs)
 	if err != nil {
-		log.Println("unmarshalling json failed", err, rawURLs)
+		if len(urls) > 0 {
+			s.RealURLs = urls
+		} else {
+			log.Println("unmarshalling json failed", err, rawURLs)
+		}
 		return
 	}
 }
 
 func parseByYouGet(u string, r chan *CmdResponse) {
+	tryCount := 1
+startProcess:
 	cmd := exec.Command("you-get", "-i", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -144,6 +158,9 @@ func parseByYouGet(u string, r chan *CmdResponse) {
 					pos++
 				}
 				stream.DownloadWith = line[pos:]
+				startPos := strings.Index(stream.DownloadWith, "you-get")
+				endPos := strings.Index(stream.DownloadWith, "[URL]")
+				stream.DownloadWith = stream.DownloadWith[startPos : endPos+5]
 				status = 3
 			}
 		}
@@ -157,6 +174,10 @@ func parseByYouGet(u string, r chan *CmdResponse) {
 	wg.Wait()
 	err = cmd.Wait()
 	if err != nil {
+		if tryCount < 3 {
+			tryCount++
+			goto startProcess
+		}
 		log.Println("waiting for you-get exiting failed", err)
 		r <- nil
 		return

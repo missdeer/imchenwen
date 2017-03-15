@@ -373,6 +373,17 @@ QToolBar *BrowserWindow::createToolBar()
     navigationBar->addWidget(m_urlLineEdit);
     int size = m_urlLineEdit->sizeHint().height();
     navigationBar->setIconSize(QSize(size, size));
+
+    m_playInBuiltinPlayerAction = new QAction(QIcon(QStringLiteral(":parseplaylist.png")), tr("Play in Built-in Player"), this);
+    connect(m_playInBuiltinPlayerAction, &QAction::triggered, [this]() {
+    });
+    navigationBar->addAction(m_playInBuiltinPlayerAction);
+
+
+    m_playInExternalPlayerAction = new QAction(QIcon(QStringLiteral(":parseurl.png")), tr("Play in External Player"), this);
+    connect(m_playInExternalPlayerAction, &QAction::triggered, [this]() {
+    });
+    navigationBar->addAction(m_playInExternalPlayerAction);
     return navigationBar;
 }
 

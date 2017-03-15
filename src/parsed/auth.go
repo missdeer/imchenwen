@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,57 +25,54 @@ func checkInput(c *gin.Context) (u string, err error) {
 			"Status": "error",
 			"Result": "missing api key",
 		})
-		err = errors.New("missing api key")
-		return
+		return "", errors.New("missing api key")
 	}
 
-	account := fmt.Sprintf("imchenwen:account:%s", apiKey)
-	acc, err := rd.Get(account)
-	if err != nil {
+	accountKey := fmt.Sprintf("imchenwen:account:%s", apiKey)
+	acc, err := rd.Get(accountKey)
+	if err != nil || acc == nil {
 		if apiKey == testAPIKey {
-			rd.Put(account, 60)
+			rd.Put(accountKey, 60)
+			acc, _ = rd.Get(accountKey)
 		} else if apiKey == adminAPIKey {
-			rd.Put(account, math.MaxInt32)
+			rd.Put(accountKey, math.MaxInt32)
+			acc, _ = rd.Get(accountKey)
 		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"Status": "error",
 				"Result": "incorrect api key",
 			})
-			err = errors.New("incorrect api key")
-			return
+			return "", errors.New("incorrect api key")
 		}
 	}
-	rateLimitQuote, ok := acc.(int)
-	if !ok {
+	rateLimitQuote, err := redis.Int(acc, err)
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"Status": "error",
-			"Result": "unknown rate limit quote",
+			"Result": err,
 		})
-		err = errors.New("unknown rate limit quote")
-		return
+		return "", err
 	}
 
 	rateLimitKey := fmt.Sprintf("imchenwen:ratelimit:%d", time.Now().Unix()/60)
 	rateLimitValue, err := rd.Get(rateLimitKey)
-	if err != nil {
+	if err != nil || rateLimitValue == nil {
 		rd.PutWithTimeout(rateLimitKey, 1, 60)
 	} else {
-		rateLimit, ok := rateLimitValue.(int)
-		if !ok {
+		rateLimit, err := redis.Int(rateLimitValue, err)
+		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"Status": "error",
-				"Result": "unknown rate limit value",
+				"Result": err,
 			})
-			err = errors.New("unknown rate limit value")
-			return
+			return "", err
 		}
 		if rateLimit > rateLimitQuote {
 			c.JSON(http.StatusOK, gin.H{
 				"Status": "error",
 				"Result": "exceeded rate limit",
 			})
-			err = errors.New("exceeded rate limit")
-			return
+			return "", errors.New("exceeded rate limit")
 		}
 		rd.Incr(rateLimitKey)
 	}
@@ -85,8 +83,7 @@ func checkInput(c *gin.Context) (u string, err error) {
 			"Status": "error",
 			"Result": "missing url",
 		})
-		err = errors.New("missing url")
-		return
+		return "", errors.New("missing url")
 	}
 	return
 }

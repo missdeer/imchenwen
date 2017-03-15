@@ -8,6 +8,8 @@ import (
 )
 
 func parseByYKDL(u string, r chan *CmdResponse) {
+	tryCount := 1
+startProcess:
 	cmd := exec.Command("ykdl.py", "-i", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -123,6 +125,10 @@ func parseByYKDL(u string, r chan *CmdResponse) {
 	}
 	err = cmd.Wait()
 	if err != nil {
+		if tryCount < 3 {
+			tryCount++
+			goto startProcess
+		}
 		log.Println("waiting for ykdl exiting failed", err)
 		r <- nil
 		return

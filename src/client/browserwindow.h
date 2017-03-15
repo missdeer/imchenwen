@@ -99,6 +99,8 @@ private:
     QAction *m_stopAction;
     QAction *m_reloadAction;
     QAction *m_stopReloadAction;
+    QAction *m_playInBuiltinPlayerAction;
+    QAction *m_playInExternalPlayerAction;
     UrlLineEdit *m_urlLineEdit;
 };
 
