@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 	"os/exec"
@@ -314,22 +315,32 @@ func parseByYKDL(u string, r chan *CmdResponse) {
 	r <- resp
 }
 
-func handlePreferredParseRequest(c *gin.Context) {
+func checkInput(c *gin.Context) (u string, err error) {
 	apiKey := c.PostForm("apikey")
 	if apiKey == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"Status": "error",
 			"Result": "incorrect api key",
 		})
+		err = errors.New("incorrect api key")
 		return
 	}
 
-	u := c.PostForm("url")
+	u = c.PostForm("url")
 	if u == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"Status": "error",
 			"Result": "missing url",
 		})
+		err = errors.New("missing url")
+		return
+	}
+	return
+}
+
+func handlePreferredParseRequest(c *gin.Context) {
+	u, err := checkInput(c)
+	if err != nil {
 		return
 	}
 
@@ -344,21 +355,8 @@ func handlePreferredParseRequest(c *gin.Context) {
 }
 
 func handleBackupParseRequest(c *gin.Context) {
-	apiKey := c.PostForm("apikey")
-	if apiKey == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"Status": "error",
-			"Result": "incorrect api key",
-		})
-		return
-	}
-
-	u := c.PostForm("url")
-	if u == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"Status": "error",
-			"Result": "missing url",
-		})
+	u, err := checkInput(c)
+	if err != nil {
 		return
 	}
 
@@ -373,21 +371,8 @@ func handleBackupParseRequest(c *gin.Context) {
 }
 
 func handleParseRequest(c *gin.Context) {
-	apiKey := c.PostForm("apikey")
-	if apiKey == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"Status": "error",
-			"Result": "incorrect api key",
-		})
-		return
-	}
-
-	u := c.PostForm("url")
-	if u == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"Status": "error",
-			"Result": "missing url",
-		})
+	u, err := checkInput(c)
+	if err != nil {
 		return
 	}
 
