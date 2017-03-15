@@ -100,6 +100,8 @@ func main() {
 	}
 
 	ginpprof.Wrapper(r)
+
+	redisInit()
 	// Listen and Server in 127.0.0.1:8765
 	r.Run("127.0.0.1:8765")
 }
