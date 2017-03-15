@@ -2,7 +2,11 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"math"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,10 +22,61 @@ func checkInput(c *gin.Context) (u string, err error) {
 	if apiKey == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"Status": "error",
-			"Result": "incorrect api key",
+			"Result": "missing api key",
 		})
-		err = errors.New("incorrect api key")
+		err = errors.New("missing api key")
 		return
+	}
+
+	account := fmt.Sprintf("imchenwen:account:%s", apiKey)
+	acc, err := rd.Get(account)
+	if err != nil {
+		if apiKey == testAPIKey {
+			rd.Put(account, 60)
+		} else if apiKey == adminAPIKey {
+			rd.Put(account, math.MaxInt32)
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"Status": "error",
+				"Result": "incorrect api key",
+			})
+			err = errors.New("incorrect api key")
+			return
+		}
+	}
+	rateLimitQuote, ok := acc.(int)
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "unknown rate limit quote",
+		})
+		err = errors.New("unknown rate limit quote")
+		return
+	}
+
+	rateLimitKey := fmt.Sprintf("imchenwen:ratelimit:%d", time.Now().Unix()/60)
+	rateLimitValue, err := rd.Get(rateLimitKey)
+	if err != nil {
+		rd.PutWithTimeout(rateLimitKey, 1, 60)
+	} else {
+		rateLimit, ok := rateLimitValue.(int)
+		if !ok {
+			c.JSON(http.StatusOK, gin.H{
+				"Status": "error",
+				"Result": "unknown rate limit value",
+			})
+			err = errors.New("unknown rate limit value")
+			return
+		}
+		if rateLimit > rateLimitQuote {
+			c.JSON(http.StatusOK, gin.H{
+				"Status": "error",
+				"Result": "exceeded rate limit",
+			})
+			err = errors.New("exceeded rate limit")
+			return
+		}
+		rd.Incr(rateLimitKey)
 	}
 
 	u = c.PostForm("url")
@@ -34,4 +89,47 @@ func checkInput(c *gin.Context) (u string, err error) {
 		return
 	}
 	return
+}
+
+func handleAddUser(c *gin.Context) {
+	apiKey := c.Param("apikey")
+	if apiKey == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "missing api key",
+		})
+		return
+	}
+	quote := c.Param("quote")
+	quoteValue, err := strconv.Atoi(quote)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": err,
+		})
+		return
+	}
+	accountKey := fmt.Sprintf("imchenwen:account:%s", apiKey)
+	rd.Put(accountKey, quoteValue)
+	c.JSON(http.StatusOK, gin.H{
+		"Status": "OK",
+		"Result": fmt.Sprintf("created API key %s with quote %d", apiKey, quoteValue),
+	})
+}
+
+func handleDeleteUser(c *gin.Context) {
+	apiKey := c.Param("apikey")
+	if apiKey == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "missing api key",
+		})
+		return
+	}
+	accountKey := fmt.Sprintf("imchenwen:account:%s", apiKey)
+	rd.Delete(accountKey)
+	c.JSON(http.StatusOK, gin.H{
+		"Status": "OK",
+		"Result": fmt.Sprintf("deleted API key %s", apiKey),
+	})
 }

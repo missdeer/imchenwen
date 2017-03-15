@@ -99,6 +99,12 @@ func main() {
 		v1.POST("/parse/backup", handleBackupParseRequest)
 	}
 
+	admin := r.Group("/admin")
+	{
+		admin.POST("/auth/adduser", handleAddUser)
+		admin.POST("/auth/deluser", handleDeleteUser)
+	}
+
 	ginpprof.Wrapper(r)
 
 	redisInit()
