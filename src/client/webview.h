@@ -74,7 +74,7 @@ signals:
     void webActionEnabledChanged(QWebEnginePage::WebAction webAction, bool enabled);
 
 private slots:
-    void resolvingFinished(const MediaInfo& mediaInfo);
+    void resolvingFinished(MediaInfoPtr mi);
     void resolvingError();
 private:
     void createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction);

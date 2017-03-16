@@ -56,6 +56,7 @@ startProcess:
 	downloadURL := strings.Replace(s.DownloadWith, "[URL]", u, -1)
 	c := strings.Split(downloadURL, " ")
 	c[0] = "-u"
+	c = append([]string{"--no-caption"}, c...)
 	cmd := exec.Command("you-get", c...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -76,8 +77,10 @@ startProcess:
 	for scanner.Scan() {
 		line := scanner.Text()
 		if start {
-			rawURLs += line
-			urls = append(urls, line)
+			if strings.HasPrefix(line, "http") {
+				rawURLs += line
+				urls = append(urls, line)
+			}
 			continue
 		}
 		if strings.HasPrefix(line, "Real URL") {

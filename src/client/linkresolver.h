@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkReply>
+#include <QSharedPointer>
 
 struct StreamInfo
 {
@@ -11,7 +12,8 @@ struct StreamInfo
     QStringList urls;
 };
 
-typedef QList<StreamInfo> Streams;
+typedef QSharedPointer<StreamInfo> StreamInfoPtr;
+typedef QList<StreamInfoPtr> Streams;
 
 struct MediaInfo
 {
@@ -21,6 +23,8 @@ struct MediaInfo
     Streams backup;
 };
 
+typedef QSharedPointer<MediaInfo> MediaInfoPtr;
+
 class LinkResolver : public QObject
 {
     Q_OBJECT
@@ -28,7 +32,7 @@ public:
     explicit LinkResolver(QObject *parent = 0);
     void resolve(const QUrl& url);
 signals:
-    void resolvingFinished(const MediaInfo&);
+    void resolvingFinished(MediaInfoPtr);
     void resolvingError();
 public slots:
 
@@ -40,6 +44,11 @@ private slots:
 
 private:
     QByteArray m_content;
+
+    void parsePreferredNode(const QJsonObject& o, MediaInfoPtr mi);
+    void parseBackupNode(const QJsonObject& o, MediaInfoPtr mi);
+
+    void parseNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
 };
 
 #endif // LINKRESOLVER_H

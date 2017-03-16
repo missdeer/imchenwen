@@ -43,7 +43,7 @@ func handlePreferredParseRequest(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
 			"Result":    "OK",
-			"Perferred": resultFromYKDL,
+			"Preferred": resultFromYKDL,
 		})
 	} else {
 		fromYKDL := make(chan *CmdResponse)
@@ -52,7 +52,7 @@ func handlePreferredParseRequest(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
 			"Result":    "OK",
-			"Perferred": resultFromYKDL,
+			"Preferred": resultFromYKDL,
 		})
 	}
 }
@@ -107,7 +107,7 @@ func handleParseRequest(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
 			"Result":    "OK",
-			"Perferred": resultFromYKDL,
+			"Preferred": resultFromYKDL,
 			"Backup":    resultFromYouGet,
 		})
 	} else {
@@ -127,7 +127,7 @@ func handleParseRequest(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
 			"Result":    "OK",
-			"Perferred": resultFromYKDL,
+			"Preferred": resultFromYKDL,
 			"Backup":    resultFromYouGet,
 		})
 	}

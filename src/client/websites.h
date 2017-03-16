@@ -22,6 +22,7 @@ class Websites
 public:
     static Websites& instance();
 
+    bool isInChina(const QUrl &url);
     const QString& findURL(const QString& name);
     WebsiteList favourites();
     WebsiteList inChina();

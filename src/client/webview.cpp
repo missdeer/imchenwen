@@ -166,11 +166,20 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
     return nullptr;
 }
 
-void WebView::resolvingFinished(const MediaInfo &mediaInfo)
+void WebView::resolvingFinished(MediaInfoPtr mi)
 {
     if (m_waitingSpinner->isSpinning())
         m_waitingSpinner->stop();
 
+    qDebug() << "play " << mi->title << (m_playByBuiltinPlayer ? " by builtin player" : " by external player");
+    for (auto p : mi->preferred)
+    {
+        qDebug() << "preferred: " << p->urls;
+    }
+    for (auto p : mi->backup)
+    {
+        qDebug() << "backup: " << p->urls;
+    }
 }
 
 void WebView::resolvingError()
