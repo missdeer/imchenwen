@@ -23,20 +23,36 @@ type CmdResponse struct {
 	Streams []*Stream
 }
 
+func nativeJSONRequest(c *gin.Context) bool {
+	nativeJSON := c.PostForm("nativejson")
+	return nativeJSON == "true"
+}
+
 func handlePreferredParseRequest(c *gin.Context) {
 	u, err := checkInput(c)
 	if err != nil {
 		return
 	}
 
-	fromYKDL := make(chan *CmdResponse)
-	go parseByYKDL(u, fromYKDL)
-	resultFromYKDL := <-fromYKDL
+	if nativeJSONRequest(c) {
+		fromYKDL := make(chan interface{})
+		go parseByYKDLJSON(u, fromYKDL)
+		resultFromYKDL := <-fromYKDL
 
-	c.JSON(http.StatusOK, gin.H{
-		"Result":    "OK",
-		"Perferred": resultFromYKDL,
-	})
+		c.JSON(http.StatusOK, gin.H{
+			"Result":    "OK",
+			"Perferred": resultFromYKDL,
+		})
+	} else {
+		fromYKDL := make(chan *CmdResponse)
+		go parseByYKDL(u, fromYKDL)
+		resultFromYKDL := <-fromYKDL
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result":    "OK",
+			"Perferred": resultFromYKDL,
+		})
+	}
 }
 
 func handleBackupParseRequest(c *gin.Context) {
@@ -45,14 +61,25 @@ func handleBackupParseRequest(c *gin.Context) {
 		return
 	}
 
-	fromYouGet := make(chan *CmdResponse)
-	go parseByYouGet(u, fromYouGet)
-	resultFromYouGet := <-fromYouGet
+	if nativeJSONRequest(c) {
+		fromYouGet := make(chan interface{})
+		go parseByYouGetJSON(u, fromYouGet)
+		resultFromYouGet := <-fromYouGet
 
-	c.JSON(http.StatusOK, gin.H{
-		"Result": "OK",
-		"Backup": resultFromYouGet,
-	})
+		c.JSON(http.StatusOK, gin.H{
+			"Result": "OK",
+			"Backup": resultFromYouGet,
+		})
+	} else {
+		fromYouGet := make(chan *CmdResponse)
+		go parseByYouGet(u, fromYouGet)
+		resultFromYouGet := <-fromYouGet
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result": "OK",
+			"Backup": resultFromYouGet,
+		})
+	}
 }
 
 func handleParseRequest(c *gin.Context) {
@@ -61,25 +88,47 @@ func handleParseRequest(c *gin.Context) {
 		return
 	}
 
-	var resultFromYKDL, resultFromYouGet *CmdResponse
-	fromYKDL := make(chan *CmdResponse)
-	go parseByYKDL(u, fromYKDL)
-	fromYouGet := make(chan *CmdResponse)
-	go parseByYouGet(u, fromYouGet)
-	for i := 0; i < 2; {
-		select {
-		case resultFromYKDL = <-fromYKDL:
-			i++
-		case resultFromYouGet = <-fromYouGet:
-			i++
+	if nativeJSONRequest(c) {
+		var resultFromYKDL, resultFromYouGet interface{}
+		fromYKDL := make(chan interface{})
+		go parseByYKDLJSON(u, fromYKDL)
+		fromYouGet := make(chan interface{})
+		go parseByYouGetJSON(u, fromYouGet)
+		for i := 0; i < 2; {
+			select {
+			case resultFromYKDL = <-fromYKDL:
+				i++
+			case resultFromYouGet = <-fromYouGet:
+				i++
+			}
 		}
-	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"Result":    "OK",
-		"Perferred": resultFromYKDL,
-		"Backup":    resultFromYouGet,
-	})
+		c.JSON(http.StatusOK, gin.H{
+			"Result":    "OK",
+			"Perferred": resultFromYKDL,
+			"Backup":    resultFromYouGet,
+		})
+	} else {
+		var resultFromYKDL, resultFromYouGet *CmdResponse
+		fromYKDL := make(chan *CmdResponse)
+		go parseByYKDL(u, fromYKDL)
+		fromYouGet := make(chan *CmdResponse)
+		go parseByYouGet(u, fromYouGet)
+		for i := 0; i < 2; {
+			select {
+			case resultFromYKDL = <-fromYKDL:
+				i++
+			case resultFromYouGet = <-fromYouGet:
+				i++
+			}
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result":    "OK",
+			"Perferred": resultFromYKDL,
+			"Backup":    resultFromYouGet,
+		})
+	}
 }
 
 func main() {
