@@ -44,7 +44,6 @@ private slots:
 
 private:
     QByteArray m_content;
-
     void parsePreferredNode(const QJsonObject& o, MediaInfoPtr mi);
     void parseBackupNode(const QJsonObject& o, MediaInfoPtr mi);
 

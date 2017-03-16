@@ -46,6 +46,7 @@
 
 QT_BEGIN_NAMESPACE
 class QProgressBar;
+class QNetworkAccessManager;
 QT_END_NAMESPACE
 
 class TabWidget;
@@ -81,6 +82,10 @@ private slots:
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
 
     void handleShortcutTriggered();
+#if defined(Q_OS_WIN)
+    void finished();
+    void ping();
+#endif
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);
@@ -101,6 +106,9 @@ private:
     QAction *m_playInBuiltinPlayerAction;
     QAction *m_playInExternalPlayerAction;
     UrlLineEdit *m_urlLineEdit;
+#if defined(Q_OS_WIN)
+    QNetworkAccessManager* m_nam;
+#endif
 };
 
 #endif // BROWSERWINDOW_H

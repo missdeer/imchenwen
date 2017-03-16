@@ -98,20 +98,21 @@ void WebView::resolveLink(const QUrl &u)
 {
     if (!m_waitingSpinner)
     {
-        m_waitingSpinner = new WaitingSpinnerWidget(this, Qt::ApplicationModal, true);
+        m_waitingSpinner = new WaitingSpinnerWidget(this);
 
         m_waitingSpinner->setRoundness(70.0);
         m_waitingSpinner->setMinimumTrailOpacity(15.0);
-        m_waitingSpinner->setTrailFadePercentage(70.0);
+        m_waitingSpinner->setTrailFadePercentage(30.0);
         m_waitingSpinner->setNumberOfLines(12);
-        m_waitingSpinner->setLineLength(10);
+        m_waitingSpinner->setLineLength(40);
         m_waitingSpinner->setLineWidth(5);
         m_waitingSpinner->setInnerRadius(10);
         m_waitingSpinner->setRevolutionsPerSecond(1);
-        m_waitingSpinner->setColor(QColor(81, 4, 71));
+//        m_waitingSpinner->setColor(QColor(81, 4, 71));
     }
     if (m_waitingSpinner->isSpinning())
         m_waitingSpinner->stop();
+
     m_waitingSpinner->start();
 
     if (!m_linkResolver)

@@ -20,7 +20,7 @@ void LinkResolver::resolve(const QUrl &url)
 
     QNetworkRequest req;
     if (Websites::instance().isInChina(url))
-        req.setUrl(QUrl("https://pcn.xyying.me/v1/parse"));
+        req.setUrl(QUrl("https://pcn.xyying.me/v1/parse/preferred"));
     else
         req.setUrl(QUrl("https://pjp.xyying.me/v1/parse/backup"));
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");

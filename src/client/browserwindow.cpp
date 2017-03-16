@@ -16,6 +16,10 @@
 #include <QStatusBar>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QTimer>
 
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -71,6 +75,13 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
 
     handleWebViewTitleChanged(tr("imchenwen"));
     m_tabWidget->createTab();
+
+#if defined(Q_OS_WIN)
+    m_nam = nullptr;
+    // preload libeay32.dll and ssleay32.dll on Windows,
+    // so it won't hang when try to resolve link at the first time
+    QTimer::singleShot(5000, this, SLOT(ping()));
+#endif
 }
 
 BrowserWindow::~BrowserWindow()
@@ -386,6 +397,24 @@ QString BrowserWindow::findURL(const QString &area, const QString &name)
     }
     return QString();
 }
+
+#if defined(Q_OS_WIN)
+void BrowserWindow::ping()
+{
+    m_nam = new QNetworkAccessManager;
+    QNetworkReply* reply = m_nam->get(QNetworkRequest(QUrl("https://if.yii.li")));
+    connect(reply, SIGNAL(finished()), this, SLOT(finished()));
+}
+
+void BrowserWindow::finished()
+{
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
+    m_nam->deleteLater();
+    m_nam = nullptr;
+}
+
+#endif
 
 void BrowserWindow::handleWebViewIconChanged(const QIcon &icon)
 {
