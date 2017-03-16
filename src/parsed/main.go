@@ -8,11 +8,13 @@ import (
 )
 
 type Stream struct {
-	Format       string
+	Format       string `json:",omitempty"`
+	ITag         string `json:",omitempty"`
 	Container    string
-	VideoProfile string
-	DownloadWith string
+	Quality      string `json:",omitempty"`
+	VideoProfile string `json:",omitempty"`
 	Size         string `json:",omitempty"`
+	DownloadWith string
 	RealURLs     []string
 }
 

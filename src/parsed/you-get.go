@@ -163,6 +163,19 @@ startProcess:
 				}
 				resp.Streams = append(resp.Streams, stream)
 				status = 4
+				break
+			}
+			if strings.Contains(line, "- itag:") {
+				pos := strings.IndexByte(line, byte(':')) + 1
+				for line[pos] == ' ' {
+					pos++
+				}
+				stream = &Stream{
+					ITag: line[pos:],
+				}
+				resp.Streams = append(resp.Streams, stream)
+				status = 4
+				break
 			}
 		case 4:
 			if strings.Contains(line, "container:") {
@@ -181,6 +194,16 @@ startProcess:
 				}
 				stream.VideoProfile = line[pos:]
 				status = 6
+				break
+			}
+			if strings.Contains(line, "quality:") {
+				pos := strings.IndexByte(line, byte(':')) + 1
+				for line[pos] == ' ' {
+					pos++
+				}
+				stream.Quality = line[pos:]
+				status = 6
+				break
 			}
 		case 6:
 			if strings.Contains(line, "size:") {
@@ -190,7 +213,9 @@ startProcess:
 				}
 				stream.Size = line[pos:]
 				status = 7
+				break
 			}
+			fallthrough
 		case 7:
 			if strings.Contains(line, "# download-with:") {
 				pos := strings.IndexByte(line, byte(':')) + 1
