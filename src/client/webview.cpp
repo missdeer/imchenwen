@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QWebEngineContextMenuData>
+#include <QDesktopServices>
 
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
@@ -117,6 +118,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     auto it = std::find(actions.cbegin(), actions.cend(), page()->action(QWebEnginePage::OpenLinkInThisWindow));
     if (it != actions.cend())
     {
+        m_rightClickedUrl = page()->contextMenuData().linkUrl();
         (*it)->setText(tr("Open Link in This Tab"));
         ++it;
         QAction *before(it == actions.cend() ? nullptr : *it);
@@ -124,7 +126,11 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         menu->addSeparator();
         menu->addAction(tr("Play Link by Built-in Player"), this, &WebView::handlePlayLinkByBuiltinPlayer);
         menu->addAction(tr("Play Link by External Player"), this, &WebView::handlePlayLinkByExternalPlayer);
-        m_rightClickedUrl = page()->contextMenuData().linkUrl();
+        menu->addSeparator();
+        QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
+        connect(openAction, &QAction::triggered, [this](){
+            QDesktopServices::openUrl(m_rightClickedUrl);
+        });
     }
     else
     {
