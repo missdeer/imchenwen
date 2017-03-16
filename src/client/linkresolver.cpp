@@ -47,7 +47,6 @@ void LinkResolver::resolve(const QUrl &url)
 void LinkResolver::error(QNetworkReply::NetworkError code)
 {
     qDebug() << "resolving error:" << code;
-    emit resolvingError();
 }
 
 void LinkResolver::finished()
@@ -102,7 +101,6 @@ void LinkResolver::sslErrors(const QList<QSslError> &errors)
 {
     for (auto e : errors)
         qDebug() << "resovling ssl errors:" << e.errorString();
-    emit resolvingError();
 }
 
 void LinkResolver::readyRead()
