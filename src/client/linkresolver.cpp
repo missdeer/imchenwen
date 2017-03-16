@@ -1,5 +1,6 @@
 #include "linkresolver.h"
 #include "websites.h"
+#include "config.h"
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
@@ -24,7 +25,12 @@ void LinkResolver::resolve(const QUrl &url)
         req.setUrl(QUrl("https://pjp.xyying.me/v1/parse/backup"));
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QByteArray data;
-    data.append("apikey=yb2Q1ozScRfJJ");
+    data.append("apikey=");
+    Config cfg;
+    QString apikey = cfg.read("apikey");
+    if (apikey.isEmpty())
+        apikey = "yb2Q1ozScRfJJ";
+    data.append(apikey);
     data.append("&url=");
     data.append(url.toString().toUtf8().toPercentEncoding());
     QNetworkReply *reply = nam.post(req, data);
