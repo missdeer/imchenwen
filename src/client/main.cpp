@@ -24,7 +24,11 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
+#if defined(Q_OS_MAC)
     app.setWindowIcon(QIcon(QLatin1String(":imchenwen.icns")));
+#else
+    app.setWindowIcon(QIcon(QLatin1String(":imchenwen.ico")));
+#endif
     QtWebEngine::initialize();
 
     QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
