@@ -5,6 +5,7 @@
 #include "webview.h"
 #include "optiondialog.h"
 #include "aboutdialog.h"
+#include "websites.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -15,9 +16,6 @@
 #include <QStatusBar>
 #include <QToolBar>
 #include <QVBoxLayout>
-#include <QDomDocument>
-#include <QDomElement>
-#include <QDomNode>
 
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -253,70 +251,27 @@ QMenu *BrowserWindow::createShortcutMenu()
     QMenu *shortcutMenu = new QMenu(tr("&Shortcut"));
 
     QMenu *chinaMenu = new QMenu(tr("In China"));
+
+    auto&& websitesInChina = Websites::instance().inChina();
+    for (auto w : websitesInChina)
+    {
+        QAction *action = chinaMenu->addAction(w->name);
+        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutTriggered);
+        if (w->favourite)
+            shortcutMenu->addAction(action);
+    }
+
     QMenu *abroadMenu = new QMenu(tr("Out of China"));
 
-    QDomDocument doc("websites");
-    QFile file(":websites.xml");
-    if (!file.open(QIODevice::ReadOnly))
+    auto&& websitesAbroad = Websites::instance().abroad();
+    for (auto w : websitesAbroad)
     {
-        qCritical() << "can't open websites configuration file";
-        return shortcutMenu;
-    }
-
-    if (!doc.setContent(&file))
-    {
-        qCritical() << "can't set websites configuration content to dom";
-        file.close();
-        return shortcutMenu;
-    }
-    file.close();
-
-    // print out the element names of all elements that are direct children
-    // of the outermost element.
-    QDomElement docElem = doc.documentElement();
-
-    QDomElement chinaNode = docElem.firstChildElement("china");
-    if (chinaNode.isNull())
-    {
-        qCritical() << "no china node";
-        return shortcutMenu;
-    }
-
-    QDomElement website = chinaNode.firstChildElement("website");
-    while(!website.isNull())
-    {
-        QDomElement nameElem = website.firstChildElement("name");
-        QString name = nameElem.text();
-        QAction *action = chinaMenu->addAction(name);
-        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutInChinaTriggered);
-        QDomElement favNode = website.firstChildElement("favourite");
-        if (!favNode.isNull())
-        {
+        QAction *action = abroadMenu->addAction(w->name);
+        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutTriggered);
+        if (w->favourite)
             shortcutMenu->addAction(action);
-        }
-        website = website.nextSiblingElement("website");
     }
 
-    QDomElement abroadNode = docElem.firstChildElement("abroad");
-    if (abroadNode.isNull())
-    {
-        return shortcutMenu;
-    }
-
-    website = abroadNode.firstChildElement("website");
-    while(!website.isNull())
-    {
-        QDomElement nameElem = website.firstChildElement("name");
-        QString name = nameElem.text();
-        QAction *action = abroadMenu->addAction(name);
-        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutAbroadTriggered);
-        QDomElement favNode = website.firstChildElement("favourite");
-        if (!favNode.isNull())
-        {
-            shortcutMenu->addAction(action);
-        }
-        website = website.nextSiblingElement("website");
-    }
     shortcutMenu->addSeparator();
     shortcutMenu->addMenu(chinaMenu);
     shortcutMenu->addMenu(abroadMenu);
@@ -376,12 +331,14 @@ QToolBar *BrowserWindow::createToolBar()
 
     m_playInBuiltinPlayerAction = new QAction(QIcon(QStringLiteral(":parseplaylist.png")), tr("Play in Built-in Player"), this);
     connect(m_playInBuiltinPlayerAction, &QAction::triggered, [this]() {
+        m_tabWidget->currentWebView()->playByBuiltinPlayer(QUrl(m_urlLineEdit->text()));
     });
     navigationBar->addAction(m_playInBuiltinPlayerAction);
 
 
     m_playInExternalPlayerAction = new QAction(QIcon(QStringLiteral(":parseurl.png")), tr("Play in External Player"), this);
     connect(m_playInExternalPlayerAction, &QAction::triggered, [this]() {
+        m_tabWidget->currentWebView()->playByExternalPlayer(QUrl(m_urlLineEdit->text()));
     });
     navigationBar->addAction(m_playInExternalPlayerAction);
     return navigationBar;
@@ -462,22 +419,11 @@ void BrowserWindow::handleWebActionEnabledChanged(QWebEnginePage::WebAction acti
     }
 }
 
-void BrowserWindow::handleShortcutInChinaTriggered()
+void BrowserWindow::handleShortcutTriggered()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
-    auto url = findURL("china", action->text());
-    if (!url.isEmpty())
-    {
-        m_tabWidget->navigateInNewTab(url);
-    }
-}
-
-void BrowserWindow::handleShortcutAbroadTriggered()
-{
-    QAction* action = qobject_cast<QAction*>(sender());
-    Q_ASSERT(action);
-    auto url = findURL("abroad", action->text());
+    auto url = Websites::instance().findURL(action->text());
     if (!url.isEmpty())
     {
         m_tabWidget->navigateInNewTab(url);

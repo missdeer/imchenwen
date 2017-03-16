@@ -80,8 +80,7 @@ private slots:
     void handleWebViewIconChanged(const QIcon &icon);
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
 
-    void handleShortcutInChinaTriggered();
-    void handleShortcutAbroadTriggered();
+    void handleShortcutTriggered();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);
