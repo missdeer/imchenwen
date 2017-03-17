@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ type Stream struct {
 	Quality      string `json:",omitempty"`
 	VideoProfile string `json:",omitempty"`
 	Size         string `json:",omitempty"`
-	DownloadWith string
+	DownloadWith string `json:",omitempty"`
 	RealURLs     []string
 }
 
@@ -30,105 +31,75 @@ func nativeJSONRequest(c *gin.Context) bool {
 	return nativeJSON == "true"
 }
 
-func handlePreferredParseRequest(c *gin.Context) {
-	u, err := checkInput(c)
-	if err != nil {
-		return
-	}
-
-	if nativeJSONRequest(c) {
-		fromYKDL := make(chan interface{})
-		go parseByYKDLJSON(u, fromYKDL)
-		resultFromYKDL := <-fromYKDL
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result":    "OK",
-			"Preferred": resultFromYKDL,
-		})
-	} else {
-		fromYKDL := make(chan *CmdResponse)
-		go parseByYKDL(u, fromYKDL)
-		resultFromYKDL := <-fromYKDL
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result":    "OK",
-			"Preferred": resultFromYKDL,
-		})
-	}
-}
-
-func handleBackupParseRequest(c *gin.Context) {
-	u, err := checkInput(c)
-	if err != nil {
-		return
-	}
-
-	if nativeJSONRequest(c) {
-		fromYouGet := make(chan interface{})
-		go parseByYouGetJSON(u, fromYouGet)
-		resultFromYouGet := <-fromYouGet
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result": "OK",
-			"Backup": resultFromYouGet,
-		})
-	} else {
-		fromYouGet := make(chan *CmdResponse)
-		go parseByYouGet(u, fromYouGet)
-		resultFromYouGet := <-fromYouGet
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result": "OK",
-			"Backup": resultFromYouGet,
-		})
-	}
-}
-
 func handleParseRequest(c *gin.Context) {
+	parser := c.DefaultPostForm("parser", "all")
+	switch strings.ToLower(parser) {
+	case "ykdl":
+		handleYKDLParseRequest(c)
+	case "you-get":
+		handleYouGetParseRequest(c)
+	case "youtube-dl":
+		handleYoutubeDLParseRequest(c)
+	case "all":
+		handleParseAllRequest(c)
+	}
+}
+
+func handleParseAllRequest(c *gin.Context) {
 	u, err := checkInput(c)
 	if err != nil {
 		return
 	}
 
 	if nativeJSONRequest(c) {
-		var resultFromYKDL, resultFromYouGet interface{}
+		var resultFromYKDL, resultFromYouGet, resultFromYoutubeDL interface{}
 		fromYKDL := make(chan interface{})
 		go parseByYKDLJSON(u, fromYKDL)
 		fromYouGet := make(chan interface{})
 		go parseByYouGetJSON(u, fromYouGet)
-		for i := 0; i < 2; {
+		fromYoutubeDL := make(chan interface{})
+		go parseByYoutubeDLJSON(u, fromYoutubeDL)
+		for i := 0; i < 3; {
 			select {
 			case resultFromYKDL = <-fromYKDL:
 				i++
 			case resultFromYouGet = <-fromYouGet:
+				i++
+			case resultFromYoutubeDL = <-fromYoutubeDL:
 				i++
 			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{
 			"Result":    "OK",
-			"Preferred": resultFromYKDL,
-			"Backup":    resultFromYouGet,
+			"YKDL":      resultFromYKDL,
+			"YouGet":    resultFromYouGet,
+			"YoutubeDL": resultFromYoutubeDL,
 		})
 	} else {
-		var resultFromYKDL, resultFromYouGet *CmdResponse
+		var resultFromYKDL, resultFromYouGet, resultFromYoutubeDL *CmdResponse
 		fromYKDL := make(chan *CmdResponse)
 		go parseByYKDL(u, fromYKDL)
 		fromYouGet := make(chan *CmdResponse)
 		go parseByYouGet(u, fromYouGet)
-		for i := 0; i < 2; {
+		fromYoutubeDL := make(chan *CmdResponse)
+		go parseByYoutubeDL(u, fromYoutubeDL)
+		for i := 0; i < 3; {
 			select {
 			case resultFromYKDL = <-fromYKDL:
 				i++
 			case resultFromYouGet = <-fromYouGet:
+				i++
+			case resultFromYoutubeDL = <-fromYoutubeDL:
 				i++
 			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{
 			"Result":    "OK",
-			"Preferred": resultFromYKDL,
-			"Backup":    resultFromYouGet,
+			"YKDL":      resultFromYKDL,
+			"YouGet":    resultFromYouGet,
+			"YoutubeDL": resultFromYoutubeDL,
 		})
 	}
 }
@@ -145,9 +116,10 @@ func main() {
 	v1 := r.Group("/v1")
 	{
 		v1.POST("/parse", handleParseRequest)
-		v1.POST("/parse/all", handleParseRequest)
-		v1.POST("/parse/preferred", handlePreferredParseRequest)
-		v1.POST("/parse/backup", handleBackupParseRequest)
+		v1.POST("/parse/all", handleParseAllRequest)
+		v1.POST("/parse/ykdl", handleYKDLParseRequest)
+		v1.POST("/parse/youget", handleYouGetParseRequest)
+		v1.POST("/parse/youtubedl", handleYoutubeDLParseRequest)
 	}
 
 	admin := r.Group("/admin")

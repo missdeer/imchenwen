@@ -5,9 +5,12 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os/exec"
 	"strings"
 	"sync"
+
+	"github.com/gin-gonic/gin"
 )
 
 func parseByYouGetJSON(u string, r chan interface{}) {
@@ -251,4 +254,31 @@ startProcess:
 		return
 	}
 	r <- resp
+}
+
+func handleYouGetParseRequest(c *gin.Context) {
+	u, err := checkInput(c)
+	if err != nil {
+		return
+	}
+
+	if nativeJSONRequest(c) {
+		fromYouGet := make(chan interface{})
+		go parseByYouGetJSON(u, fromYouGet)
+		resultFromYouGet := <-fromYouGet
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result": "OK",
+			"YouGet": resultFromYouGet,
+		})
+	} else {
+		fromYouGet := make(chan *CmdResponse)
+		go parseByYouGet(u, fromYouGet)
+		resultFromYouGet := <-fromYouGet
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result": "OK",
+			"YouGet": resultFromYouGet,
+		})
+	}
 }

@@ -5,8 +5,11 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os/exec"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func parseByYKDLJSON(u string, r chan interface{}) {
@@ -176,4 +179,31 @@ startProcess:
 	}
 
 	r <- resp
+}
+
+func handleYKDLParseRequest(c *gin.Context) {
+	u, err := checkInput(c)
+	if err != nil {
+		return
+	}
+
+	if nativeJSONRequest(c) {
+		fromYKDL := make(chan interface{})
+		go parseByYKDLJSON(u, fromYKDL)
+		resultFromYKDL := <-fromYKDL
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result": "OK",
+			"YKDL":   resultFromYKDL,
+		})
+	} else {
+		fromYKDL := make(chan *CmdResponse)
+		go parseByYKDL(u, fromYKDL)
+		resultFromYKDL := <-fromYKDL
+
+		c.JSON(http.StatusOK, gin.H{
+			"Result": "OK",
+			"YKDL":   resultFromYKDL,
+		})
+	}
 }
