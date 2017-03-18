@@ -18,7 +18,14 @@ bool Websites::isInChina(const QUrl &url)
     auto it = std::find_if(m_websites.begin(), m_websites.end(),
                            [this, &host](WebsitePtr w) { return w->url.contains(host); });
 
-    qDebug() << url << host << (*it)->inChina;
+    if (m_websites.end() != it)
+        return (*it)->inChina;
+
+    pos = host.lastIndexOf(QChar('.'));
+    host = host.left(pos);
+    it = std::find_if(m_websites.begin(), m_websites.end(),
+                           [this, &host](WebsitePtr w) { return w->url.contains(host); });
+
     if (m_websites.end() != it)
         return (*it)->inChina;
 
