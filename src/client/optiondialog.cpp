@@ -1,7 +1,7 @@
-#include <QFileDialog>
-#include "config.h"
 #include "optiondialog.h"
 #include "ui_optiondialog.h"
+#include <QFileDialog>
+#include <QMessageBox>
 
 OptionDialog::OptionDialog(QWidget *parent) :
     QDialog(parent),
@@ -11,20 +11,16 @@ OptionDialog::OptionDialog(QWidget *parent) :
     setFixedSize( width(), height());
 
     Config cfg;
-    ui->playerPathEdit->setText(cfg.read<QString>("playerPath"));
-    ui->playerArgumentsEdit->setText(cfg.read<QString>("playerArguments"));
+    cfg.read("externalPlayers", m_players);
+    for (auto p : m_players)
+    {
+        ui->playerList->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
+    }
 }
 
 OptionDialog::~OptionDialog()
 {
     delete ui;
-}
-
-void OptionDialog::on_buttonBox_accepted()
-{
-    Config cfg;
-    cfg.write("playerPath", ui->playerPathEdit->text());
-    cfg.write("playerArguments", ui->playerArgumentsEdit->text());
 }
 
 void OptionDialog::on_browseButton_clicked()
@@ -35,4 +31,47 @@ void OptionDialog::on_browseButton_clicked()
     {
         ui->playerPathEdit->setText(mediaPlayerPath);
     }
+}
+
+void OptionDialog::on_btnClose_clicked()
+{
+    close();
+}
+
+void OptionDialog::on_btnAddPlayer_clicked()
+{
+    if (ui->playerPathEdit->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please input player path."), QMessageBox::Ok);
+        return;
+    }
+    auto it = std::find_if(m_players.begin(), m_players.end(),
+                           [this](const Tuple2& t) { return std::get<0>(t) == ui->playerPathEdit->text() && std::get<1>(t) == ui->playerArgumentsEdit->text();});
+    if (m_players.end() != it)
+    {
+        QMessageBox::warning(this, tr("Duplicated"), tr("This configuration item exists already."), QMessageBox::Ok);
+        return;
+    }
+    m_players.push_back(std::make_tuple(ui->playerPathEdit->text(), ui->playerArgumentsEdit->text()));
+    Config cfg;
+    cfg.write("externalPlayers", m_players);
+    ui->playerList->addItem(ui->playerPathEdit->text() + "\n" + ui->playerArgumentsEdit->text());
+    ui->playerPathEdit->setText("");
+    ui->playerArgumentsEdit->setText("");
+}
+
+void OptionDialog::on_btnRemovePlayer_clicked()
+{
+    QListWidgetItem *currentItem = ui->playerList->currentItem();
+    if (!currentItem)
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please select an item in list to be removed."), QMessageBox::Ok);
+        return;
+    }
+    int currentRow = ui->playerList->currentRow();
+    m_players.removeAt(currentRow);
+    Config cfg;
+    cfg.write("externalPlayers", m_players);
+    currentItem = ui->playerList->takeItem(currentRow);
+    delete currentItem;
 }

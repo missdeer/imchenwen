@@ -2,6 +2,7 @@
 #define OPTIONDIALOG_H
 
 #include <QDialog>
+#include "config.h"
 
 namespace Ui {
 class OptionDialog;
@@ -16,12 +17,17 @@ public:
     ~OptionDialog();
     
 private slots:
-    void on_buttonBox_accepted();
-
     void on_browseButton_clicked();
+
+    void on_btnClose_clicked();
+
+    void on_btnAddPlayer_clicked();
+
+    void on_btnRemovePlayer_clicked();
 
 private:
     Ui::OptionDialog *ui;
+    Tuple2List m_players;
 };
 
 #endif // OPTIONDIALOG_H
