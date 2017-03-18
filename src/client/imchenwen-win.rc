@@ -17,7 +17,7 @@ BEGIN
             VALUE "FileDescription", "imchenwen - watch online video via your favourite player"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "imchenwen"
-            VALUE "LegalCopyright", "Copyright (C) 2013 DForD Software. All rights reserved."
+            VALUE "LegalCopyright", "Copyright (C) 2013 - 2017 DForD Software. All rights reserved."
             VALUE "OriginalFilename", "imchenwen.exe"
             VALUE "ProductName", "imchenwen"
             VALUE "ProductVersion", "1.0.0.1"
