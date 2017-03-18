@@ -40,18 +40,7 @@ void ExternalPlayDialog::on_btnExternalPlayerConfiguration_clicked()
 
 void ExternalPlayDialog::on_btnPlay_clicked()
 {
-    QListWidgetItem *currentItem = ui->listMedia->currentItem();
-    if (!currentItem)
-    {
-        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
-        return;
-    }
-    int currentRow = ui->listMedia->currentRow();
-    m_selectedMedia = m_streams[currentRow];
-
-    int currentIndex = ui->cbPlayers->currentIndex();
-    m_selectedPlayer = m_players.at(currentIndex);
-    accept();
+    doOk();
 }
 
 void ExternalPlayDialog::on_btnCancel_clicked()
@@ -72,4 +61,25 @@ void ExternalPlayDialog::createExternalPlayerList()
     {
         ui->cbPlayers->setCurrentIndex(0);
     }
+}
+
+void ExternalPlayDialog::doOk()
+{
+    QListWidgetItem *currentItem = ui->listMedia->currentItem();
+    if (!currentItem)
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
+        return;
+    }
+    int currentRow = ui->listMedia->currentRow();
+    m_selectedMedia = m_streams[currentRow];
+
+    int currentIndex = ui->cbPlayers->currentIndex();
+    m_selectedPlayer = m_players.at(currentIndex);
+    accept();
+}
+
+void ExternalPlayDialog::on_listMedia_itemActivated(QListWidgetItem *)
+{
+    doOk();
 }

@@ -5,6 +5,10 @@
 #include "config.h"
 #include "linkresolver.h"
 
+QT_BEGIN_NAMESPACE
+class QListWidgetItem;
+QT_END_NAMESPACE
+
 namespace Ui {
 class ExternalPlayDialog;
 }
@@ -26,6 +30,8 @@ private slots:
 
     void on_btnCancel_clicked();
 
+    void on_listMedia_itemActivated(QListWidgetItem *);
+
 private:
     Ui::ExternalPlayDialog *ui;
     Tuple2List m_players;
@@ -33,6 +39,7 @@ private:
     StreamInfoPtr m_selectedMedia;
     Streams m_streams;
     void createExternalPlayerList();
+    void doOk();
 };
 
 #endif // EXTERNALPLAYDIALOG_H
