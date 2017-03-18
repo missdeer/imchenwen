@@ -25,6 +25,10 @@ private slots:
 
     void on_btnRemovePlayer_clicked();
 
+    void on_btnModifyPlayer_clicked();
+
+    void on_playerList_currentRowChanged(int currentRow);
+
 private:
     Ui::OptionDialog *ui;
     Tuple2List m_players;

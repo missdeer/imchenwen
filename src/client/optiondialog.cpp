@@ -75,3 +75,27 @@ void OptionDialog::on_btnRemovePlayer_clicked()
     currentItem = ui->playerList->takeItem(currentRow);
     delete currentItem;
 }
+
+void OptionDialog::on_btnModifyPlayer_clicked()
+{
+    QListWidgetItem *currentItem = ui->playerList->currentItem();
+    if (!currentItem)
+    {
+        return;
+    }
+    int currentRow = ui->playerList->currentRow();
+    m_players[currentRow] = std::make_tuple(ui->playerPathEdit->text(), ui->playerArgumentsEdit->text());
+    currentItem->setText(ui->playerPathEdit->text() + "\n" + ui->playerArgumentsEdit->text());
+    Config cfg;
+    cfg.write("externalPlayers", m_players);
+}
+
+void OptionDialog::on_playerList_currentRowChanged(int currentRow)
+{
+    if (currentRow < 0 && currentRow >= m_players.size())
+        return;
+
+    const Tuple2& p = m_players.at(currentRow);
+    ui->playerPathEdit->setText(std::get<0>(p));
+    ui->playerArgumentsEdit->setText(std::get<1>(p));
+}
