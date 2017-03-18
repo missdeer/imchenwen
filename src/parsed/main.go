@@ -26,81 +26,76 @@ type CmdResponse struct {
 	Streams []*Stream
 }
 
+type NativeJSONResult struct {
+	Service string
+	Result  interface{}
+}
+
+type CmdResult struct {
+	Service string
+	Result  *CmdResponse
+}
+
 func nativeJSONRequest(c *gin.Context) bool {
 	nativeJSON := c.PostForm("nativejson")
 	return nativeJSON == "true"
 }
 
 func handleParseRequest(c *gin.Context) {
-	parser := c.DefaultPostForm("parser", "all")
-	switch strings.ToLower(parser) {
-	case "ykdl":
-		handleYKDLParseRequest(c)
-	case "you-get":
-		handleYouGetParseRequest(c)
-	case "youtube-dl":
-		handleYoutubeDLParseRequest(c)
-	case "all":
-		handleParseAllRequest(c)
-	}
-}
-
-func handleParseAllRequest(c *gin.Context) {
 	u, err := checkInput(c)
 	if err != nil {
 		return
 	}
 
+	parser := c.DefaultPostForm("parser", "all")
+	if strings.ToLower(parser) == "all" {
+		parser = "ykdl,you-get,youtube-dl"
+	}
+	parsers := strings.Split(parser, ",")
 	if nativeJSONRequest(c) {
-		var resultFromYKDL, resultFromYouGet, resultFromYoutubeDL interface{}
-		fromYKDL := make(chan interface{})
-		go parseByYKDLJSON(u, fromYKDL)
-		fromYouGet := make(chan interface{})
-		go parseByYouGetJSON(u, fromYouGet)
-		fromYoutubeDL := make(chan interface{})
-		go parseByYoutubeDLJSON(u, fromYoutubeDL)
-		for i := 0; i < 3; {
-			select {
-			case resultFromYKDL = <-fromYKDL:
-				i++
-			case resultFromYouGet = <-fromYouGet:
-				i++
-			case resultFromYoutubeDL = <-fromYoutubeDL:
-				i++
+		res := make(chan *NativeJSONResult, len(parsers))
+		count := 0
+		for _, p := range parsers {
+			switch strings.ToLower(p) {
+			case "ykdl":
+				go getYKDLParseNativeJSONResult(u, res)
+				count++
+			case "you-get":
+				go getYouGetParseNativeJSONResult(u, res)
+				count++
+			case "youtube-dl":
+				go getYoutubeDLParseNativeJSONResult(u, res)
+				count++
 			}
 		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result":    "OK",
-			"YKDL":      resultFromYKDL,
-			"YouGet":    resultFromYouGet,
-			"YoutubeDL": resultFromYoutubeDL,
-		})
+		h := gin.H{"Result": "OK"}
+		for i := 0; i < count; i++ {
+			r := <-res
+			h[r.Service] = r.Result
+		}
+		c.JSON(http.StatusOK, h)
 	} else {
-		var resultFromYKDL, resultFromYouGet, resultFromYoutubeDL *CmdResponse
-		fromYKDL := make(chan *CmdResponse)
-		go parseByYKDL(u, fromYKDL)
-		fromYouGet := make(chan *CmdResponse)
-		go parseByYouGet(u, fromYouGet)
-		fromYoutubeDL := make(chan *CmdResponse)
-		go parseByYoutubeDL(u, fromYoutubeDL)
-		for i := 0; i < 3; {
-			select {
-			case resultFromYKDL = <-fromYKDL:
-				i++
-			case resultFromYouGet = <-fromYouGet:
-				i++
-			case resultFromYoutubeDL = <-fromYoutubeDL:
-				i++
+		res := make(chan *CmdResult, len(parsers))
+		count := 0
+		for _, p := range parsers {
+			switch strings.ToLower(p) {
+			case "ykdl":
+				go getYKDLParseCmdResult(u, res)
+				count++
+			case "you-get":
+				go getYouGetParseCmdResult(u, res)
+				count++
+			case "youtube-dl":
+				go getYoutubeDLParseCmdResult(u, res)
+				count++
 			}
 		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result":    "OK",
-			"YKDL":      resultFromYKDL,
-			"YouGet":    resultFromYouGet,
-			"YoutubeDL": resultFromYoutubeDL,
-		})
+		h := gin.H{"Result": "OK"}
+		for i := 0; i < count; i++ {
+			r := <-res
+			h[r.Service] = r.Result
+		}
+		c.JSON(http.StatusOK, h)
 	}
 }
 
@@ -116,10 +111,6 @@ func main() {
 	v1 := r.Group("/v1")
 	{
 		v1.POST("/parse", handleParseRequest)
-		v1.POST("/parse/all", handleParseAllRequest)
-		v1.POST("/parse/ykdl", handleYKDLParseRequest)
-		v1.POST("/parse/youget", handleYouGetParseRequest)
-		v1.POST("/parse/youtubedl", handleYoutubeDLParseRequest)
 	}
 
 	admin := r.Group("/admin")

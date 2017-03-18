@@ -173,13 +173,17 @@ void WebView::resolvingFinished(MediaInfoPtr mi)
         m_waitingSpinner->stop();
 
     qDebug() << "play " << mi->title << (m_playByBuiltinPlayer ? " by builtin player" : " by external player");
-    for (auto p : mi->preferred)
+    for (auto p : mi->ykdl)
     {
-        qDebug() << "preferred: " << p->urls;
+        qDebug() << "YKDL: " << p->urls;
     }
-    for (auto p : mi->backup)
+    for (auto p : mi->youtube_dl)
     {
-        qDebug() << "backup: " << p->urls;
+        qDebug() << "Youtube DL: " << p->urls;
+    }
+    for (auto p : mi->you_get)
+    {
+        qDebug() << "YouGet: " << p->urls;
     }
 }
 

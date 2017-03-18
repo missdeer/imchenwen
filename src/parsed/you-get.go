@@ -5,12 +5,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os/exec"
 	"strings"
 	"sync"
-
-	"github.com/gin-gonic/gin"
 )
 
 func parseByYouGetJSON(u string, r chan interface{}) {
@@ -256,29 +253,18 @@ startProcess:
 	r <- resp
 }
 
-func handleYouGetParseRequest(c *gin.Context) {
-	u, err := checkInput(c)
-	if err != nil {
-		return
-	}
+func getYouGetParseNativeJSONResult(u string, res chan *NativeJSONResult) {
+	r := make(chan interface{})
+	go parseByYouGetJSON(u, r)
+	result := &NativeJSONResult{Service: "YouGet"}
+	result.Result = <-r
+	res <- result
+}
 
-	if nativeJSONRequest(c) {
-		fromYouGet := make(chan interface{})
-		go parseByYouGetJSON(u, fromYouGet)
-		resultFromYouGet := <-fromYouGet
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result": "OK",
-			"YouGet": resultFromYouGet,
-		})
-	} else {
-		fromYouGet := make(chan *CmdResponse)
-		go parseByYouGet(u, fromYouGet)
-		resultFromYouGet := <-fromYouGet
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result": "OK",
-			"YouGet": resultFromYouGet,
-		})
-	}
+func getYouGetParseCmdResult(u string, res chan *CmdResult) {
+	r := make(chan *CmdResponse)
+	go parseByYouGet(u, r)
+	result := &CmdResult{Service: "YouGet"}
+	result.Result = <-r
+	res <- result
 }

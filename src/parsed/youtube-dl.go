@@ -5,12 +5,25 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os/exec"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
+
+func getYoutubeDLParseNativeJSONResult(u string, res chan *NativeJSONResult) {
+	r := make(chan interface{})
+	go parseByYoutubeDLJSON(u, r)
+	result := &NativeJSONResult{Service: "YoutubeDL"}
+	result.Result = <-r
+	res <- result
+}
+
+func getYoutubeDLParseCmdResult(u string, res chan *CmdResult) {
+	r := make(chan *CmdResponse)
+	go parseByYoutubeDL(u, r)
+	result := &CmdResult{Service: "YoutubeDL"}
+	result.Result = <-r
+	res <- result
+}
 
 func parseByYoutubeDLJSON(u string, r chan interface{}) {
 	tryCount := 1
@@ -130,31 +143,4 @@ startProcess:
 		resp.Streams = append(resp.Streams, stream)
 	}
 	r <- resp
-}
-
-func handleYoutubeDLParseRequest(c *gin.Context) {
-	u, err := checkInput(c)
-	if err != nil {
-		return
-	}
-
-	if nativeJSONRequest(c) {
-		fromYoutubeDL := make(chan interface{})
-		go parseByYoutubeDLJSON(u, fromYoutubeDL)
-		resultFromYoutubeDL := <-fromYoutubeDL
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result":    "OK",
-			"YoutubeDL": resultFromYoutubeDL,
-		})
-	} else {
-		fromYoutubeDL := make(chan *CmdResponse)
-		go parseByYoutubeDL(u, fromYoutubeDL)
-		resultFromYoutubeDL := <-fromYoutubeDL
-
-		c.JSON(http.StatusOK, gin.H{
-			"Result":    "OK",
-			"YoutubeDL": resultFromYoutubeDL,
-		})
-	}
 }

@@ -19,8 +19,9 @@ struct MediaInfo
 {
     QString site;
     QString title;
-    Streams preferred;
-    Streams backup;
+    Streams ykdl;
+    Streams you_get;
+    Streams youtube_dl;
 };
 
 typedef QSharedPointer<MediaInfo> MediaInfoPtr;
@@ -44,8 +45,6 @@ private slots:
 
 private:
     QByteArray m_content;
-    void parsePreferredNode(const QJsonObject& o, MediaInfoPtr mi);
-    void parseBackupNode(const QJsonObject& o, MediaInfoPtr mi);
 
     void parseNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
 };

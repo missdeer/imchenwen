@@ -18,11 +18,12 @@ void LinkResolver::resolve(const QUrl &url)
 {
     m_content.clear();
 
+    bool inChina = Websites::instance().isInChina(url);
     QNetworkRequest req;
-    if (Websites::instance().isInChina(url))
-        req.setUrl(QUrl("https://pcn.xyying.me/v1/parse/preferred"));
+    if (inChina)
+        req.setUrl(QUrl("https://pcn.xyying.me/v1/parse"));
     else
-        req.setUrl(QUrl("https://pjp.xyying.me/v1/parse/backup"));
+        req.setUrl(QUrl("https://pjp.xyying.me/v1/parse"));
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QByteArray data;
     data.append("apikey=");
@@ -31,6 +32,7 @@ void LinkResolver::resolve(const QUrl &url)
     if (apikey.isEmpty())
         apikey = "yb2Q1ozScRfJJ";
     data.append(apikey);
+    data.append(inChina ? "&parser=ykdl" : "&parser=youtube-dl");
     data.append("&url=");
     data.append(url.toString().toUtf8().toPercentEncoding());
     QNetworkReply *reply = nam.post(req, data);
@@ -80,20 +82,20 @@ void LinkResolver::finished()
         return;
     }
 
-    QJsonValue backupVal = docObj["Backup"];
-    if (backupVal.isObject())
+    if (docObj["YouGet"].isObject())
     {
-        QJsonObject backup = backupVal.toObject();
-        parseBackupNode(backup, mi);
+        parseNode(docObj["YouGet"].toObject(), mi, mi->you_get);
     }
 
-    QJsonValue preferredVal = docObj["Preferred"];
-    if (preferredVal.isObject())
+    if (docObj["YKDL"].isObject())
     {
-        QJsonObject preferred = preferredVal.toObject();
-        parsePreferredNode(preferred, mi);
+        parseNode(docObj["YKDL"].toObject(), mi, mi->ykdl);
     }
 
+    if (docObj["YoutubeDL"].isObject())
+    {
+        parseNode(docObj["YoutubeDL"].toObject(), mi, mi->youtube_dl);
+    }
     emit resolvingFinished(mi);
 }
 
@@ -110,16 +112,6 @@ void LinkResolver::readyRead()
     if (statusCode >= 200 && statusCode < 300) {
         m_content.append( reply->readAll());
     }
-}
-
-void LinkResolver::parsePreferredNode(const QJsonObject &o, MediaInfoPtr mi)
-{
-    parseNode(o, mi, mi->preferred);
-}
-
-void LinkResolver::parseBackupNode(const QJsonObject &o, MediaInfoPtr mi)
-{
-    parseNode(o, mi, mi->backup);
 }
 
 void LinkResolver::parseNode(const QJsonObject &o, MediaInfoPtr mi, Streams &streams)
