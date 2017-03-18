@@ -6,6 +6,7 @@
 #include "webview.h"
 #include "waitingspinnerwidget.h"
 #include "linkresolver.h"
+#include "externalplay.h"
 #include <QContextMenuEvent>
 #include <QDebug>
 #include <QMenu>
@@ -172,18 +173,34 @@ void WebView::resolvingFinished(MediaInfoPtr mi)
     if (m_waitingSpinner->isSpinning())
         m_waitingSpinner->stop();
 
-    qDebug() << "play " << mi->title << (m_playByBuiltinPlayer ? " by builtin player" : " by external player");
-    for (auto p : mi->ykdl)
+    if (mi->title.isEmpty() && mi->site.isEmpty())
     {
-        qDebug() << "YKDL: " << p->urls;
+        QMessageBox::warning(this, tr("Error"), tr("Resolving link address failed! Please try again."), QMessageBox::Ok);
+        return;
     }
-    for (auto p : mi->youtube_dl)
+
+    if (m_playByBuiltinPlayer)
     {
-        qDebug() << "Youtube DL: " << p->urls;
+
     }
-    for (auto p : mi->you_get)
+    else
     {
-        qDebug() << "YouGet: " << p->urls;
+        ExternalPlay player;
+        if (!mi->ykdl.isEmpty())
+        {
+            player.Play(mi->ykdl);
+            return;
+        }
+        if (!mi->youtube_dl.isEmpty())
+        {
+            player.Play(mi->youtube_dl);
+            return;
+        }
+        if (!mi->you_get.isEmpty())
+        {
+            player.Play(mi->you_get);
+            return;
+        }
     }
 }
 

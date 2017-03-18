@@ -35,7 +35,7 @@ void OptionDialog::on_browseButton_clicked()
 
 void OptionDialog::on_btnClose_clicked()
 {
-    close();
+    accept();
 }
 
 void OptionDialog::on_btnAddPlayer_clicked()

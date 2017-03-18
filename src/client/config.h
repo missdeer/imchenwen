@@ -30,12 +30,6 @@ public:
     template<typename T>
     T read(const QString& key);
 
-    template<>
-    QString read(const QString& key)
-    {
-        return settings().value(key).toString();
-    }
-
     template<typename T>
     void write(const QString& key, const T& value)
     {
@@ -54,5 +48,7 @@ public:
 private:
     QSettings& settings();
 };
+
+template<> QString Config::read<QString>(const QString& key);
 
 #endif // CONFIG_H
