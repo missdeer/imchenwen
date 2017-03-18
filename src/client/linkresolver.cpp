@@ -28,7 +28,7 @@ void LinkResolver::resolve(const QUrl &url)
     QByteArray data;
     data.append("apikey=");
     Config cfg;
-    QString apikey = cfg.readItem("apikey");
+    QString apikey = cfg.read<QString>("apikey");
     if (apikey.isEmpty())
         apikey = "yb2Q1ozScRfJJ";
     data.append(apikey);

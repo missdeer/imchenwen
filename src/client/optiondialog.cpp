@@ -11,8 +11,8 @@ OptionDialog::OptionDialog(QWidget *parent) :
     setFixedSize( width(), height());
 
     Config cfg;
-    ui->playerPathEdit->setText(cfg.readItem("playerPath"));
-    ui->playerArgumentsEdit->setText(cfg.readItem("playerArguments"));
+    ui->playerPathEdit->setText(cfg.read<QString>("playerPath"));
+    ui->playerArgumentsEdit->setText(cfg.read<QString>("playerArguments"));
 }
 
 OptionDialog::~OptionDialog()
@@ -23,8 +23,8 @@ OptionDialog::~OptionDialog()
 void OptionDialog::on_buttonBox_accepted()
 {
     Config cfg;
-    cfg.writeItem("playerPath", ui->playerPathEdit->text());
-    cfg.writeItem("playerArguments", ui->playerArgumentsEdit->text());
+    cfg.write("playerPath", ui->playerPathEdit->text());
+    cfg.write("playerArguments", ui->playerArgumentsEdit->text());
 }
 
 void OptionDialog::on_browseButton_clicked()

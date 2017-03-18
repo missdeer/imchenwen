@@ -1,5 +1,3 @@
-#include <QSettings>
-#include <QStandardPaths>
 #include "config.h"
 
 Config::Config()
@@ -11,46 +9,37 @@ Config::~Config()
 {
 }
 
-QString Config::readItem(const QString &key)
+void Config::read(const QString& key, QString& value)
 {
-    QString configPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QSettings settings(configPath + "/.imchenwenrc", QSettings::IniFormat);
-    return settings.value(key).toString();
+    value = settings().value(key).toString();
 }
 
-void Config::writeItem(const QString &key, const QString &value)
+void Config::read(const QString& key, QStringList& res)
 {
-    QString configPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QSettings settings(configPath + "/.imchenwenrc", QSettings::IniFormat);
-    settings.setValue(key, value);
-    settings.sync();
-}
-
-QStringList Config::readArray(const QString& key)
-{
-    QStringList res;
-    QString configPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QSettings settings(configPath + "/.imchenwenrc", QSettings::IniFormat);
-    int size = settings.beginReadArray(key);
+    int size = settings().beginReadArray(key);
     for (int i = 0; i < size; ++i)
     {
-        settings.setArrayIndex(i);
-        res.push_back(settings.value("value").toString());;
+        settings().setArrayIndex(i);
+        res.push_back(settings().value("value").toString());;
     }
-    settings.endArray();
-    return res;
+    settings().endArray();
 }
 
-void Config::writeArray(const QString& key, const QStringList& array)
+void Config::write(const QString& key, const QStringList& array)
 {
-    QString configPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QSettings settings(configPath + "/.imchenwenrc", QSettings::IniFormat);
-    settings.beginWriteArray(key);
+    settings().beginWriteArray(key);
     for (int i = 0; i < array.size(); ++i)
     {
-        settings.setArrayIndex(i);
-        settings.setValue("value", array.at(i));
+        settings().setArrayIndex(i);
+        settings().setValue("value", array.at(i));
     }
-    settings.endArray();
-    settings.sync();
+    settings().endArray();
+    settings().sync();
+}
+
+QSettings&Config::settings()
+{
+    static QSettings s(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/.imchenwenrc",
+                              QSettings::IniFormat);
+    return s;
 }
