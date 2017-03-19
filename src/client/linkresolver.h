@@ -26,6 +26,15 @@ struct MediaInfo
 
 typedef QSharedPointer<MediaInfo> MediaInfoPtr;
 
+struct HistoryItem
+{
+    QString url;
+    QTime time;
+    MediaInfoPtr mi;
+};
+
+typedef QSharedPointer<HistoryItem> HistoryItemPtr;
+
 class LinkResolver : public QObject
 {
     Q_OBJECT
@@ -45,7 +54,7 @@ private slots:
 
 private:
     QByteArray m_content;
-
+    QList<HistoryItemPtr> m_history;
     void parseNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
 };
 

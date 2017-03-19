@@ -16,8 +16,21 @@ LinkResolver::LinkResolver(QObject *parent)
 
 void LinkResolver::resolve(const QUrl &url)
 {
+    auto it = std::find_if(m_history.begin(), m_history.end(),
+                           [this, url](HistoryItemPtr h) {return h->url.startsWith(url.toString());});
+    if (m_history.end() != it)
+    {
+        if ((*it)->time.secsTo(QTime::currentTime()) > 60 * 60)
+        {
+            m_history.erase(it);
+        }
+        else
+        {
+            emit resolvingFinished((*it)->mi);
+            return;
+        }
+    }
     m_content.clear();
-
     bool inChina = Websites::instance().isInChina(url);
     QNetworkRequest req;
     if (inChina)
@@ -25,6 +38,7 @@ void LinkResolver::resolve(const QUrl &url)
     else
         req.setUrl(QUrl("https://pjp.xyying.me/v1/parse"));
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    req.setRawHeader("RequestUrl", url.toString().toUtf8());
     QByteArray data;
     data.append("apikey=");
     Config cfg;
@@ -96,6 +110,17 @@ void LinkResolver::finished()
     {
         parseNode(docObj["YoutubeDL"].toObject(), mi, mi->youtube_dl);
     }
+
+    QNetworkRequest req = reply->request();
+    QByteArray requestUrl = req.rawHeader("RequestUrl");
+    m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), mi }));
+    // don't keep too many elements in list, remove some one
+    if (m_history.length() > 100)
+        m_history.erase(m_history.begin(), m_history.begin() + (100 - m_history.length()));
+    // already ordered by time
+    // remove the old elements > 1 hour
+    while (m_history[0]->time.secsTo(QTime::currentTime()) > 60 * 60)
+        m_history.erase(m_history.begin());
     emit resolvingFinished(mi);
 }
 
