@@ -3,8 +3,10 @@
 #include "webview.h"
 #include "linkresolver.h"
 #include "waitingspinnerwidget.h"
+#include "externalplaydialog.h"
 #include <QAuthenticator>
 #include <QMessageBox>
+#include <QFileInfo>
 
 Browser::Browser(QObject* parent)
     : QObject(parent)
@@ -13,6 +15,7 @@ Browser::Browser(QObject* parent)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
+    connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
 }
 
 Browser::~Browser()
@@ -102,7 +105,42 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
 
     if (!m_playByBuiltinPlayer)
     {
-        m_externalPlay.Play(mi);
+        ExternalPlayDialog dlg(m_windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(m_windows.at(0))) );
+        dlg.setMediaInfo(mi);
+        if (dlg.exec())
+        {
+            Tuple2 player = dlg.player();
+            StreamInfoPtr stream = dlg.media();
+
+            if (m_process.state() != QProcess::NotRunning)
+            {
+                m_process.terminate();
+            }
+
+            QStringList args;
+            m_process.setProgram(std::get<0>(player));
+    #if defined(Q_OS_MAC)
+            QFileInfo fi(std::get<0>(player));
+            if (fi.suffix() == "app")
+            {
+                p.setProgram("/usr/bin/open");
+                args << std::get<0>(player) << "--args";
+            }
+    #endif
+            QString arg = std::get<1>(player);
+            if (!arg.isEmpty())
+                args << arg.split(" ");
+            args << stream->urls;
+
+    #if defined(Q_OS_MAC)
+            if (fi.suffix() == "app")
+            {
+                m_process.start("/usr/bin/open", args);
+                return;
+            }
+    #endif
+            m_process.start(std::get<0>(player), args);
+        }
     }
 }
 
@@ -115,4 +153,23 @@ void Browser::resolvingError()
 
     QMessageBox::warning((m_windows.isEmpty() ? nullptr : m_windows.at(0)),
                          tr("Error"), tr("Resolving link address failed!"), QMessageBox::Ok);
+}
+
+void Browser::errorOccurred(QProcess::ProcessError error)
+{
+    QString msg;
+    switch(error)
+    {
+    case QProcess::FailedToStart:
+        msg = tr("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
+        break;
+    case QProcess::Crashed:
+        msg = tr("The process crashed some time after starting successfully.");
+        break;
+    default:
+        msg = tr("An unknown error occurred.");
+        break;
+    }
+    QMessageBox::warning((m_windows.isEmpty() ? nullptr : m_windows.at(0)),
+                         tr("Error on launching external player"), msg, QMessageBox::Ok);
 }

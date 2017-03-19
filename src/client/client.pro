@@ -17,7 +17,6 @@ HEADERS += \
     waitingspinnerwidget.h \
     linkresolver.h \
     websites.h \
-    externalplay.h \
     externalplaydialog.h
 
 SOURCES += \
@@ -35,7 +34,6 @@ SOURCES += \
     waitingspinnerwidget.cpp \
     linkresolver.cpp \
     websites.cpp \
-    externalplay.cpp \
     externalplaydialog.cpp
 
 FORMS += \
