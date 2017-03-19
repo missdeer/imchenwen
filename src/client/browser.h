@@ -41,12 +41,18 @@
 #ifndef BROWSER_H
 #define BROWSER_H
 
+#include <QObject>
 #include <QVector>
+#include <QProcess>
+#include "externalplay.h"
 
 class BrowserWindow;
+class WaitingSpinnerWidget;
+class LinkResolver;
 
-class Browser
+class Browser : public QObject
 {
+    Q_OBJECT
 public:
     ~Browser();
 
@@ -54,8 +60,27 @@ public:
     void addWindow(BrowserWindow* window);
     static Browser &instance();
 
+    ExternalPlay& externalPlay() { return m_externalPlay; }
+    QProcess& process() { return m_process; }
+
+    void playByExternalPlayer(const QUrl& u);
+    void playByBuiltinPlayer(const QUrl& u);
+signals:
+
+private slots:
+
+    void resolvingFinished(MediaInfoPtr mi);
+    void resolvingError();
 private:
-    Browser();
+    explicit Browser(QObject *parent = 0);
+    void resolveLink(const QUrl& u);
+
+private:
     QVector<BrowserWindow*> m_windows;
+    WaitingSpinnerWidget* m_waitingSpinner;
+    LinkResolver* m_linkResolver;
+    bool m_playByBuiltinPlayer;
+    ExternalPlay m_externalPlay;
+    QProcess m_process;
 };
 #endif // BROWSER_H

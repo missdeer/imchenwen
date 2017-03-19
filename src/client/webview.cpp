@@ -6,7 +6,6 @@
 #include "webview.h"
 #include "waitingspinnerwidget.h"
 #include "linkresolver.h"
-#include "externalplay.h"
 #include <QContextMenuEvent>
 #include <QDebug>
 #include <QMenu>
@@ -19,8 +18,6 @@
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
     , m_loadProgress(0)
-    , m_waitingSpinner(nullptr)
-    , m_linkResolver(nullptr)
 {
     connect(this, &QWebEngineView::loadProgress, [this](int progress) {
         m_loadProgress = progress;
@@ -58,19 +55,7 @@ WebView::WebView(QWidget *parent)
 
 WebView::~WebView()
 {
-    if (m_waitingSpinner)
-    {
-        if (m_waitingSpinner->isSpinning())
-            m_waitingSpinner->stop();
-        delete m_waitingSpinner;
-    }
 
-    if (m_linkResolver)
-    {
-        disconnect(m_linkResolver, &LinkResolver::resolvingFinished, this, &WebView::resolvingFinished);
-        disconnect(m_linkResolver, &LinkResolver::resolvingError, this, &WebView::resolvingError);
-        delete m_linkResolver;
-    }
 }
 
 void WebView::setPage(WebPage *page)
@@ -95,53 +80,9 @@ void WebView::createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAc
     });
 }
 
-void WebView::resolveLink(const QUrl &u)
-{
-    if (!m_waitingSpinner)
-    {
-        m_waitingSpinner = new WaitingSpinnerWidget(this);
-
-        m_waitingSpinner->setRoundness(70.0);
-        m_waitingSpinner->setMinimumTrailOpacity(15.0);
-        m_waitingSpinner->setTrailFadePercentage(30.0);
-        m_waitingSpinner->setNumberOfLines(12);
-        m_waitingSpinner->setLineLength(40);
-        m_waitingSpinner->setLineWidth(5);
-        m_waitingSpinner->setInnerRadius(10);
-        m_waitingSpinner->setRevolutionsPerSecond(1);
-//        m_waitingSpinner->setColor(QColor(81, 4, 71));
-    }
-    if (m_waitingSpinner->isSpinning())
-        m_waitingSpinner->stop();
-
-    m_waitingSpinner->start();
-
-    if (!m_linkResolver)
-    {
-        m_linkResolver = new LinkResolver(this);
-        connect(m_linkResolver, &LinkResolver::resolvingFinished, this, &WebView::resolvingFinished);
-        connect(m_linkResolver, &LinkResolver::resolvingError, this, &WebView::resolvingError);
-    }
-    m_linkResolver->resolve(u);
-}
-
 bool WebView::isWebActionEnabled(QWebEnginePage::WebAction webAction) const
 {
     return page()->action(webAction)->isEnabled();
-}
-
-void WebView::playByBuiltinPlayer(const QUrl &u)
-{
-    qDebug() << "play " << u << " by built-in player";
-    m_playByBuiltinPlayer = true;
-    resolveLink(u);
-}
-
-void WebView::playByExternalPlayer(const QUrl &u)
-{
-    qDebug() << "play " << u << " by external player";
-    m_playByBuiltinPlayer = false;
-    resolveLink(u);
 }
 
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
@@ -168,50 +109,6 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
     return nullptr;
 }
 
-void WebView::resolvingFinished(MediaInfoPtr mi)
-{
-    if (m_waitingSpinner->isSpinning())
-        m_waitingSpinner->stop();
-
-    if (mi->title.isEmpty() && mi->site.isEmpty())
-    {
-        QMessageBox::warning(this, tr("Error"), tr("Resolving link address failed! Please try again."), QMessageBox::Ok);
-        return;
-    }
-
-    if (m_playByBuiltinPlayer)
-    {
-
-    }
-    else
-    {
-        ExternalPlay player;
-        if (!mi->ykdl.isEmpty())
-        {
-            player.Play(mi->ykdl);
-            return;
-        }
-        if (!mi->youtube_dl.isEmpty())
-        {
-            player.Play(mi->youtube_dl);
-            return;
-        }
-        if (!mi->you_get.isEmpty())
-        {
-            player.Play(mi->you_get);
-            return;
-        }
-    }
-}
-
-void WebView::resolvingError()
-{
-    if (m_waitingSpinner->isSpinning())
-        m_waitingSpinner->stop();
-
-    QMessageBox::warning(this, tr("Error"), tr("Resolving link address failed!"), QMessageBox::Ok);
-}
-
 void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menu = page()->createStandardContextMenu();
@@ -227,11 +124,11 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         menu->addSeparator();
         QAction* playAction = menu->addAction(tr("Play Link by Built-in Player"));
         connect(playAction, &QAction::triggered, [this]() {
-            playByBuiltinPlayer(m_rightClickedUrl);
+            Browser::instance().playByBuiltinPlayer(m_rightClickedUrl);
         });
         playAction = menu->addAction(tr("Play Link by External Player"));
         connect(playAction, &QAction::triggered, [this]() {
-            playByExternalPlayer(m_rightClickedUrl);
+            Browser::instance().playByExternalPlayer(m_rightClickedUrl);
         });
         menu->addSeparator();
         QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));

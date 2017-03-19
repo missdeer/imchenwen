@@ -41,7 +41,6 @@
 #ifndef WEBVIEW_H
 #define WEBVIEW_H
 
-#include "linkresolver.h"
 #include <QIcon>
 #include <QWebEngineView>
 
@@ -63,9 +62,6 @@ public:
 
     int loadProgress() const;
     bool isWebActionEnabled(QWebEnginePage::WebAction webAction) const;
-
-    void playByBuiltinPlayer(const QUrl& u);
-    void playByExternalPlayer(const QUrl& u);
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
     QWebEngineView *createWindow(QWebEnginePage::WebWindowType type) override;
@@ -74,16 +70,10 @@ signals:
     void webActionEnabledChanged(QWebEnginePage::WebAction webAction, bool enabled);
 
 private slots:
-    void resolvingFinished(MediaInfoPtr mi);
-    void resolvingError();
 private:
     void createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction);
-    void resolveLink(const QUrl& u);
 private:
-    bool m_playByBuiltinPlayer;
     int m_loadProgress;
-    WaitingSpinnerWidget* m_waitingSpinner;
-    LinkResolver* m_linkResolver;
     QUrl m_rightClickedUrl;
 };
 

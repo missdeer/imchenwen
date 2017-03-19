@@ -18,7 +18,7 @@ void ExternalPlay::Play(const Streams& streams)
         Tuple2 player = dlg.player();
         StreamInfoPtr stream = dlg.media();
 
-        QProcess& p = process();
+        QProcess& p = Browser::instance().process();
         if (p.state() != QProcess::NotRunning)
         {
             p.terminate();
@@ -48,10 +48,4 @@ void ExternalPlay::Play(const Streams& streams)
 #endif
         p.start(std::get<0>(player), args);
     }
-}
-
-QProcess& ExternalPlay::process()
-{
-    static QProcess p;
-    return p;
 }

@@ -342,14 +342,14 @@ QToolBar *BrowserWindow::createToolBar()
 
     m_playInBuiltinPlayerAction = new QAction(QIcon(QStringLiteral(":parseplaylist.png")), tr("Play in Built-in Player"), this);
     connect(m_playInBuiltinPlayerAction, &QAction::triggered, [this]() {
-        m_tabWidget->currentWebView()->playByBuiltinPlayer(QUrl(m_urlLineEdit->text()));
+        Browser::instance().playByBuiltinPlayer(QUrl(m_urlLineEdit->text()));
     });
     navigationBar->addAction(m_playInBuiltinPlayerAction);
 
 
     m_playInExternalPlayerAction = new QAction(QIcon(QStringLiteral(":parseurl.png")), tr("Play in External Player"), this);
     connect(m_playInExternalPlayerAction, &QAction::triggered, [this]() {
-        m_tabWidget->currentWebView()->playByExternalPlayer(QUrl(m_urlLineEdit->text()));
+        Browser::instance().playByExternalPlayer(QUrl(m_urlLineEdit->text()));
     });
     navigationBar->addAction(m_playInExternalPlayerAction);
     return navigationBar;

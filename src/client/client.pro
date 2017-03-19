@@ -53,5 +53,25 @@ RC_FILE = imchenwen-win.rc
 macx: {
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
+
+    CONFIG(release, debug|release) : {
+        QMAKE_INFO_PLIST = osxInfo.plist
+        MACDEPLOYQT = $$[QT_INSTALL_BINS]/macdeployqt
+
+        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\" -appstore-compliant
+
+        deploywebengine.depends += deploy
+        deploywebengine.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
+
+        APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
+        INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
+        BUNDLEID = com.dfordsoft.imchenwen
+
+        codesign_bundle.depends += deploywebengine
+        codesign_bundle.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
+        makedmg.depends += codesign_bundle
+        makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
+        QMAKE_EXTRA_TARGETS += deploy codesign_bundle makedmg
+    }
 }
 
