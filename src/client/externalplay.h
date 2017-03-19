@@ -7,7 +7,7 @@ class ExternalPlay
 {
 public:
     ExternalPlay();
-    void Play(const Streams& streams);
+    void Play(MediaInfoPtr mi);
 };
 
 #endif // EXTERNALPLAY_H

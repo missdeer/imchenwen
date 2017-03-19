@@ -8,11 +8,11 @@ ExternalPlay::ExternalPlay()
 
 }
 
-void ExternalPlay::Play(const Streams& streams)
+void ExternalPlay::Play(MediaInfoPtr mi)
 {
     auto windows = Browser::instance().windows();
     ExternalPlayDialog dlg(windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(windows.at(0))) );
-    dlg.setStreams(streams);
+    dlg.setMediaInfo(mi);
     if (dlg.exec())
     {
         Tuple2 player = dlg.player();

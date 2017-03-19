@@ -74,7 +74,6 @@ private slots:
 private:
     explicit Browser(QObject *parent = 0);
     void resolveLink(const QUrl& u);
-
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;

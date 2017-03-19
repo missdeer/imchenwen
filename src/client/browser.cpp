@@ -102,21 +102,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
 
     if (!m_playByBuiltinPlayer)
     {
-        if (!mi->ykdl.isEmpty())
-        {
-            m_externalPlay.Play(mi->ykdl);
-            return;
-        }
-        if (!mi->youtube_dl.isEmpty())
-        {
-            m_externalPlay.Play(mi->youtube_dl);
-            return;
-        }
-        if (!mi->you_get.isEmpty())
-        {
-            m_externalPlay.Play(mi->you_get);
-            return;
-        }
+        m_externalPlay.Play(mi);
     }
 }
 

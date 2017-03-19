@@ -20,7 +20,7 @@ class ExternalPlayDialog : public QDialog
 public:
     explicit ExternalPlayDialog(QWidget *parent = 0);
     ~ExternalPlayDialog();
-    void setStreams(const Streams& streams);
+    void setMediaInfo(MediaInfoPtr mi);
     Tuple2 player() { return m_selectedPlayer; }
     StreamInfoPtr media() { return m_selectedMedia; }
 private slots:
@@ -37,9 +37,10 @@ private:
     Tuple2List m_players;
     Tuple2 m_selectedPlayer;
     StreamInfoPtr m_selectedMedia;
-    Streams m_streams;
+    MediaInfoPtr m_mediaInfo;
     void createExternalPlayerList();
     void doOk();
+    void addItem(const QString& text);
 };
 
 #endif // EXTERNALPLAYDIALOG_H

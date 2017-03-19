@@ -18,14 +18,22 @@ ExternalPlayDialog::~ExternalPlayDialog()
     delete ui;
 }
 
-void ExternalPlayDialog::setStreams(const Streams& streams)
+void ExternalPlayDialog::setMediaInfo(MediaInfoPtr mi)
 {
-    for (auto stream : streams)
+    for (auto stream : mi->ykdl)
     {
-        ui->listMedia->addItem(stream->container + "\n" + stream->quality /*+ "\n" + stream->urls.join("\n")*/);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/);
+    }
+    for (auto stream : mi->you_get)
+    {
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/);
+    }
+    for (auto stream : mi->youtube_dl)
+    {
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/);
     }
     ui->listMedia->setCurrentRow(0);
-    m_streams = streams;
+    m_mediaInfo = mi;
 }
 
 void ExternalPlayDialog::on_btnExternalPlayerConfiguration_clicked()
@@ -72,11 +80,30 @@ void ExternalPlayDialog::doOk()
         return;
     }
     int currentRow = ui->listMedia->currentRow();
-    m_selectedMedia = m_streams[currentRow];
+    if (currentRow < m_mediaInfo->ykdl.length())
+        m_selectedMedia = m_mediaInfo->ykdl[currentRow];
+    else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())
+        m_selectedMedia = m_mediaInfo->you_get[currentRow - m_mediaInfo->ykdl.length()];
+    else
+        m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - m_mediaInfo->ykdl.length() - m_mediaInfo->you_get.length()];
 
     int currentIndex = ui->cbPlayers->currentIndex();
     m_selectedPlayer = m_players.at(currentIndex);
     accept();
+}
+
+void ExternalPlayDialog::addItem(const QString& text)
+{
+    QListWidgetItem* item = new QListWidgetItem(text, ui->listMedia);
+    QFont font(item->font());
+#if defined(Q_OS_WIN)
+    font.setFamily("Microsoft YaHei");
+#elif defined(Q_OS_MAC)
+    font.setFamily("Pingfang CS");
+#endif
+    font.setPixelSize(14);
+    item->setFont(font);
+    ui->listMedia->addItem(item);
 }
 
 void ExternalPlayDialog::on_listMedia_itemActivated(QListWidgetItem *)
