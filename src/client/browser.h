@@ -78,9 +78,9 @@ private:
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;
-    LinkResolver* m_linkResolver;
     bool m_playByBuiltinPlayer;
     ExternalPlay m_externalPlay;
     QProcess m_process;
+    LinkResolver m_linkResolver;
 };
 #endif // BROWSER_H

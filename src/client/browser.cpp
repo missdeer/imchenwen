@@ -9,8 +9,10 @@
 Browser::Browser(QObject* parent)
     : QObject(parent)
     , m_waitingSpinner(nullptr)
-    , m_linkResolver(nullptr)
+    , m_linkResolver(this)
 {
+    connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
+    connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
 }
 
 Browser::~Browser()
@@ -23,13 +25,6 @@ Browser::~Browser()
         if (m_waitingSpinner->isSpinning())
             m_waitingSpinner->stop();
         delete m_waitingSpinner;
-    }
-
-    if (m_linkResolver)
-    {
-        disconnect(m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
-        disconnect(m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
-        delete m_linkResolver;
     }
 }
 
@@ -71,7 +66,7 @@ void Browser::resolveLink(const QUrl &u)
 {
     if (!m_waitingSpinner)
     {
-        m_waitingSpinner = new WaitingSpinnerWidget((m_windows.isEmpty() ? nullptr : m_windows.at(0)), true, false);
+        m_waitingSpinner = new WaitingSpinnerWidget((m_windows.isEmpty() ? nullptr : m_windows.at(0)));
 
         m_waitingSpinner->setRoundness(70.0);
         m_waitingSpinner->setMinimumTrailOpacity(15.0);
@@ -88,13 +83,7 @@ void Browser::resolveLink(const QUrl &u)
 
     m_waitingSpinner->start();
 
-    if (!m_linkResolver)
-    {
-        m_linkResolver = new LinkResolver(this);
-        connect(m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
-        connect(m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
-    }
-    m_linkResolver->resolve(u);
+    m_linkResolver.resolve(u);
 }
 
 void Browser::resolvingFinished(MediaInfoPtr mi)
