@@ -65,16 +65,13 @@ macx: {
         INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
         BUNDLEID = com.dfordsoft.imchenwen
 
-        codesign_webengine.depends += deploy_webengine
-        codesign_webengine.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\"
+        codesign.depends += deploy_webengine
+        codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
 
-        codesign_bundle.depends += codesign_webengine
-        codesign_bundle.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
-
-        makedmg.depends += codesign_bundle
+        makedmg.depends += codesign
         makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
 
-        QMAKE_EXTRA_TARGETS += deploy deploy_webengine codesign_webengine codesign_bundle makedmg
+        QMAKE_EXTRA_TARGETS += deploy deploy_webengine codesign makedmg
     }
 }
 
