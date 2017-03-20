@@ -46,7 +46,7 @@ void LinkResolver::resolve(const QUrl &url)
     if (apikey.isEmpty())
         apikey = "yb2Q1ozScRfJJ";
     data.append(apikey);
-    data.append(inChina ? "&parser=ykdl" : "&parser=youtube-dl");
+    data.append(inChina ? "&parser=ykdl,you-get" : "&parser=youtube-dl,you-get");
     data.append("&url=");
     data.append(url.toString().toUtf8().toPercentEncoding());
     QNetworkReply *reply = nam.post(req, data);
