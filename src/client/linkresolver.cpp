@@ -113,6 +113,12 @@ void LinkResolver::finished()
         parseNode(docObj["YoutubeDL"].toObject(), mi, mi->youtube_dl);
     }
 
+    if (mi->title.isEmpty() && mi->site.isEmpty())
+    {
+        emit resolvingError();
+        return;
+    }
+
     QNetworkRequest req = reply->request();
     QByteArray requestUrl = req.rawHeader("RequestUrl");
     m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), mi }));
