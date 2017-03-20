@@ -25,7 +25,7 @@ void ExternalPlayDialog::setMediaInfo(MediaInfoPtr mi)
     }
     for (auto stream : mi->you_get)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::lightGray);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, QColor(0xf0f0f0));
     }
     for (auto stream : mi->youtube_dl)
     {
