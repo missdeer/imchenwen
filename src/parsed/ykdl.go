@@ -12,7 +12,7 @@ import (
 func parseByYKDLJSON(u string, r chan interface{}) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("ykdl.py", "-i", "--json", u)
+	cmd := exec.Command("ykdl", "-i", "--json", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("ykdl stdout pipe failed", err)

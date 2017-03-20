@@ -1,11 +1,16 @@
 package main
 
 import (
+	"flag"
 	"net/http"
 	"strings"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-gonic/gin"
+)
+
+var (
+	localMode bool
 )
 
 type Stream struct {
@@ -100,6 +105,8 @@ func handleParseRequest(c *gin.Context) {
 }
 
 func main() {
+	flag.BoolVar(&localMode, "l", false, "local mode")
+	flag.Parse()
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
@@ -121,7 +128,9 @@ func main() {
 
 	ginpprof.Wrapper(r)
 
-	redisInit()
+	if !localMode {
+		redisInit()
+	}
 	// Listen and Server in 127.0.0.1:8765
 	r.Run("127.0.0.1:8765")
 }
