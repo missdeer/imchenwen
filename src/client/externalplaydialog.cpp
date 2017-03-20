@@ -8,7 +8,6 @@ ExternalPlayDialog::ExternalPlayDialog(QWidget *parent) :
     ui(new Ui::ExternalPlayDialog)
 {
     ui->setupUi(this);
-    setFixedSize( width(), height());
 
     createExternalPlayerList();
 }
