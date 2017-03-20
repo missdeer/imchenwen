@@ -21,15 +21,15 @@ void ExternalPlayDialog::setMediaInfo(MediaInfoPtr mi)
 {
     for (auto stream : mi->ykdl)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
     }
     for (auto stream : mi->you_get)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::lightGray);
     }
     for (auto stream : mi->youtube_dl)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
     }
     ui->listMedia->setCurrentRow(0);
     m_mediaInfo = mi;
@@ -91,7 +91,7 @@ void ExternalPlayDialog::doOk()
     accept();
 }
 
-void ExternalPlayDialog::addItem(const QString& text)
+void ExternalPlayDialog::addItem(const QString& text, const QColor &backgroundColor)
 {
     QListWidgetItem* item = new QListWidgetItem(text, ui->listMedia);
     QFont font(item->font());
@@ -102,6 +102,7 @@ void ExternalPlayDialog::addItem(const QString& text)
 #endif
     font.setPixelSize(14);
     item->setFont(font);
+    item->setBackgroundColor(backgroundColor);
     ui->listMedia->addItem(item);
 }
 

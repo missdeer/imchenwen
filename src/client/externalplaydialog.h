@@ -40,7 +40,7 @@ private:
     MediaInfoPtr m_mediaInfo;
     void createExternalPlayerList();
     void doOk();
-    void addItem(const QString& text);
+    void addItem(const QString& text, const QColor& backgroundColor);
 };
 
 #endif // EXTERNALPLAYDIALOG_H
