@@ -65,8 +65,11 @@ signals:
 
 private slots:
 
+    void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
     void resolvingError();
+    void resolvingSilentFinished(MediaInfoPtr mi);
+    void resolvingSilentError();
     void errorOccurred(QProcess::ProcessError error);
 private:
     explicit Browser(QObject *parent = 0);
@@ -77,5 +80,6 @@ private:
     bool m_playByBuiltinPlayer;
     QProcess m_process;
     LinkResolver m_linkResolver;
+    void doPlayByExternalPlayer(MediaInfoPtr mi);
 };
 #endif // BROWSER_H

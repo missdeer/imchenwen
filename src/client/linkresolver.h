@@ -40,10 +40,12 @@ class LinkResolver : public QObject
     Q_OBJECT
 public:
     explicit LinkResolver(QObject *parent = 0);
-    void resolve(const QUrl& url);
+    void resolve(const QUrl& url, bool silent = false);
 signals:
     void resolvingFinished(MediaInfoPtr);
     void resolvingError();
+    void resolvingSilentFinished(MediaInfoPtr);
+    void resolvingSilentError();
 public slots:
 
 private slots:

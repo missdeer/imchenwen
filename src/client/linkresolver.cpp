@@ -14,7 +14,7 @@ LinkResolver::LinkResolver(QObject *parent)
 {
 }
 
-void LinkResolver::resolve(const QUrl &url)
+void LinkResolver::resolve(const QUrl &url, bool silent)
 {
     auto it = std::find_if(m_history.begin(), m_history.end(),
                            [this, url](HistoryItemPtr h) {return h->url.startsWith(url.toString());});
@@ -42,6 +42,7 @@ void LinkResolver::resolve(const QUrl &url)
         req.setUrl(QUrl(abroadLocalMode ? "http://127.0.0.1:8765/v1/parse" : "https://pjp.xyying.me/v1/parse"));
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     req.setRawHeader("RequestUrl", url.toString().toUtf8());
+    req.setRawHeader("Silent", silent ? "true" : "false");
     QByteArray data;
     data.append("apikey=");
     QString apikey = cfg.read<QString>("apiKey");
@@ -74,11 +75,17 @@ void LinkResolver::finished()
 
     MediaInfoPtr mi(new MediaInfo);
 
+    QNetworkRequest req = reply->request();
+    QByteArray silent = req.rawHeader("Silent");
+
     QJsonDocument doc = QJsonDocument::fromJson(m_content);
     if (!doc.isObject())
     {
         qDebug() << "content received is not a json object" << QString(m_content);
-        emit resolvingError();
+        if (QString(silent) == "true")
+            emit resolvingSilentError();
+        else
+            emit resolvingError();
         return;
     }
 
@@ -87,14 +94,20 @@ void LinkResolver::finished()
     if (!res.isString())
     {
         qDebug() << "unexpect result node";
-        emit resolvingError();
+        if (QString(silent) == "true")
+            emit resolvingSilentError();
+        else
+            emit resolvingError();
         return;
     }
 
     if (res.toString()!= "OK")
     {
         qDebug() << "resolving failed";
-        emit resolvingError();
+        if (QString(silent) == "true")
+            emit resolvingSilentError();
+        else
+            emit resolvingError();
         return;
     }
 
@@ -115,11 +128,13 @@ void LinkResolver::finished()
 
     if (mi->title.isEmpty() && mi->site.isEmpty())
     {
-        emit resolvingError();
+        if (QString(silent) == "true")
+            emit resolvingSilentError();
+        else
+            emit resolvingError();
         return;
     }
 
-    QNetworkRequest req = reply->request();
     QByteArray requestUrl = req.rawHeader("RequestUrl");
     m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), mi }));
     // don't keep too many elements in list, remove some one
@@ -129,7 +144,11 @@ void LinkResolver::finished()
     // remove the old elements > 1 hour
     while (m_history[0]->time.secsTo(QTime::currentTime()) > 60 * 60)
         m_history.erase(m_history.begin());
-    emit resolvingFinished(mi);
+
+    if (QString(silent) == "true")
+        emit resolvingSilentFinished(mi);
+    else
+        emit resolvingFinished(mi);
 }
 
 void LinkResolver::sslErrors(const QList<QSslError> &errors)

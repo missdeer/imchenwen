@@ -9,6 +9,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QApplication>
+#include <QClipboard>
 
 Browser::Browser(QObject* parent)
     : QObject(parent)
@@ -17,6 +18,8 @@ Browser::Browser(QObject* parent)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
+    connect(&m_linkResolver, &LinkResolver::resolvingSilentFinished, this, &Browser::resolvingSilentFinished);
+    connect(&m_linkResolver, &LinkResolver::resolvingSilentError, this, &Browser::resolvingSilentError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
     Config cfg;
     if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
@@ -36,6 +39,8 @@ Browser::Browser(QObject* parent)
             QProcess::startDetached(parsedPath, QStringList() << "-l");
         }
     }
+
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
 }
 
 Browser::~Browser()
@@ -67,6 +72,18 @@ void Browser::playByBuiltinPlayer(const QUrl& u)
 {
     m_playByBuiltinPlayer = true;
     resolveLink(u);
+}
+
+void Browser::clipboardChanged()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    QString originalText = clipboard->text();
+
+    if (originalText.startsWith("http://") || originalText.startsWith("https://"))
+    {
+        m_playByBuiltinPlayer = false;
+        m_linkResolver.resolve(QUrl(originalText), true);
+    }
 }
 
 QVector<BrowserWindow*> Browser::windows()
@@ -109,6 +126,46 @@ void Browser::resolveLink(const QUrl &u)
     m_linkResolver.resolve(u);
 }
 
+void Browser::doPlayByExternalPlayer(MediaInfoPtr mi)
+{
+    ExternalPlayDialog dlg(m_windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(m_windows.at(0))) );
+    dlg.setMediaInfo(mi);
+    if (dlg.exec())
+    {
+        Tuple2 player = dlg.player();
+        StreamInfoPtr stream = dlg.media();
+
+        if (m_process.state() != QProcess::NotRunning)
+        {
+            m_process.terminate();
+        }
+
+        QStringList args;
+        m_process.setProgram(std::get<0>(player));
+#if defined(Q_OS_MAC)
+        QFileInfo fi(std::get<0>(player));
+        if (fi.suffix() == "app")
+        {
+            m_process.setProgram("/usr/bin/open");
+            args << std::get<0>(player) << "--args";
+        }
+#endif
+        QString arg = std::get<1>(player);
+        if (!arg.isEmpty())
+            args << arg.split(" ");
+        args << stream->urls;
+
+#if defined(Q_OS_MAC)
+        if (fi.suffix() == "app")
+        {
+            m_process.start("/usr/bin/open", args);
+            return;
+        }
+#endif
+        m_process.start(std::get<0>(player), args);
+    }
+}
+
 void Browser::resolvingFinished(MediaInfoPtr mi)
 {
     if (m_waitingSpinner->isSpinning())
@@ -125,42 +182,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
 
     if (!m_playByBuiltinPlayer)
     {
-        ExternalPlayDialog dlg(m_windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(m_windows.at(0))) );
-        dlg.setMediaInfo(mi);
-        if (dlg.exec())
-        {
-            Tuple2 player = dlg.player();
-            StreamInfoPtr stream = dlg.media();
-
-            if (m_process.state() != QProcess::NotRunning)
-            {
-                m_process.terminate();
-            }
-
-            QStringList args;
-            m_process.setProgram(std::get<0>(player));
-    #if defined(Q_OS_MAC)
-            QFileInfo fi(std::get<0>(player));
-            if (fi.suffix() == "app")
-            {
-                m_process.setProgram("/usr/bin/open");
-                args << std::get<0>(player) << "--args";
-            }
-    #endif
-            QString arg = std::get<1>(player);
-            if (!arg.isEmpty())
-                args << arg.split(" ");
-            args << stream->urls;
-
-    #if defined(Q_OS_MAC)
-            if (fi.suffix() == "app")
-            {
-                m_process.start("/usr/bin/open", args);
-                return;
-            }
-    #endif
-            m_process.start(std::get<0>(player), args);
-        }
+        doPlayByExternalPlayer(mi);
     }
 }
 
@@ -173,6 +195,29 @@ void Browser::resolvingError()
 
     QMessageBox::warning((m_windows.isEmpty() ? nullptr : m_windows.at(0)),
                          tr("Error"), tr("Resolving link address failed!"), QMessageBox::Ok);
+}
+
+void Browser::resolvingSilentFinished(MediaInfoPtr mi)
+{
+    if (mi->title.isEmpty() && mi->site.isEmpty())
+    {
+        return;
+    }
+
+    if (!m_playByBuiltinPlayer)
+    {
+        if (!m_windows.isEmpty())
+        {
+            m_windows.at(0)->activateWindow();
+            m_windows.at(0)->raise();
+        }
+        doPlayByExternalPlayer(mi);
+    }
+}
+
+void Browser::resolvingSilentError()
+{
+
 }
 
 void Browser::errorOccurred(QProcess::ProcessError error)
