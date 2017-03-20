@@ -111,6 +111,25 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
         OptionDialog dlg(this);
         dlg.exec();
     });
+
+    Config cfg;
+    if (cfg.read<bool>("showLocalModeMenuItems"))
+    {
+        QAction *inChinaLocalMode = fileMenu->addAction(tr("InChina Local Mode"));
+        inChinaLocalMode->setCheckable(true);
+        inChinaLocalMode->setChecked(cfg.read<bool>("inChinaLocalMode"));
+        connect(inChinaLocalMode, &QAction::triggered, [&cfg]() {
+            cfg.write("inChinaLocalMode", !cfg.read<bool>("inChinaLocalMode"));
+        });
+
+        QAction *abroadLocalMode = fileMenu->addAction(tr("Abroad Local Mode"));
+        abroadLocalMode->setCheckable(true);
+        abroadLocalMode->setChecked(cfg.read<bool>("abroadLocalMode"));
+        connect(abroadLocalMode, &QAction::triggered, [&cfg]() {
+            cfg.write("abroadLocalMode", !cfg.read<bool>("abroadLocalMode"));
+        });
+    }
+
     fileMenu->addSeparator();
 
     QAction *closeTabAction = new QAction(QIcon(QLatin1String(":closetab.png")), tr("&Close Tab"), this);
