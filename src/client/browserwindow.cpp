@@ -112,24 +112,6 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
         dlg.exec();
     });
 
-    Config cfg;
-    if (cfg.read<bool>("showLocalModeMenuItems"))
-    {
-        QAction *inChinaLocalMode = fileMenu->addAction(tr("InChina Local Mode"));
-        inChinaLocalMode->setCheckable(true);
-        inChinaLocalMode->setChecked(cfg.read<bool>("inChinaLocalMode"));
-        connect(inChinaLocalMode, &QAction::triggered, [&cfg]() {
-            cfg.write("inChinaLocalMode", !cfg.read<bool>("inChinaLocalMode"));
-        });
-
-        QAction *abroadLocalMode = fileMenu->addAction(tr("Abroad Local Mode"));
-        abroadLocalMode->setCheckable(true);
-        abroadLocalMode->setChecked(cfg.read<bool>("abroadLocalMode"));
-        connect(abroadLocalMode, &QAction::triggered, [&cfg]() {
-            cfg.write("abroadLocalMode", !cfg.read<bool>("abroadLocalMode"));
-        });
-    }
-
     fileMenu->addSeparator();
 
     QAction *closeTabAction = new QAction(QIcon(QLatin1String(":closetab.png")), tr("&Close Tab"), this);
@@ -282,6 +264,29 @@ QMenu *BrowserWindow::createShortcutMenu()
 
     QMenu *chinaMenu = new QMenu(tr("In China"));
 
+    QMenu *abroadMenu = new QMenu(tr("Out of China"));
+
+    Config cfg;
+    if (cfg.read<bool>("showLocalModeMenuItems"))
+    {
+        QAction *inChinaLocalMode = chinaMenu->addAction(tr("InChina Local Mode"));
+        inChinaLocalMode->setCheckable(true);
+        inChinaLocalMode->setChecked(cfg.read<bool>("inChinaLocalMode"));
+        connect(inChinaLocalMode, &QAction::triggered, [&cfg]() {
+            cfg.write("inChinaLocalMode", !cfg.read<bool>("inChinaLocalMode"));
+        });
+        chinaMenu->addSeparator();
+
+        QAction *abroadLocalMode = abroadMenu->addAction(tr("Abroad Local Mode"));
+        abroadLocalMode->setCheckable(true);
+        abroadLocalMode->setChecked(cfg.read<bool>("abroadLocalMode"));
+        connect(abroadLocalMode, &QAction::triggered, [&cfg]() {
+            cfg.write("abroadLocalMode", !cfg.read<bool>("abroadLocalMode"));
+        });
+        abroadMenu->addSeparator();
+    }
+
+
     auto&& websitesInChina = Websites::instance().inChina();
     for (auto w : websitesInChina)
     {
@@ -291,8 +296,6 @@ QMenu *BrowserWindow::createShortcutMenu()
             shortcutMenu->addAction(action);
     }
 
-    QMenu *abroadMenu = new QMenu(tr("Out of China"));
-
     auto&& websitesAbroad = Websites::instance().abroad();
     for (auto w : websitesAbroad)
     {
@@ -301,6 +304,7 @@ QMenu *BrowserWindow::createShortcutMenu()
         if (w->favourite)
             shortcutMenu->addAction(action);
     }
+
 
     shortcutMenu->addSeparator();
     shortcutMenu->addMenu(chinaMenu);
