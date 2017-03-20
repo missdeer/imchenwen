@@ -52,7 +52,7 @@ void ExternalPlayDialog::on_btnPlay_clicked()
 
 void ExternalPlayDialog::on_btnCancel_clicked()
 {
-    close();
+    reject();
 }
 
 void ExternalPlayDialog::createExternalPlayerList()

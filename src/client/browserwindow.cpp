@@ -6,6 +6,7 @@
 #include "optiondialog.h"
 #include "aboutdialog.h"
 #include "websites.h"
+#include "playurldialog.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -105,6 +106,15 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     newTabAction->setIconVisibleInMenu(false);
     connect(newTabAction, &QAction::triggered, tabWidget, &TabWidget::createTab);
     fileMenu->addAction(newTabAction);
+
+    QAction *playUrlAction = fileMenu->addAction(tr("Play Url..."));
+    connect(playUrlAction, &QAction::triggered, [this](){
+        PlayUrlDialog dlg(this);
+        if (dlg.exec())
+        {
+            Browser::instance().playByExternalPlayer(QUrl(dlg.getUrl()));
+        }
+    });
 
     QAction *options = fileMenu->addAction(tr("Options..."));
     connect(options, &QAction::triggered, [this]() {
