@@ -30,6 +30,7 @@ void OptionDialog::on_browseButton_clicked()
     if (!mediaPlayerPath.isEmpty())
     {
         ui->playerPathEdit->setText(mediaPlayerPath);
+        ui->playerArgumentsEdit->setText("");
     }
 }
 

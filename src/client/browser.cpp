@@ -123,7 +123,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
             QFileInfo fi(std::get<0>(player));
             if (fi.suffix() == "app")
             {
-                p.setProgram("/usr/bin/open");
+                m_process.setProgram("/usr/bin/open");
                 args << std::get<0>(player) << "--args";
             }
     #endif
