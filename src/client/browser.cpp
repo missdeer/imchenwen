@@ -7,6 +7,8 @@
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QFile>
+#include <QApplication>
 
 Browser::Browser(QObject* parent)
     : QObject(parent)
@@ -16,6 +18,24 @@ Browser::Browser(QObject* parent)
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
+    Config cfg;
+    if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
+    {
+        QString parsedPath = QApplication::applicationDirPath();
+#if defined(Q_OS_WIN)
+        parsedPath.append("/parsed.exe");
+#else
+        parsedPath.append("/../Resources/parsed");
+#endif
+        if (!QFile::exists(parsedPath))
+        {
+            QMessageBox::information(nullptr, tr("Notice"), tr("Can't launch parsed process for link resolving, please launch it by yourself."), QMessageBox::Ok);
+        }
+        else
+        {
+            QProcess::startDetached(parsedPath, QStringList() << "-l");
+        }
+    }
 }
 
 Browser::~Browser()
