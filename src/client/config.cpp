@@ -15,6 +15,12 @@ QString Config::read<QString>(const QString& key)
     return settings().value(key).toString();
 }
 
+template<>
+bool Config::read<bool>(const QString &key)
+{
+    return settings().value(key, QVariant(false)).toBool();
+}
+
 void Config::read(const QString& key, QString& value)
 {
     value = settings().value(key).toString();

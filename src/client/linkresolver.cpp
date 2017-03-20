@@ -32,17 +32,19 @@ void LinkResolver::resolve(const QUrl &url)
     }
     m_content.clear();
     bool inChina = Websites::instance().isInChina(url);
+    Config cfg;
+    bool inChinaLocalMode = cfg.read<bool>("inChinaLocalMode");
+    bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
     QNetworkRequest req;
     if (inChina)
-        req.setUrl(QUrl("https://pcn.xyying.me/v1/parse"));
+        req.setUrl(QUrl(inChinaLocalMode ? "http://127.0.0.1:8765/v1/parse" : "https://pcn.xyying.me/v1/parse"));
     else
-        req.setUrl(QUrl("https://pjp.xyying.me/v1/parse"));
+        req.setUrl(QUrl(abroadLocalMode ? "http://127.0.0.1:8765/v1/parse" : "https://pjp.xyying.me/v1/parse"));
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     req.setRawHeader("RequestUrl", url.toString().toUtf8());
     QByteArray data;
     data.append("apikey=");
-    Config cfg;
-    QString apikey = cfg.read<QString>("apikey");
+    QString apikey = cfg.read<QString>("apiKey");
     if (apikey.isEmpty())
         apikey = "yb2Q1ozScRfJJ";
     data.append(apikey);

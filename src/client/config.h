@@ -50,5 +50,6 @@ private:
 };
 
 template<> QString Config::read<QString>(const QString& key);
+template<> bool Config::read<bool>(const QString& key);
 
 #endif // CONFIG_H
