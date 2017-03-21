@@ -38,7 +38,7 @@ startProcess:
 	}
 
 	var res interface{}
-	err = json.Unmarshal(content, &res)
+	err = json.Unmarshal(convertByteArray(content), &res)
 	if err != nil {
 		log.Println("unmarshalling ykdl output JSON failed", err)
 		r <- nil
@@ -77,7 +77,7 @@ startProcess:
 	}
 
 	var res YouGetJSON
-	err = json.Unmarshal(content, &res)
+	err = json.Unmarshal(convertByteArray(content), &res)
 	if err != nil {
 		log.Println("unmarshalling ykdl output JSON failed", err)
 		r <- nil

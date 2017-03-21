@@ -59,7 +59,7 @@ startProcess:
 	}
 
 	var res interface{}
-	err = json.Unmarshal(content, &res)
+	err = json.Unmarshal(convertByteArray(content), &res)
 	if err != nil {
 		log.Println("unmarshalling you-get output JSON failed", err)
 		r <- nil
@@ -94,7 +94,7 @@ startProcess:
 	var rawURLs string
 	var urls []string
 	for scanner.Scan() {
-		line := scanner.Text()
+		line := convertString(scanner.Text())
 		if start {
 			if strings.HasPrefix(line, "http") {
 				rawURLs += line
@@ -150,7 +150,7 @@ startProcess:
 	scanner.Split(bufio.ScanLines)
 	status := 0
 	for scanner.Scan() {
-		line := scanner.Text()
+		line := convertString(scanner.Text())
 		switch status {
 		case 0:
 			if strings.HasPrefix(line, "site:") {
