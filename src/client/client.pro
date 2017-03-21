@@ -17,7 +17,8 @@ HEADERS += \
     waitingspinnerwidget.h \
     linkresolver.h \
     websites.h \
-    playdialog.h
+    playdialog.h \
+    settings.h
 
 SOURCES += \
     browser.cpp \
@@ -34,14 +35,16 @@ SOURCES += \
     waitingspinnerwidget.cpp \
     linkresolver.cpp \
     websites.cpp \
-    playdialog.cpp
+    playdialog.cpp \
+    settings.cpp
 
 FORMS += \
     certificateerrordialog.ui \
     passworddialog.ui \
     aboutdialog.ui \
     optiondialog.ui \
-    playdialog.ui
+    playdialog.ui \
+    settings.ui
 
 RESOURCES += res/imchenwen.qrc
 

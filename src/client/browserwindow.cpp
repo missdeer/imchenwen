@@ -3,9 +3,10 @@
 #include "tabwidget.h"
 #include "urllineedit.h"
 #include "webview.h"
-#include "optiondialog.h"
+#include "settings.h"
 #include "aboutdialog.h"
 #include "websites.h"
+#include "config.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -21,6 +22,8 @@
 #include <QNetworkReply>
 #include <QTimer>
 #include <QInputDialog>
+
+const char *BrowserWindow::defaultHome = "http://www.youku.com/";
 
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -127,7 +130,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
 
     QAction *options = fileMenu->addAction(tr("Options..."));
     connect(options, &QAction::triggered, [this]() {
-        OptionDialog dlg(this);
+        SettingsDialog dlg(this);
         dlg.exec();
     });
 
@@ -545,7 +548,7 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
 
 void BrowserWindow::loadHomePage()
 {
-    loadPage(QStringLiteral("https://www.youtube.com"));
+    loadPage(QLatin1String(defaultHome));
 }
 
 void BrowserWindow::loadPage(const QString &page)
