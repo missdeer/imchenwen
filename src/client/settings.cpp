@@ -14,6 +14,12 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(standardFontButton, SIGNAL(clicked()), this, SLOT(chooseFont()));
     connect(fixedFontButton, SIGNAL(clicked()), this, SLOT(chooseFixedFont()));
 
+    connect(btnSelectPlayer, SIGNAL(clicked()), this, SLOT(onSelectExternalPlayer()));
+    connect(btnAddPlayer, SIGNAL(clicked()), this, SLOT(onAddExternalPlayer()));
+    connect(btnRemovePlayer, SIGNAL(clicked()), this, SLOT(onRemoveExternalPlayer()));
+    connect(btnModifyPlayer, SIGNAL(clicked()), this, SLOT(onModifyExternalPlayer()));
+    connect(listPlayer, SIGNAL(currentRowChanged(int)), this, SLOT(onExternalPlayerListCurrentRowChanged(int)));
+
     loadDefaults();
     loadFromSettings();
 }
@@ -68,14 +74,13 @@ void SettingsDialog::loadDefaults()
 
 void SettingsDialog::loadFromSettings()
 {
-    QSettings settings;
-    settings.beginGroup(QLatin1String("MainWindow"));
-    const QString defaultHome = QLatin1String(BrowserWindow::defaultHome);
-    homeLineEdit->setText(settings.value(QLatin1String("home"), defaultHome).toString());
-    settings.endGroup();
+    Config cfg;
+    cfg.beginGroup(QLatin1String("MainWindow"));
+    homeLineEdit->setText(cfg.read("home", QString(BrowserWindow::defaultHome)));
+    cfg.endGroup();
 
-    settings.beginGroup(QLatin1String("history"));
-    int historyExpire = settings.value(QLatin1String("historyExpire")).toInt();
+    cfg.beginGroup(QLatin1String("history"));
+    int historyExpire = cfg.read<int>("historyExpire");
     int idx = 0;
     switch (historyExpire) {
     case 1: idx = 0; break;
@@ -88,69 +93,73 @@ void SettingsDialog::loadFromSettings()
         idx = 5;
     }
     expireHistory->setCurrentIndex(idx);
-    settings.endGroup();
+    cfg.endGroup();
 
-    settings.beginGroup(QLatin1String("downloadmanager"));
-    QString downloadDirectory = settings.value(QLatin1String("downloadDirectory"), downloadsLocation->text()).toString();
+    QString downloadDirectory = cfg.read(QLatin1String("downloadDirectory"), downloadsLocation->text());
     downloadsLocation->setText(downloadDirectory);
-    settings.endGroup();
 
-    settings.beginGroup(QLatin1String("general"));
-    openLinksIn->setCurrentIndex(settings.value(QLatin1String("openLinksIn"), openLinksIn->currentIndex()).toInt());
-
-    settings.endGroup();
+    cfg.beginGroup(QLatin1String("general"));
+    openLinksIn->setCurrentIndex(cfg.read<int>(QLatin1String("openLinksIn"), openLinksIn->currentIndex()));
+    cfg.endGroup();
 
     // Appearance
-    settings.beginGroup(QLatin1String("websettings"));
-    fixedFont = qvariant_cast<QFont>(settings.value(QLatin1String("fixedFont"), fixedFont));
-    standardFont = qvariant_cast<QFont>(settings.value(QLatin1String("standardFont"), standardFont));
+    cfg.beginGroup(QLatin1String("websettings"));
+    fixedFont = qvariant_cast<QFont>(cfg.read(QLatin1String("fixedFont"), QVariant(fixedFont)));
+    standardFont = qvariant_cast<QFont>(cfg.read(QLatin1String("standardFont"), QVariant(standardFont)));
 
     standardLabel->setText(QString(QLatin1String("%1 %2")).arg(standardFont.family()).arg(standardFont.pointSize()));
     fixedLabel->setText(QString(QLatin1String("%1 %2")).arg(fixedFont.family()).arg(fixedFont.pointSize()));
 
-    enableJavascript->setChecked(settings.value(QLatin1String("enableJavascript"), enableJavascript->isChecked()).toBool());
-    enablePlugins->setChecked(settings.value(QLatin1String("enablePlugins"), enablePlugins->isChecked()).toBool());
-    userStyleSheet->setPlainText(settings.value(QLatin1String("userStyleSheet")).toString());
-    enableScrollAnimator->setChecked(settings.value(QLatin1String("enableScrollAnimator"), enableScrollAnimator->isChecked()).toBool());
-    httpUserAgent->setText(settings.value(QLatin1String("httpUserAgent"), httpUserAgent->text()).toString());
-    httpAcceptLanguage->setText(settings.value(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text()).toString());
-    faviconDownloadMode->setCurrentIndex(settings.value(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex()).toInt());
-    settings.endGroup();
+    enableJavascript->setChecked(cfg.read<bool>(QLatin1String("enableJavascript"), enableJavascript->isChecked()));
+    enablePlugins->setChecked(cfg.read<bool>(QLatin1String("enablePlugins"), enablePlugins->isChecked()));
+    userStyleSheet->setPlainText(cfg.read<QString>(QLatin1String("userStyleSheet")));
+    enableScrollAnimator->setChecked(cfg.read<bool>(QLatin1String("enableScrollAnimator"), enableScrollAnimator->isChecked()));
+    httpUserAgent->setText(cfg.read(QLatin1String("httpUserAgent"), httpUserAgent->text()));
+    httpAcceptLanguage->setText(cfg.read(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text()));
+    faviconDownloadMode->setCurrentIndex(cfg.read<int>(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex()));
+    cfg.endGroup();
 
     // Privacy
-    settings.beginGroup(QLatin1String("cookies"));
+    cfg.beginGroup(QLatin1String("cookies"));
 
-    int persistentCookiesPolicy = settings.value(QLatin1String("persistentCookiesPolicy"), sessionCookiesCombo->currentIndex()).toInt();
+    int persistentCookiesPolicy = cfg.read<int>(QLatin1String("persistentCookiesPolicy"), sessionCookiesCombo->currentIndex());
     sessionCookiesCombo->setCurrentIndex(persistentCookiesPolicy);
 
-    QString pdataPath = settings.value(QLatin1String("persistentDataPath"), persistentDataPath->text()).toString();
+    QString pdataPath = cfg.read(QLatin1String("persistentDataPath"), persistentDataPath->text());
     persistentDataPath->setText(pdataPath);
 
-    settings.endGroup();
+    cfg.endGroup();
 
     // Proxy
-    settings.beginGroup(QLatin1String("proxy"));
-    proxySupport->setChecked(settings.value(QLatin1String("enabled"), false).toBool());
-    proxyType->setCurrentIndex(settings.value(QLatin1String("type"), 0).toInt());
-    proxyHostName->setText(settings.value(QLatin1String("hostName")).toString());
-    proxyPort->setValue(settings.value(QLatin1String("port"), 1080).toInt());
-    proxyUserName->setText(settings.value(QLatin1String("userName")).toString());
-    proxyPassword->setText(settings.value(QLatin1String("password")).toString());
-    settings.endGroup();
+    cfg.beginGroup(QLatin1String("proxy"));
+    proxySupport->setChecked(cfg.read<bool>(QLatin1String("enabled"), false));
+    proxyType->setCurrentIndex(cfg.read<int>(QLatin1String("type"), 0));
+    proxyHostName->setText(cfg.read<QString>(QLatin1String("hostName")));
+    proxyPort->setValue(cfg.read<int>(QLatin1String("port"), 1080));
+    proxyUserName->setText(cfg.read<QString>(QLatin1String("userName")));
+    proxyPassword->setText(cfg.read<QString>(QLatin1String("password")));
+    cfg.endGroup();
+
+    // external player
+    cfg.read("externalPlayers", m_players);
+    for (auto p : m_players)
+    {
+        listPlayer->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
+    }
 }
 
 void SettingsDialog::saveToSettings()
 {
-    QSettings settings;
-    settings.beginGroup(QLatin1String("MainWindow"));
-    settings.setValue(QLatin1String("home"), homeLineEdit->text());
-    settings.endGroup();
+    Config cfg;
+    cfg.beginGroup(QLatin1String("MainWindow"));
+    cfg.write(QLatin1String("home"), homeLineEdit->text());
+    cfg.endGroup();
 
-    settings.beginGroup(QLatin1String("general"));
-    settings.setValue(QLatin1String("openLinksIn"), openLinksIn->currentIndex());
-    settings.endGroup();
+    cfg.beginGroup(QLatin1String("general"));
+    cfg.write(QLatin1String("openLinksIn"), openLinksIn->currentIndex());
+    cfg.endGroup();
 
-    settings.beginGroup(QLatin1String("history"));
+    cfg.beginGroup(QLatin1String("history"));
     int historyExpire = expireHistory->currentIndex();
     int idx = -1;
     switch (historyExpire) {
@@ -161,42 +170,42 @@ void SettingsDialog::saveToSettings()
     case 4: idx = 365; break;
     case 5: idx = -1; break;
     }
-    settings.setValue(QLatin1String("historyExpire"), idx);
-    settings.endGroup();
+    cfg.write(QLatin1String("historyExpire"), idx);
+    cfg.endGroup();
 
     // Appearance
-    settings.beginGroup(QLatin1String("websettings"));
-    settings.setValue(QLatin1String("fixedFont"), fixedFont);
-    settings.setValue(QLatin1String("standardFont"), standardFont);
-    settings.setValue(QLatin1String("enableJavascript"), enableJavascript->isChecked());
-    settings.setValue(QLatin1String("enablePlugins"), enablePlugins->isChecked());
-    settings.setValue(QLatin1String("enableScrollAnimator"), enableScrollAnimator->isChecked());
-    settings.setValue(QLatin1String("userStyleSheet"), userStyleSheet->toPlainText());
-    settings.setValue(QLatin1String("httpUserAgent"), httpUserAgent->text());
-    settings.setValue(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text());
-    settings.setValue(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex());
-    settings.endGroup();
+    cfg.beginGroup(QLatin1String("websettings"));
+    cfg.write(QLatin1String("fixedFont"), fixedFont);
+    cfg.write(QLatin1String("standardFont"), standardFont);
+    cfg.write(QLatin1String("enableJavascript"), enableJavascript->isChecked());
+    cfg.write(QLatin1String("enablePlugins"), enablePlugins->isChecked());
+    cfg.write(QLatin1String("enableScrollAnimator"), enableScrollAnimator->isChecked());
+    cfg.write(QLatin1String("userStyleSheet"), userStyleSheet->toPlainText());
+    cfg.write(QLatin1String("httpUserAgent"), httpUserAgent->text());
+    cfg.write(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text());
+    cfg.write(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex());
+    cfg.endGroup();
 
     //Privacy
-    settings.beginGroup(QLatin1String("cookies"));
+    cfg.beginGroup(QLatin1String("cookies"));
 
     int persistentCookiesPolicy = sessionCookiesCombo->currentIndex();
-    settings.setValue(QLatin1String("persistentCookiesPolicy"), persistentCookiesPolicy);
+    cfg.write(QLatin1String("persistentCookiesPolicy"), persistentCookiesPolicy);
 
     QString pdataPath = persistentDataPath->text();
-    settings.setValue(QLatin1String("persistentDataPath"), pdataPath);
+    cfg.write(QLatin1String("persistentDataPath"), pdataPath);
 
-    settings.endGroup();
+    cfg.endGroup();
 
     // proxy
-    settings.beginGroup(QLatin1String("proxy"));
-    settings.setValue(QLatin1String("enabled"), proxySupport->isChecked());
-    settings.setValue(QLatin1String("type"), proxyType->currentIndex());
-    settings.setValue(QLatin1String("hostName"), proxyHostName->text());
-    settings.setValue(QLatin1String("port"), proxyPort->text());
-    settings.setValue(QLatin1String("userName"), proxyUserName->text());
-    settings.setValue(QLatin1String("password"), proxyPassword->text());
-    settings.endGroup();
+    cfg.beginGroup(QLatin1String("proxy"));
+    cfg.write(QLatin1String("enabled"), proxySupport->isChecked());
+    cfg.write(QLatin1String("type"), proxyType->currentIndex());
+    cfg.write(QLatin1String("hostName"), proxyHostName->text());
+    cfg.write(QLatin1String("port"), proxyPort->text());
+    cfg.write(QLatin1String("userName"), proxyUserName->text());
+    cfg.write(QLatin1String("password"), proxyPassword->text());
+    cfg.endGroup();
 
     //Browser::instance().loadSettings();
 }
@@ -243,6 +252,79 @@ void SettingsDialog::on_httpUserAgent_editingFinished()
 void SettingsDialog::on_httpAcceptLanguage_editingFinished()
 {
     QWebEngineProfile::defaultProfile()->setHttpAcceptLanguage(httpAcceptLanguage->text());
+}
+
+void SettingsDialog::onSelectExternalPlayer()
+{
+    QString mediaPlayerPath = QFileDialog::getOpenFileName(this,
+                                 tr("Select media player executable"));
+    if (!mediaPlayerPath.isEmpty())
+    {
+        edtPlayerPath->setText(mediaPlayerPath);
+        edtPlayerArguments->setText("");
+    }
+}
+
+void SettingsDialog::onAddExternalPlayer()
+{
+    if (edtPlayerPath->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please input player path."), QMessageBox::Ok);
+        return;
+    }
+    auto it = std::find_if(m_players.begin(), m_players.end(),
+                           [this](const Tuple2& t) { return std::get<0>(t) == edtPlayerPath->text() && std::get<1>(t) == edtPlayerArguments->text();});
+    if (m_players.end() != it)
+    {
+        QMessageBox::warning(this, tr("Duplicated"), tr("This configuration item exists already."), QMessageBox::Ok);
+        return;
+    }
+    m_players.push_back(std::make_tuple(edtPlayerPath->text(), edtPlayerArguments->text()));
+    Config cfg;
+    cfg.write("externalPlayers", m_players);
+    listPlayer->addItem(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
+    edtPlayerPath->setText("");
+    edtPlayerArguments->setText("");
+}
+
+void SettingsDialog::onRemoveExternalPlayer()
+{
+    QListWidgetItem *currentItem = listPlayer->currentItem();
+    if (!currentItem)
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please select an item in list to be removed."), QMessageBox::Ok);
+        return;
+    }
+    int currentRow = listPlayer->currentRow();
+    m_players.removeAt(currentRow);
+    Config cfg;
+    cfg.write("externalPlayers", m_players);
+    currentItem = listPlayer->takeItem(currentRow);
+    delete currentItem;
+}
+
+void SettingsDialog::onModifyExternalPlayer()
+{
+    QListWidgetItem *currentItem = listPlayer->currentItem();
+    if (!currentItem)
+    {
+        return;
+    }
+    int currentRow = listPlayer->currentRow();
+    m_players[currentRow] = std::make_tuple(edtPlayerPath->text(), edtPlayerArguments->text());
+    currentItem->setText(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
+    Config cfg;
+    cfg.write("externalPlayers", m_players);
+}
+
+void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
+{
+    if (currentRow < 0 && currentRow >= m_players.size())
+        return;
+
+    const Tuple2& p = m_players.at(currentRow);
+    edtPlayerPath->setText(std::get<0>(p));
+    edtPlayerArguments->setText(std::get<1>(p));
 }
 
 void SettingsDialog::setHomeToCurrentPage()

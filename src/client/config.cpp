@@ -9,18 +9,6 @@ Config::~Config()
 {
 }
 
-template<>
-QString Config::read<QString>(const QString& key)
-{
-    return settings().value(key).toString();
-}
-
-template<>
-bool Config::read<bool>(const QString &key)
-{
-    return settings().value(key, QVariant(false)).toBool();
-}
-
 void Config::read(const QString& key, QString& value)
 {
     value = settings().value(key).toString();
@@ -76,9 +64,65 @@ void Config::write(const QString& key, const Tuple2List& array)
     settings().sync();
 }
 
+void Config::beginGroup(const QString& group)
+{
+    settings().beginGroup(group);
+}
+
+void Config::endGroup()
+{
+    settings().endGroup();
+}
+
 QSettings&Config::settings()
 {
     static QSettings s(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/.imchenwenrc",
                               QSettings::IniFormat);
     return s;
+}
+
+template<>
+QString Config::read<QString>(const QString& key)
+{
+    return settings().value(key).toString();
+}
+
+template<>
+bool Config::read<bool>(const QString &key)
+{
+    return settings().value(key, QVariant(false)).toBool();
+}
+
+template<>
+int Config::read<int>(const QString& key)
+{
+    return settings().value(key, QVariant(0)).toInt();
+}
+
+template<>
+bool Config::read<bool>(const QString& key, bool defaultValue)
+{
+    return settings().value(key, QVariant(defaultValue)).toBool();
+}
+
+template<>
+int Config::read<int>(const QString& key, int defaultValue)
+{
+    return settings().value(key, QVariant(defaultValue)).toInt();
+}
+
+QString Config::read(const QString& key, const QString& defaultValue)
+{
+    return settings().value(key, defaultValue).toString();
+}
+
+template<>
+QVariant Config::read<QVariant>(const QString& key)
+{
+    return settings().value(key);
+}
+
+QVariant Config::read(const QString& key, const QVariant& defaultValue)
+{
+    return settings().value(key, defaultValue);
 }

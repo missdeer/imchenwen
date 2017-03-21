@@ -31,6 +31,12 @@ public:
     T read(const QString& key);
 
     template<typename T>
+    T read(const QString& key, T defaultValue);
+
+    QString read(const QString& key, const QString& defaultValue);
+    QVariant read(const QString& key, const QVariant& defaultValue);
+
+    template<typename T>
     void write(const QString& key, const T& value)
     {
         settings().setValue(key, value);
@@ -45,11 +51,18 @@ public:
     void write(const QString& key, const Tuple3List& array);
     void write(const QString& key, const Tuple4List& array);
     void write(const QString& key, const Tuple5List& array);
+
+    void beginGroup(const QString& group);
+    void endGroup();
 private:
     QSettings& settings();
 };
 
 template<> QString Config::read<QString>(const QString& key);
+template<> QVariant Config::read<QVariant>(const QString& key);
 template<> bool Config::read<bool>(const QString& key);
+template<> bool Config::read<bool>(const QString& key, bool defaultValue);
+template<> int Config::read<int>(const QString& key);
+template<> int Config::read<int>(const QString& key, int defaultValue);
 
 #endif // CONFIG_H
