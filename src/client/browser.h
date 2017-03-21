@@ -59,6 +59,7 @@ public:
     void addWindow(BrowserWindow* window);
     static Browser &instance();
 
+    void startParsedProcess();
     void playByMediaPlayer(const QUrl& u);
 signals:
 

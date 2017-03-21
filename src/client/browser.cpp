@@ -11,6 +11,24 @@
 #include <QApplication>
 #include <QClipboard>
 
+void Browser::startParsedProcess()
+{
+    QString parsedPath = QApplication::applicationDirPath();
+#if defined(Q_OS_WIN)
+    parsedPath.append("/parsed.exe");
+#else
+    parsedPath.append("/../Resources/parsed");
+#endif
+    if (!QFile::exists(parsedPath))
+    {
+        QMessageBox::information(nullptr, tr("Notice"), tr("Can't launch parsed process for link resolving, please launch it by yourself."), QMessageBox::Ok);
+    }
+    else
+    {
+        QProcess::startDetached(parsedPath, QStringList() << "-l");
+    }
+}
+
 Browser::Browser(QObject* parent)
     : QObject(parent)
     , m_waitingSpinner(nullptr)
@@ -24,20 +42,7 @@ Browser::Browser(QObject* parent)
     Config cfg;
     if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
     {
-        QString parsedPath = QApplication::applicationDirPath();
-#if defined(Q_OS_WIN)
-        parsedPath.append("/parsed.exe");
-#else
-        parsedPath.append("/../Resources/parsed");
-#endif
-        if (!QFile::exists(parsedPath))
-        {
-            QMessageBox::information(nullptr, tr("Notice"), tr("Can't launch parsed process for link resolving, please launch it by yourself."), QMessageBox::Ok);
-        }
-        else
-        {
-            QProcess::startDetached(parsedPath, QStringList() << "-l");
-        }
+        startParsedProcess();
     }
 
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);

@@ -293,6 +293,10 @@ QMenu *BrowserWindow::createShortcutMenu()
         inChinaLocalMode->setChecked(cfg.read<bool>("inChinaLocalMode"));
         connect(inChinaLocalMode, &QAction::triggered, [&cfg]() {
             cfg.write("inChinaLocalMode", !cfg.read<bool>("inChinaLocalMode"));
+            if (cfg.read<bool>("inChinaLocalMode") )
+            {
+                Browser::instance().startParsedProcess();
+            }
         });
         chinaMenu->addSeparator();
 
@@ -301,6 +305,10 @@ QMenu *BrowserWindow::createShortcutMenu()
         abroadLocalMode->setChecked(cfg.read<bool>("abroadLocalMode"));
         connect(abroadLocalMode, &QAction::triggered, [&cfg]() {
             cfg.write("abroadLocalMode", !cfg.read<bool>("abroadLocalMode"));
+            if (cfg.read<bool>("abroadLocalMode"))
+            {
+                Browser::instance().startParsedProcess();
+            }
         });
         abroadMenu->addSeparator();
     }
