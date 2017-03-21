@@ -1,6 +1,6 @@
 #include "playdialog.h"
 #include "ui_playdialog.h"
-#include "optiondialog.h"
+#include "settings.h"
 #include <QMessageBox>
 
 PlayDialog::PlayDialog(QWidget *parent) :
@@ -37,7 +37,7 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 {
-    OptionDialog dlg(this);
+    SettingsDialog dlg(this);
     if (dlg.exec())
     {
         ui->cbPlayers->clear();
