@@ -20,5 +20,6 @@
         <file>parseurl.png</file>
         <file>search.png</file>
         <file>websites.xml</file>
+        <file>play.png</file>
     </qresource>
 </RCC>

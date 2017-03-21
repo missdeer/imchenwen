@@ -122,15 +122,10 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         QAction *before(it == actions.cend() ? nullptr : *it);
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
         menu->addSeparator();
-        QAction* playAction = menu->addAction(tr("Play Link by Built-in Player"));
+        QAction *playAction = menu->addAction(tr("Play Link by Media Player"));
         connect(playAction, &QAction::triggered, [this]() {
-            Browser::instance().playByBuiltinPlayer(m_rightClickedUrl);
+            Browser::instance().playByMediaPlayer(m_rightClickedUrl);
         });
-        playAction = menu->addAction(tr("Play Link by External Player"));
-        connect(playAction, &QAction::triggered, [this]() {
-            Browser::instance().playByExternalPlayer(m_rightClickedUrl);
-        });
-        menu->addSeparator();
         QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
         connect(openAction, &QAction::triggered, [this](){
             QDesktopServices::openUrl(m_rightClickedUrl);

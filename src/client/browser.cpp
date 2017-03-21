@@ -3,7 +3,7 @@
 #include "webview.h"
 #include "linkresolver.h"
 #include "waitingspinnerwidget.h"
-#include "externalplaydialog.h"
+#include "playdialog.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
@@ -62,15 +62,8 @@ Browser &Browser::instance()
     return browser;
 }
 
-void Browser::playByExternalPlayer(const QUrl& u)
+void Browser::playByMediaPlayer(const QUrl& u)
 {
-    m_playByBuiltinPlayer = false;
-    resolveLink(u);
-}
-
-void Browser::playByBuiltinPlayer(const QUrl& u)
-{
-    m_playByBuiltinPlayer = true;
     resolveLink(u);
 }
 
@@ -81,7 +74,6 @@ void Browser::clipboardChanged()
 
     if (originalText.startsWith("http://") || originalText.startsWith("https://"))
     {
-        m_playByBuiltinPlayer = false;
         m_linkResolver.resolve(QUrl(originalText), true);
     }
 }
@@ -126,9 +118,9 @@ void Browser::resolveLink(const QUrl &u)
     m_linkResolver.resolve(u);
 }
 
-void Browser::doPlayByExternalPlayer(MediaInfoPtr mi)
+void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 {
-    ExternalPlayDialog dlg(m_windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(m_windows.at(0))) );
+    PlayDialog dlg(m_windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(m_windows.at(0))) );
     dlg.setMediaInfo(mi);
     if (dlg.exec())
     {
@@ -180,10 +172,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
         return;
     }
 
-    if (!m_playByBuiltinPlayer)
-    {
-        doPlayByExternalPlayer(mi);
-    }
+    doPlayByMediaPlayer(mi);
 }
 
 void Browser::resolvingError()
@@ -204,15 +193,12 @@ void Browser::resolvingSilentFinished(MediaInfoPtr mi)
         return;
     }
 
-    if (!m_playByBuiltinPlayer)
+    if (!m_windows.isEmpty())
     {
-        if (!m_windows.isEmpty())
-        {
-            m_windows.at(0)->activateWindow();
-            m_windows.at(0)->raise();
-        }
-        doPlayByExternalPlayer(mi);
+        m_windows.at(0)->activateWindow();
+        m_windows.at(0)->raise();
     }
+    doPlayByMediaPlayer(mi);
 }
 
 void Browser::resolvingSilentError()

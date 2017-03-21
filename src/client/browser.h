@@ -59,8 +59,7 @@ public:
     void addWindow(BrowserWindow* window);
     static Browser &instance();
 
-    void playByExternalPlayer(const QUrl& u);
-    void playByBuiltinPlayer(const QUrl& u);
+    void playByMediaPlayer(const QUrl& u);
 signals:
 
 private slots:
@@ -77,9 +76,8 @@ private:
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;
-    bool m_playByBuiltinPlayer;
     QProcess m_process;
     LinkResolver m_linkResolver;
-    void doPlayByExternalPlayer(MediaInfoPtr mi);
+    void doPlayByMediaPlayer(MediaInfoPtr mi);
 };
 #endif // BROWSER_H

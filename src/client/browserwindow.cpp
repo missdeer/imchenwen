@@ -112,7 +112,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
         PlayUrlDialog dlg(this);
         if (dlg.exec())
         {
-            Browser::instance().playByExternalPlayer(QUrl(dlg.getUrl()));
+            Browser::instance().playByMediaPlayer(QUrl(dlg.getUrl()));
         }
     });
 
@@ -373,18 +373,11 @@ QToolBar *BrowserWindow::createToolBar()
     int size = m_urlLineEdit->sizeHint().height();
     navigationBar->setIconSize(QSize(size, size));
 
-    m_playInBuiltinPlayerAction = new QAction(QIcon(QStringLiteral(":parseplaylist.png")), tr("Play in Built-in Player"), this);
-    connect(m_playInBuiltinPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().playByBuiltinPlayer(QUrl(m_urlLineEdit->text()));
+    m_playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
+    connect(m_playInMediaPlayerAction, &QAction::triggered, [this]() {
+        Browser::instance().playByMediaPlayer(QUrl(m_urlLineEdit->text()));
     });
-    navigationBar->addAction(m_playInBuiltinPlayerAction);
-
-
-    m_playInExternalPlayerAction = new QAction(QIcon(QStringLiteral(":parseurl.png")), tr("Play in External Player"), this);
-    connect(m_playInExternalPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().playByExternalPlayer(QUrl(m_urlLineEdit->text()));
-    });
-    navigationBar->addAction(m_playInExternalPlayerAction);
+    navigationBar->addAction(m_playInMediaPlayerAction);
     return navigationBar;
 }
 
