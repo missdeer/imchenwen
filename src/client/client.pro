@@ -80,3 +80,17 @@ macx: {
     }
 }
 
+win32: {
+    CONFIG(release, debug|release) : {
+        WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
+
+        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.exe\"
+
+        build_parsed.commands += cd \"$${PWD}/../parsed/\" $$escape_expand(&&) go build
+
+        deploy_parsed.depends += build_parsed
+        deploy_parsed.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\parsed.exe\" \"$${OUT_PWD}\\release\\parsed.exe\"
+
+        QMAKE_EXTRA_TARGETS += deploy build_parsed deploy_parsed
+    }
+}
