@@ -6,7 +6,6 @@
 #include "optiondialog.h"
 #include "aboutdialog.h"
 #include "websites.h"
-#include "playurldialog.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -21,6 +20,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QTimer>
+#include <QInputDialog>
 
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -108,11 +108,20 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     fileMenu->addAction(newTabAction);
 
     QAction *playUrlAction = fileMenu->addAction(tr("Play Url..."));
+    playUrlAction->setShortcut(QKeySequence("Ctrl+P"));
     connect(playUrlAction, &QAction::triggered, [this](){
-        PlayUrlDialog dlg(this);
-        if (dlg.exec())
+        bool ok;
+        QString u = QInputDialog::getText(this, tr("Play Url"), tr("Please input URL to play:"), QLineEdit::EchoMode::Normal, "", &ok);
+        if (ok)
         {
-            Browser::instance().playByMediaPlayer(QUrl(dlg.getUrl()));
+            if (u.startsWith("http://") || u.startsWith("https://"))
+            {
+                Browser::instance().playByMediaPlayer(QUrl(u));
+            }
+            else
+            {
+                QMessageBox::warning(this, tr("Warning"), tr("Invalid URL input."), QMessageBox::Ok);
+            }
         }
     });
 

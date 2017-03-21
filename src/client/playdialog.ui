@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Play by external player</string>
+   <string>Play by media player</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
