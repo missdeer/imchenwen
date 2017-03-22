@@ -60,6 +60,8 @@ public:
     static Browser &instance();
 
     void startParsedProcess();
+    void stopParsedProcess();
+    void changeParsedProcessState();
     void playByMediaPlayer(const QUrl& u);
 signals:
 
@@ -78,6 +80,7 @@ private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;
     QProcess m_process;
+    QProcess m_parsedProcess;
     LinkResolver m_linkResolver;
     void doPlayByMediaPlayer(MediaInfoPtr mi);
 };

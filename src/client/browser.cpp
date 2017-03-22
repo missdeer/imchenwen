@@ -25,7 +25,28 @@ void Browser::startParsedProcess()
     }
     else
     {
-        QProcess::startDetached(parsedPath, QStringList() << "-l");
+        if (m_parsedProcess.state() == QProcess::Running)
+            m_parsedProcess.terminate();
+
+        m_parsedProcess.start(parsedPath, QStringList() << "-l");
+    }
+}
+
+void Browser::stopParsedProcess()
+{
+    m_parsedProcess.terminate();
+}
+
+void Browser::changeParsedProcessState()
+{
+    Config cfg;
+    if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
+    {
+        Browser::instance().startParsedProcess();
+    }
+    else
+    {
+        Browser::instance().stopParsedProcess();
     }
 }
 
