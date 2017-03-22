@@ -10,44 +10,45 @@
 #include <QFile>
 #include <QApplication>
 #include <QClipboard>
+#include <QWebEngineSettings>
+#include <QWebEngineProfile>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
+#include <QNetworkProxy>
 
-void Browser::startParsedProcess()
+static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = 0)
 {
-    QString parsedPath = QApplication::applicationDirPath();
-#if defined(Q_OS_WIN)
-    parsedPath.append("/parsed.exe");
-#else
-    parsedPath.append("/../Resources/parsed");
-#endif
-    if (!QFile::exists(parsedPath))
-    {
-        QMessageBox::information(nullptr, tr("Notice"), tr("Can't launch parsed process for link resolving, please launch it by yourself."), QMessageBox::Ok);
-    }
-    else
-    {
-        if (m_parsedProcess.state() == QProcess::Running)
-            m_parsedProcess.terminate();
+    Q_ASSERT(profile);
+    QString scriptName(QStringLiteral("userStyleSheet"));
+    QWebEngineScript script;
+    QList<QWebEngineScript> styleSheets = profile->scripts()->findScripts(scriptName);
+    if (!styleSheets.isEmpty())
+        script = styleSheets.first();
+    Q_FOREACH (const QWebEngineScript &s, styleSheets)
+        profile->scripts()->remove(s);
 
-        m_parsedProcess.start(parsedPath, QStringList() << "-l");
+    if (script.isNull()) {
+        script.setName(scriptName);
+        script.setInjectionPoint(QWebEngineScript::DocumentReady);
+        script.setRunsOnSubFrames(true);
+        script.setWorldId(QWebEngineScript::ApplicationWorld);
     }
-}
-
-void Browser::stopParsedProcess()
-{
-    m_parsedProcess.terminate();
-}
-
-void Browser::changeParsedProcessState()
-{
-    Config cfg;
-    if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
-    {
-        Browser::instance().startParsedProcess();
-    }
-    else
-    {
-        Browser::instance().stopParsedProcess();
-    }
+    QString source = QString::fromLatin1("(function() {"\
+                                         "var css = document.getElementById(\"_qt_testBrowser_userStyleSheet\");"\
+                                         "if (css == undefined) {"\
+                                         "    css = document.createElement(\"style\");"\
+                                         "    css.type = \"text/css\";"\
+                                         "    css.id = \"_qt_testBrowser_userStyleSheet\";"\
+                                         "    document.head.appendChild(css);"\
+                                         "}"\
+                                         "css.innerText = \"%1\";"\
+                                         "})()").arg(styleSheet);
+    script.setSourceCode(source);
+    profile->scripts()->insert(script);
+    // run the script on the already loaded views
+    // this has to be deferred as it could mess with the storage initialization on startup
+    if (mainWindow)
+        QMetaObject::invokeMethod(mainWindow, "runScriptOnOpenViews", Qt::QueuedConnection, Q_ARG(QString, source));
 }
 
 Browser::Browser(QObject* parent)
@@ -71,8 +72,7 @@ Browser::Browser(QObject* parent)
 
 Browser::~Browser()
 {
-    qDeleteAll(m_windows);
-    m_windows.clear();
+    clean();
 
     if (m_waitingSpinner)
     {
@@ -86,6 +86,81 @@ Browser &Browser::instance()
 {
     static Browser browser;
     return browser;
+}
+
+void Browser::loadSettings()
+{
+    Config cfg;
+    cfg.beginGroup(QLatin1String("websettings"));
+
+    QWebEngineSettings *defaultSettings = QWebEngineSettings::globalSettings();
+    QWebEngineProfile *defaultProfile = QWebEngineProfile::defaultProfile();
+
+    QString standardFontFamily = defaultSettings->fontFamily(QWebEngineSettings::StandardFont);
+    int standardFontSize = defaultSettings->fontSize(QWebEngineSettings::DefaultFontSize);
+    QFont standardFont = QFont(standardFontFamily, standardFontSize);
+    standardFont = qvariant_cast<QFont>(cfg.read(QLatin1String("standardFont"), QVariant(standardFont)));
+    defaultSettings->setFontFamily(QWebEngineSettings::StandardFont, standardFont.family());
+    defaultSettings->setFontSize(QWebEngineSettings::DefaultFontSize, standardFont.pointSize());
+
+    QString fixedFontFamily = defaultSettings->fontFamily(QWebEngineSettings::FixedFont);
+    int fixedFontSize = defaultSettings->fontSize(QWebEngineSettings::DefaultFixedFontSize);
+    QFont fixedFont = QFont(fixedFontFamily, fixedFontSize);
+    fixedFont = qvariant_cast<QFont>(cfg.read(QLatin1String("fixedFont"),QVariant(fixedFont)));
+    defaultSettings->setFontFamily(QWebEngineSettings::FixedFont, fixedFont.family());
+    defaultSettings->setFontSize(QWebEngineSettings::DefaultFixedFontSize, fixedFont.pointSize());
+
+    defaultSettings->setAttribute(QWebEngineSettings::JavascriptEnabled, cfg.read<bool>(QLatin1String("enableJavascript"), true));
+    defaultSettings->setAttribute(QWebEngineSettings::ScrollAnimatorEnabled, cfg.read<bool>(QLatin1String("enableScrollAnimator"), true));
+
+    defaultSettings->setAttribute(QWebEngineSettings::PluginsEnabled, cfg.read<bool>(QLatin1String("enablePlugins"), true));
+
+    defaultSettings->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+
+    QString css = cfg.read<QString>(QLatin1String("userStyleSheet"));
+    setUserStyleSheet(defaultProfile, css, mainWindow());
+
+    defaultProfile->setHttpUserAgent(cfg.read<QString>(QLatin1String("httpUserAgent")));
+    defaultProfile->setHttpAcceptLanguage(cfg.read<QString>(QLatin1String("httpAcceptLanguage")));
+
+    switch (cfg.read<int>(QLatin1String("faviconDownloadMode"), 1)) {
+    case 0:
+        defaultSettings->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, false);
+        break;
+    case 1:
+        defaultSettings->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
+        defaultSettings->setAttribute(QWebEngineSettings::TouchIconsEnabled, false);
+        break;
+    case 2:
+        defaultSettings->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
+        defaultSettings->setAttribute(QWebEngineSettings::TouchIconsEnabled, true);
+        break;
+    }
+
+    cfg.endGroup();
+    cfg.beginGroup(QLatin1String("cookies"));
+
+    QWebEngineProfile::PersistentCookiesPolicy persistentCookiesPolicy = QWebEngineProfile::PersistentCookiesPolicy(cfg.read<int>(QLatin1String("persistentCookiesPolicy")));
+    defaultProfile->setPersistentCookiesPolicy(persistentCookiesPolicy);
+    QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
+    defaultProfile->setPersistentStoragePath(pdataPath);
+
+    cfg.endGroup();
+
+    cfg.beginGroup(QLatin1String("proxy"));
+    QNetworkProxy proxy;
+    if (cfg.read<bool>(QLatin1String("enabled"), false)) {
+        if (cfg.read<int>(QLatin1String("type"), 0) == 0)
+            proxy = QNetworkProxy::Socks5Proxy;
+        else
+            proxy = QNetworkProxy::HttpProxy;
+        proxy.setHostName(cfg.read<QString>(QLatin1String("hostName")));
+        proxy.setPort(cfg.read<int>(QLatin1String("port"), 1080));
+        proxy.setUser(cfg.read<QString>(QLatin1String("userName")));
+        proxy.setPassword(cfg.read<QString>(QLatin1String("password")));
+    }
+    QNetworkProxy::setApplicationProxy(proxy);
+    cfg.endGroup();
 }
 
 void Browser::playByMediaPlayer(const QUrl& u)
@@ -120,11 +195,26 @@ void Browser::addWindow(BrowserWindow *mainWindow)
     mainWindow->show();
 }
 
+BrowserWindow *Browser::mainWindow()
+{
+    clean();
+    if (m_windows.isEmpty())
+        newMainWindow();
+    return m_windows[0];
+}
+
+BrowserWindow *Browser::newMainWindow()
+{
+    BrowserWindow* nmw = new BrowserWindow();
+    addWindow(nmw);
+    return nmw;
+}
+
 void Browser::resolveLink(const QUrl &u)
 {
     if (!m_waitingSpinner)
     {
-        m_waitingSpinner = new WaitingSpinnerWidget((m_windows.isEmpty() ? nullptr : m_windows.at(0)));
+        m_waitingSpinner = new WaitingSpinnerWidget(mainWindow());
 
         m_waitingSpinner->setRoundness(70.0);
         m_waitingSpinner->setMinimumTrailOpacity(15.0);
@@ -146,7 +236,7 @@ void Browser::resolveLink(const QUrl &u)
 
 void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 {
-    PlayDialog dlg(m_windows.isEmpty() ? nullptr : reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(m_windows.at(0))) );
+    PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
     dlg.setMediaInfo(mi);
     if (dlg.exec())
     {
@@ -184,6 +274,12 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
     }
 }
 
+void Browser::clean()
+{
+    qDeleteAll(m_windows);
+    m_windows.clear();
+}
+
 void Browser::resolvingFinished(MediaInfoPtr mi)
 {
     if (m_waitingSpinner->isSpinning())
@@ -193,7 +289,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
 
     if (mi->title.isEmpty() && mi->site.isEmpty())
     {
-        QMessageBox::warning((m_windows.isEmpty() ? nullptr : m_windows.at(0)),
+        QMessageBox::warning(mainWindow(),
                              tr("Error"), tr("Resolving link address failed! Please try again."), QMessageBox::Ok);
         return;
     }
@@ -208,7 +304,7 @@ void Browser::resolvingError()
     m_waitingSpinner->deleteLater();
     m_waitingSpinner = nullptr;
 
-    QMessageBox::warning((m_windows.isEmpty() ? nullptr : m_windows.at(0)),
+    QMessageBox::warning(mainWindow(),
                          tr("Error"), tr("Resolving link address failed!"), QMessageBox::Ok);
 }
 
@@ -247,6 +343,45 @@ void Browser::errorOccurred(QProcess::ProcessError error)
         msg = tr("An unknown error occurred.");
         break;
     }
-    QMessageBox::warning((m_windows.isEmpty() ? nullptr : m_windows.at(0)),
+    QMessageBox::warning(mainWindow(),
                          tr("Error on launching external player"), msg, QMessageBox::Ok);
+}
+
+void Browser::startParsedProcess()
+{
+    QString parsedPath = QApplication::applicationDirPath();
+#if defined(Q_OS_WIN)
+    parsedPath.append("/parsed.exe");
+#else
+    parsedPath.append("/../Resources/parsed");
+#endif
+    if (!QFile::exists(parsedPath))
+    {
+        QMessageBox::information(nullptr, tr("Notice"), tr("Can't launch parsed process for link resolving, please launch it by yourself."), QMessageBox::Ok);
+    }
+    else
+    {
+        if (m_parsedProcess.state() == QProcess::Running)
+            m_parsedProcess.terminate();
+
+        m_parsedProcess.start(parsedPath, QStringList() << "-l");
+    }
+}
+
+void Browser::stopParsedProcess()
+{
+    m_parsedProcess.terminate();
+}
+
+void Browser::changeParsedProcessState()
+{
+    Config cfg;
+    if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
+    {
+        Browser::instance().startParsedProcess();
+    }
+    else
+    {
+        Browser::instance().stopParsedProcess();
+    }
 }

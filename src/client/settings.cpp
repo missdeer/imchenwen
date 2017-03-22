@@ -1,4 +1,5 @@
 #include "settings.h"
+#include "browser.h"
 #include "browserwindow.h"
 #include "webview.h"
 #include <QtCore/QLocale>
@@ -207,7 +208,7 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("password"), proxyPassword->text());
     cfg.endGroup();
 
-    //Browser::instance().loadSettings();
+    Browser::instance().loadSettings();
 }
 
 void SettingsDialog::accept()

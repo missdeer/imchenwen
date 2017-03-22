@@ -53,12 +53,15 @@ class Browser : public QObject
 {
     Q_OBJECT
 public:
+    static Browser &instance();
     ~Browser();
 
     QVector<BrowserWindow*> windows();
     void addWindow(BrowserWindow* window);
-    static Browser &instance();
+    BrowserWindow *mainWindow();
+    BrowserWindow *newMainWindow();
 
+    void loadSettings();
     void startParsedProcess();
     void stopParsedProcess();
     void changeParsedProcessState();
@@ -76,12 +79,13 @@ private slots:
 private:
     explicit Browser(QObject *parent = 0);
     void resolveLink(const QUrl& u);
+    void doPlayByMediaPlayer(MediaInfoPtr mi);
+    void clean();
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;
     QProcess m_process;
     QProcess m_parsedProcess;
     LinkResolver m_linkResolver;
-    void doPlayByMediaPlayer(MediaInfoPtr mi);
 };
 #endif // BROWSER_H
