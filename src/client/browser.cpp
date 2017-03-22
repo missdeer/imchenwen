@@ -197,7 +197,6 @@ void Browser::addWindow(BrowserWindow *mainWindow)
 
 BrowserWindow *Browser::mainWindow()
 {
-    clean();
     if (m_windows.isEmpty())
         newMainWindow();
     return m_windows[0];
