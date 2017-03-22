@@ -30,6 +30,7 @@ struct HistoryItem
 {
     QString url;
     QTime time;
+    bool localMode;
     MediaInfoPtr mi;
 };
 

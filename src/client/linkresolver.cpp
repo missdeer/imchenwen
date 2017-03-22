@@ -16,8 +16,13 @@ LinkResolver::LinkResolver(QObject *parent)
 
 void LinkResolver::resolve(const QUrl &url, bool silent)
 {
+    bool inChina = Websites::instance().isInChina(url);
+    Config cfg;
+    bool inChinaLocalMode = cfg.read<bool>("inChinaLocalMode");
+    bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
+    bool localMode = (inChina ? inChinaLocalMode : abroadLocalMode);
     auto it = std::find_if(m_history.begin(), m_history.end(),
-                           [this, url](HistoryItemPtr h) {return h->url.startsWith(url.toString());});
+                           [this, url, localMode](HistoryItemPtr h) {return h->url.startsWith(url.toString()) && h->localMode == localMode;});
     if (m_history.end() != it)
     {
         if ((*it)->time.secsTo(QTime::currentTime()) > 60 * 60)
@@ -31,10 +36,6 @@ void LinkResolver::resolve(const QUrl &url, bool silent)
         }
     }
     m_content.clear();
-    bool inChina = Websites::instance().isInChina(url);
-    Config cfg;
-    bool inChinaLocalMode = cfg.read<bool>("inChinaLocalMode");
-    bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
     QNetworkRequest req;
     if (inChina)
         req.setUrl(QUrl(inChinaLocalMode ? "http://127.0.0.1:8765/v1/parse" : "https://pcn.xyying.me/v1/parse"));
@@ -43,6 +44,7 @@ void LinkResolver::resolve(const QUrl &url, bool silent)
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     req.setRawHeader("RequestUrl", url.toString().toUtf8());
     req.setRawHeader("Silent", silent ? "true" : "false");
+    req.setRawHeader("LocalMode", (inChina ? (inChinaLocalMode ? "true" : "false") : (abroadLocalMode ? "true" : "false")));
     QByteArray data;
     data.append("apikey=");
     QString apikey = cfg.read<QString>("apiKey");
@@ -136,7 +138,10 @@ void LinkResolver::finished()
     }
 
     QByteArray requestUrl = req.rawHeader("RequestUrl");
-    m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), mi }));
+    bool localMode = false;
+    if (QString(req.rawHeader("Silent")) == "true")
+        localMode = true;
+    m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), localMode, mi }));
     // already ordered by time
     // remove the old elements > 1 hour
     while (m_history[0]->time.secsTo(QTime::currentTime()) > 20 * 60)
