@@ -304,7 +304,7 @@ void Browser::resolvingError(const QUrl& u)
     m_waitingSpinner = nullptr;
 
     QMessageBox::warning(mainWindow(),
-                         tr("Error"), tr("Resolving link address") + u.toString() + tr(" failed!"), QMessageBox::Ok);
+                         tr("Error"), tr("Resolving link address ") + u.toString() + tr(" failed!"), QMessageBox::Ok);
 }
 
 void Browser::resolvingSilentFinished(MediaInfoPtr mi)

@@ -78,6 +78,7 @@ void LinkResolver::finished()
     MediaInfoPtr mi(new MediaInfo);
 
     QNetworkRequest req = reply->request();
+    QByteArray requestUrl = req.rawHeader("RequestUrl");
     QByteArray silent = req.rawHeader("Silent");
 
     QJsonDocument doc = QJsonDocument::fromJson(m_content);
@@ -85,9 +86,9 @@ void LinkResolver::finished()
     {
         qDebug() << "content received is not a json object" << QString(m_content);
         if (QString(silent) == "true")
-            emit resolvingSilentError(req.url());
+            emit resolvingSilentError(QUrl(QString(requestUrl)));
         else
-            emit resolvingError(req.url());
+            emit resolvingError(QUrl(QString(requestUrl)));
         return;
     }
 
@@ -97,9 +98,9 @@ void LinkResolver::finished()
     {
         qDebug() << "unexpect result node";
         if (QString(silent) == "true")
-            emit resolvingSilentError(req.url());
+            emit resolvingSilentError(QUrl(QString(requestUrl)));
         else
-            emit resolvingError(req.url());
+            emit resolvingError(QUrl(QString(requestUrl)));
         return;
     }
 
@@ -107,9 +108,9 @@ void LinkResolver::finished()
     {
         qDebug() << "resolving failed";
         if (QString(silent) == "true")
-            emit resolvingSilentError(req.url());
+            emit resolvingSilentError(QUrl(QString(requestUrl)));
         else
-            emit resolvingError(req.url());
+            emit resolvingError(QUrl(QString(requestUrl)));
         return;
     }
 
@@ -132,13 +133,12 @@ void LinkResolver::finished()
         (mi->you_get.isEmpty() && mi->ykdl.isEmpty() && mi->youtube_dl.isEmpty()))
     {
         if (QString(silent) == "true")
-            emit resolvingSilentError(req.url());
+            emit resolvingSilentError(QUrl(QString(requestUrl)));
         else
-            emit resolvingError(req.url());
+            emit resolvingError(QUrl(QString(requestUrl)));
         return;
     }
 
-    QByteArray requestUrl = req.rawHeader("RequestUrl");
     bool localMode = false;
     if (QString(req.rawHeader("Silent")) == "true")
         localMode = true;
