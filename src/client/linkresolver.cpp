@@ -137,12 +137,9 @@ void LinkResolver::finished()
 
     QByteArray requestUrl = req.rawHeader("RequestUrl");
     m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), mi }));
-    // don't keep too many elements in list, remove some one
-    if (m_history.length() > 100)
-        m_history.erase(m_history.begin(), m_history.begin() + (100 - m_history.length()));
     // already ordered by time
     // remove the old elements > 1 hour
-    while (m_history[0]->time.secsTo(QTime::currentTime()) > 60 * 60)
+    while (m_history[0]->time.secsTo(QTime::currentTime()) > 20 * 60)
         m_history.erase(m_history.begin());
 
     if (QString(silent) == "true")
