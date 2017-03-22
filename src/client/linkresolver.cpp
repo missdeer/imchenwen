@@ -128,7 +128,8 @@ void LinkResolver::finished()
         parseNode(docObj["YoutubeDL"].toObject(), mi, mi->youtube_dl);
     }
 
-    if (mi->title.isEmpty() && mi->site.isEmpty())
+    if ((mi->title.isEmpty() && mi->site.isEmpty()) ||
+        (mi->you_get.isEmpty() && mi->ykdl.isEmpty() && mi->youtube_dl.isEmpty()))
     {
         if (QString(silent) == "true")
             emit resolvingSilentError();
