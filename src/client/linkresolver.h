@@ -44,9 +44,9 @@ public:
     void resolve(const QUrl& url, bool silent = false);
 signals:
     void resolvingFinished(MediaInfoPtr);
-    void resolvingError();
+    void resolvingError(const QUrl&);
     void resolvingSilentFinished(MediaInfoPtr);
-    void resolvingSilentError();
+    void resolvingSilentError(const QUrl&);
 public slots:
 
 private slots:

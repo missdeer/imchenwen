@@ -85,9 +85,9 @@ void LinkResolver::finished()
     {
         qDebug() << "content received is not a json object" << QString(m_content);
         if (QString(silent) == "true")
-            emit resolvingSilentError();
+            emit resolvingSilentError(req.url());
         else
-            emit resolvingError();
+            emit resolvingError(req.url());
         return;
     }
 
@@ -97,9 +97,9 @@ void LinkResolver::finished()
     {
         qDebug() << "unexpect result node";
         if (QString(silent) == "true")
-            emit resolvingSilentError();
+            emit resolvingSilentError(req.url());
         else
-            emit resolvingError();
+            emit resolvingError(req.url());
         return;
     }
 
@@ -107,9 +107,9 @@ void LinkResolver::finished()
     {
         qDebug() << "resolving failed";
         if (QString(silent) == "true")
-            emit resolvingSilentError();
+            emit resolvingSilentError(req.url());
         else
-            emit resolvingError();
+            emit resolvingError(req.url());
         return;
     }
 
@@ -132,9 +132,9 @@ void LinkResolver::finished()
         (mi->you_get.isEmpty() && mi->ykdl.isEmpty() && mi->youtube_dl.isEmpty()))
     {
         if (QString(silent) == "true")
-            emit resolvingSilentError();
+            emit resolvingSilentError(req.url());
         else
-            emit resolvingError();
+            emit resolvingError(req.url());
         return;
     }
 

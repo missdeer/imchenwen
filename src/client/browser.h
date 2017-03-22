@@ -72,9 +72,9 @@ private slots:
 
     void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
-    void resolvingError();
+    void resolvingError(const QUrl&);
     void resolvingSilentFinished(MediaInfoPtr mi);
-    void resolvingSilentError();
+    void resolvingSilentError(const QUrl&);
     void errorOccurred(QProcess::ProcessError error);
 private:
     explicit Browser(QObject *parent = 0);

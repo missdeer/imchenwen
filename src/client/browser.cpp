@@ -296,7 +296,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
     doPlayByMediaPlayer(mi);
 }
 
-void Browser::resolvingError()
+void Browser::resolvingError(const QUrl& u)
 {
     if (m_waitingSpinner->isSpinning())
         m_waitingSpinner->stop();
@@ -304,7 +304,7 @@ void Browser::resolvingError()
     m_waitingSpinner = nullptr;
 
     QMessageBox::warning(mainWindow(),
-                         tr("Error"), tr("Resolving link address failed!"), QMessageBox::Ok);
+                         tr("Error"), tr("Resolving link address") + u.toString() + tr(" failed!"), QMessageBox::Ok);
 }
 
 void Browser::resolvingSilentFinished(MediaInfoPtr mi)
@@ -322,7 +322,7 @@ void Browser::resolvingSilentFinished(MediaInfoPtr mi)
     doPlayByMediaPlayer(mi);
 }
 
-void Browser::resolvingSilentError()
+void Browser::resolvingSilentError(const QUrl&)
 {
 
 }
