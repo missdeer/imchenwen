@@ -121,18 +121,19 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         ++it;
         QAction *before(it == actions.cend() ? nullptr : *it);
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
-        menu->addSeparator();
-        QAction *playAction = menu->addAction(tr("Play Link by Media Player"));
-        connect(playAction, &QAction::triggered, [this]() {
-            if (m_rightClickedUrl.toString().startsWith("http://") || m_rightClickedUrl.toString().startsWith("https://")  )
+
+        if (m_rightClickedUrl.toString().startsWith("http://") || m_rightClickedUrl.toString().startsWith("https://")  )
+        {
+            menu->addSeparator();
+            QAction *playAction = menu->addAction(tr("Play Link by Media Player"));
+            connect(playAction, &QAction::triggered, [this]() {
                 Browser::instance().playByMediaPlayer(m_rightClickedUrl);
-            else
-                QMessageBox::warning(this, tr("Error"), tr("Invalid URL ") + m_rightClickedUrl.toString() + tr(", can't be resolved."), QMessageBox::Ok);
-        });
-        QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
-        connect(openAction, &QAction::triggered, [this](){
-            QDesktopServices::openUrl(m_rightClickedUrl);
-        });
+            });
+            QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
+            connect(openAction, &QAction::triggered, [this](){
+                QDesktopServices::openUrl(m_rightClickedUrl);
+            });
+        }
     }
     else
     {
