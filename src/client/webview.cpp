@@ -124,7 +124,10 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         menu->addSeparator();
         QAction *playAction = menu->addAction(tr("Play Link by Media Player"));
         connect(playAction, &QAction::triggered, [this]() {
-            Browser::instance().playByMediaPlayer(m_rightClickedUrl);
+            if (m_rightClickedUrl.toString().startsWith("http://") || m_rightClickedUrl.toString().startsWith("https://")  )
+                Browser::instance().playByMediaPlayer(m_rightClickedUrl);
+            else
+                QMessageBox::warning(this, tr("Error"), tr("Invalid URL ") + m_rightClickedUrl.toString() + tr(", can't be resolved."), QMessageBox::Ok);
         });
         QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
         connect(openAction, &QAction::triggered, [this](){
@@ -135,8 +138,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     {
         m_rightClickedUrl = QUrl();
     }
-    if (page()->contextMenuData().selectedText().isEmpty())
-        menu->addAction(page()->action(QWebEnginePage::SavePage));
+
     connect(menu, &QMenu::aboutToHide, menu, &QObject::deleteLater);
     menu->popup(event->globalPos());
 }
