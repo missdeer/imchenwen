@@ -42,6 +42,7 @@ class LinkResolver : public QObject
 public:
     explicit LinkResolver(QObject *parent = 0);
     void resolve(const QUrl& url, bool silent = false);
+    void resolveVIP(const QUrl& url);
 signals:
     void resolvingFinished(MediaInfoPtr);
     void resolvingError(const QUrl&);

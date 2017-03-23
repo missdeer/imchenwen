@@ -65,6 +65,56 @@ void LinkResolver::resolve(const QUrl &url, bool silent)
             this, SLOT(finished()));
 }
 
+void LinkResolver::resolveVIP(const QUrl &url)
+{
+    bool inChina = Websites::instance().isInChina(url);
+    Config cfg;
+    bool inChinaLocalMode = cfg.read<bool>("inChinaLocalMode");
+    bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
+    bool localMode = (inChina ? inChinaLocalMode : abroadLocalMode);
+    auto it = std::find_if(m_history.begin(), m_history.end(),
+                           [this, url, localMode](HistoryItemPtr h) {return h->url.startsWith(url.toString()) && h->localMode == localMode;});
+    if (m_history.end() != it)
+    {
+        if ((*it)->time.secsTo(QTime::currentTime()) > 60 * 60)
+        {
+            m_history.erase(it);
+        }
+        else
+        {
+            emit resolvingFinished((*it)->mi);
+            return;
+        }
+    }
+    m_content.clear();
+    QNetworkRequest req;
+    if (inChina)
+        req.setUrl(QUrl(inChinaLocalMode ? "http://127.0.0.1:8765/v1/parse" : "https://pcn.xyying.me/v1/parse"));
+    else
+        req.setUrl(QUrl(abroadLocalMode ? "http://127.0.0.1:8765/v1/parse" : "https://pjp.xyying.me/v1/parse"));
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    req.setRawHeader("RequestUrl", url.toString().toUtf8());
+    req.setRawHeader("LocalMode", (inChina ? (inChinaLocalMode ? "true" : "false") : (abroadLocalMode ? "true" : "false")));
+    QByteArray data;
+    data.append("apikey=");
+    QString apikey = cfg.read<QString>("apiKey");
+    if (apikey.isEmpty())
+        apikey = "yb2Q1ozScRfJJ";
+    data.append(apikey);
+    data.append("&parser=vip");
+    data.append("&url=");
+    data.append(url.toString().toUtf8().toPercentEncoding());
+    QNetworkReply *reply = nam.post(req, data);
+
+    connect(reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+            this, SLOT(error(QNetworkReply::NetworkError)));
+    connect(reply, SIGNAL(sslErrors(QList<QSslError>)),
+            this, SLOT(sslErrors(QList<QSslError>)));
+    connect(reply, SIGNAL(finished()),
+            this, SLOT(finished()));
+}
+
 void LinkResolver::error(QNetworkReply::NetworkError code)
 {
     qDebug() << "resolving error:" << code;

@@ -165,12 +165,12 @@ void Browser::loadSettings()
 
 void Browser::playByMediaPlayer(const QUrl& u)
 {
-    resolveLink(u);
+    resolveLink(u, false);
 }
 
 void Browser::playVIPByMediaPlayer(const QUrl &u)
 {
-
+    resolveLink(u, true);
 }
 
 void Browser::clipboardChanged()
@@ -214,7 +214,7 @@ BrowserWindow *Browser::newMainWindow()
     return nmw;
 }
 
-void Browser::resolveLink(const QUrl &u)
+void Browser::resolveLink(const QUrl &u, bool vip)
 {
     if (!m_waitingSpinner)
     {
@@ -235,7 +235,10 @@ void Browser::resolveLink(const QUrl &u)
 
     m_waitingSpinner->start();
 
-    m_linkResolver.resolve(u);
+    if (vip)
+        m_linkResolver.resolveVIP(u);
+    else
+        m_linkResolver.resolve(u);
 }
 
 void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)

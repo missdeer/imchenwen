@@ -79,7 +79,7 @@ private slots:
     void errorOccurred(QProcess::ProcessError error);
 private:
     explicit Browser(QObject *parent = 0);
-    void resolveLink(const QUrl& u);
+    void resolveLink(const QUrl& u, bool vip);
     void doPlayByMediaPlayer(MediaInfoPtr mi);
     void clean();
 private:
