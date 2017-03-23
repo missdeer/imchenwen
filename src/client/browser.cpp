@@ -168,6 +168,11 @@ void Browser::playByMediaPlayer(const QUrl& u)
     resolveLink(u);
 }
 
+void Browser::playVIPByMediaPlayer(const QUrl &u)
+{
+
+}
+
 void Browser::clipboardChanged()
 {
     QClipboard *clipboard = QApplication::clipboard();

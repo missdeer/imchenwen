@@ -64,7 +64,6 @@ private:
     QAction *m_stopAction;
     QAction *m_reloadAction;
     QAction *m_stopReloadAction;
-    QAction *m_playInMediaPlayerAction;
     UrlLineEdit *m_urlLineEdit;
 #if defined(Q_OS_WIN)
     QNetworkAccessManager* m_nam;

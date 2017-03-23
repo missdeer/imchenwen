@@ -21,5 +21,6 @@
         <file>search.png</file>
         <file>websites.xml</file>
         <file>play.png</file>
+        <file>playvip.png</file>
     </qresource>
 </RCC>

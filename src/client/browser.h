@@ -66,6 +66,7 @@ public:
     void stopParsedProcess();
     void changeParsedProcessState();
     void playByMediaPlayer(const QUrl& u);
+    void playVIPByMediaPlayer(const QUrl& u);
 signals:
 
 private slots:

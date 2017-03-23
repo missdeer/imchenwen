@@ -387,11 +387,17 @@ QToolBar *BrowserWindow::createToolBar()
     int size = m_urlLineEdit->sizeHint().height();
     navigationBar->setIconSize(QSize(size, size));
 
-    m_playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
-    connect(m_playInMediaPlayerAction, &QAction::triggered, [this]() {
+    QAction *playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
+    connect(playInMediaPlayerAction, &QAction::triggered, [this]() {
         Browser::instance().playByMediaPlayer(QUrl(m_urlLineEdit->text()));
     });
-    navigationBar->addAction(m_playInMediaPlayerAction);
+    navigationBar->addAction(playInMediaPlayerAction);
+
+    QAction *playVIPInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play as VIP by Media Player"), this);
+    connect(playVIPInMediaPlayerAction, &QAction::triggered, [this]() {
+        Browser::instance().playVIPByMediaPlayer(QUrl(m_urlLineEdit->text()));
+    });
+    navigationBar->addAction(playVIPInMediaPlayerAction);
     return navigationBar;
 }
 
