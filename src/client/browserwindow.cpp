@@ -22,6 +22,7 @@
 #include <QNetworkReply>
 #include <QTimer>
 #include <QInputDialog>
+#include <QDesktopServices>
 
 const char *BrowserWindow::defaultHome = "http://www.youku.com/";
 
@@ -272,10 +273,23 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
 QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
-    QAction *aboutImchenwen = helpMenu->addAction(tr("About imchenwen"));
-    connect(aboutImchenwen, &QAction::triggered, [this]() {
+
+    connect(helpMenu->addAction(tr("About imchenwen")), &QAction::triggered, [this]() {
         AboutDialog dlg(this);
         dlg.exec();
+    });
+
+    connect(helpMenu->addAction(tr("Install Flash")), &QAction::triggered, []() {
+       QDesktopServices::openUrl(QUrl("https://get.adobe.com/flashplayer/otherversions"));
+    });
+    connect(helpMenu->addAction(tr("Install MPV")), &QAction::triggered, []() {
+       QDesktopServices::openUrl(QUrl("https://mpv.io"));
+    });
+    connect(helpMenu->addAction(tr("Install MPlayer")), &QAction::triggered, []() {
+       QDesktopServices::openUrl(QUrl("http://www.mplayerhq.hu/design7/dload.html#binaries"));
+    });
+    connect(helpMenu->addAction(tr("Install VLC")), &QAction::triggered, []() {
+       QDesktopServices::openUrl(QUrl("http://www.videolan.org/"));
     });
     return helpMenu;
 }
