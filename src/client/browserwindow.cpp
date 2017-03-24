@@ -291,6 +291,11 @@ QMenu *BrowserWindow::createHelpMenu()
     connect(helpMenu->addAction(tr("Install VLC")), &QAction::triggered, []() {
        QDesktopServices::openUrl(QUrl("http://www.videolan.org/"));
     });
+#if defined(Q_OS_WIN)
+    connect(helpMenu->addAction(tr("Install MPC-HC")), &QAction::triggered, []() {
+       QDesktopServices::openUrl(QUrl("https://mpc-hc.org/"));
+    });
+#endif
     return helpMenu;
 }
 
