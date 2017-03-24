@@ -190,7 +190,7 @@ void LinkResolver::finished()
     }
 
     bool localMode = false;
-    if (QString(req.rawHeader("Silent")) == "true")
+    if (QString(req.rawHeader("LocalMode")) == "true")
         localMode = true;
     m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), localMode, mi }));
     // already ordered by time
