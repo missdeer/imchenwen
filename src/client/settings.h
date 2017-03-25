@@ -12,7 +12,7 @@ class SettingsDialog : public QDialog, public Ui_Settings
 public:
     SettingsDialog(QWidget *parent = 0);
     void accept();
-
+    void setCurrentPage(int index);
 private slots:
     void loadDefaults();
     void loadFromSettings();

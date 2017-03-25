@@ -217,6 +217,11 @@ void SettingsDialog::accept()
     QDialog::accept();
 }
 
+void SettingsDialog::setCurrentPage(int index)
+{
+    tabWidget->setCurrentIndex(index);
+}
+
 void SettingsDialog::showCookies()
 {
 }

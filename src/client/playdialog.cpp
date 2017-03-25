@@ -38,6 +38,7 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 {
     SettingsDialog dlg(this);
+    dlg.setCurrentPage(5);
     if (dlg.exec())
     {
         ui->cbPlayers->clear();
