@@ -22,7 +22,7 @@ void LinkResolver::resolve(const QUrl &url, bool silent)
     bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
     bool localMode = (inChina ? inChinaLocalMode : abroadLocalMode);
     auto it = std::find_if(m_history.begin(), m_history.end(),
-                           [this, url, localMode](HistoryItemPtr h) {return h->url.startsWith(url.toString()) && h->localMode == localMode;});
+                           [this, url, localMode](HistoryItemPtr h) {return h->url.startsWith(url.toString()) && h->localMode == localMode && h->vip == false;});
     if (m_history.end() != it)
     {
         if ((*it)->time.secsTo(QTime::currentTime()) > 60 * 60)
@@ -45,6 +45,7 @@ void LinkResolver::resolve(const QUrl &url, bool silent)
     req.setRawHeader("RequestUrl", url.toString().toUtf8());
     req.setRawHeader("Silent", silent ? "true" : "false");
     req.setRawHeader("LocalMode", (inChina ? (inChinaLocalMode ? "true" : "false") : (abroadLocalMode ? "true" : "false")));
+    req.setRawHeader("VIP", "false");
     QByteArray data;
     data.append("apikey=");
     QString apikey = cfg.read<QString>("apiKey");
@@ -73,7 +74,7 @@ void LinkResolver::resolveVIP(const QUrl &url)
     bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
     bool localMode = (inChina ? inChinaLocalMode : abroadLocalMode);
     auto it = std::find_if(m_history.begin(), m_history.end(),
-                           [this, url, localMode](HistoryItemPtr h) {return h->url.startsWith(url.toString()) && h->localMode == localMode;});
+                           [this, url, localMode](HistoryItemPtr h) {return h->url.startsWith(url.toString()) && h->localMode == localMode && h->vip == true;});
     if (m_history.end() != it)
     {
         if ((*it)->time.secsTo(QTime::currentTime()) > 60 * 60)
@@ -95,6 +96,7 @@ void LinkResolver::resolveVIP(const QUrl &url)
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     req.setRawHeader("RequestUrl", url.toString().toUtf8());
     req.setRawHeader("LocalMode", (inChina ? (inChinaLocalMode ? "true" : "false") : (abroadLocalMode ? "true" : "false")));
+    req.setRawHeader("VIP", "true");
     QByteArray data;
     data.append("apikey=");
     QString apikey = cfg.read<QString>("apiKey");
@@ -202,7 +204,10 @@ void LinkResolver::finished()
     bool localMode = false;
     if (QString(req.rawHeader("LocalMode")) == "true")
         localMode = true;
-    m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), localMode, mi }));
+    bool vip = false;
+    if (QString(req.rawHeader("VIP")) == "true")
+        vip = true;
+    m_history.push_back(HistoryItemPtr(new HistoryItem { QString(requestUrl), QTime::currentTime(), localMode, vip, mi }));
     // already ordered by time
     // remove the old elements > 1 hour
     while (m_history[0]->time.secsTo(QTime::currentTime()) > 20 * 60)
