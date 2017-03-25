@@ -22,6 +22,7 @@ struct MediaInfo
     Streams ykdl;
     Streams you_get;
     Streams youtube_dl;
+    Streams vip;
 };
 
 typedef QSharedPointer<MediaInfo> MediaInfoPtr;

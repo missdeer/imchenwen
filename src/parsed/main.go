@@ -93,6 +93,9 @@ func handleParseRequest(c *gin.Context) {
 			case "youtube-dl":
 				go getYoutubeDLParseCmdResult(u, res)
 				count++
+			case "vip", "mt2t":
+				go getMT2TParseCmdResult(u, res)
+				count++
 			}
 		}
 		h := gin.H{"Result": "OK"}

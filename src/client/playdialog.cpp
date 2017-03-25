@@ -31,6 +31,10 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
     {
         addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
     }
+    for (auto stream : mi->vip)
+    {
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+    }
     ui->listMedia->setCurrentRow(0);
     m_mediaInfo = mi;
 }
@@ -85,8 +89,10 @@ void PlayDialog::doOk()
         m_selectedMedia = m_mediaInfo->ykdl[currentRow];
     else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())
         m_selectedMedia = m_mediaInfo->you_get[currentRow - m_mediaInfo->ykdl.length()];
+    else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())
+        m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())];
     else
-        m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - m_mediaInfo->ykdl.length() - m_mediaInfo->you_get.length()];
+        m_selectedMedia = m_mediaInfo->vip[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
 
     int currentIndex = ui->cbPlayers->currentIndex();
     m_selectedPlayer = m_players.at(currentIndex);

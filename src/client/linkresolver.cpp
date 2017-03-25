@@ -179,8 +179,18 @@ void LinkResolver::finished()
         parseNode(docObj["YoutubeDL"].toObject(), mi, mi->youtube_dl);
     }
 
+    if (docObj["MT2T"].isObject())
+    {
+        parseNode(docObj["MT2T"].toObject(), mi, mi->vip);
+    }
+
+    if (docObj["AikanTV"].isObject())
+    {
+        parseNode(docObj["AikanTV"].toObject(), mi, mi->vip);
+    }
+
     if ((mi->title.isEmpty() && mi->site.isEmpty()) ||
-        (mi->you_get.isEmpty() && mi->ykdl.isEmpty() && mi->youtube_dl.isEmpty()))
+        (mi->you_get.isEmpty() && mi->ykdl.isEmpty() && mi->youtube_dl.isEmpty() && mi->vip.isEmpty()))
     {
         if (QString(silent) == "true")
             emit resolvingSilentError(QUrl(QString(requestUrl)));
