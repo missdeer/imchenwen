@@ -32,7 +32,7 @@ type YouGetJSON struct {
 func parseByYouGetJSON(u string, r chan interface{}) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("you-get", "-i", "--json", u)
+	cmd := exec.Command(findExecutable("you-get"), "-i", "--json", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("you-get stdout pipe failed", err)
@@ -76,7 +76,7 @@ startProcess:
 	c := strings.Split(downloadURL, " ")
 	c[0] = "-u"
 	c = append([]string{"--no-caption"}, c...)
-	cmd := exec.Command("you-get", c...)
+	cmd := exec.Command(findExecutable("you-get"), c...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("you-get stdout pipe failed", err)
@@ -130,7 +130,7 @@ startProcess:
 func parseByYouGet(u string, r chan *CmdResponse) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("you-get", "-i", u)
+	cmd := exec.Command(findExecutable("you-get"), "-i", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("you-get stdout pipe failed", err)

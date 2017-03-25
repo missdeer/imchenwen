@@ -11,7 +11,7 @@ import (
 func parseByYKDLJSON(u string, r chan interface{}) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("ykdl", "-i", "--json", u)
+	cmd := exec.Command(findExecutable("ykdl"), "-i", "--json", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("ykdl stdout pipe failed", err)
@@ -50,7 +50,7 @@ startProcess:
 func parseByYKDL(u string, r chan *CmdResponse) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("ykdl", "-i", "--json", u)
+	cmd := exec.Command(findExecutable("ykdl"), "-i", "--json", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("ykdl stdout pipe failed", err)

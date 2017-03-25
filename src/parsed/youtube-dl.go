@@ -28,7 +28,7 @@ func getYoutubeDLParseCmdResult(u string, res chan *CmdResult) {
 func parseByYoutubeDLJSON(u string, r chan interface{}) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("youtube-dl", "--skip-download", "--print-json", u)
+	cmd := exec.Command(findExecutable("youtube-dl"), "--skip-download", "--print-json", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("youtube-dl stdout pipe failed", err)
@@ -90,7 +90,7 @@ type YoutubeDLJSON struct {
 func parseByYoutubeDL(u string, r chan *CmdResponse) {
 	tryCount := 1
 startProcess:
-	cmd := exec.Command("youtube-dl", "--skip-download", "--print-json", u)
+	cmd := exec.Command(findExecutable("youtube-dl"), "--skip-download", "--print-json", u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("youtube-dl stdout pipe failed", err)
