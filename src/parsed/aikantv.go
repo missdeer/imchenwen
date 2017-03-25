@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -16,7 +17,12 @@ func parseByAikanTV(u string, r chan *CmdResponse) {
 		"url": {u},
 	}
 
-	req, err := http.NewRequest("GET", "https://aikan-tv.com/tong.php?"+getValues.Encode(), nil)
+	parseURL := "https://aikan-tv.com/tong.php?"
+	if strings.HasPrefix(u, "http://www.iqiyi.com") {
+		parseURL = "https://aikan-tv.com/qy.php?"
+	}
+
+	req, err := http.NewRequest("GET", parseURL+getValues.Encode(), nil)
 	if err != nil {
 		log.Println("Could not parse mt2t request:", err)
 		r <- nil
@@ -30,7 +36,7 @@ func parseByAikanTV(u string, r chan *CmdResponse) {
 doRequest:
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Println("Could not send mt2t request:", err)
+		log.Println("Could not send aikan-tv request:", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -42,7 +48,7 @@ doRequest:
 
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		log.Println("mt2t request not 200")
+		log.Println("aikan-tv request not 200")
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -53,7 +59,7 @@ doRequest:
 	}
 	content, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("cannot read mt2t content", err)
+		log.Println("cannot read aikan-tv content", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -85,12 +86,18 @@ doRequest:
 	}
 
 	defer resp.Body.Close()
+	req, _ := url.Parse(u)
 
 	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.HasPrefix(line, "http://") || strings.HasPrefix(line, "https://") {
 			res = append(res, line)
+			continue
+		}
+		if !strings.HasPrefix(line, "#") {
+			l := fmt.Sprintf("%s://%s/%s", req.Scheme, req.Host, line)
+			res = append(res, l)
 		}
 	}
 	return
@@ -149,14 +156,12 @@ doRequest:
 		return
 	}
 
-	if result.Message == "200" {
+	fmt.Println(result)
+	if result.Message == "200" || result.Message == "ok" {
 		r, _ := url.QueryUnescape(result.URL)
 		if result.Ext == "xml" {
 			return extractURLsFromXML(r)
 		}
-	}
-	if result.Message == "ok" {
-		r, _ := url.QueryUnescape(result.URL)
 		if result.Ext == "m3u8" || result.Ext == "m3u8_list" {
 			return extractURLsFromM3U8(r)
 		}
