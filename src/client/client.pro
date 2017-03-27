@@ -81,6 +81,7 @@ macx: {
 }
 
 win32: {
+    QT += concurrent
     CONFIG(release, debug|release) : {
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
 

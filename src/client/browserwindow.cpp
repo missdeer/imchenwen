@@ -23,6 +23,9 @@
 #include <QTimer>
 #include <QInputDialog>
 #include <QDesktopServices>
+#if defined(Q_OS_WIN)
+#include <QtConcurrent>
+#endif
 
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -83,7 +86,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     m_nam = nullptr;
     // preload libeay32.dll and ssleay32.dll on Windows,
     // so it won't hang when try to resolve link at the first time
-    QTimer::singleShot(5000, this, SLOT(ping()));
+    QtConcurrent::run(this, BrowserWindow::ping);
 #endif
 }
 
