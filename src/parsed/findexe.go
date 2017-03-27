@@ -27,7 +27,7 @@ func fileExists(path string) (bool, error) {
 
 func findExecutable(name string) string {
 	pathEnv := os.Getenv("PATH")
-	paths := strings.Split(pathEnv, ":")
+	paths := append(strings.Split(pathEnv, ":"), "/usr/local/bin")
 	for _, p := range paths {
 		if b, _ := fileExists(path.Join(p, name)); b {
 			return path.Join(p, name)
