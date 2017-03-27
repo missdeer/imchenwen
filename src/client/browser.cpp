@@ -61,6 +61,9 @@ Browser::Browser(QObject* parent)
     connect(&m_linkResolver, &LinkResolver::resolvingSilentFinished, this, &Browser::resolvingSilentFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingSilentError, this, &Browser::resolvingSilentError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
+
+    loadSettings();
+
     Config cfg;
     if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
     {

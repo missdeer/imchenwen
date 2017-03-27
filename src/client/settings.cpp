@@ -77,7 +77,7 @@ void SettingsDialog::loadFromSettings()
 {
     Config cfg;
     cfg.beginGroup(QLatin1String("MainWindow"));
-    homeLineEdit->setText(cfg.read("home", QString(BrowserWindow::defaultHome)));
+    homeLineEdit->setText(cfg.read<QString>("home"));
     cfg.endGroup();
 
     cfg.beginGroup(QLatin1String("history"));

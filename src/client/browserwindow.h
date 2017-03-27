@@ -27,8 +27,6 @@ public:
     void loadPage(const QString &url);
     void loadPage(const QUrl &url);
     void loadHomePage();
-
-    static const char *defaultHome;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

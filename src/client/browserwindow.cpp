@@ -24,8 +24,6 @@
 #include <QInputDialog>
 #include <QDesktopServices>
 
-const char *BrowserWindow::defaultHome = "http://www.youku.com/";
-
 BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
     , m_tabWidget(new TabWidget(this))
@@ -567,7 +565,10 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
 
 void BrowserWindow::loadHomePage()
 {
-    loadPage(QLatin1String(defaultHome));
+    Config cfg;
+    cfg.beginGroup(QLatin1String("MainWindow"));
+    loadPage(cfg.read<QString>("home"));
+    cfg.endGroup();
 }
 
 void BrowserWindow::loadPage(const QString &page)
