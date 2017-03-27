@@ -15,6 +15,12 @@
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
 #include <QNetworkProxy>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#if defined(Q_OS_WIN)
+#include <QtConcurrent>
+#endif
 
 static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = 0)
 {
@@ -71,6 +77,13 @@ Browser::Browser(QObject* parent)
     }
 
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
+
+#if defined(Q_OS_WIN)
+    m_nam = nullptr;
+    // preload libeay32.dll and ssleay32.dll on Windows,
+    // so it won't hang when try to resolve link at the first time
+    QtConcurrent::run(this, &Browser::ping);
+#endif
 }
 
 Browser::~Browser()
@@ -395,3 +408,21 @@ void Browser::changeParsedProcessState()
         Browser::instance().stopParsedProcess();
     }
 }
+
+#if defined(Q_OS_WIN)
+void Browser::ping()
+{
+    m_nam = new QNetworkAccessManager;
+    QNetworkReply* reply = m_nam->get(QNetworkRequest(QUrl("https://if.yii.li")));
+    connect(reply, SIGNAL(finished()), this, SLOT(finished()));
+}
+
+void Browser::finished()
+{
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
+    m_nam->deleteLater();
+    m_nam = nullptr;
+}
+
+#endif

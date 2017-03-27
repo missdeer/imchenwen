@@ -46,6 +46,10 @@
 #include <QProcess>
 #include "linkresolver.h"
 
+QT_BEGIN_NAMESPACE
+class QNetworkAccessManager;
+QT_END_NAMESPACE
+
 class BrowserWindow;
 class WaitingSpinnerWidget;
 
@@ -70,6 +74,10 @@ public:
 signals:
 
 private slots:
+#if defined(Q_OS_WIN)
+    void finished();
+    void ping();
+#endif
 
     void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
@@ -88,5 +96,8 @@ private:
     QProcess m_process;
     QProcess m_parsedProcess;
     LinkResolver m_linkResolver;
+#if defined(Q_OS_WIN)
+    QNetworkAccessManager* m_nam;
+#endif
 };
 #endif // BROWSER_H
