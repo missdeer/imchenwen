@@ -538,9 +538,7 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
 void BrowserWindow::loadHomePage()
 {
     Config cfg;
-    cfg.beginGroup(QLatin1String("MainWindow"));
-    loadPage(cfg.read<QString>("home"));
-    cfg.endGroup();
+    loadPage(cfg.read<QString>("defaultHome"));
 }
 
 void BrowserWindow::loadPage(const QString &page)

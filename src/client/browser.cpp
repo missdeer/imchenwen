@@ -107,8 +107,6 @@ Browser &Browser::instance()
 void Browser::loadSettings()
 {
     Config cfg;
-    cfg.beginGroup(QLatin1String("websettings"));
-
     QWebEngineSettings *defaultSettings = QWebEngineSettings::globalSettings();
     QWebEngineProfile *defaultProfile = QWebEngineProfile::defaultProfile();
 
@@ -153,30 +151,23 @@ void Browser::loadSettings()
         break;
     }
 
-    cfg.endGroup();
-    cfg.beginGroup(QLatin1String("cookies"));
-
     QWebEngineProfile::PersistentCookiesPolicy persistentCookiesPolicy = QWebEngineProfile::PersistentCookiesPolicy(cfg.read<int>(QLatin1String("persistentCookiesPolicy")));
     defaultProfile->setPersistentCookiesPolicy(persistentCookiesPolicy);
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
 
-    cfg.endGroup();
-
-    cfg.beginGroup(QLatin1String("proxy"));
     QNetworkProxy proxy;
-    if (cfg.read<bool>(QLatin1String("enabled"), false)) {
-        if (cfg.read<int>(QLatin1String("type"), 0) == 0)
+    if (cfg.read<bool>(QLatin1String("enableProxy"), false)) {
+        if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
             proxy = QNetworkProxy::Socks5Proxy;
         else
             proxy = QNetworkProxy::HttpProxy;
-        proxy.setHostName(cfg.read<QString>(QLatin1String("hostName")));
-        proxy.setPort(cfg.read<int>(QLatin1String("port"), 1080));
-        proxy.setUser(cfg.read<QString>(QLatin1String("userName")));
-        proxy.setPassword(cfg.read<QString>(QLatin1String("password")));
+        proxy.setHostName(cfg.read<QString>(QLatin1String("proxyHostName")));
+        proxy.setPort(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+        proxy.setUser(cfg.read<QString>(QLatin1String("proxyUserName")));
+        proxy.setPassword(cfg.read<QString>(QLatin1String("proxyPassword")));
     }
     QNetworkProxy::setApplicationProxy(proxy);
-    cfg.endGroup();
 }
 
 void Browser::playByMediaPlayer(const QUrl& u)

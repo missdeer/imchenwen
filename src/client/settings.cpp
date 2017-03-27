@@ -76,11 +76,8 @@ void SettingsDialog::loadDefaults()
 void SettingsDialog::loadFromSettings()
 {
     Config cfg;
-    cfg.beginGroup(QLatin1String("MainWindow"));
-    homeLineEdit->setText(cfg.read<QString>("home"));
-    cfg.endGroup();
+    homeLineEdit->setText(cfg.read<QString>("defaultHome"));
 
-    cfg.beginGroup(QLatin1String("history"));
     int historyExpire = cfg.read<int>("historyExpire");
     int idx = 0;
     switch (historyExpire) {
@@ -94,7 +91,6 @@ void SettingsDialog::loadFromSettings()
         idx = 5;
     }
     expireHistory->setCurrentIndex(idx);
-    cfg.endGroup();
 
     QString downloadDirectory = cfg.read(QLatin1String("downloadDirectory"), downloadsLocation->text());
     downloadsLocation->setText(downloadDirectory);
@@ -102,7 +98,6 @@ void SettingsDialog::loadFromSettings()
     openLinksIn->setCurrentIndex(cfg.read<int>(QLatin1String("openLinksIn"), openLinksIn->currentIndex()));
 
     // Appearance
-    cfg.beginGroup(QLatin1String("websettings"));
     fixedFont = qvariant_cast<QFont>(cfg.read(QLatin1String("fixedFont"), QVariant(fixedFont)));
     standardFont = qvariant_cast<QFont>(cfg.read(QLatin1String("standardFont"), QVariant(standardFont)));
 
@@ -116,28 +111,22 @@ void SettingsDialog::loadFromSettings()
     httpUserAgent->setText(cfg.read(QLatin1String("httpUserAgent"), httpUserAgent->text()));
     httpAcceptLanguage->setText(cfg.read(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text()));
     faviconDownloadMode->setCurrentIndex(cfg.read<int>(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex()));
-    cfg.endGroup();
 
     // Privacy
-    cfg.beginGroup(QLatin1String("cookies"));
-
     int persistentCookiesPolicy = cfg.read<int>(QLatin1String("persistentCookiesPolicy"), sessionCookiesCombo->currentIndex());
     sessionCookiesCombo->setCurrentIndex(persistentCookiesPolicy);
 
     QString pdataPath = cfg.read(QLatin1String("persistentDataPath"), persistentDataPath->text());
     persistentDataPath->setText(pdataPath);
 
-    cfg.endGroup();
 
     // Proxy
-    cfg.beginGroup(QLatin1String("proxy"));
-    proxySupport->setChecked(cfg.read<bool>(QLatin1String("enabled"), false));
-    proxyType->setCurrentIndex(cfg.read<int>(QLatin1String("type"), 0));
-    proxyHostName->setText(cfg.read<QString>(QLatin1String("hostName")));
-    proxyPort->setValue(cfg.read<int>(QLatin1String("port"), 1080));
-    proxyUserName->setText(cfg.read<QString>(QLatin1String("userName")));
-    proxyPassword->setText(cfg.read<QString>(QLatin1String("password")));
-    cfg.endGroup();
+    proxySupport->setChecked(cfg.read<bool>(QLatin1String("enableProxy"), false));
+    proxyType->setCurrentIndex(cfg.read<int>(QLatin1String("proxyType"), 0));
+    proxyHostName->setText(cfg.read<QString>(QLatin1String("proxyHostName")));
+    proxyPort->setValue(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+    proxyUserName->setText(cfg.read<QString>(QLatin1String("proxyUserName")));
+    proxyPassword->setText(cfg.read<QString>(QLatin1String("proxyPassword")));
 
     // external player
     cfg.read("externalPlayers", m_players);
@@ -150,13 +139,10 @@ void SettingsDialog::loadFromSettings()
 void SettingsDialog::saveToSettings()
 {
     Config cfg;
-    cfg.beginGroup(QLatin1String("MainWindow"));
-    cfg.write(QLatin1String("home"), homeLineEdit->text());
-    cfg.endGroup();
+    cfg.write(QLatin1String("defaultHome"), homeLineEdit->text());
 
     cfg.write(QLatin1String("openLinksIn"), openLinksIn->currentIndex());
 
-    cfg.beginGroup(QLatin1String("history"));
     int historyExpire = expireHistory->currentIndex();
     int idx = -1;
     switch (historyExpire) {
@@ -168,10 +154,8 @@ void SettingsDialog::saveToSettings()
     case 5: idx = -1; break;
     }
     cfg.write(QLatin1String("historyExpire"), idx);
-    cfg.endGroup();
 
     // Appearance
-    cfg.beginGroup(QLatin1String("websettings"));
     cfg.write(QLatin1String("fixedFont"), fixedFont);
     cfg.write(QLatin1String("standardFont"), standardFont);
     cfg.write(QLatin1String("enableJavascript"), enableJavascript->isChecked());
@@ -181,28 +165,21 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("httpUserAgent"), httpUserAgent->text());
     cfg.write(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text());
     cfg.write(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex());
-    cfg.endGroup();
 
     //Privacy
-    cfg.beginGroup(QLatin1String("cookies"));
-
     int persistentCookiesPolicy = sessionCookiesCombo->currentIndex();
     cfg.write(QLatin1String("persistentCookiesPolicy"), persistentCookiesPolicy);
 
     QString pdataPath = persistentDataPath->text();
     cfg.write(QLatin1String("persistentDataPath"), pdataPath);
 
-    cfg.endGroup();
-
     // proxy
-    cfg.beginGroup(QLatin1String("proxy"));
-    cfg.write(QLatin1String("enabled"), proxySupport->isChecked());
-    cfg.write(QLatin1String("type"), proxyType->currentIndex());
-    cfg.write(QLatin1String("hostName"), proxyHostName->text());
-    cfg.write(QLatin1String("port"), proxyPort->text());
-    cfg.write(QLatin1String("userName"), proxyUserName->text());
-    cfg.write(QLatin1String("password"), proxyPassword->text());
-    cfg.endGroup();
+    cfg.write(QLatin1String("enableProxy"), proxySupport->isChecked());
+    cfg.write(QLatin1String("proxyType"), proxyType->currentIndex());
+    cfg.write(QLatin1String("proxyHostName"), proxyHostName->text());
+    cfg.write(QLatin1String("proxyPort"), proxyPort->text());
+    cfg.write(QLatin1String("proxyUserName"), proxyUserName->text());
+    cfg.write(QLatin1String("proxyPassword"), proxyPassword->text());
 
     Browser::instance().loadSettings();
 }
