@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/kardianos/osext"
@@ -27,14 +27,14 @@ func findExecutable(name string) string {
 	pathEnv := os.Getenv("PATH")
 	paths := strings.Split(pathEnv, ";")
 	for _, p := range paths {
-		if b, _ := fileExists(path.Join(p, name+".exe")); b {
-			return path.Join(p, name+".exe")
+		if b, _ := fileExists(filepath.Join(p, name+".exe")); b {
+			return filepath.Join(p, name+".exe")
 		}
 	}
 	if executable, err := osext.Executable(); err == nil {
-		p := path.Dir(executable)
-		if b, _ := fileExists(path.Join(p, name+".exe")); b {
-			return path.Join(p, name+".exe")
+		p := filepath.Dir(executable)
+		if b, _ := fileExists(filepath.Join(p, name+".exe")); b {
+			return filepath.Join(p, name+".exe")
 		}
 	}
 
