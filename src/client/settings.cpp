@@ -99,9 +99,7 @@ void SettingsDialog::loadFromSettings()
     QString downloadDirectory = cfg.read(QLatin1String("downloadDirectory"), downloadsLocation->text());
     downloadsLocation->setText(downloadDirectory);
 
-    cfg.beginGroup(QLatin1String("general"));
     openLinksIn->setCurrentIndex(cfg.read<int>(QLatin1String("openLinksIn"), openLinksIn->currentIndex()));
-    cfg.endGroup();
 
     // Appearance
     cfg.beginGroup(QLatin1String("websettings"));
@@ -156,9 +154,7 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("home"), homeLineEdit->text());
     cfg.endGroup();
 
-    cfg.beginGroup(QLatin1String("general"));
     cfg.write(QLatin1String("openLinksIn"), openLinksIn->currentIndex());
-    cfg.endGroup();
 
     cfg.beginGroup(QLatin1String("history"));
     int historyExpire = expireHistory->currentIndex();
