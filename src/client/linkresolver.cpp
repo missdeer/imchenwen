@@ -181,14 +181,14 @@ void LinkResolver::finished()
         parseNode(docObj["YoutubeDL"].toObject(), mi, mi->youtube_dl);
     }
 
-    if (docObj["MT2T"].isObject())
+    if (docObj["SFSFT"].isObject())
     {
-        parseNode(docObj["MT2T"].toObject(), mi, mi->vip);
+        parseNode(docObj["SFSFT"].toObject(), mi, mi->vip);
     }
 
-    if (docObj["AikanTV"].isObject())
+    if (docObj["VIPJieXi"].isObject())
     {
-        parseNode(docObj["AikanTV"].toObject(), mi, mi->vip);
+        parseNode(docObj["VIPJieXi"].toObject(), mi, mi->vip);
     }
 
     if ((mi->title.isEmpty() && mi->site.isEmpty()) ||
