@@ -103,7 +103,7 @@ void LinkResolver::resolveVIP(const QUrl &url)
     if (apikey.isEmpty())
         apikey = "yb2Q1ozScRfJJ";
     data.append(apikey);
-    data.append("&parser=vip");
+    data.append("&parser=mt2t,vipjiexi,sfsft");
     data.append("&url=");
     data.append(url.toString().toUtf8().toPercentEncoding());
     QNetworkReply *reply = nam.post(req, data);
@@ -189,6 +189,11 @@ void LinkResolver::finished()
     if (docObj["VIPJieXi"].isObject())
     {
         parseNode(docObj["VIPJieXi"].toObject(), mi, mi->vip);
+    }
+
+    if (docObj["MT2T"].isObject())
+    {
+        parseNode(docObj["MT2T"].toObject(), mi, mi->vip);
     }
 
     if ((mi->title.isEmpty() && mi->site.isEmpty()) ||
