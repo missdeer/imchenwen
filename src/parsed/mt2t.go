@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -35,7 +36,13 @@ func parseFlashVars(vars string) map[string]string {
 	return res
 }
 
-func extractURLsFromXML(u string) (res []string) {
+type Video struct {
+	File   []string `xml:"file"`
+	Size   []int    `xml:"size"`
+	Length []int    `xml:"second"`
+}
+
+func doExtractURLsFromXML(u string) (res Video) {
 	retry := 0
 	request, err := http.NewRequest("GET", u, nil)
 	if err != nil {
@@ -71,15 +78,66 @@ doRequest:
 		}
 		return
 	}
-	type Video struct {
-		File   string `xml:"file"`
-		Size   int    `xml:"size"`
-		Length int    `xml:"second"`
+	type Result struct {
+		XMLName xml.Name `xml:"ckplayer"`
+		Videos  Video    `xml:"video"`
+	}
+
+	var vv Result
+	if err = xml.Unmarshal(content, &vv); err != nil {
+		log.Println("unmarshalling XML content failed", err)
+		retry++
+		if retry < 3 {
+			time.Sleep(3 * time.Second)
+			goto doRequest
+		}
+		return
+	}
+
+	fmt.Println(len(vv.Videos.File), "videos:", vv.Videos)
+
+	return vv.Videos
+}
+
+func extractURLsFromXML(u string) (res []*Stream) {
+	retry := 0
+	request, err := http.NewRequest("GET", u, nil)
+	if err != nil {
+		log.Println("Could not parse get XML request:", err)
+		return
+	}
+
+	request.Header.Set("Referer", u)
+	request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
+	request.Header.Set("Accept", "application/json, text/javascript, */*")
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+doRequest:
+	resp, err := client.Do(request)
+	if err != nil {
+		log.Println("Could not send getting XML request:", err)
+		retry++
+		if retry < 3 {
+			time.Sleep(3 * time.Second)
+			goto doRequest
+		}
+		return
+	}
+
+	defer resp.Body.Close()
+
+	content, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("cannot read xml content", err)
+		retry++
+		if retry < 3 {
+			time.Sleep(3 * time.Second)
+			goto doRequest
+		}
+		return
 	}
 	type Result struct {
 		XMLName   xml.Name `xml:"ckplayer"`
 		FlashVars string   `xml:"flashvars"`
-		Videos    []Video  `xml:"video"`
 	}
 
 	var vv Result
@@ -94,15 +152,27 @@ doRequest:
 	}
 
 	vars := parseFlashVars(vv.FlashVars)
-	fmt.Println(vars)
-
-	for _, v := range vv.Videos {
-		res = append(res, v.File)
+	for k, v := range vars {
+		requestURL := u + "&" + v
+		videos := doExtractURLsFromXML(requestURL)
+		size := 0
+		urls := []string{}
+		for _, video := range videos.File {
+			urls = append(urls, video)
+		}
+		for _, s := range videos.Size {
+			size += s
+		}
+		res = append(res, &Stream{
+			Quality:  k,
+			Size:     strconv.Itoa(size),
+			RealURLs: urls,
+		})
 	}
 	return
 }
 
-func extractURLsFromM3U8(u string) (res []string) {
+func extractURLsFromM3U8(u string) (res []*Stream) {
 	retry := 0
 	request, err := http.NewRequest("GET", u, nil)
 	if err != nil {
@@ -130,21 +200,22 @@ doRequest:
 	req, _ := url.Parse(u)
 
 	scanner := bufio.NewScanner(resp.Body)
+	var urls []string
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.HasPrefix(line, "http://") || strings.HasPrefix(line, "https://") {
-			res = append(res, line)
+			urls = append(urls, line)
 			continue
 		}
 		if !strings.HasPrefix(line, "#") {
 			l := fmt.Sprintf("%s://%s/%s", req.Scheme, req.Host, line)
-			res = append(res, l)
+			urls = append(urls, l)
 		}
 	}
-	return
+	return append(res, &Stream{RealURLs: urls})
 }
 
-func postRequest(postBody string, host string, path string) (res []string) {
+func postRequest(postBody string, host string, path string) (res []*Stream) {
 	req, err := http.NewRequest("POST", host+path, strings.NewReader(postBody))
 	if err != nil {
 		log.Println("Could not parse post request:", err)
@@ -215,7 +286,7 @@ doRequest:
 		if result.Ext == "m3u8" || result.Ext == "m3u8_list" {
 			return extractURLsFromM3U8(r)
 		}
-		return []string{r}
+		return []*Stream{&Stream{RealURLs: []string{r}}}
 	}
 
 	return
@@ -285,17 +356,13 @@ doRequest:
 			"key":  {key},
 			"from": {"mt2t"},
 		}
-		urls := postRequest(postBody.Encode(), "http://mt2t.com", path)
-		if len(urls) > 0 {
+		streams := postRequest(postBody.Encode(), "http://mt2t.com", path)
+		if len(streams) > 0 {
 			req, _ := url.Parse(u)
 			resp := &CmdResponse{
-				Site:  req.Host,
-				Title: "VIP video",
-				Streams: []*Stream{
-					&Stream{
-						RealURLs: urls,
-					},
-				},
+				Site:    req.Host,
+				Title:   "VIP video",
+				Streams: streams,
 			}
 			r <- resp
 			return

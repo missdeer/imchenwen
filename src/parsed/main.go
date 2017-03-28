@@ -85,7 +85,6 @@ func handleParseRequest(c *gin.Context) {
 			"you-get":    getYouGetParseCmdResult,
 			"youtube-dl": getYoutubeDLParseCmdResult,
 			"mt2t":       getMT2TParseCmdResult,
-			"aikantv":    getAikanTVParseCmdResult,
 			"sfsft":      getSFSFTParseCmdResult,
 			"vip":        getVIPJieXiParseCmdResult,
 			"vipjiexi":   getVIPJieXiParseCmdResult,

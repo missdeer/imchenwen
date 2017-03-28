@@ -74,17 +74,13 @@ doRequest:
 			"url": {urlParam},
 			"up":  {"0"},
 		}
-		urls := postRequest(postBody.Encode(), "http://www.sfsft.com/", "api.php")
-		if len(urls) > 0 {
+		streams := postRequest(postBody.Encode(), "http://www.sfsft.com/", "api.php")
+		if len(streams) > 0 {
 			req, _ := url.Parse(u)
 			resp := &CmdResponse{
-				Site:  req.Host,
-				Title: "VIP video",
-				Streams: []*Stream{
-					&Stream{
-						RealURLs: urls,
-					},
-				},
+				Site:    req.Host,
+				Title:   "VIP video",
+				Streams: streams,
 			}
 			r <- resp
 			return
