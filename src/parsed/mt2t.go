@@ -37,8 +37,18 @@ func parseFlashVars(vars string) map[string]string {
 
 func extractURLsFromXML(u string) (res []string) {
 	retry := 0
+	request, err := http.NewRequest("GET", u, nil)
+	if err != nil {
+		log.Println("Could not parse get XML request:", err)
+		return
+	}
+
+	request.Header.Set("Referer", u)
+	request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
+	request.Header.Set("Accept", "application/json, text/javascript, */*")
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 doRequest:
-	resp, err := http.Get(u)
+	resp, err := client.Do(request)
 	if err != nil {
 		log.Println("Could not send getting XML request:", err)
 		retry++
@@ -94,8 +104,18 @@ doRequest:
 
 func extractURLsFromM3U8(u string) (res []string) {
 	retry := 0
+	request, err := http.NewRequest("GET", u, nil)
+	if err != nil {
+		log.Println("Could not parse get m3u8 request:", err)
+		return
+	}
+
+	request.Header.Set("Referer", u)
+	request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
+	request.Header.Set("Accept", "application/json, text/javascript, */*")
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 doRequest:
-	resp, err := http.Get(u)
+	resp, err := client.Do(request)
 	if err != nil {
 		log.Println("Could not send getting m3u8 request:", err)
 		retry++
@@ -127,7 +147,7 @@ doRequest:
 func postRequest(postBody string, host string, path string) (res []string) {
 	req, err := http.NewRequest("POST", host+path, strings.NewReader(postBody))
 	if err != nil {
-		log.Println("Could not parse login request:", err)
+		log.Println("Could not parse post request:", err)
 		return
 	}
 
@@ -160,6 +180,9 @@ doRequest:
 		}
 		return
 	}
+	for len(content) != 0 && string(content[0]) != "{" {
+		content = content[1:]
+	}
 
 	type YunAPIResult struct {
 		URL     string `json:"url"`
@@ -177,11 +200,14 @@ doRequest:
 		return
 	}
 
-	fmt.Println(result)
 	if result.Message == "200" || result.Message == "ok" {
 		r, _ := url.QueryUnescape(result.URL)
 		if !strings.HasPrefix(r, "https://") && !strings.HasPrefix(r, "http://") {
-			r = host + r
+			if host[len(host)-1] == byte('/') && r[0] == byte('/') {
+				r = host + r[1:]
+			} else {
+				r = host + r
+			}
 		}
 		if result.Ext == "xml" {
 			return extractURLsFromXML(r)

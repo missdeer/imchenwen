@@ -60,16 +60,14 @@ func handleParseRequest(c *gin.Context) {
 	if nativeJSONRequest(c) {
 		res := make(chan *NativeJSONResult, len(parsers))
 		count := 0
-		for _, p := range parsers {
-			switch strings.ToLower(p) {
-			case "ykdl":
-				go getYKDLParseNativeJSONResult(u, res)
-				count++
-			case "you-get":
-				go getYouGetParseNativeJSONResult(u, res)
-				count++
-			case "youtube-dl":
-				go getYoutubeDLParseNativeJSONResult(u, res)
+		m := map[string]func(string, chan *NativeJSONResult){
+			"ykdl":       getYKDLParseNativeJSONResult,
+			"you-get":    getYouGetParseNativeJSONResult,
+			"youtube-dl": getYoutubeDLParseNativeJSONResult,
+		}
+		for _, parserName := range parsers {
+			if p, ok := m[strings.ToLower(parserName)]; ok {
+				go p(u, res)
 				count++
 			}
 		}
@@ -82,25 +80,19 @@ func handleParseRequest(c *gin.Context) {
 	} else {
 		res := make(chan *CmdResult, len(parsers))
 		count := 0
-		for _, p := range parsers {
-			switch strings.ToLower(p) {
-			case "ykdl":
-				go getYKDLParseCmdResult(u, res)
-				count++
-			case "you-get":
-				go getYouGetParseCmdResult(u, res)
-				count++
-			case "youtube-dl":
-				go getYoutubeDLParseCmdResult(u, res)
-				count++
-			case "mt2t":
-				go getMT2TParseCmdResult(u, res)
-				count++
-			case "aikantv":
-				go getAikanTVParseCmdResult(u, res)
-				count++
-			case "vip", "vipjiexi":
-				go getVIPJieXiParseCmdResult(u, res)
+		m := map[string]func(string, chan *CmdResult){
+			"ykdl":       getYKDLParseCmdResult,
+			"you-get":    getYouGetParseCmdResult,
+			"youtube-dl": getYoutubeDLParseCmdResult,
+			"mt2t":       getMT2TParseCmdResult,
+			"aikantv":    getAikanTVParseCmdResult,
+			"sfsft":      getSFSFTParseCmdResult,
+			"vip":        getVIPJieXiParseCmdResult,
+			"vipjiexi":   getVIPJieXiParseCmdResult,
+		}
+		for _, parserName := range parsers {
+			if p, ok := m[strings.ToLower(parserName)]; ok {
+				go p(u, res)
 				count++
 			}
 		}
