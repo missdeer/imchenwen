@@ -18,12 +18,29 @@ var (
 	client = &http.Client{Timeout: 120 * time.Second}
 )
 
+func parseFlashVars(vars string) map[string]string {
+	beginPos := strings.Index(vars, "defa->")
+	endPos := strings.Index(vars[beginPos+6:], "}")
+	defa := vars[beginPos+6 : endPos+beginPos+6]
+	beginPos = strings.Index(vars, "deft->")
+	endPos = strings.Index(vars[beginPos+6:], "}")
+	deft := vars[beginPos+6 : endPos+beginPos+6]
+	res := make(map[string]string)
+
+	defas := strings.Split(defa, "|")
+	defts := strings.Split(deft, "|")
+	for i, d := range defas {
+		res[defts[i]] = d
+	}
+	return res
+}
+
 func extractURLsFromXML(u string) (res []string) {
 	retry := 0
 doRequest:
 	resp, err := http.Get(u)
 	if err != nil {
-		log.Println("Could not send login request:", err)
+		log.Println("Could not send getting XML request:", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -65,6 +82,10 @@ doRequest:
 		}
 		return
 	}
+
+	vars := parseFlashVars(vv.FlashVars)
+	fmt.Println(vars)
+
 	for _, v := range vv.Videos {
 		res = append(res, v.File)
 	}
@@ -76,7 +97,7 @@ func extractURLsFromM3U8(u string) (res []string) {
 doRequest:
 	resp, err := http.Get(u)
 	if err != nil {
-		log.Println("Could not send login request:", err)
+		log.Println("Could not send getting m3u8 request:", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -159,6 +180,9 @@ doRequest:
 	fmt.Println(result)
 	if result.Message == "200" || result.Message == "ok" {
 		r, _ := url.QueryUnescape(result.URL)
+		if !strings.HasPrefix(r, "https://") && !strings.HasPrefix(r, "http://") {
+			r = host + r
+		}
 		if result.Ext == "xml" {
 			return extractURLsFromXML(r)
 		}
@@ -235,15 +259,15 @@ doRequest:
 			"key":  {key},
 			"from": {"mt2t"},
 		}
-		m3u8 := postRequest(postBody.Encode(), "http://mt2t.com", path)
-		if len(m3u8) > 0 {
+		urls := postRequest(postBody.Encode(), "http://mt2t.com", path)
+		if len(urls) > 0 {
 			req, _ := url.Parse(u)
 			resp := &CmdResponse{
 				Site:  req.Host,
 				Title: "VIP video",
 				Streams: []*Stream{
 					&Stream{
-						RealURLs: m3u8,
+						RealURLs: urls,
 					},
 				},
 			}

@@ -96,8 +96,11 @@ func handleParseRequest(c *gin.Context) {
 			case "mt2t":
 				go getMT2TParseCmdResult(u, res)
 				count++
-			case "vip", "aikantv":
+			case "aikantv":
 				go getAikanTVParseCmdResult(u, res)
+				count++
+			case "vip", "vipjiexi":
+				go getVIPJieXiParseCmdResult(u, res)
 				count++
 			}
 		}
