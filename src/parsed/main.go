@@ -86,8 +86,9 @@ func handleParseRequest(c *gin.Context) {
 			"youtube-dl": getYoutubeDLParseCmdResult,
 			"mt2t":       getMT2TParseCmdResult,
 			"sfsft":      getSFSFTParseCmdResult,
-			"vip":        getVIPJieXiParseCmdResult,
 			"vipjiexi":   getVIPJieXiParseCmdResult,
+			"aikantv":    getAikanTVParseCmdResult,
+			"47ks":       get47KSParseCmdResult,
 		}
 		for _, parserName := range parsers {
 			if p, ok := m[strings.ToLower(parserName)]; ok {

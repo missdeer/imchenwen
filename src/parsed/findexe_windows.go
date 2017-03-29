@@ -40,3 +40,13 @@ func findExecutable(name string) string {
 
 	return name
 }
+
+func findInApplicationDirectory(name string) string {
+	if executable, err := osext.Executable(); err == nil {
+		p := filepath.Dir(executable)
+		if b, _ := fileExists(filepath.Join(p, name)); b {
+			return filepath.Join(p, name)
+		}
+	}
+	return name
+}

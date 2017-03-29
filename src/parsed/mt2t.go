@@ -215,14 +215,14 @@ doRequest:
 	return append(res, &Stream{RealURLs: urls})
 }
 
-func postRequest(postBody string, host string, path string) (res []*Stream) {
-	req, err := http.NewRequest("POST", host+path, strings.NewReader(postBody))
+func postRequest(postBody string, u string) (res []*Stream) {
+	req, err := http.NewRequest("POST", u, strings.NewReader(postBody))
 	if err != nil {
 		log.Println("Could not parse post request:", err)
 		return
 	}
 
-	req.Header.Set("Referer", host+path)
+	req.Header.Set("Referer", u)
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
 	req.Header.Set("Accept", "application/json, text/javascript, */*")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -262,11 +262,11 @@ doRequest:
 	}
 	var result YunAPIResult
 	if err = json.Unmarshal(content, &result); err != nil {
-		log.Println("unmarshalling post content failed", err)
+		log.Println("unmarshalling post content failed", err, string(content))
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
-			goto doRequest
+			//goto doRequest
 		}
 		return
 	}
@@ -274,10 +274,9 @@ doRequest:
 	if result.Message == "200" || result.Message == "ok" {
 		r, _ := url.QueryUnescape(result.URL)
 		if !strings.HasPrefix(r, "https://") && !strings.HasPrefix(r, "http://") {
-			if host[len(host)-1] == byte('/') && r[0] == byte('/') {
-				r = host + r[1:]
-			} else {
-				r = host + r
+			parsedURL, e := url.Parse(u)
+			if e == nil {
+				r = fmt.Sprintf("%s://%s/%s", parsedURL.Scheme, parsedURL.Host, r)
 			}
 		}
 		if result.Ext == "xml" {
@@ -356,7 +355,7 @@ doRequest:
 			"key":  {key},
 			"from": {"mt2t"},
 		}
-		streams := postRequest(postBody.Encode(), "http://mt2t.com", path)
+		streams := postRequest(postBody.Encode(), "http://mt2t.com"+path)
 		if len(streams) > 0 {
 			req, _ := url.Parse(u)
 			resp := &CmdResponse{
