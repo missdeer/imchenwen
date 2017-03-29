@@ -17,7 +17,7 @@ func parseBy47KS(u string, r chan *CmdResponse) {
 	retry := 0
 startSniff:
 	// let PhantomJS get post data
-	postBody := sniffByPhantomJS(parseURL)
+	postBody, headers := sniffByPhantomJS(parseURL)
 	if postBody == "" {
 		log.Println("get empty output from PhantomJS")
 		retry++
@@ -29,7 +29,7 @@ startSniff:
 		return
 	}
 
-	streams := postRequest(postBody, "https://api.47ks.com/config/webmain.php")
+	streams := postRequest("https://api.47ks.com/config/webmain.php", postBody, headers)
 	if len(streams) > 0 {
 		req, _ := url.Parse(u)
 		resp := &CmdResponse{

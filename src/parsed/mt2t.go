@@ -215,7 +215,7 @@ doRequest:
 	return append(res, &Stream{RealURLs: urls})
 }
 
-func postRequest(postBody string, u string) (res []*Stream) {
+func postRequest(u string, postBody string, headers map[string]string) (res []*Stream) {
 	req, err := http.NewRequest("POST", u, strings.NewReader(postBody))
 	if err != nil {
 		log.Println("Could not parse post request:", err)
@@ -226,6 +226,11 @@ func postRequest(postBody string, u string) (res []*Stream) {
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
 	req.Header.Set("Accept", "application/json, text/javascript, */*")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("X-Requested-With", "XMLHttpRequest")
+	for k, v := range headers {
+		log.Println(k, v)
+		req.Header.Set(k, v)
+	}
 
 	retry := 0
 doRequest:
@@ -262,7 +267,7 @@ doRequest:
 	}
 	var result YunAPIResult
 	if err = json.Unmarshal(content, &result); err != nil {
-		log.Println("unmarshalling post content failed", err, string(content))
+		log.Println("unmarshalling post content failed", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -355,7 +360,7 @@ doRequest:
 			"key":  {key},
 			"from": {"mt2t"},
 		}
-		streams := postRequest(postBody.Encode(), "http://mt2t.com"+path)
+		streams := postRequest("http://mt2t.com"+path, postBody.Encode(), map[string]string{})
 		if len(streams) > 0 {
 			req, _ := url.Parse(u)
 			resp := &CmdResponse{

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"bufio"
 	"log"
 	"net/url"
 	"os/exec"
@@ -9,22 +9,35 @@ import (
 	"time"
 )
 
-func sniffByPhantomJS(u string) string {
+func sniffByPhantomJS(u string) (postBody string, headers map[string]string) {
 	tryCount := 1
 startProcess:
 	cmd := exec.Command(findExecutable("phantomjs"), findInApplicationDirectory("sniff.js"), u)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println("ykdl stdout pipe failed", err)
-		return ""
+		return
 	}
 	err = cmd.Start()
 	if err != nil {
 		log.Println("starting phantomjs failed", err)
-		return ""
+		return
 	}
 
-	content, err := ioutil.ReadAll(stdout)
+	scanner := bufio.NewScanner(stdout)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		line := convertString(scanner.Text())
+		if strings.HasPrefix(line, "Set-Cookie: ") {
+			if len(headers) == 0 {
+				headers = make(map[string]string)
+			}
+			line = line[len("Set-Cookie: "):]
+			headers["Cookie"] = strings.Split(line, ";")[0]
+		} else {
+			postBody = line
+		}
+	}
 	err = cmd.Wait()
 	if err != nil {
 		if tryCount < 3 {
@@ -32,10 +45,10 @@ startProcess:
 			goto startProcess
 		}
 		log.Println("waiting for phantomjs exiting failed", err)
-		return ""
+		return
 	}
 
-	return string(convertByteArray(content))
+	return
 }
 
 func parseByAikanTV(u string, r chan *CmdResponse) {
@@ -52,7 +65,7 @@ func parseByAikanTV(u string, r chan *CmdResponse) {
 	retry := 0
 startSniff:
 	// let PhantomJS get post data
-	postBody := sniffByPhantomJS(parseURL)
+	postBody, headers := sniffByPhantomJS(parseURL)
 	if postBody == "" {
 		log.Println("get empty output from PhantomJS")
 		retry++
@@ -64,7 +77,7 @@ startSniff:
 		return
 	}
 	log.Println(postBody)
-	streams := postRequest(postBody, "https://aikan-tv.com/qq396774785.php")
+	streams := postRequest("https://aikan-tv.com/qq396774785.php", postBody, headers)
 	if len(streams) > 0 {
 		req, _ := url.Parse(u)
 		resp := &CmdResponse{

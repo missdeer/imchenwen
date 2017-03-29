@@ -74,7 +74,7 @@ doRequest:
 			"url": {urlParam},
 			"up":  {"0"},
 		}
-		streams := postRequest(postBody.Encode(), "https://www.vipjiexi.com/api.php")
+		streams := postRequest("https://www.vipjiexi.com/api.php", postBody.Encode(), map[string]string{})
 		if len(streams) > 0 {
 			req, _ := url.Parse(u)
 			resp := &CmdResponse{
