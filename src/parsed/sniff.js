@@ -20,9 +20,7 @@ if (system.args.length === 1) {
 		if (req.url == "https://aikan-tv.com/qq396774785.php") {
 			console.log(req.postData);
 			phantom.exit();
-		}
-		
-		console.log(req.url)		
+		}	
     };
 
     page.open(address, function (status) {
