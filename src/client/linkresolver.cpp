@@ -103,7 +103,7 @@ void LinkResolver::resolveVIP(const QUrl &url)
     if (apikey.isEmpty())
         apikey = "yb2Q1ozScRfJJ";
     data.append(apikey);
-    data.append("&parser=mt2t,vipjiexi,sfsft");
+    data.append("&parser=mt2t,vipjiexi,sfsft,aikantv,47ks");
     data.append("&url=");
     data.append(url.toString().toUtf8().toPercentEncoding());
     QNetworkReply *reply = nam.post(req, data);
