@@ -23,6 +23,14 @@ if (system.args.length === 1) {
 		}	
     };
 
+    page.onResourceReceived = function (res) {
+        for (var i in res.headers) {
+            if (res.headers[i].name == "Set-Cookie") {
+                console.log("Set-Cookie: " + res.headers[i].value);
+            }
+        }
+    };
+
     page.open(address, function (status) {
         if (status !== 'success') {
             console.log('FAIL to load the address');
