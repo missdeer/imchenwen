@@ -65,6 +65,7 @@ void PlayDialog::createExternalPlayerList()
     m_players.clear();
     Config cfg;
     cfg.read("externalPlayers", m_players);
+    m_players.push_back(std::make_tuple(tr("Built-in player"), ""));
     for (auto p : m_players)
     {
         ui->cbPlayers->addItem(std::get<0>(p) + " " + std::get<1>(p));
@@ -73,7 +74,6 @@ void PlayDialog::createExternalPlayerList()
     {
         ui->cbPlayers->setCurrentIndex(0);
     }
-    ui->cbPlayers->addItem("Built-in player");
 }
 
 void PlayDialog::doOk()
@@ -95,7 +95,16 @@ void PlayDialog::doOk()
         m_selectedMedia = m_mediaInfo->vip[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
 
     int currentIndex = ui->cbPlayers->currentIndex();
-    m_selectedPlayer = m_players.at(currentIndex);
+    if (currentIndex == m_players.length() - 1)
+    {
+#if defined(Q_OS_WIN)
+        m_selectedPlayer = std::make_tuple(QApplication::applicationDirPath() + "/mpv.exe", "--vo=direct3d --hwdec=dxva2 --ytdl=no");
+#elif defined(Q_OS_MAC)
+        m_selectedPlayer = std::make_tuple(QApplication::applicationDirPath() + "../Resources/mpv", "--vo=opengl --hwdec=videotoolbox --ytdl=no");
+#endif
+    }
+    else
+        m_selectedPlayer = m_players.at(currentIndex);
     accept();
 }
 
