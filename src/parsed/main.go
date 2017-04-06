@@ -72,10 +72,10 @@ func handleParseRequest(c *gin.Context) {
 			}
 		}
 		h := gin.H{"Result": "OK"}
-		for i := 0; i < count; i++ {
-			r := <-res
-			h[r.Service] = r.Result
-		}
+		//for i := 0; i < count; i++ {
+		r := <-res
+		h[r.Service] = r.Result
+		//}
 		c.JSON(http.StatusOK, h)
 	} else {
 		res := make(chan *CmdResult, len(parsers))
@@ -97,10 +97,10 @@ func handleParseRequest(c *gin.Context) {
 			}
 		}
 		h := gin.H{"Result": "OK"}
-		for i := 0; i < count; i++ {
-			r := <-res
-			h[r.Service] = r.Result
-		}
+		//for i := 0; i < count; i++ {
+		r := <-res
+		h[r.Service] = r.Result
+		//}
 		c.JSON(http.StatusOK, h)
 	}
 }
