@@ -375,10 +375,8 @@ void Browser::startParsedProcess()
     }
     else
     {
-        if (m_parsedProcess.state() == QProcess::Running)
-            m_parsedProcess.terminate();
-
-        m_parsedProcess.start(parsedPath, QStringList() << "-l");
+        if (m_parsedProcess.state() != QProcess::Running)
+            m_parsedProcess.start(parsedPath, QStringList() << "-l");
     }
 }
 
@@ -387,16 +385,23 @@ void Browser::stopParsedProcess()
     m_parsedProcess.terminate();
 }
 
+bool Browser::isParsedRunning()
+{
+    return (m_parsedProcess.state() == QProcess::Running);
+}
+
 void Browser::changeParsedProcessState()
 {
     Config cfg;
     if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
     {
-        Browser::instance().startParsedProcess();
+        if (!isParsedRunning())
+            Browser::instance().startParsedProcess();
     }
     else
     {
-        Browser::instance().stopParsedProcess();
+        if (isParsedRunning())
+            Browser::instance().stopParsedProcess();
     }
 }
 

@@ -105,7 +105,10 @@ void PlayDialog::doOk()
     }
     else
         m_selectedPlayer = m_players.at(currentIndex);
-    accept();
+    if (QFile::exists(std::get<0>(m_selectedPlayer)))
+        accept();
+    else
+        QMessageBox::warning(this, tr("Error"), tr("Cannot find builtin player, please select an external player."), QMessageBox::Ok);
 }
 
 void PlayDialog::addItem(const QString& text, const QColor &backgroundColor)

@@ -6,7 +6,7 @@ var page = require('webpage').create(),
 page.settings.userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0';
 
 if (system.args.length === 1) {
-    console.log('Usage: api.47ks.com.js <some URL>');
+    console.log('Usage: sniff.js <URL>');
     phantom.exit(1);
 } else {
     address = system.args[1];

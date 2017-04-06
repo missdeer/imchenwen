@@ -68,6 +68,7 @@ public:
     void loadSettings();
     void startParsedProcess();
     void stopParsedProcess();
+    bool isParsedRunning();
     void changeParsedProcessState();
     void playByMediaPlayer(const QUrl& u);
     void playVIPByMediaPlayer(const QUrl& u);
