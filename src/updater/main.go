@@ -5,7 +5,6 @@ package main
 import (
 	"bufio"
 	"flag"
-	"github.com/kardianos/osext"
 	"io"
 	"log"
 	"net/http"
@@ -15,19 +14,21 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/kardianos/osext"
 )
 
 var (
 	target string
 	wg     sync.WaitGroup
-	client = &http.Client{Timeout: 120 * time.Second}
+	client = &http.Client{}
 )
 
 func downloadExe(u string, saveToFile string) {
 	retry := 0
 	request, err := http.NewRequest("GET", u, nil)
 	if err != nil {
-		log.Println("Could not parse get m3u8 request:", err)
+		log.Println("Could not parse getting latest release request:", err)
 		return
 	}
 
@@ -37,7 +38,7 @@ func downloadExe(u string, saveToFile string) {
 doRequest:
 	resp, err := client.Do(request)
 	if err != nil {
-		log.Println("Could not send getting m3u8 request:", err)
+		log.Println("Could not send getting latest release request:", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -66,7 +67,7 @@ func getExeDownloadURL(u string, pattern string) (exe string) {
 	retry := 0
 	request, err := http.NewRequest("GET", u, nil)
 	if err != nil {
-		log.Println("Could not parse get m3u8 request:", err)
+		log.Println("Could not parse getting latest release page request:", err)
 		return
 	}
 
@@ -76,7 +77,7 @@ func getExeDownloadURL(u string, pattern string) (exe string) {
 doRequest:
 	resp, err := client.Do(request)
 	if err != nil {
-		log.Println("Could not send getting m3u8 request:", err)
+		log.Println("Could not send getting latest release page request:", err)
 		retry++
 		if retry < 3 {
 			time.Sleep(3 * time.Second)
@@ -103,10 +104,12 @@ func updateYouGet() {
 	latestReleaseURL := `https://github.com/soimort/you-get/releases/latest`
 	pattern := `\/soimort\/you-get\/releases\/download\/v[0-9\.]+\/you\-get\-[0-9\.]+\-win32.exe`
 	exeURL := getExeDownloadURL(latestReleaseURL, pattern)
-	filePath := `you-get.exe`
-	if executable, err := osext.Executable(); err == nil {
-		p := filepath.Dir(executable)
-		downloadExe(exeURL, filepath.Join(p, filePath))
+	if exeURL != "" {
+		filePath := `you-get.exe`
+		if executable, err := osext.Executable(); err == nil {
+			p := filepath.Dir(executable)
+			downloadExe(exeURL, filepath.Join(p, filePath))
+		}
 	}
 	wg.Done()
 }
@@ -115,10 +118,12 @@ func updateYoutubeDL() {
 	latestReleaseURL := `https://github.com/rg3/youtube-dl/releases/latest`
 	pattern := `\/rg3\/youtube\-dl\/releases\/download\/[0-9\.]+\/youtube\-dl.exe`
 	exeURL := getExeDownloadURL(latestReleaseURL, pattern)
-	filePath := `youtube-dl.exe`
-	if executable, err := osext.Executable(); err == nil {
-		p := filepath.Dir(executable)
-		downloadExe(exeURL, filepath.Join(p, filePath))
+	if exeURL != "" {
+		filePath := `youtube-dl.exe`
+		if executable, err := osext.Executable(); err == nil {
+			p := filepath.Dir(executable)
+			downloadExe(exeURL, filepath.Join(p, filePath))
+		}
 	}
 	wg.Done()
 }
@@ -127,10 +132,12 @@ func updateYKDL() {
 	latestReleaseURL := `https://github.com/zhangn1985/ykdl/releases/latest`
 	pattern := `\/zhangn1985\/ykdl\/releases\/download\/v[0-9\.]+\/ykdl.exe`
 	exeURL := getExeDownloadURL(latestReleaseURL, pattern)
-	filePath := `ykdl.exe`
-	if executable, err := osext.Executable(); err == nil {
-		p := filepath.Dir(executable)
-		downloadExe(exeURL, filepath.Join(p, filePath))
+	if exeURL != "" {
+		filePath := `ykdl.exe`
+		if executable, err := osext.Executable(); err == nil {
+			p := filepath.Dir(executable)
+			downloadExe(exeURL, filepath.Join(p, filePath))
+		}
 	}
 	wg.Done()
 }
