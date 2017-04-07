@@ -70,6 +70,7 @@ Browser::Browser(QObject* parent)
     connect(&m_linkResolver, &LinkResolver::resolvingSilentFinished, this, &Browser::resolvingSilentFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingSilentError, this, &Browser::resolvingSilentError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
+    connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
     connect(m_streamManager, &StreamManager::readyRead, this, &Browser::readyRead);
     loadSettings();
 
@@ -84,13 +85,17 @@ Browser::Browser(QObject* parent)
 #if defined(Q_OS_WIN)
     // preload libeay32.dll and ssleay32.dll on Windows,
     // so it won't hang when try to resolve link at the first time
-    QtConcurrent::run(this, &Browser::ping);
+    //QtConcurrent::run(this, &Browser::ping);
 #endif
 }
 
 Browser::~Browser()
 {
     stopWaiting();
+    if (m_process.state() == QProcess::Running)
+        m_process.terminate();
+    if (m_parsedProcess.state() == QProcess::Running)
+        m_parsedProcess.terminate();
     clean();
 }
 
@@ -308,10 +313,13 @@ void Browser::clean()
 
 void Browser::stopWaiting()
 {
-    if (m_waitingSpinner->isSpinning())
-        m_waitingSpinner->stop();
-    m_waitingSpinner->deleteLater();
-    m_waitingSpinner = nullptr;
+    if (m_waitingSpinner)
+    {
+        if (m_waitingSpinner->isSpinning())
+            m_waitingSpinner->stop();
+        delete m_waitingSpinner;
+        m_waitingSpinner = nullptr;
+    }
 }
 
 void Browser::resolvingFinished(MediaInfoPtr mi)
@@ -379,6 +387,7 @@ void Browser::errorOccurred(QProcess::ProcessError error)
 
 void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
+    qDebug() << __FUNCTION__;
     m_streamManager->stopDownload();
 }
 

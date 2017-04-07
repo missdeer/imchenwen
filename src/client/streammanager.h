@@ -32,6 +32,8 @@ private:
     QStringList m_localUrls;
     QStringList m_remoteUrls;
     int m_downloadIndex;
+    int m_finishedCount;
+    int m_runningCount;
     void download(int i);
 };
 

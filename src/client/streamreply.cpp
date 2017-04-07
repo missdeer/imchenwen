@@ -51,7 +51,7 @@ void StreamReply::stop()
 void StreamReply::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     Q_UNUSED(bytesReceived);
-    if (!m_localReadyRead && bytesReceived > 2 * 1024 * 1024)
+    if (!m_localReadyRead && bytesReceived > 64 * 1024)
     {
         qDebug() << __FUNCTION__ << bytesReceived << bytesTotal;
         m_localReadyRead = true;
@@ -72,7 +72,7 @@ void StreamReply::error(QNetworkReply::NetworkError code)
 
 void StreamReply::finished()
 {
-    qDebug() << this << " finished";
+    qDebug() << __FUNCTION__;
     m_finished = true;
     emit done();
 }

@@ -65,9 +65,11 @@ macx: {
         deploy_webengine.depends += deploy
         deploy_webengine.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
 
+        deploy_sniff.commands += $(COPY_FILE) \"$${PWD}/../parsed/sniff.js\" \"$${OUT_PWD}/$${TARGET}.app/Contents/Resources/\"
+
         build_parsed.commands += cd $${PWD}/../parsed/ $$escape_expand(&&) go build
 
-        deploy_parsed.depends += build_parsed
+        deploy_parsed.depends += build_parsed deploy_sniff
         deploy_parsed.commands += $(COPY_FILE) $${PWD}/../parsed/parsed \"$${OUT_PWD}/$${TARGET}.app/Contents/Resources/\"
 
         APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
@@ -80,7 +82,7 @@ macx: {
         makedmg.depends += codesign
         makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
 
-        QMAKE_EXTRA_TARGETS += deploy deploy_webengine build_parsed deploy_parsed codesign makedmg
+        QMAKE_EXTRA_TARGETS += deploy deploy_webengine deploy_sniff build_parsed deploy_parsed codesign makedmg
     }
 }
 
@@ -89,7 +91,7 @@ win32: {
     CONFIG(release, debug|release) : {
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
 
-        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.exe\"
+        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}\\release\\$${TARGET}.exe\"
 
         build_parsed.commands += cd \"$${PWD}/../parsed/\" $$escape_expand(&&) go build
 
@@ -101,6 +103,10 @@ win32: {
         deploy_updater.depends += build_updater
         deploy_updater.commands += $(COPY_FILE) \"$${PWD}\\..\\updater\\updater.exe\" \"$${OUT_PWD}\\release\\updater.exe\"
 		
-        QMAKE_EXTRA_TARGETS += deploy build_parsed build_updater deploy_parsed deploy_updater
+        deploy_sniff.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\sniff.js\" \"$${OUT_PWD}\\release\\sniff.js\"
+
+        all.depends += deploy_updater deploy_parsed deploy_sniff
+        all.commands +=
+        QMAKE_EXTRA_TARGETS += deploy build_parsed build_updater deploy_parsed deploy_updater deploy_sniff all
     }
 }
