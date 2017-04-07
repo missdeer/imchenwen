@@ -5,7 +5,6 @@
 #include <QNetworkReply>
 #include <QSharedPointer>
 
-
 QT_BEGIN_NAMESPACE
 class QFile;
 QT_END_NAMESPACE
@@ -25,6 +24,7 @@ public:
     int statusCode() const;
 
 signals:
+    void localReadyRead();
     void done();
     void cancel();
     void errorMessage(QNetworkReply::NetworkError , QString);
@@ -34,7 +34,7 @@ public slots:
     void finished();
     void sslErrors(const QList<QSslError> & errors);
     void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
-    void readyRead();
+    void remoteReadyRead();
 private:
     QNetworkReply* m_reply;
     QFile* m_in;
@@ -43,6 +43,7 @@ private:
     int m_index;
     int m_statusCode;
     bool m_finished;
+    bool m_localReadyRead;
 };
 
 typedef QSharedPointer<StreamReply> StreamReplyPtr;

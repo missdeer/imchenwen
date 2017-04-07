@@ -96,7 +96,7 @@ void StreamManager::handle(QHttpRequest *req, QHttpResponse *resp)
 void StreamManager::download(int i)
 {
     QNetworkRequest req;
-    req.setUrl(QUrl(m_remoteUrls.at(i)));
+    req.setUrl(QUrl::fromUserInput(m_remoteUrls.at(i)));
     StreamReply* sr = new StreamReply(i, m_nam->get(req));
     connect(sr, &StreamReply::done, this, &StreamManager::finished);
     StreamReplyPtr r(sr);

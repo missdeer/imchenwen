@@ -1,12 +1,15 @@
 #include "streamreply.h"
 #include <QStandardPaths>
 #include <QFile>
+#include <QEventLoop>
+#include <QTimer>
 
 StreamReply::StreamReply(int index, QNetworkReply *reply, QObject *parent)
     : QObject(parent)
     , m_reply(reply)
     , m_index(index)
     , m_finished(false)
+    , m_localReadyRead(false)
 {
     Q_ASSERT(m_reply);
     connect(m_reply, &QNetworkReply::downloadProgress, this, &StreamReply::downloadProgress);
@@ -14,7 +17,7 @@ StreamReply::StreamReply(int index, QNetworkReply *reply, QObject *parent)
     connect(m_reply, &QNetworkReply::finished, this, &StreamReply::finished);
     connect(m_reply, &QNetworkReply::sslErrors, this, &StreamReply::sslErrors);
     connect(m_reply, &QNetworkReply::uploadProgress, this, &StreamReply::uploadProgress);
-    connect(m_reply, &QNetworkReply::readyRead, this, &StreamReply::readyRead);
+    connect(m_reply, &QNetworkReply::readyRead, this, &StreamReply::remoteReadyRead);
 
     m_cachePath = QString("%1/imchenwencache-%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(index);
     m_in = new QFile(m_cachePath);
@@ -54,8 +57,19 @@ void StreamReply::stop()
 
 QByteArray StreamReply::read()
 {
+    qDebug() << __FUNCTION__;
     if (!m_out)
     {
+        if (!m_localReadyRead)
+        {
+            QTimer timer;
+            timer.setSingleShot(true);
+            QEventLoop loop;
+            connect(this,  SIGNAL(localReadyRead()), &loop, SLOT(quit()) );
+            connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+            timer.start(10*1000);
+            loop.exec();
+        }
         m_out = new QFile(m_cachePath);
         m_out->open(QIODevice::ReadOnly );
     }
@@ -64,6 +78,7 @@ QByteArray StreamReply::read()
 
 bool StreamReply::atEnd()
 {
+    qDebug() << __FUNCTION__;
     if (m_finished && m_out)
         return m_out->atEnd();
     return false;
@@ -86,30 +101,24 @@ void StreamReply::error(QNetworkReply::NetworkError code)
     if (m_reply)
     {
         QString e = m_reply->errorString();
-#if !defined(QT_NO_DEBUG)
         qDebug() << __FUNCTION__ << e;
-#endif
         emit errorMessage(code, e);
     }
 }
 
 void StreamReply::finished()
 {
-#if !defined(QT_NO_DEBUG)
-    qDebug() << this << " finished: " << QString(m_content) << "\n";
-#endif
+    qDebug() << this << " finished";
     m_finished = true;
     emit done();
 }
 
 void StreamReply::sslErrors(const QList<QSslError> &errors)
 {
-#if !defined(QT_NO_DEBUG)
     Q_FOREACH(const QSslError &e, errors)
     {
         qDebug() << "ssl error:" << e.errorString();
     }
-#endif
 }
 
 void StreamReply::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
@@ -118,12 +127,18 @@ void StreamReply::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
     Q_UNUSED(bytesTotal);
 }
 
-void StreamReply::readyRead()
+void StreamReply::remoteReadyRead()
 {
+    qDebug() << __FUNCTION__;
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     m_statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (m_statusCode >= 200 && m_statusCode < 300) {
         m_in->write(reply->readAll());
+        if (!m_localReadyRead)
+        {
+            m_localReadyRead = true;
+            emit localReadyRead();
+        }
     }
 }
 
