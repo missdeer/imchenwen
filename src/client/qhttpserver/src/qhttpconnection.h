@@ -30,7 +30,7 @@
 
 /// @cond nodoc
 
-class QHTTPSERVER_API QHttpConnection : public QObject
+class QHttpConnection : public QObject
 {
     Q_OBJECT
 

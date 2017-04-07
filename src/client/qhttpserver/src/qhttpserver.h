@@ -53,7 +53,7 @@ extern QHash<int, QString> STATUS_CODES;
 
     helloworld.h
     @include helloworld/helloworld.h */
-class QHTTPSERVER_API QHttpServer : public QObject
+class QHttpServer : public QObject
 {
     Q_OBJECT
 
