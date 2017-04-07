@@ -70,7 +70,7 @@ Browser::Browser(QObject* parent)
     connect(&m_linkResolver, &LinkResolver::resolvingSilentFinished, this, &Browser::resolvingSilentFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingSilentError, this, &Browser::resolvingSilentError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
-
+    connect(m_streamManager, &StreamManager::readyRead, this, &Browser::readyRead);
     loadSettings();
 
     Config cfg;
@@ -86,12 +86,10 @@ Browser::Browser(QObject* parent)
     // so it won't hang when try to resolve link at the first time
     QtConcurrent::run(this, &Browser::ping);
 #endif
-    m_streamManager->serve("127.0.0.1:9876");
 }
 
 Browser::~Browser()
 {
-    m_streamManager->shutdown();
     clean();
 
     if (m_waitingSpinner)
@@ -184,6 +182,12 @@ void Browser::playVIPByMediaPlayer(const QUrl &u)
     resolveLink(u, true);
 }
 
+void Browser::readyRead()
+{
+    stopWaiting();
+    m_process.start();
+}
+
 void Browser::clipboardChanged()
 {
     QClipboard *clipboard = QApplication::clipboard();
@@ -225,11 +229,11 @@ BrowserWindow *Browser::newMainWindow()
     return nmw;
 }
 
-void Browser::resolveLink(const QUrl &u, bool vip)
+void Browser::waiting(bool disableParent /*= true*/)
 {
     if (!m_waitingSpinner)
     {
-        m_waitingSpinner = new WaitingSpinnerWidget(mainWindow());
+        m_waitingSpinner = new WaitingSpinnerWidget(mainWindow(), true, disableParent);
 
         m_waitingSpinner->setRoundness(70.0);
         m_waitingSpinner->setMinimumTrailOpacity(15.0);
@@ -245,7 +249,13 @@ void Browser::resolveLink(const QUrl &u, bool vip)
         m_waitingSpinner->stop();
 
     m_waitingSpinner->start();
+}
 
+void Browser::resolveLink(const QUrl &u, bool vip)
+{
+    waiting();
+
+    startParsedProcess();
     if (vip)
         m_linkResolver.resolveVIP(u);
     else
@@ -265,9 +275,8 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         {
             m_process.terminate();
         }
-
+        waiting(false);
         QStringList args;
-        m_process.setProgram(std::get<0>(player));
 #if defined(Q_OS_MAC)
         QFileInfo fi(std::get<0>(player));
         if (fi.suffix() == "app")
@@ -284,15 +293,16 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         m_streamManager->startDownload(stream->urls);
 
         args << m_streamManager->urls();
+        m_process.setArguments(args);
 
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")
         {
-            m_process.start("/usr/bin/open", args);
+            m_process.setProgram("/usr/bin/open");
             return;
         }
 #endif
-        m_process.start(std::get<0>(player), args);
+        m_process.setProgram(std::get<0>(player));
     }
 }
 
@@ -302,12 +312,17 @@ void Browser::clean()
     m_windows.clear();
 }
 
-void Browser::resolvingFinished(MediaInfoPtr mi)
+void Browser::stopWaiting()
 {
     if (m_waitingSpinner->isSpinning())
         m_waitingSpinner->stop();
     m_waitingSpinner->deleteLater();
     m_waitingSpinner = nullptr;
+}
+
+void Browser::resolvingFinished(MediaInfoPtr mi)
+{
+    stopWaiting();
 
     if (mi->title.isEmpty() && mi->site.isEmpty())
     {
@@ -321,13 +336,12 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
 
 void Browser::resolvingError(const QUrl& u)
 {
-    if (m_waitingSpinner->isSpinning())
-        m_waitingSpinner->stop();
-    m_waitingSpinner->deleteLater();
-    m_waitingSpinner = nullptr;
+    stopWaiting();
 
     QMessageBox::warning(mainWindow(),
                          tr("Error"), tr("Resolving link address ") + u.toString() + tr(" failed!"), QMessageBox::Ok);
+
+    startParsedProcess();
 }
 
 void Browser::resolvingSilentFinished(MediaInfoPtr mi)
@@ -347,7 +361,7 @@ void Browser::resolvingSilentFinished(MediaInfoPtr mi)
 
 void Browser::resolvingSilentError(const QUrl&)
 {
-
+    startParsedProcess();
 }
 
 void Browser::errorOccurred(QProcess::ProcessError error)

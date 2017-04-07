@@ -80,7 +80,7 @@ private slots:
     void finished();
     void ping();
 #endif
-
+    void readyRead();
     void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
     void resolvingError(const QUrl&);
@@ -92,6 +92,8 @@ private:
     void resolveLink(const QUrl& u, bool vip);
     void doPlayByMediaPlayer(MediaInfoPtr mi);
     void clean();
+    void waiting(bool disableParent = true);
+    void stopWaiting();
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;

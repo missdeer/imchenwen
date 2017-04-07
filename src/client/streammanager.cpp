@@ -2,29 +2,25 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
-#include <qhttpserver.h>
-#include <qhttprequest.h>
-#include <qhttpresponse.h>
+#include <QStandardPaths>
 
 StreamManager::StreamManager(QNetworkAccessManager *nam, QObject *parent)
     : QObject(parent)
     , m_nam(nam)
-    , m_server(new QHttpServer)
     , m_downloadIndex(0)
 {
-    connect(m_server, SIGNAL(newRequest(QHttpRequest*, QHttpResponse*)),
-            this, SLOT(handle(QHttpRequest*, QHttpResponse*)));
 }
 
 StreamManager::~StreamManager()
 {
-    shutdown();
-    delete m_server;
 }
 
 void StreamManager::startDownload(const QStringList &streams)
 {
     m_remoteUrls = streams;
+    for (int c = 0; c < streams.length(); c++)
+    m_localUrls.push_back( QString("%1/imchenwencache-%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(c));
+    m_downloadIndex = 0;
     download(m_downloadIndex++);
 }
 
@@ -36,19 +32,6 @@ void StreamManager::stopDownload()
     }
     m_streams.clear();
     m_localUrls.clear();
-}
-
-void StreamManager::serve(const QString &addr)
-{
-    QStringList a = addr.split(':');
-    QHostAddress host(a[0]);
-
-    m_server->listen(host, a[1].toInt() );
-}
-
-void StreamManager::shutdown()
-{
-    m_server->close();
 }
 
 const QStringList &StreamManager::urls()
@@ -68,38 +51,16 @@ void StreamManager::finished()
     }
 }
 
-void StreamManager::handle(QHttpRequest *req, QHttpResponse *resp)
-{
-    QString path = req->path();
-    while(path.at(0) == '/')path.remove(0, 1);
-    int index = path.toInt();
-
-    auto it = std::find_if(m_streams.begin(), m_streams.end(), [index](StreamReplyPtr s){ return s->index() == index;});
-    if (m_streams.end() != it)
-    {
-        StreamReplyPtr r(*it);
-        resp->writeHead(r->statusCode());
-        auto pairs = r->rawHeaderPairs();
-        for (auto p : pairs)
-        {
-            resp->setHeader(QString(p.first), QString(p.second));
-        }
-        while (!r->atEnd())
-        {
-            resp->write(r->read());
-        }
-    }
-
-    resp->end();
-}
-
 void StreamManager::download(int i)
 {
     QNetworkRequest req;
     req.setUrl(QUrl::fromUserInput(m_remoteUrls.at(i)));
     StreamReply* sr = new StreamReply(i, m_nam->get(req));
     connect(sr, &StreamReply::done, this, &StreamManager::finished);
+    if (i == 0)
+    {
+        connect(sr, &StreamReply::localReadyRead, this, &StreamManager::readyRead);
+    }
     StreamReplyPtr r(sr);
     m_streams.push_back(r);
-    m_localUrls.push_back(QString("http://127.0.0.1:9876/%1").arg(i));
 }

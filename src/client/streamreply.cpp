@@ -7,7 +7,6 @@
 StreamReply::StreamReply(int index, QNetworkReply *reply, QObject *parent)
     : QObject(parent)
     , m_reply(reply)
-    , m_index(index)
     , m_finished(false)
     , m_localReadyRead(false)
 {
@@ -38,12 +37,6 @@ StreamReply::~StreamReply()
         delete m_in;
         m_in = nullptr;
     }
-    if (m_out)
-    {
-        m_out->close();
-        delete m_out;
-        m_out = nullptr;
-    }
 }
 
 void StreamReply::stop()
@@ -55,44 +48,15 @@ void StreamReply::stop()
     }
 }
 
-QByteArray StreamReply::read()
-{
-    qDebug() << __FUNCTION__;
-    if (!m_out)
-    {
-        if (!m_localReadyRead)
-        {
-            QTimer timer;
-            timer.setSingleShot(true);
-            QEventLoop loop;
-            connect(this,  SIGNAL(localReadyRead()), &loop, SLOT(quit()) );
-            connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-            timer.start(10*1000);
-            loop.exec();
-        }
-        m_out = new QFile(m_cachePath);
-        m_out->open(QIODevice::ReadOnly );
-    }
-    return m_out->read(64 * 1024);
-}
-
-bool StreamReply::atEnd()
-{
-    qDebug() << __FUNCTION__;
-    if (m_finished && m_out)
-        return m_out->atEnd();
-    return false;
-}
-
-const QList<QNetworkReply::RawHeaderPair> &StreamReply::rawHeaderPairs() const
-{
-    return m_reply->rawHeaderPairs();
-}
-
 void StreamReply::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     Q_UNUSED(bytesReceived);
-    Q_UNUSED(bytesTotal);
+    if (!m_localReadyRead && bytesReceived > 2 * 1024 * 1024)
+    {
+        qDebug() << __FUNCTION__ << bytesReceived << bytesTotal;
+        m_localReadyRead = true;
+        emit localReadyRead();
+    }
 }
 
 void StreamReply::error(QNetworkReply::NetworkError code)
@@ -129,25 +93,9 @@ void StreamReply::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
 
 void StreamReply::remoteReadyRead()
 {
-    qDebug() << __FUNCTION__;
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    m_statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (m_statusCode >= 200 && m_statusCode < 300) {
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (statusCode >= 200 && statusCode < 300) {
         m_in->write(reply->readAll());
-        if (!m_localReadyRead)
-        {
-            m_localReadyRead = true;
-            emit localReadyRead();
-        }
     }
-}
-
-int StreamReply::statusCode() const
-{
-    return m_statusCode;
-}
-
-int StreamReply::index() const
-{
-    return m_index;
 }

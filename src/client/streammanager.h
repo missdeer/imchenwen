@@ -20,14 +20,11 @@ public:
     ~StreamManager();
     void startDownload(const QStringList& streams);
     void stopDownload();
-    void serve(const QString& addr);
-    void shutdown();
     const QStringList& urls();
 signals:
-
+    void readyRead();
 private slots:
     void finished();
-    void handle(QHttpRequest *req, QHttpResponse *resp);
 private:
     QList<StreamReplyPtr> m_streams;
     QNetworkAccessManager* m_nam;

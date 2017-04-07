@@ -16,13 +16,6 @@ public:
     StreamReply(int index, QNetworkReply* reply, QObject *parent = 0);
     ~StreamReply();
     void stop();
-    QByteArray read();
-    bool atEnd();
-    const QList<QNetworkReply::RawHeaderPair> &rawHeaderPairs() const;
-    int index() const;
-
-    int statusCode() const;
-
 signals:
     void localReadyRead();
     void done();
@@ -38,10 +31,7 @@ public slots:
 private:
     QNetworkReply* m_reply;
     QFile* m_in;
-    QFile* m_out;
     QString m_cachePath;
-    int m_index;
-    int m_statusCode;
     bool m_finished;
     bool m_localReadyRead;
 };
