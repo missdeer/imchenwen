@@ -3,6 +3,7 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
+#include <QFile>
 
 StreamManager::StreamManager(QNetworkAccessManager *nam, QObject *parent)
     : QObject(parent)
@@ -33,6 +34,10 @@ void StreamManager::stopDownload()
         s->stop();
     }
     m_streams.clear();
+    for ( auto u : m_localUrls)
+    {
+        QFile::remove(u);
+    }
     m_localUrls.clear();
 }
 

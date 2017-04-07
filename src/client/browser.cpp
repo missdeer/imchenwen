@@ -387,7 +387,6 @@ void Browser::errorOccurred(QProcess::ProcessError error)
 
 void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
-    qDebug() << __FUNCTION__;
     m_streamManager->stopDownload();
 }
 
