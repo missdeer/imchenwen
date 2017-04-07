@@ -68,6 +68,11 @@ bool StreamReply::atEnd()
     return false;
 }
 
+const QList<QNetworkReply::RawHeaderPair> &StreamReply::rawHeaderPairs() const
+{
+    return m_reply->rawHeaderPairs();
+}
+
 void StreamReply::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     Q_UNUSED(bytesReceived);

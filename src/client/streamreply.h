@@ -19,6 +19,7 @@ public:
     void stop();
     QByteArray read();
     bool atEnd();
+    const QList<QNetworkReply::RawHeaderPair> &rawHeaderPairs() const;
 signals:
     void done();
     void cancel();
