@@ -2,6 +2,7 @@
 #include "ui_playdialog.h"
 #include "settings.h"
 #include <QMessageBox>
+#include <QFile>
 
 PlayDialog::PlayDialog(QWidget *parent) :
     QDialog(parent),
