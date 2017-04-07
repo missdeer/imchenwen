@@ -2,13 +2,24 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
+#include <qhttpserver.h>
+#include <qhttprequest.h>
+#include <qhttpresponse.h>
 
 StreamManager::StreamManager(QNetworkAccessManager *nam, QObject *parent)
     : QObject(parent)
     , m_nam(nam)
+    , m_server(new QHttpServer)
     , m_downloadIndex(0)
 {
+    connect(m_server, SIGNAL(newRequest(QHttpRequest*, QHttpResponse*)),
+            this, SLOT(handle(QHttpRequest*, QHttpResponse*)));
+}
 
+StreamManager::~StreamManager()
+{
+    shutdown();
+    delete m_server;
 }
 
 void StreamManager::startDownload(const QStringList &streams)
@@ -29,12 +40,15 @@ void StreamManager::stopDownload()
 
 void StreamManager::serve(const QString &addr)
 {
+    QStringList a = addr.split(':');
+    QHostAddress host(a[0]);
 
+    m_server->listen(host, a[1].toInt() );
 }
 
 void StreamManager::shutdown()
 {
-
+    m_server->close();
 }
 
 const QStringList &StreamManager::urls()
@@ -52,6 +66,31 @@ void StreamManager::finished()
             download(m_downloadIndex++);
         }
     }
+}
+
+void StreamManager::handle(QHttpRequest *req, QHttpResponse *resp)
+{
+    QString path = req->path();
+    while(path.at(0) == '/')path.remove(0, 1);
+    int index = path.toInt();
+
+    auto it = std::find_if(m_streams.begin(), m_streams.end(), [index](StreamReplyPtr s){ return s->index() == index;});
+    if (m_streams.end() != it)
+    {
+        StreamReplyPtr r(*it);
+        resp->writeHead(r->statusCode());
+        auto pairs = r->rawHeaderPairs();
+        for (auto p : pairs)
+        {
+            resp->setHeader(QString(p.first), QString(p.second));
+        }
+        while (!r->atEnd())
+        {
+            resp->write(r->read());
+        }
+    }
+
+    resp->end();
 }
 
 void StreamManager::download(int i)

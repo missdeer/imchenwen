@@ -5,6 +5,7 @@
 StreamReply::StreamReply(int index, QNetworkReply *reply, QObject *parent)
     : QObject(parent)
     , m_reply(reply)
+    , m_index(index)
     , m_finished(false)
 {
     Q_ASSERT(m_reply);
@@ -120,8 +121,18 @@ void StreamReply::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
 void StreamReply::readyRead()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (statusCode >= 200 && statusCode < 300) {
+    m_statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (m_statusCode >= 200 && m_statusCode < 300) {
         m_in->write(reply->readAll());
     }
+}
+
+int StreamReply::statusCode() const
+{
+    return m_statusCode;
+}
+
+int StreamReply::index() const
+{
+    return m_index;
 }

@@ -3,7 +3,10 @@ TARGET = imchenwen
 QT += webengine webenginewidgets xml
 CONFIG += c++11
 
-HEADERS += \
+INCLUDEPATH += $$PWD/qhttpserver/src $$PWD/qhttpserver/http-parser
+
+HEADERS +=  $$PWD/qhttpserver/src/*.h \
+    $$PWD/qhttpserver/http-parser/*.h \
     browser.h \
     browserwindow.h \
     tabwidget.h \
@@ -21,7 +24,8 @@ HEADERS += \
     streammanager.h \
     streamreply.h
 
-SOURCES += \
+SOURCES += $$PWD/qhttpserver/src/*.cpp \
+    $$PWD/qhttpserver/http-parser/http_parser.c \
     browser.cpp \
     browserwindow.cpp \
     main.cpp \
