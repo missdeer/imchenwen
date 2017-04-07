@@ -21,12 +21,15 @@ public:
     const QStringList& urls();
 signals:
 
-public slots:
-
+private slots:
+    void finished();
 private:
     QList<StreamReplyPtr> m_streams;
     QNetworkAccessManager* m_nam;
     QStringList m_localUrls;
+    QStringList m_remoteUrls;
+    int m_downloadIndex;
+    void download(int i);
 };
 
 #endif // STREAMMANAGER_H
