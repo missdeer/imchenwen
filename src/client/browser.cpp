@@ -86,10 +86,12 @@ Browser::Browser(QObject* parent)
     // so it won't hang when try to resolve link at the first time
     QtConcurrent::run(this, &Browser::ping);
 #endif
+    m_streamManager->serve("127.0.0.1:9876");
 }
 
 Browser::~Browser()
 {
+    m_streamManager->shutdown();
     clean();
 
     if (m_waitingSpinner)
@@ -277,7 +279,11 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         QString arg = std::get<1>(player);
         if (!arg.isEmpty())
             args << arg.split(" ");
-        args << stream->urls;
+
+        m_streamManager->stopDownload();
+        m_streamManager->startDownload(stream->urls);
+
+        args << m_streamManager->urls();
 
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")

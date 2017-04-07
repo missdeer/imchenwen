@@ -1,19 +1,23 @@
 #include "streamreply.h"
+#include <QStandardPaths>
+#include <QFile>
 
 StreamReply::StreamReply(int index, QNetworkReply *reply, QObject *parent)
     : QObject(parent)
     , m_reply(reply)
-    , m_index(index)
+    , m_finished(false)
 {
-    if (m_reply)
-    {
-        connect(m_reply, &QNetworkReply::downloadProgress, this, &StreamReply::downloadProgress);
-        connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
-        connect(m_reply, &QNetworkReply::finished, this, &StreamReply::finished);
-        connect(m_reply, &QNetworkReply::sslErrors, this, &StreamReply::sslErrors);
-        connect(m_reply, &QNetworkReply::uploadProgress, this, &StreamReply::uploadProgress);
-        connect(m_reply, &QNetworkReply::readyRead, this, &StreamReply::readyRead);
-    }
+    Q_ASSERT(m_reply);
+    connect(m_reply, &QNetworkReply::downloadProgress, this, &StreamReply::downloadProgress);
+    connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
+    connect(m_reply, &QNetworkReply::finished, this, &StreamReply::finished);
+    connect(m_reply, &QNetworkReply::sslErrors, this, &StreamReply::sslErrors);
+    connect(m_reply, &QNetworkReply::uploadProgress, this, &StreamReply::uploadProgress);
+    connect(m_reply, &QNetworkReply::readyRead, this, &StreamReply::readyRead);
+
+    m_cachePath = QString("%1/imchenwencache-%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(index);
+    m_in = new QFile(m_cachePath);
+    m_in->open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Unbuffered);
 }
 
 StreamReply::~StreamReply()
@@ -22,7 +26,19 @@ StreamReply::~StreamReply()
     {
         m_reply->disconnect(this);
         m_reply->deleteLater();
-        m_reply = NULL;
+        m_reply = nullptr;
+    }
+    if (m_in)
+    {
+        m_in->close();
+        delete m_in;
+        m_in = nullptr;
+    }
+    if (m_out)
+    {
+        m_out->close();
+        delete m_out;
+        m_out = nullptr;
     }
 }
 
@@ -33,6 +49,23 @@ void StreamReply::stop()
         m_reply->abort();
         emit cancel();
     }
+}
+
+QByteArray StreamReply::read()
+{
+    if (!m_out)
+    {
+        m_out = new QFile(m_cachePath);
+        m_out->open(QIODevice::ReadOnly );
+    }
+    return m_out->read(64 * 1024);
+}
+
+bool StreamReply::atEnd()
+{
+    if (m_finished && m_out)
+        return m_out->atEnd();
+    return false;
 }
 
 void StreamReply::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
@@ -59,7 +92,7 @@ void StreamReply::finished()
 #if !defined(QT_NO_DEBUG)
     qDebug() << this << " finished: " << QString(m_content) << "\n";
 #endif
-
+    m_finished = true;
     emit done();
 }
 
@@ -84,11 +117,6 @@ void StreamReply::readyRead()
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (statusCode >= 200 && statusCode < 300) {
-        reply->readAll();
+        m_in->write(reply->readAll());
     }
-}
-
-int StreamReply::index() const
-{
-    return m_index;
 }

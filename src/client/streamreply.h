@@ -5,6 +5,11 @@
 #include <QNetworkReply>
 #include <QSharedPointer>
 
+
+QT_BEGIN_NAMESPACE
+class QFile;
+QT_END_NAMESPACE
+
 class StreamReply : public QObject
 {
     Q_OBJECT
@@ -12,8 +17,8 @@ public:
     StreamReply(int index, QNetworkReply* reply, QObject *parent = 0);
     ~StreamReply();
     void stop();
-    int index() const;
-
+    QByteArray read();
+    bool atEnd();
 signals:
     void done();
     void cancel();
@@ -27,7 +32,10 @@ public slots:
     void readyRead();
 private:
     QNetworkReply* m_reply;
-    int m_index;
+    QFile* m_in;
+    QFile* m_out;
+    QString m_cachePath;
+    bool m_finished;
 };
 
 typedef QSharedPointer<StreamReply> StreamReplyPtr;

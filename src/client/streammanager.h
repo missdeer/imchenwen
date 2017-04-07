@@ -18,6 +18,7 @@ public:
     void stopDownload();
     void serve(const QString& addr);
     void shutdown();
+    const QStringList& urls();
 signals:
 
 public slots:
@@ -25,6 +26,7 @@ public slots:
 private:
     QList<StreamReplyPtr> m_streams;
     QNetworkAccessManager* m_nam;
+    QStringList m_localUrls;
 };
 
 #endif // STREAMMANAGER_H
