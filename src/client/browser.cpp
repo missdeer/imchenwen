@@ -4,6 +4,7 @@
 #include "linkresolver.h"
 #include "waitingspinnerwidget.h"
 #include "playdialog.h"
+#include "streammanager.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
@@ -61,6 +62,8 @@ Browser::Browser(QObject* parent)
     : QObject(parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
+    , m_nam(new QNetworkAccessManager)
+    , m_streamManager(new StreamManager(m_nam))
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
@@ -79,15 +82,16 @@ Browser::Browser(QObject* parent)
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
 
 #if defined(Q_OS_WIN)
-    m_nam = nullptr;
     // preload libeay32.dll and ssleay32.dll on Windows,
     // so it won't hang when try to resolve link at the first time
     QtConcurrent::run(this, &Browser::ping);
 #endif
+    m_streamManager->serve("127.0.0.1:9876");
 }
 
 Browser::~Browser()
 {
+    m_streamManager->shutdown();
     clean();
 
     if (m_waitingSpinner)
@@ -275,7 +279,11 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         QString arg = std::get<1>(player);
         if (!arg.isEmpty())
             args << arg.split(" ");
-        args << stream->urls;
+
+        m_streamManager->stopDownload();
+        m_streamManager->startDownload(stream->urls);
+
+        args << m_streamManager->urls();
 
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")
@@ -408,7 +416,6 @@ void Browser::changeParsedProcessState()
 #if defined(Q_OS_WIN)
 void Browser::ping()
 {
-    m_nam = new QNetworkAccessManager;
     QNetworkReply* reply = m_nam->get(QNetworkRequest(QUrl("https://if.yii.li")));
     connect(reply, SIGNAL(finished()), this, SLOT(finished()));
 }
@@ -417,8 +424,6 @@ void Browser::finished()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
-    m_nam->deleteLater();
-    m_nam = nullptr;
 }
 
 #endif

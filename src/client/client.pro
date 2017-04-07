@@ -17,7 +17,9 @@ HEADERS += \
     linkresolver.h \
     websites.h \
     playdialog.h \
-    settings.h
+    settings.h \
+    streammanager.h \
+    streamreply.h
 
 SOURCES += \
     browser.cpp \
@@ -34,7 +36,9 @@ SOURCES += \
     linkresolver.cpp \
     websites.cpp \
     playdialog.cpp \
-    settings.cpp
+    settings.cpp \
+    streammanager.cpp \
+    streamreply.cpp
 
 FORMS += \
     certificateerrordialog.ui \

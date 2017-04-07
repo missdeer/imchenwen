@@ -52,6 +52,7 @@ QT_END_NAMESPACE
 
 class BrowserWindow;
 class WaitingSpinnerWidget;
+class StreamManager;
 
 class Browser : public QObject
 {
@@ -97,8 +98,7 @@ private:
     QProcess m_process;
     QProcess m_parsedProcess;
     LinkResolver m_linkResolver;
-#if defined(Q_OS_WIN)
     QNetworkAccessManager* m_nam;
-#endif
+    StreamManager* m_streamManager;
 };
 #endif // BROWSER_H
