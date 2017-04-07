@@ -92,6 +92,11 @@ win32: {
         deploy_parsed.depends += build_parsed
         deploy_parsed.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\parsed.exe\" \"$${OUT_PWD}\\release\\parsed.exe\"
 
-        QMAKE_EXTRA_TARGETS += deploy build_parsed deploy_parsed
+        build_updater.commands += cd \"$${PWD}/../updater/\" $$escape_expand(&&) go build
+
+        deploy_updater.depends += build_updater
+        deploy_updater.commands += $(COPY_FILE) \"$${PWD}\\..\\updater\\updater.exe\" \"$${OUT_PWD}\\release\\updater.exe\"
+		
+        QMAKE_EXTRA_TARGETS += deploy build_parsed build_updater deploy_parsed deploy_updater
     }
 }
