@@ -52,7 +52,7 @@
             <true/>
     </dict>
     <key>NSHumanReadableCopyright</key>
-    <string>Copyright (c) 2013 - 2017 DForD Software. All rights reserved.</string>
+    <string>Copyright (c) 2013 - 2017 Leaky Software. All rights reserved.</string>
     <key>ForAppStore</key>
     <true/>
     <key>NSPrincipalClass</key>

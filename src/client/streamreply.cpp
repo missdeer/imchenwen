@@ -18,7 +18,7 @@ StreamReply::StreamReply(int index, QNetworkReply *reply, QObject *parent)
     connect(m_reply, &QNetworkReply::uploadProgress, this, &StreamReply::uploadProgress);
     connect(m_reply, &QNetworkReply::readyRead, this, &StreamReply::remoteReadyRead);
 
-    m_cachePath = QString("%1/imchenwencache-%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(index);
+    m_cachePath = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(index);
     m_in = new QFile(m_cachePath);
     m_in->open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Unbuffered);
 }

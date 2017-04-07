@@ -19,7 +19,7 @@ void StreamManager::startDownload(const QStringList &streams)
 {
     m_remoteUrls = streams;
     for (int c = 0; c < streams.length(); c++)
-    m_localUrls.push_back( QString("%1/imchenwencache-%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(c));
+        m_localUrls.push_back( QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)).arg(c));
     m_downloadIndex = 0;
     download(m_downloadIndex++);
 }
