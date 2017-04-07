@@ -87,6 +87,8 @@ private slots:
     void resolvingSilentFinished(MediaInfoPtr mi);
     void resolvingSilentError(const QUrl&);
     void errorOccurred(QProcess::ProcessError error);
+    void playerFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
 private:
     explicit Browser(QObject *parent = 0);
     void resolveLink(const QUrl& u, bool vip);

@@ -90,14 +90,8 @@ Browser::Browser(QObject* parent)
 
 Browser::~Browser()
 {
+    stopWaiting();
     clean();
-
-    if (m_waitingSpinner)
-    {
-        if (m_waitingSpinner->isSpinning())
-            m_waitingSpinner->stop();
-        delete m_waitingSpinner;
-    }
 }
 
 Browser &Browser::instance()
@@ -381,6 +375,11 @@ void Browser::errorOccurred(QProcess::ProcessError error)
     }
     QMessageBox::warning(mainWindow(),
                          tr("Error on launching external player"), msg, QMessageBox::Ok);
+}
+
+void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
+{
+    m_streamManager->stopDownload();
 }
 
 void Browser::startParsedProcess()
