@@ -86,7 +86,7 @@ Browser::Browser(QObject* parent)
 #if defined(Q_OS_WIN)
     // preload libeay32.dll and ssleay32.dll on Windows,
     // so it won't hang when try to resolve link at the first time
-    //QtConcurrent::run(this, &Browser::ping);
+    QTimer::singleShot(3000, this, &Browser::ping);
 #endif
 }
 
