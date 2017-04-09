@@ -69,6 +69,15 @@ void StreamManager::finished()
     }
 }
 
+void StreamManager::onLocalReadyRead()
+{
+    while (m_runningCount <= 3 && m_downloadIndex < m_remoteUrls.length())
+    {
+        download(m_downloadIndex++);
+    }
+    emit readyRead();
+}
+
 void StreamManager::download(int i)
 {
     qDebug() << __FUNCTION__ << i;
@@ -78,7 +87,7 @@ void StreamManager::download(int i)
     connect(sr, &StreamReply::done, this, &StreamManager::finished);
     if (i == 0)
     {
-        connect(sr, &StreamReply::localReadyRead, this, &StreamManager::readyRead);
+        connect(sr, &StreamReply::localReadyRead, this, &StreamManager::onLocalReadyRead);
     }
     StreamReplyPtr r(sr);
     m_streams.push_back(r);
