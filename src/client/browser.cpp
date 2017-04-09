@@ -72,6 +72,7 @@ Browser::Browser(QObject* parent)
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
     connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
     connect(m_streamManager, &StreamManager::readyRead, this, &Browser::readyRead);
+    connect(m_streamManager, &StreamManager::cancelRead, this, &Browser::stopWaiting);
     loadSettings();
 
     Config cfg;

@@ -183,16 +183,19 @@ void LinkResolver::finished()
 
     if (docObj["SFSFT"].isObject())
     {
+        qDebug() << "SFSFT node";
         parseNode(docObj["SFSFT"].toObject(), mi, mi->vip);
     }
 
     if (docObj["VIPJieXi"].isObject())
     {
+        qDebug() << "VIPJieXi node";
         parseNode(docObj["VIPJieXi"].toObject(), mi, mi->vip);
     }
 
     if (docObj["MT2T"].isObject())
     {
+        qDebug() << "MT2T node";
         parseNode(docObj["MT2T"].toObject(), mi, mi->vip);
     }
 

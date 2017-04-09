@@ -67,6 +67,15 @@ void StreamReply::error(QNetworkReply::NetworkError code)
         QString e = m_reply->errorString();
         qDebug() << __FUNCTION__ << e;
         emit errorMessage(code, e);
+
+        if (m_in)
+        {
+            m_in->close();
+            m_in->remove();
+            delete m_in;
+            m_in = nullptr;
+        }
+        emit cancel();
     }
 }
 

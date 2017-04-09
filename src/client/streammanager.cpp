@@ -88,6 +88,7 @@ void StreamManager::download(int i)
     if (i == 0)
     {
         connect(sr, &StreamReply::localReadyRead, this, &StreamManager::onLocalReadyRead);
+        connect(sr, &StreamReply::cancel, this, &StreamManager::cancelRead);
     }
     StreamReplyPtr r(sr);
     m_streams.push_back(r);

@@ -23,6 +23,7 @@ public:
     const QStringList& urls();
 signals:
     void readyRead();
+    void cancelRead();
 private slots:
     void finished();
     void onLocalReadyRead();

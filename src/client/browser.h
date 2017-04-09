@@ -89,13 +89,13 @@ private slots:
     void errorOccurred(QProcess::ProcessError error);
     void playerFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
+    void stopWaiting();
 private:
     explicit Browser(QObject *parent = 0);
     void resolveLink(const QUrl& u, bool vip);
     void doPlayByMediaPlayer(MediaInfoPtr mi);
     void clean();
     void waiting(bool disableParent = true);
-    void stopWaiting();
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;
