@@ -25,6 +25,7 @@ signals:
     void readyRead();
 private slots:
     void finished();
+    void onLocalReadyRead();
 private:
     QList<StreamReplyPtr> m_streams;
     QNetworkAccessManager* m_nam;
