@@ -130,7 +130,7 @@ func updateYoutubeDL() {
 
 func updateYKDL() {
 	latestReleaseURL := `https://github.com/zhangn1985/ykdl/releases/latest`
-	pattern := `\/zhangn1985\/ykdl\/releases\/download\/v[0-9\.]+\/ykdl.exe`
+	pattern := `\/zhangn1985\/ykdl\/releases\/download\/v[0-9\.]+\/ykdl_win32.exe`
 	exeURL := getExeDownloadURL(latestReleaseURL, pattern)
 	if exeURL != "" {
 		filePath := `ykdl.exe`

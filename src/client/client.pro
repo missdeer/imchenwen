@@ -96,14 +96,14 @@ win32: {
         build_parsed.commands += cd \"$${PWD}/../parsed/\" $$escape_expand(&&) go build
 
         deploy_parsed.depends += build_parsed
-        deploy_parsed.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\parsed.exe\" \"$${OUT_PWD}\\release\\parsed.exe\"
+        deploy_parsed.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\parsed.exe\" \"$${OUT_PWD}\\release\\parser\\parsed.exe\"
 
         build_updater.commands += cd \"$${PWD}/../updater/\" $$escape_expand(&&) go build
 
         deploy_updater.depends += build_updater
-        deploy_updater.commands += $(COPY_FILE) \"$${PWD}\\..\\updater\\updater.exe\" \"$${OUT_PWD}\\release\\updater.exe\"
+        deploy_updater.commands += $(COPY_FILE) \"$${PWD}\\..\\updater\\updater.exe\" \"$${OUT_PWD}\\release\\parser\\updater.exe\"
 		
-        deploy_sniff.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\sniff.js\" \"$${OUT_PWD}\\release\\sniff.js\"
+        deploy_sniff.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\sniff.js\" \"$${OUT_PWD}\\release\\parser\\sniff.js\"
 
         all.depends += deploy_updater deploy_parsed deploy_sniff
         all.commands +=
