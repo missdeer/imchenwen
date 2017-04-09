@@ -395,7 +395,7 @@ void Browser::startParsedProcess()
 {
     QString parsedPath = QApplication::applicationDirPath();
 #if defined(Q_OS_WIN)
-    parsedPath.append("/parsed.exe");
+    parsedPath.append("/parser/parsed.exe");
 #else
     parsedPath.append("/../Resources/parsed");
 #endif

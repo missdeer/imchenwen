@@ -99,7 +99,7 @@ void PlayDialog::doOk()
     if (currentIndex == m_players.length() - 1)
     {
 #if defined(Q_OS_WIN)
-        m_selectedPlayer = std::make_tuple(QApplication::applicationDirPath() + "/mpv.exe", "--vo=direct3d --hwdec=dxva2 --ytdl=no --fs");
+        m_selectedPlayer = std::make_tuple(QApplication::applicationDirPath() + "/player/mpv.exe", "--vo=direct3d --hwdec=dxva2 --ytdl=no --fs");
 #elif defined(Q_OS_MAC)
         m_selectedPlayer = std::make_tuple("/usr/local/bin/mpv", "--vo=opengl --hwdec=videotoolbox --ytdl=no --fs");
 #endif
