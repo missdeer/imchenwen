@@ -72,10 +72,11 @@ func handleParseRequest(c *gin.Context) {
 			}
 		}
 		h := gin.H{"Result": "OK"}
-		//for i := 0; i < count; i++ {
-		r := <-res
-		h[r.Service] = r.Result
-		//}
+		var r *NativeJSONResult
+		for i := 0; i < count && r == nil; i++ {
+			r = <-res
+			h[r.Service] = r.Result
+		}
 		c.JSON(http.StatusOK, h)
 	} else {
 		res := make(chan *CmdResult, len(parsers))
@@ -97,10 +98,11 @@ func handleParseRequest(c *gin.Context) {
 			}
 		}
 		h := gin.H{"Result": "OK"}
-		//for i := 0; i < count; i++ {
-		r := <-res
-		h[r.Service] = r.Result
-		//}
+		var r *CmdResult
+		for i := 0; i < count && r == nil; i++ {
+			r = <-res
+			h[r.Service] = r.Result
+		}
 		c.JSON(http.StatusOK, h)
 	}
 }
