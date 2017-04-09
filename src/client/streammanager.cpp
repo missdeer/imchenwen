@@ -50,8 +50,20 @@ void StreamManager::finished()
 {
     m_runningCount--;
     m_finishedCount++;
-    qDebug() << "===========running:" << m_runningCount << ", finished:" << m_finishedCount << ", index:" << m_downloadIndex;
-    while (m_runningCount < m_finishedCount + 1 && m_downloadIndex < m_remoteUrls.length())
+    int maxRunningCount = 1;
+    for (int i = 4; i >=0; i--)
+    {
+        if ((m_finishedCount*2) >= (i *(i+1)))
+        {
+            maxRunningCount = i+1;
+            break;
+        }
+    }
+    qDebug() << "===========running:" << m_runningCount
+             << ", finished:" << m_finishedCount
+             << ", index:" << m_downloadIndex
+             << ", max running:" << maxRunningCount;
+    while (m_runningCount < maxRunningCount && m_downloadIndex < m_remoteUrls.length())
     {
         download(m_downloadIndex++);
     }
