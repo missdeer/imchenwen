@@ -73,9 +73,12 @@ func handleParseRequest(c *gin.Context) {
 		}
 		h := gin.H{"Result": "OK"}
 		var r *NativeJSONResult
-		for i := 0; i < count && r == nil; i++ {
+		for i := 0; i < count; i++ {
 			r = <-res
-			h[r.Service] = r.Result
+			if r != nil && r.Result != nil {
+				h[r.Service] = r.Result
+				break
+			}
 		}
 		c.JSON(http.StatusOK, h)
 	} else {
@@ -99,9 +102,12 @@ func handleParseRequest(c *gin.Context) {
 		}
 		h := gin.H{"Result": "OK"}
 		var r *CmdResult
-		for i := 0; i < count && r == nil; i++ {
+		for i := 0; i < count; i++ {
 			r = <-res
-			h[r.Service] = r.Result
+			if r != nil && r.Result != nil {
+				h[r.Service] = r.Result
+				break
+			}
 		}
 		c.JSON(http.StatusOK, h)
 	}
