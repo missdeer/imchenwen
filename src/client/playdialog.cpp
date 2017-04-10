@@ -99,9 +99,41 @@ void PlayDialog::doOk()
     if (currentIndex == m_players.length() - 1)
     {
 #if defined(Q_OS_WIN)
-        m_selectedPlayer = std::make_tuple(QApplication::applicationDirPath() + "/player/mpv.exe", "--vo=direct3d --hwdec=dxva2 --ytdl=no --fs");
+        QString playerPath = QApplication::applicationDirPath() + "/player/mpv.exe";
+        if (!QFile::exists(playerPath))
+            playerPath = QApplication::applicationDirPath() + "/mpv.exe";
+        if (!QFile::exists(playerPath))
+        {
+            QByteArray pathEnv = qgetenv("PATH");
+            QList<QByteArray> paths = pathEnv.split(';');
+            for (auto p : paths)
+            {
+                QString path(p + "/mpv.exe");
+                if (QFile::exists(path))
+                {
+                    playerPath = path;
+                    break;
+                }
+            }
+        }
+        m_selectedPlayer = std::make_tuple(playerPath, "--vo=direct3d --hwdec=dxva2 --ytdl=no --fs");
 #elif defined(Q_OS_MAC)
-        m_selectedPlayer = std::make_tuple("/usr/local/bin/mpv", "--vo=opengl --hwdec=videotoolbox --ytdl=no --fs");
+        QString playerPath("/usr/local/bin/mpv");
+        if (!QFile::exists(playerPath))
+        {
+            QByteArray pathEnv = qgetenv("PATH");
+            QList<QByteArray> paths = pathEnv.split(':');
+            for (auto p : paths)
+            {
+                QString path(p + "/mpv");
+                if (QFile::exists(path))
+                {
+                    playerPath = path;
+                    break;
+                }
+            }
+        }
+        m_selectedPlayer = std::make_tuple(playerPath, "--vo=opengl --hwdec=videotoolbox --ytdl=no --fs");
 #endif
     }
     else
