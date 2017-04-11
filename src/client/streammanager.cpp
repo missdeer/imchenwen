@@ -4,6 +4,7 @@
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QFile>
+#include <QtConcurrent>
 
 StreamManager::StreamManager(QNetworkAccessManager *nam, QObject *parent)
     : QObject(parent)
@@ -12,10 +13,12 @@ StreamManager::StreamManager(QNetworkAccessManager *nam, QObject *parent)
     , m_finishedCount(0)
     , m_runningCount(0)
 {
+    QtConcurrent::run(this, &StreamManager::createServer);
 }
 
 StreamManager::~StreamManager()
 {
+    destroyServer();
 }
 
 void StreamManager::startDownload(const QStringList &streams)
@@ -93,4 +96,18 @@ void StreamManager::download(int i)
     StreamReplyPtr r(sr);
     m_streams.push_back(r);
     m_runningCount++;
+}
+
+void StreamManager::createServer()
+{
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    m_server = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
+    m_server->run();
+}
+
+void StreamManager::destroyServer()
+{
+    m_server->stop();
+    delete m_server;
+    m_server = nullptr;
 }

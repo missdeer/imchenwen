@@ -3,7 +3,11 @@ TARGET = imchenwen
 QT += webengine webenginewidgets xml concurrent
 CONFIG += c++11
 
-HEADERS +=  \
+include(Boost.pri)
+
+INCLUDEPATH += $$PWD/httpserver
+
+HEADERS += $$PWD/httpserver/*.hpp \
     browser.h \
     browserwindow.h \
     tabwidget.h \
@@ -21,7 +25,7 @@ HEADERS +=  \
     streammanager.h \
     streamreply.h
 
-SOURCES += \
+SOURCES += $$PWD/httpserver/*.cpp \
     browser.cpp \
     browserwindow.cpp \
     main.cpp \
@@ -55,7 +59,7 @@ RC_FILE = imchenwen-win.rc
 macx: {
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
-
+    LIBS += -lboost_system
     CONFIG(release, debug|release) : {
         QMAKE_INFO_PLIST = osxInfo.plist
         MACDEPLOYQT = $$[QT_INSTALL_BINS]/macdeployqt
