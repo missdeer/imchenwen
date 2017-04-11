@@ -19,9 +19,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#if defined(Q_OS_WIN)
+#include <QThread>
 #include <QtConcurrent>
-#endif
 
 static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = 0)
 {
@@ -88,6 +87,8 @@ Browser::Browser(QObject* parent)
     // so it won't hang when try to resolve link at the first time
     QTimer::singleShot(3000, this, &Browser::ping);
 #endif
+
+    qDebug() << QThread::currentThreadId();
 }
 
 Browser::~Browser()

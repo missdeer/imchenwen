@@ -8,10 +8,6 @@ QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
 QT_END_NAMESPACE
 
-class QHttpRequest;
-class QHttpResponse;
-class QHttpServer;
-
 class StreamManager : public QObject
 {
     Q_OBJECT
@@ -30,7 +26,6 @@ private slots:
 private:
     QList<StreamReplyPtr> m_streams;
     QNetworkAccessManager* m_nam;
-    QHttpServer *m_server;
     QStringList m_localUrls;
     QStringList m_remoteUrls;
     int m_downloadIndex;

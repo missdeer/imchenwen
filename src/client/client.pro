@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = imchenwen
-QT += webengine webenginewidgets xml
+QT += webengine webenginewidgets xml concurrent
 CONFIG += c++11
 
 HEADERS +=  \
@@ -19,14 +19,7 @@ HEADERS +=  \
     playdialog.h \
     settings.h \
     streammanager.h \
-    streamreply.h \
-    qhttpserver/http-parser/http_parser.h \
-    qhttpserver/src/qhttpconnection.h \
-    qhttpserver/src/qhttprequest.h \
-    qhttpserver/src/qhttpresponse.h \
-    qhttpserver/src/qhttpserver.h \
-    qhttpserver/src/qhttpserverapi.h \
-    qhttpserver/src/qhttpserverfwd.h
+    streamreply.h
 
 SOURCES += \
     browser.cpp \
@@ -45,12 +38,7 @@ SOURCES += \
     playdialog.cpp \
     settings.cpp \
     streammanager.cpp \
-    streamreply.cpp \
-    qhttpserver/http-parser/http_parser.c \
-    qhttpserver/src/qhttpconnection.cpp \
-    qhttpserver/src/qhttprequest.cpp \
-    qhttpserver/src/qhttpresponse.cpp \
-    qhttpserver/src/qhttpserver.cpp
+    streamreply.cpp
 
 FORMS += \
     certificateerrordialog.ui \
@@ -99,7 +87,6 @@ macx: {
 }
 
 win32: {
-    QT += concurrent
     CONFIG(release, debug|release) : {
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
 
