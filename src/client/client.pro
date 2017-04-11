@@ -93,6 +93,7 @@ macx: {
 win32: {
 	DEFINES += _WIN32_WINNT=0x0600
     CONFIG(release, debug|release) : {
+        LIBS += -llibboost_system-vc140-mt-1_63
 		win32-msvc* {
 			QMAKE_CXXFLAGS += /Zi
 			QMAKE_LFLAGS += /INCREMENTAL:NO /Debug

@@ -1,7 +1,7 @@
 # Find Boost library.
 
 win32 : {
-    DEFINES += BOOST_ALL_NO_LIB
+    DEFINES += BOOST_ALL_NO_LIB=1
     # Try to use qmake variable's value.
     _BOOST_ROOT = $$BOOST_ROOT
     isEmpty(_BOOST_ROOT) {
