@@ -19,7 +19,14 @@ HEADERS +=  \
     playdialog.h \
     settings.h \
     streammanager.h \
-    streamreply.h
+    streamreply.h \
+    qhttpserver/http-parser/http_parser.h \
+    qhttpserver/src/qhttpconnection.h \
+    qhttpserver/src/qhttprequest.h \
+    qhttpserver/src/qhttpresponse.h \
+    qhttpserver/src/qhttpserver.h \
+    qhttpserver/src/qhttpserverapi.h \
+    qhttpserver/src/qhttpserverfwd.h
 
 SOURCES += \
     browser.cpp \
@@ -38,7 +45,12 @@ SOURCES += \
     playdialog.cpp \
     settings.cpp \
     streammanager.cpp \
-    streamreply.cpp
+    streamreply.cpp \
+    qhttpserver/http-parser/http_parser.c \
+    qhttpserver/src/qhttpconnection.cpp \
+    qhttpserver/src/qhttprequest.cpp \
+    qhttpserver/src/qhttpresponse.cpp \
+    qhttpserver/src/qhttpserver.cpp
 
 FORMS += \
     certificateerrordialog.ui \
