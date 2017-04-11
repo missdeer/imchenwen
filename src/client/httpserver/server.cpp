@@ -46,6 +46,7 @@ void server::run()
 
 void server::stop()
 {
+    io_service_.stop();
     acceptor_.close();
     connection_manager_.stop_all();
 }
