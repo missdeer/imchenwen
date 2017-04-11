@@ -91,7 +91,12 @@ macx: {
 }
 
 win32: {
+	DEFINES += _WIN32_WINNT=0x0600
     CONFIG(release, debug|release) : {
+		win32-msvc* {
+			QMAKE_CXXFLAGS += /Zi
+			QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
+		}
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
 
         deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}\\release\\$${TARGET}.exe\"
