@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include "streamreply.h"
-#include "server.hpp"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -13,7 +12,7 @@ class StreamManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit StreamManager(QNetworkAccessManager* nam, QObject *parent = 0);
+    explicit StreamManager(QObject *parent = 0);
     ~StreamManager();
     void startDownload(const QStringList& streams);
     void stopDownload();
@@ -27,7 +26,6 @@ private slots:
 private:
     QList<StreamReplyPtr> m_streams;
     QNetworkAccessManager* m_nam;
-    http::server::server* m_server;
     QStringList m_localUrls;
     QStringList m_remoteUrls;
     int m_downloadIndex;
@@ -36,8 +34,6 @@ private:
 
 private:
     void download(int i);
-    void createServer();
-    void destroyServer();
 };
 
 #endif // STREAMMANAGER_H

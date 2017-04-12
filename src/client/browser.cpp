@@ -20,6 +20,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QThread>
+#include <QStandardPaths>
 #include <QtConcurrent>
 
 static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = 0)
@@ -61,8 +62,8 @@ Browser::Browser(QObject* parent)
     : QObject(parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
-    , m_nam(new QNetworkAccessManager)
-    , m_streamManager(new StreamManager(m_nam))
+    , m_nam(nullptr)
+    , m_streamManager(new StreamManager)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
@@ -84,10 +85,10 @@ Browser::Browser(QObject* parent)
 #if defined(Q_OS_WIN)
     // preload libeay32.dll and ssleay32.dll on Windows,
     // so it won't hang when try to resolve link at the first time
-    QTimer::singleShot(3000, this, &Browser::ping);
+    QtConcurrent::run(this, &Browser::ping);
 #endif
-
-    qDebug() << QThread::currentThreadId();
+    QtConcurrent::run(this, &Browser::createServer);
+    connect(qApp, &QCoreApplication::aboutToQuit, [this](){destroyServer();});
 }
 
 Browser::~Browser()
@@ -443,6 +444,7 @@ void Browser::changeParsedProcessState()
 #if defined(Q_OS_WIN)
 void Browser::ping()
 {
+    m_nam = new QNetworkAccessManager;
     QNetworkReply* reply = m_nam->get(QNetworkRequest(QUrl("https://if.yii.li")));
     connect(reply, SIGNAL(finished()), this, SLOT(finished()));
 }
@@ -450,7 +452,23 @@ void Browser::ping()
 void Browser::finished()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    delete m_nam;
+    m_nam = nullptr;
     reply->deleteLater();
 }
 
 #endif
+
+void Browser::createServer()
+{
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    m_server = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
+    m_server->run();
+}
+
+void Browser::destroyServer()
+{
+    m_server->stop();
+    delete m_server;
+    m_server = nullptr;
+}
