@@ -31,8 +31,6 @@ int main(int argc, char **argv)
 #endif
     QtWebEngine::initialize();
 
-    QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-
     Browser& browser = Browser::instance();
     browser.loadSettings();
     BrowserWindow *window = browser.mainWindow();
