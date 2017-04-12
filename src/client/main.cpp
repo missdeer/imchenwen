@@ -33,7 +33,9 @@ int main(int argc, char **argv)
 
     QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
-    BrowserWindow *window = Browser::instance().mainWindow();
+    Browser& browser = Browser::instance();
+    browser.loadSettings();
+    BrowserWindow *window = browser.mainWindow();
 
     const QString url = getCommandLineUrlArgument();
     if (!url.isEmpty())

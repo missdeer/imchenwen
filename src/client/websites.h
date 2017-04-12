@@ -20,7 +20,7 @@ typedef QList<WebsitePtr> WebsiteList;
 class Websites
 {
 public:
-    static Websites& instance();
+    Websites();
 
     bool isInChina(const QUrl &url);
     const QString& findURL(const QString& name);
@@ -28,7 +28,6 @@ public:
     WebsiteList inChina();
     WebsiteList abroad();
 private:
-    Websites();
     void doParse();
 private:
     WebsiteList m_websites;

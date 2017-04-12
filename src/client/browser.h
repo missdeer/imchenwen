@@ -45,6 +45,7 @@
 #include <QVector>
 #include <QProcess>
 #include "linkresolver.h"
+#include "websites.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -73,6 +74,8 @@ public:
     void changeParsedProcessState();
     void playByMediaPlayer(const QUrl& u);
     void playVIPByMediaPlayer(const QUrl& u);
+    Websites &websites();
+
 signals:
 
 private slots:
@@ -102,6 +105,7 @@ private:
     QProcess m_process;
     QProcess m_parsedProcess;
     LinkResolver m_linkResolver;
+    Websites m_websites;
     QNetworkAccessManager* m_nam;
     StreamManager* m_streamManager;
 };

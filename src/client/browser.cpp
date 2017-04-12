@@ -72,7 +72,6 @@ Browser::Browser(QObject* parent)
     connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
     connect(m_streamManager, &StreamManager::readyRead, this, &Browser::readyRead);
     connect(m_streamManager, &StreamManager::cancelRead, this, &Browser::stopWaiting);
-    loadSettings();
 
     Config cfg;
     if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
@@ -250,6 +249,11 @@ void Browser::waiting(bool disableParent /*= true*/)
         m_waitingSpinner->stop();
 
     m_waitingSpinner->start();
+}
+
+Websites &Browser::websites()
+{
+    return m_websites;
 }
 
 void Browser::resolveLink(const QUrl &u, bool vip)

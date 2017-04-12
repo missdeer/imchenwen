@@ -3,12 +3,6 @@
 #include <QDomDocument>
 #include <QDomNode>
 
-Websites &Websites::instance()
-{
-    static Websites s_instance;
-    return s_instance;
-}
-
 bool Websites::isInChina(const QUrl &url)
 {
     QString host = url.host();

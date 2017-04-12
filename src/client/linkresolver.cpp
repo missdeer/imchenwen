@@ -1,5 +1,5 @@
 #include "linkresolver.h"
-#include "websites.h"
+#include "browser.h"
 #include "config.h"
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
@@ -16,7 +16,7 @@ LinkResolver::LinkResolver(QObject *parent)
 
 void LinkResolver::resolve(const QUrl &url, bool silent)
 {
-    bool inChina = Websites::instance().isInChina(url);
+    bool inChina = Browser::instance().websites().isInChina(url);
     Config cfg;
     bool inChinaLocalMode = cfg.read<bool>("inChinaLocalMode");
     bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
@@ -68,7 +68,7 @@ void LinkResolver::resolve(const QUrl &url, bool silent)
 
 void LinkResolver::resolveVIP(const QUrl &url)
 {
-    bool inChina = Websites::instance().isInChina(url);
+    bool inChina = Browser::instance().websites().isInChina(url);
     Config cfg;
     bool inChinaLocalMode = cfg.read<bool>("inChinaLocalMode");
     bool abroadLocalMode = cfg.read<bool>("abroadLocalMode");
