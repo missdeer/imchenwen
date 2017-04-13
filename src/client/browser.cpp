@@ -63,6 +63,7 @@ Browser::Browser(QObject* parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
     , m_nam(nullptr)
+    , m_httpServer(nullptr)
     , m_streamManager(new StreamManager)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
@@ -462,20 +463,20 @@ void Browser::finished()
 
 void Browser::createServer()
 {
-    if (!m_server)
+    if (!m_httpServer)
     {
         QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-        m_server = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
-        m_server->run();
+        m_httpServer = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
+        m_httpServer->run();
     }
 }
 
 void Browser::destroyServer()
 {
-    if (m_server)
+    if (m_httpServer)
     {
-        m_server->stop();
-        delete m_server;
-        m_server = nullptr;
+        m_httpServer->stop();
+        delete m_httpServer;
+        m_httpServer = nullptr;
     }
 }

@@ -110,7 +110,7 @@ private:
     LinkResolver m_linkResolver;
     Websites m_websites;
     QNetworkAccessManager* m_nam;
-    http::server::server* m_server;
+    http::server::server* m_httpServer;
     StreamManager* m_streamManager;
 };
 #endif // BROWSER_H
