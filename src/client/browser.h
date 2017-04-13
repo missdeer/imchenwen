@@ -112,5 +112,6 @@ private:
     QNetworkAccessManager* m_nam;
     http::server::server* m_httpServer;
     StreamManager* m_streamManager;
+    void clearAtExit();
 };
 #endif // BROWSER_H

@@ -91,14 +91,18 @@ Browser::Browser(QObject* parent)
     QtConcurrent::run(this, &Browser::createServer);
 }
 
-Browser::~Browser()
+void Browser::clearAtExit()
 {
+    destroyServer();
     stopWaiting();
     if (m_process.state() == QProcess::Running)
         m_process.terminate();
     if (m_parsedProcess.state() == QProcess::Running)
         m_parsedProcess.terminate();
-    clean();
+}
+
+Browser::~Browser()
+{
 }
 
 Browser &Browser::instance()
@@ -213,7 +217,7 @@ void Browser::addWindow(BrowserWindow *mainWindow)
     QObject::connect(mainWindow, &QObject::destroyed, [this, mainWindow]() {
         m_windows.removeOne(mainWindow);
         if (m_windows.isEmpty())
-            destroyServer();
+            clearAtExit();
     });
     mainWindow->show();
 }
