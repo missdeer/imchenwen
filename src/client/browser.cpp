@@ -88,7 +88,6 @@ Browser::Browser(QObject* parent)
     QtConcurrent::run(this, &Browser::ping);
 #endif
     QtConcurrent::run(this, &Browser::createServer);
-    connect(qApp, &QCoreApplication::aboutToQuit, [this](){destroyServer();});
 }
 
 Browser::~Browser()
@@ -212,6 +211,8 @@ void Browser::addWindow(BrowserWindow *mainWindow)
     m_windows.prepend(mainWindow);
     QObject::connect(mainWindow, &QObject::destroyed, [this, mainWindow]() {
         m_windows.removeOne(mainWindow);
+        if (m_windows.isEmpty())
+            destroyServer();
     });
     mainWindow->show();
 }
@@ -461,14 +462,20 @@ void Browser::finished()
 
 void Browser::createServer()
 {
-    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    m_server = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
-    m_server->run();
+    if (!m_server)
+    {
+        QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        m_server = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
+        m_server->run();
+    }
 }
 
 void Browser::destroyServer()
 {
-    m_server->stop();
-    delete m_server;
-    m_server = nullptr;
+    if (m_server)
+    {
+        m_server->stop();
+        delete m_server;
+        m_server = nullptr;
+    }
 }
