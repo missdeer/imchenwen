@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = imchenwen
-QT += webengine webenginewidgets xml concurrent
+QT += webengine webenginecore webenginewidgets xml concurrent
 CONFIG += c++11
 
 include(Boost.pri)
@@ -67,7 +67,7 @@ macx: {
         deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\" -appstore-compliant
 
         deploy_webengine.depends += deploy
-        deploy_webengine.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
+        deploy_webengine.commands += # $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
 
         deploy_sniff.commands += $(COPY_FILE) \"$${PWD}/../parsed/sniff.js\" \"$${OUT_PWD}/$${TARGET}.app/Contents/Resources/\"
 
