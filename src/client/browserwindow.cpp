@@ -108,7 +108,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
         {
             if (u.startsWith("http://") || u.startsWith("https://"))
             {
-                Browser::instance().playByMediaPlayer(QUrl(u));
+                Browser::instance().playByMediaPlayer(u);
             }
             else
             {
@@ -303,7 +303,6 @@ QMenu *BrowserWindow::createShortcutMenu()
         inChinaLocalMode->setChecked(cfg.read<bool>("inChinaLocalMode"));
         connect(inChinaLocalMode, &QAction::triggered, [&cfg]() {
             cfg.write("inChinaLocalMode", !cfg.read<bool>("inChinaLocalMode"));
-            Browser::instance().changeParsedProcessState();
         });
         chinaMenu->addSeparator();
 
@@ -312,7 +311,6 @@ QMenu *BrowserWindow::createShortcutMenu()
         abroadLocalMode->setChecked(cfg.read<bool>("abroadLocalMode"));
         connect(abroadLocalMode, &QAction::triggered, [&cfg]() {
             cfg.write("abroadLocalMode", !cfg.read<bool>("abroadLocalMode"));
-            Browser::instance().changeParsedProcessState();
         });
         abroadMenu->addSeparator();
     }
@@ -395,13 +393,13 @@ QToolBar *BrowserWindow::createToolBar()
 
     QAction *playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
     connect(playInMediaPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().playByMediaPlayer(QUrl(m_urlLineEdit->text()));
+        Browser::instance().playByMediaPlayer(m_urlLineEdit->text());
     });
     navigationBar->addAction(playInMediaPlayerAction);
 
     QAction *playVIPInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play as VIP by Media Player"), this);
     connect(playVIPInMediaPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().playVIPByMediaPlayer(QUrl(m_urlLineEdit->text()));
+        Browser::instance().playVIPByMediaPlayer(m_urlLineEdit->text());
     });
     navigationBar->addAction(playVIPInMediaPlayerAction);
     return navigationBar;

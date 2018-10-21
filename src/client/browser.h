@@ -69,12 +69,8 @@ public:
     BrowserWindow *newMainWindow();
 
     void loadSettings();
-    void startParsedProcess();
-    void stopParsedProcess();
-    bool isParsedRunning();
-    void changeParsedProcessState();
-    void playByMediaPlayer(const QUrl& u);
-    void playVIPByMediaPlayer(const QUrl& u);
+    void playByMediaPlayer(const QString& u);
+    void playVIPByMediaPlayer(const QString &u);
     Websites &websites();
 
     void destroyServer();
@@ -88,16 +84,14 @@ private slots:
     void readyRead();
     void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
-    void resolvingError(const QUrl&);
-    void resolvingSilentFinished(MediaInfoPtr mi);
-    void resolvingSilentError(const QUrl&);
+    void resolvingError(const QString&);
     void errorOccurred(QProcess::ProcessError error);
     void playerFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
     void stopWaiting();
 private:
-    explicit Browser(QObject *parent = 0);
-    void resolveLink(const QUrl& u, bool vip);
+    explicit Browser(QObject *parent = nullptr);
+    void resolveLink(const QString &u, bool vip);
     void doPlayByMediaPlayer(MediaInfoPtr mi);
     void clean();
     void waiting(bool disableParent = true);

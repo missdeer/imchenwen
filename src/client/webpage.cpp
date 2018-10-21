@@ -38,7 +38,7 @@ void WebPage::handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticato
     passwordDialog.setupUi(&dialog);
 
     passwordDialog.m_iconLabel->setText(QString());
-    QIcon icon(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow));
+    QIcon icon(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, nullptr, mainWindow));
     passwordDialog.m_iconLabel->setPixmap(icon.pixmap(32, 32));
 
     QString introMessage(tr("Enter username and password for \"%1\" at %2")
@@ -66,7 +66,7 @@ void WebPage::handleProxyAuthenticationRequired(const QUrl &, QAuthenticator *au
     passwordDialog.setupUi(&dialog);
 
     passwordDialog.m_iconLabel->setText(QString());
-    QIcon icon(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow));
+    QIcon icon(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, nullptr, mainWindow));
     passwordDialog.m_iconLabel->setPixmap(icon.pixmap(32, 32));
 
     QString introMessage = tr("Connect to proxy \"%1\" using:");

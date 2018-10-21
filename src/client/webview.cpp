@@ -116,13 +116,13 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     auto it = std::find(actions.cbegin(), actions.cend(), page()->action(QWebEnginePage::OpenLinkInThisWindow));
     if (it != actions.cend())
     {
-        m_rightClickedUrl = page()->contextMenuData().linkUrl();
+        m_rightClickedUrl = page()->contextMenuData().linkUrl().toString();
         (*it)->setText(tr("Open Link in This Tab"));
         ++it;
         QAction *before(it == actions.cend() ? nullptr : *it);
         menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
 
-        if (m_rightClickedUrl.toString().startsWith("http://") || m_rightClickedUrl.toString().startsWith("https://")  )
+        if (m_rightClickedUrl.startsWith("http://") || m_rightClickedUrl.startsWith("https://")  )
         {
             menu->addSeparator();
             QAction *playAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play Link by Media Player"), this);
@@ -143,7 +143,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     }
     else
     {
-        m_rightClickedUrl = QUrl();
+        m_rightClickedUrl.clear();
     }
 
     connect(menu, &QMenu::aboutToHide, menu, &QObject::deleteLater);

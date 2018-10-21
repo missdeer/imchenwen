@@ -33,6 +33,11 @@ private slots:
     void onRemoveExternalPlayer();
     void onModifyExternalPlayer();
     void onExternalPlayerListCurrentRowChanged(int row);
+
+    void onBrowseYouGetPath();
+    void onBrowseYKDLPath();
+    void onBrowseYoutubeDLPath();
+    void onBrowseAnniePath();
 private:
     QFont standardFont;
     QFont fixedFont;

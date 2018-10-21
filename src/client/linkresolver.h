@@ -2,8 +2,9 @@
 #define LINKRESOLVER_H
 
 #include <QObject>
-#include <QNetworkReply>
 #include <QSharedPointer>
+#include <QTime>
+#include "linkresolverprocess.h"
 
 struct StreamInfo
 {
@@ -22,7 +23,8 @@ struct MediaInfo
     Streams ykdl;
     Streams you_get;
     Streams youtube_dl;
-    Streams vip;
+    Streams annie;
+    int resultCount;
 };
 
 typedef QSharedPointer<MediaInfo> MediaInfoPtr;
@@ -31,7 +33,6 @@ struct HistoryItem
 {
     QString url;
     QTime time;
-    bool localMode;
     bool vip;
     MediaInfoPtr mi;
 };
@@ -42,26 +43,34 @@ class LinkResolver : public QObject
 {
     Q_OBJECT
 public:
-    explicit LinkResolver(QObject *parent = 0);
-    void resolve(const QUrl& url, bool silent = false);
-    void resolveVIP(const QUrl& url);
+    explicit LinkResolver(QObject *parent = nullptr);
+    void resolve(const QString & url);
+    void resolveVIP(const QString& url);
 signals:
     void resolvingFinished(MediaInfoPtr);
-    void resolvingError(const QUrl&);
-    void resolvingSilentFinished(MediaInfoPtr);
-    void resolvingSilentError(const QUrl&);
+    void resolvingError(const QString&);
 public slots:
 
 private slots:
-    void error(QNetworkReply::NetworkError code);
-    void finished();
-    void sslErrors(const QList<QSslError> & errors);
-    void readyRead();
-
+    void readYouGetOutput(const QByteArray& data);
+    void readYKDLOutput(const QByteArray &data);
+    void readYoutubeDLOutput(const QByteArray &data);
+    void readAnnieOutput(const QByteArray &data);
 private:
-    QByteArray m_content;
-    QList<HistoryItemPtr> m_history;
+    LinkResolverProcess m_yougetProcess;
+    LinkResolverProcess m_ykdlProcess;
+    LinkResolverProcess m_youtubedlProcess;
+    LinkResolverProcess m_annieProcess;
+    MediaInfoPtr m_mediaInfo;
     void parseNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
+    void parseYouGetNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
+    void parseYKDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
+    void parseYoutubeDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
+    void parseAnnieNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
+    void resolveByYouGet(const QString &url);
+    void resolveByYKDL(const QString& url);
+    void resolveByYoutubeDL(const QString &url);
+    void resolveByAnnie(const QString& url);
 };
 
 #endif // LINKRESOLVER_H

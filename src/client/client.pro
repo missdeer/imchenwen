@@ -23,7 +23,8 @@ HEADERS += $$PWD/httpserver/*.hpp \
     playdialog.h \
     settings.h \
     streammanager.h \
-    streamreply.h
+    streamreply.h \
+    linkresolverprocess.h
 
 SOURCES += $$PWD/httpserver/*.cpp \
     browser.cpp \
@@ -42,7 +43,8 @@ SOURCES += $$PWD/httpserver/*.cpp \
     playdialog.cpp \
     settings.cpp \
     streammanager.cpp \
-    streamreply.cpp
+    streamreply.cpp \
+    linkresolverprocess.cpp
 
 FORMS += \
     certificateerrordialog.ui \
@@ -69,13 +71,6 @@ macx: {
         deploy_webengine.depends += deploy
         deploy_webengine.commands += # $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
 
-        deploy_sniff.commands += $(COPY_FILE) \"$${PWD}/../parsed/sniff.js\" \"$${OUT_PWD}/$${TARGET}.app/Contents/Resources/\"
-
-        build_parsed.commands += cd $${PWD}/../parsed/ $$escape_expand(&&) go build
-
-        deploy_parsed.depends += build_parsed deploy_sniff
-        deploy_parsed.commands += $(COPY_FILE) $${PWD}/../parsed/parsed \"$${OUT_PWD}/$${TARGET}.app/Contents/Resources/\"
-
         APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
         INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
         BUNDLEID = com.dfordsoft.imchenwen
@@ -86,36 +81,18 @@ macx: {
         makedmg.depends += codesign
         makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
 
-        QMAKE_EXTRA_TARGETS += deploy deploy_webengine deploy_sniff build_parsed deploy_parsed codesign makedmg
+        QMAKE_EXTRA_TARGETS += deploy deploy_webengine codesign makedmg
     }
 }
 
 win32: {
-	DEFINES += _WIN32_WINNT=0x0600
-    CONFIG(release, debug|release) : {
-        LIBS += -llibboost_system-vc140-mt-1_63
-		win32-msvc* {
-			QMAKE_CXXFLAGS += /Zi
-			QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
-		}
+        DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
+        CONFIG(release, debug|release) : {
+        LIBS += -llibboost_system-vc141-mt-x64-1_68 -LG:\\boost_1_68_0\\lib64-msvc-14.1
+        win32-*msvc* {
+                QMAKE_CXXFLAGS += /Zi
+                QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
+        }
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
-
-        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}\\release\\$${TARGET}.exe\"
-
-        build_parsed.commands += cd \"$${PWD}/../parsed/\" $$escape_expand(&&) go build
-
-        deploy_parsed.depends += build_parsed
-        deploy_parsed.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\parsed.exe\" \"$${OUT_PWD}\\release\\parser\\parsed.exe\"
-
-        build_updater.commands += cd \"$${PWD}/../updater/\" $$escape_expand(&&) go build
-
-        deploy_updater.depends += build_updater
-        deploy_updater.commands += $(COPY_FILE) \"$${PWD}\\..\\updater\\updater.exe\" \"$${OUT_PWD}\\release\\parser\\updater.exe\"
-		
-        deploy_sniff.commands += $(COPY_FILE) \"$${PWD}\\..\\parsed\\sniff.js\" \"$${OUT_PWD}\\release\\parser\\sniff.js\"
-
-        all.depends += deploy_updater deploy_parsed deploy_sniff
-        all.commands +=
-        QMAKE_EXTRA_TARGETS += deploy build_parsed build_updater deploy_parsed deploy_updater deploy_sniff all
     }
 }

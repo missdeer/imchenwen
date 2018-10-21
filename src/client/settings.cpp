@@ -21,6 +21,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnModifyPlayer, SIGNAL(clicked()), this, SLOT(onModifyExternalPlayer()));
     connect(listPlayer, SIGNAL(currentRowChanged(int)), this, SLOT(onExternalPlayerListCurrentRowChanged(int)));
 
+    connect(btnBrowseYouGetPath, SIGNAL(clicked()), this, SLOT(onBrowseYouGetPath()));
+    connect(btnBrowseYKDLPath, SIGNAL(clicked()), this, SLOT(onBrowseYKDLPath()));
+    connect(btnBrowseYoutubeDLPath, SIGNAL(clicked()), this, SLOT(onBrowseYoutubeDLPath()));
+    connect(btnBrowseAnniePath, SIGNAL(clicked()), this, SLOT(onBrowseAnniePath()));
     loadDefaults();
     loadFromSettings();
 }
@@ -134,6 +138,12 @@ void SettingsDialog::loadFromSettings()
     {
         listPlayer->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
     }
+
+    // resolver
+    edtYouGetPath->setText(cfg.read<QString>(QLatin1String("you-get")));
+    edtYKDLPath->setText(cfg.read<QString>(QLatin1String("ykdl")));
+    edtYoutubeDLPath->setText(cfg.read<QString>(QLatin1String("youtube-dl")));
+    edtAnniePath->setText(cfg.read<QString>(QLatin1String("annie")));
 }
 
 void SettingsDialog::saveToSettings()
@@ -180,6 +190,12 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("proxyPort"), proxyPort->text());
     cfg.write(QLatin1String("proxyUserName"), proxyUserName->text());
     cfg.write(QLatin1String("proxyPassword"), proxyPassword->text());
+
+    // resolver
+    cfg.write(QLatin1String("you-get"), edtYouGetPath->text());
+    cfg.write(QLatin1String("ykdl"), edtYKDLPath->text());
+    cfg.write(QLatin1String("youtube-dl"), edtYoutubeDLPath->text());
+    cfg.write(QLatin1String("annie"), edtAnniePath->text());
 
     Browser::instance().loadSettings();
 }
@@ -304,6 +320,74 @@ void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
     const Tuple2& p = m_players.at(currentRow);
     edtPlayerPath->setText(std::get<0>(p));
     edtPlayerArguments->setText(std::get<1>(p));
+}
+
+void SettingsDialog::onBrowseYouGetPath()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                 tr("Select you-get executable"),
+                                                QString(),
+                                            #if defined(Q_OS_WIN)
+                                                tr("you-get executable (you-get.exe)")
+                                            #else
+                                                tr("you-get executable (you-get)")
+                                            #endif
+                                                );
+    if (!path.isEmpty())
+    {
+        edtYouGetPath->setText(path);
+    }
+}
+
+void SettingsDialog::onBrowseYKDLPath()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                 tr("Select ykdl executable"),
+                                                QString(),
+                                            #if defined(Q_OS_WIN)
+                                                tr("ykdl executable (ykdl.exe)")
+                                            #else
+                                                tr("ykdl executable (ykdl)")
+                                            #endif
+                                                );
+    if (!path.isEmpty())
+    {
+        edtYKDLPath->setText(path);
+    }
+}
+
+void SettingsDialog::onBrowseYoutubeDLPath()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                 tr("Select youtube-dl executable"),
+                                                QString(),
+                                            #if defined(Q_OS_WIN)
+                                                tr("youtube-dl executable (youtube-dl.exe)")
+                                            #else
+                                                tr("youtube-dl executable (youtube-dl)")
+                                            #endif
+                                                );
+    if (!path.isEmpty())
+    {
+        edtYoutubeDLPath->setText(path);
+    }
+}
+
+void SettingsDialog::onBrowseAnniePath()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                 tr("Select annie executable"),
+                                                QString(),
+                                            #if defined(Q_OS_WIN)
+                                                tr("annie executable (annie.exe)")
+                                            #else
+                                                tr("annie executable (annie)")
+                                            #endif
+                                                );
+    if (!path.isEmpty())
+    {
+        edtAnniePath->setText(path);
+    }
 }
 
 void SettingsDialog::setHomeToCurrentPage()

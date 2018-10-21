@@ -1,6 +1,7 @@
 #include "playdialog.h"
 #include "ui_playdialog.h"
 #include "settings.h"
+#include <QtCore>
 #include <QMessageBox>
 #include <QFile>
 
@@ -20,21 +21,25 @@ PlayDialog::~PlayDialog()
 
 void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 {
+    qDebug() << "ykdl:" << mi->ykdl.length()
+             << ", you-get:" << mi->you_get.length()
+             << ", youtube-dl:" << mi->youtube_dl.length()
+             << ", annie:" << mi->annie.length();
     for (auto stream : mi->ykdl)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by ykdl"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
     }
     for (auto stream : mi->you_get)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, QColor(0xf0f0f0));
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by you-get"/*  + "\n"+ stream->urls.join("\n")*/, QColor(0xf0f0f0));
     }
     for (auto stream : mi->youtube_dl)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by youtube-dl"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
     }
-    for (auto stream : mi->vip)
+    for (auto stream : mi->annie)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by annie"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
     }
     ui->listMedia->setCurrentRow(0);
     m_mediaInfo = mi;
@@ -93,7 +98,7 @@ void PlayDialog::doOk()
     else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())
         m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())];
     else
-        m_selectedMedia = m_mediaInfo->vip[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
+        m_selectedMedia = m_mediaInfo->annie[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
 
     int currentIndex = ui->cbPlayers->currentIndex();
     if (currentIndex == m_players.length() - 1)

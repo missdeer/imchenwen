@@ -23,7 +23,7 @@
 #include <QStandardPaths>
 #include <QtConcurrent>
 
-static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = 0)
+static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = nullptr)
 {
     Q_ASSERT(profile);
     QString scriptName(QStringLiteral("userStyleSheet"));
@@ -68,18 +68,10 @@ Browser::Browser(QObject* parent)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
-    connect(&m_linkResolver, &LinkResolver::resolvingSilentFinished, this, &Browser::resolvingSilentFinished);
-    connect(&m_linkResolver, &LinkResolver::resolvingSilentError, this, &Browser::resolvingSilentError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
     connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
     connect(m_streamManager, &StreamManager::readyRead, this, &Browser::readyRead);
     connect(m_streamManager, &StreamManager::cancelRead, this, &Browser::stopWaiting);
-
-    Config cfg;
-    if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
-    {
-        startParsedProcess();
-    }
 
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
 
@@ -177,12 +169,12 @@ void Browser::loadSettings()
     QNetworkProxy::setApplicationProxy(proxy);
 }
 
-void Browser::playByMediaPlayer(const QUrl& u)
+void Browser::playByMediaPlayer(const QString &u)
 {
     resolveLink(u, false);
 }
 
-void Browser::playVIPByMediaPlayer(const QUrl &u)
+void Browser::playVIPByMediaPlayer(const QString &u)
 {
     resolveLink(u, true);
 }
@@ -200,7 +192,7 @@ void Browser::clipboardChanged()
 
     if (originalText.startsWith("http://") || originalText.startsWith("https://"))
     {
-        m_linkResolver.resolve(QUrl(originalText), true);
+        m_linkResolver.resolve(originalText);
     }
 }
 
@@ -263,11 +255,10 @@ Websites &Browser::websites()
     return m_websites;
 }
 
-void Browser::resolveLink(const QUrl &u, bool vip)
+void Browser::resolveLink(const QString &u, bool vip)
 {
     waiting();
 
-    startParsedProcess();
     if (vip)
         m_linkResolver.resolveVIP(u);
     else
@@ -349,34 +340,12 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
     doPlayByMediaPlayer(mi);
 }
 
-void Browser::resolvingError(const QUrl& u)
+void Browser::resolvingError(const QString &u)
 {
     stopWaiting();
 
     QMessageBox::warning(mainWindow(),
-                         tr("Error"), tr("Resolving link address ") + u.toString() + tr(" failed!"), QMessageBox::Ok);
-
-    startParsedProcess();
-}
-
-void Browser::resolvingSilentFinished(MediaInfoPtr mi)
-{
-    if (mi->title.isEmpty() && mi->site.isEmpty())
-    {
-        return;
-    }
-
-    if (!m_windows.isEmpty())
-    {
-        m_windows.at(0)->activateWindow();
-        m_windows.at(0)->raise();
-    }
-    doPlayByMediaPlayer(mi);
-}
-
-void Browser::resolvingSilentError(const QUrl&)
-{
-    startParsedProcess();
+                         tr("Error"), tr("Resolving link address ") + u + tr(" failed!"), QMessageBox::Ok);
 }
 
 void Browser::errorOccurred(QProcess::ProcessError error)
@@ -401,50 +370,6 @@ void Browser::errorOccurred(QProcess::ProcessError error)
 void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     m_streamManager->stopDownload();
-}
-
-void Browser::startParsedProcess()
-{
-    QString parsedPath = QApplication::applicationDirPath();
-#if defined(Q_OS_WIN)
-    parsedPath.append("/parser/parsed.exe");
-#else
-    parsedPath.append("/../Resources/parsed");
-#endif
-    if (!QFile::exists(parsedPath))
-    {
-        QMessageBox::information(nullptr, tr("Notice"), tr("Can't launch parsed process for link resolving, please launch it by yourself."), QMessageBox::Ok);
-    }
-    else
-    {
-        if (m_parsedProcess.state() != QProcess::Running)
-            m_parsedProcess.start(parsedPath, QStringList() << "-l");
-    }
-}
-
-void Browser::stopParsedProcess()
-{
-    m_parsedProcess.terminate();
-}
-
-bool Browser::isParsedRunning()
-{
-    return (m_parsedProcess.state() == QProcess::Running);
-}
-
-void Browser::changeParsedProcessState()
-{
-    Config cfg;
-    if (cfg.read<bool>("inChinaLocalMode") || cfg.read<bool>("abroadLocalMode"))
-    {
-        if (!isParsedRunning())
-            Browser::instance().startParsedProcess();
-    }
-    else
-    {
-        if (isParsedRunning())
-            Browser::instance().stopParsedProcess();
-    }
 }
 
 #if defined(Q_OS_WIN)

@@ -74,7 +74,7 @@ private:
     void createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction);
 private:
     int m_loadProgress;
-    QUrl m_rightClickedUrl;
+    QString m_rightClickedUrl;
 };
 
 #endif
