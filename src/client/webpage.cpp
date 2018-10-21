@@ -6,6 +6,7 @@
 #include "webview.h"
 #include <QAuthenticator>
 #include <QMessageBox>
+#include <QStyle>
 
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
