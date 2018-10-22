@@ -4,4 +4,8 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS += src/otter/otter.pro src/client/client.pro src/manager/manager.pro
+SUBDIRS += src/otter/otter.pro src/manager/manager.pro
+
+!win32-*g++* {
+    SUBDIRS += src/client/client.pro
+}

@@ -1,10 +1,46 @@
 TEMPLATE = app
 TARGET = imchenwenOtter
-QT += webengine webenginecore webenginewidgets core gui multimedia network printsupport qml svg widgets xmlpatterns
+QT += core gui multimedia network printsupport qml svg widgets xmlpatterns
 CONFIG += c++14
 CONFIG -= qtquickcompiler
 
-DEFINES += OTTER_ENABLE_QTWEBENGINE=1
+win32-*g++* {
+    QT += webkit webkitwidgets
+    DEFINES += OTTER_ENABLE_QTWEBKIT=1
+    HEADERS += \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitCookieJar.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitFtpListingNetworkReply.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitHistoryInterface.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitInspector.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitNetworkManager.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitPage.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitPluginFactory.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitPluginWidget.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitWebBackend.h \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitWebWidget.h \
+        $$PWD/modules/backends/web/qtwebkit/3rdparty/qtftp/*.h
+
+    SOURCES += \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitCookieJar.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitFtpListingNetworkReply.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitHistoryInterface.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitInspector.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitNetworkManager.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitPage.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitPluginFactory.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitPluginWidget.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitWebBackend.cpp \
+        $$PWD/modules/backends/web/qtwebkit/QtWebKitWebWidget.cpp \
+        $$PWD/modules/backends/web/qtwebkit/3rdparty/qtftp/*.cpp
+
+    RESOURCES += $$PWD/modules/backends/web/qtwebkit/QtWebKitResources.qrc
+} else {
+    QT += webengine webenginecore webenginewidgets
+    DEFINES += OTTER_ENABLE_QTWEBENGINE=1
+    HEADERS += $$PWD/modules/backends/web/qtwebengine/*.h
+    SOURCES += $$PWD/modules/backends/web/qtwebengine/*.cpp
+    RESOURCES += $$PWD/modules/backends/web/qtwebengine/QtWebEngineResources.qrc
+}
 
 INCLUDEPATH += $$PWD/../3rdparty/columnresizer $$PWD/../3rdparty/mousegestures
 
@@ -12,7 +48,6 @@ HEADERS += $$PWD/core/*.h \
         $$PWD/ui/*.h \
         $$PWD/ui/preferences/*.h \
         $$PWD/modules/backends/passwords/file/*.h \
-        $$PWD/modules/backends/web/qtwebengine/*.h \
         $$PWD/modules/importers/html/*.h \
         $$PWD/modules/importers/opera/*.h \
         $$PWD/modules/importers/opml/*.h \
@@ -187,11 +222,6 @@ SOURCES += $$PWD/main.cpp \
         $$PWD/ui/preferences/ProxyPropertiesDialog.cpp \
         $$PWD/ui/preferences/UserAgentPropertiesDialog.cpp \
         $$PWD/modules/backends/passwords/file/FilePasswordsStorageBackend.cpp \
-        $$PWD/modules/backends/web/qtwebengine/QtWebEnginePage.cpp \
-        $$PWD/modules/backends/web/qtwebengine/QtWebEngineUrlRequestInterceptor.cpp \
-        $$PWD/modules/backends/web/qtwebengine/QtWebEngineTransfer.cpp \
-        $$PWD/modules/backends/web/qtwebengine/QtWebEngineWebBackend.cpp \
-        $$PWD/modules/backends/web/qtwebengine/QtWebEngineWebWidget.cpp \
         $$PWD/modules/importers/html/HtmlBookmarksImporter.cpp \
         $$PWD/modules/importers/opera/OperaBookmarksImporter.cpp \
         $$PWD/modules/importers/opera/OperaNotesImporter.cpp \
@@ -308,8 +338,7 @@ FORMS += \
         $$PWD/modules/windows/web/StartPagePreferencesDialog.ui \
         $$PWD/modules/windows/windows/WindowsContentsWidget.ui
 
-RESOURCES += $$PWD/resources/resources.qrc \
-        $$PWD/modules/backends/web/qtwebengine/QtWebEngineResources.qrc
+RESOURCES += $$PWD/resources/resources.qrc
 
 
 RC_FILE = otter-browser.rc
@@ -349,12 +378,14 @@ macx: {
 
 win32: {
         QT += winextras
-        DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1 -DUNICODE -D_UNICODE
+        DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
         HEADERS += \
                 $$PWD/modules/platforms/windows/*.h
         SOURCES += \
                 $$PWD/modules/platforms/windows/WindowsPlatformIntegration.cpp \
                 $$PWD/modules/platforms/windows/WindowsPlatformStyle.cpp
+
+        LIBS += -lole32 -lshell32 -ladvapi32 -luser32
         CONFIG(release, debug|release) : {
         win32-*msvc* {
                 QMAKE_CXXFLAGS += /Zi
