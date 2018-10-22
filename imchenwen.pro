@@ -4,4 +4,4 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS += src/client/client.pro src/manager/manager.pro
+SUBDIRS += src/otter/otter.pro src/client/client.pro src/manager/manager.pro

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<Shortcut>b</Shortcut>
+	<ShortName>Bing</ShortName>
+	<Description>Bing. Search by Microsoft.</Description>
+	<InputEncoding>UTF-8</InputEncoding>
+	<Image width="16" height="16" type="image/png">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAnUlEQVQoz2PgaWkhCTHAWRqTJpnOnEmChvp9+x59+DDn7Fnpnh5iNfz//x+oB2gV7TXg0YNFA9Drq65cAXomYtUqTJ3YbYCwgeDCixd9x44ha8PppMMPHvyHAaAUYU8DHQbXQ0ADUGnGpk1Ax8BtAHJxavj08yeyY4BsoNfxeRoOgFYBRfCFEiRwgOqACC1ksGuAIKAH8CdBBlKTNwBSZoBFsgTbZgAAAABJRU5ErkJggg==</Image>
+	<Url rel="results" type="text/html" method="get" template="https://www.bing.com/search?q={searchTerms}&amp;sourceid=otter" />
+	<Url rel="suggestions" type="application/x-suggestions+json" method="get" template="https://www.bing.com/osjson.aspx?query={searchTerms}" />
+</OpenSearchDescription>
