@@ -46,7 +46,6 @@
 #include <QProcess>
 #include "linkresolver.h"
 #include "websites.h"
-#include "server.hpp"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -72,8 +71,6 @@ public:
     void playByMediaPlayer(const QString& u);
     void playVIPByMediaPlayer(const QString &u);
     Websites &websites();
-
-    void destroyServer();
 signals:
 
 private slots:
@@ -95,7 +92,6 @@ private:
     void doPlayByMediaPlayer(MediaInfoPtr mi);
     void clean();
     void waiting(bool disableParent = true);
-    void createServer();
 private:
     QVector<BrowserWindow*> m_windows;
     WaitingSpinnerWidget* m_waitingSpinner;
@@ -104,7 +100,6 @@ private:
     LinkResolver m_linkResolver;
     Websites m_websites;
     QNetworkAccessManager* m_nam;
-    http::server::server* m_httpServer;
     StreamManager* m_streamManager;
     void clearAtExit();
 };

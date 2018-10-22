@@ -63,7 +63,6 @@ Browser::Browser(QObject* parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
     , m_nam(nullptr)
-    , m_httpServer(nullptr)
     , m_streamManager(new StreamManager)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
@@ -74,18 +73,10 @@ Browser::Browser(QObject* parent)
     connect(m_streamManager, &StreamManager::cancelRead, this, &Browser::stopWaiting);
 
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
-
-#if defined(Q_OS_WIN)
-    // preload libeay32.dll and ssleay32.dll on Windows,
-    // so it won't hang when try to resolve link at the first time
-    QtConcurrent::run(this, &Browser::ping);
-#endif
-    QtConcurrent::run(this, &Browser::createServer);
 }
 
 void Browser::clearAtExit()
 {
-    destroyServer();
     stopWaiting();
     if (m_process.state() == QProcess::Running)
         m_process.terminate();
@@ -389,23 +380,3 @@ void Browser::finished()
 }
 
 #endif
-
-void Browser::createServer()
-{
-    if (!m_httpServer)
-    {
-        QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-        m_httpServer = new http::server::server("127.0.0.1", "8642", cachePath.toStdString());
-        m_httpServer->run();
-    }
-}
-
-void Browser::destroyServer()
-{
-    if (m_httpServer)
-    {
-        m_httpServer->stop();
-        delete m_httpServer;
-        m_httpServer = nullptr;
-    }
-}

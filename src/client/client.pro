@@ -7,7 +7,7 @@ include(Boost.pri)
 
 INCLUDEPATH += $$PWD/httpserver
 
-HEADERS += $$PWD/httpserver/*.hpp \
+HEADERS += \
     browser.h \
     browserwindow.h \
     tabwidget.h \
@@ -26,7 +26,7 @@ HEADERS += $$PWD/httpserver/*.hpp \
     streamreply.h \
     linkresolverprocess.h
 
-SOURCES += $$PWD/httpserver/*.cpp \
+SOURCES += \
     browser.cpp \
     browserwindow.cpp \
     main.cpp \
@@ -61,7 +61,7 @@ RC_FILE = imchenwen-win.rc
 macx: {
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
-    LIBS += -lboost_system
+
     CONFIG(release, debug|release) : {
         QMAKE_INFO_PLIST = osxInfo.plist
         MACDEPLOYQT = $$[QT_INSTALL_BINS]/macdeployqt
@@ -88,7 +88,7 @@ macx: {
 win32: {
         DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
         CONFIG(release, debug|release) : {
-        LIBS += -llibboost_system-vc141-mt-x64-1_68 -LG:\\boost_1_68_0\\lib64-msvc-14.1
+
         win32-*msvc* {
                 QMAKE_CXXFLAGS += /Zi
                 QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
