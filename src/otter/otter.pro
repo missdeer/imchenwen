@@ -3,6 +3,9 @@ TARGET = imchenwenOtter
 QT += webengine webenginecore webenginewidgets core gui multimedia network printsupport qml svg widgets xmlpatterns
 CONFIG += c++14
 CONFIG -= qtquickcompiler
+
+DEFINES += OTTER_ENABLE_QTWEBENGINE=1
+
 INCLUDEPATH += $$PWD/../3rdparty/columnresizer $$PWD/../3rdparty/mousegestures
 
 HEADERS += $$PWD/core/*.h \
