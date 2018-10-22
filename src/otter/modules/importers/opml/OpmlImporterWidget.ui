@@ -75,7 +75,7 @@
   <customwidget>
    <class>Otter::FeedsComboBoxWidget</class>
    <extends>QComboBox</extends>
-   <header>src/ui/FeedsComboBoxWidget.h</header>
+   <header>ui/FeedsComboBoxWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

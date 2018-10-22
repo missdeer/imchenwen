@@ -75,12 +75,12 @@
   <customwidget>
    <class>Otter::ItemViewWidget</class>
    <extends>QTreeView</extends>
-   <header>src/ui/ItemViewWidget.h</header>
+   <header>ui/ItemViewWidget.h</header>
   </customwidget>
   <customwidget>
    <class>Otter::TextEditWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>src/ui/TextEditWidget.h</header>
+   <header>ui/TextEditWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

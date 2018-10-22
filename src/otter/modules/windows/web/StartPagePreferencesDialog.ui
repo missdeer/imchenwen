@@ -191,13 +191,13 @@
   <customwidget>
    <class>Otter::FilePathWidget</class>
    <extends>QWidget</extends>
-   <header>src/ui/FilePathWidget.h</header>
+   <header>ui/FilePathWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Otter::ColorWidget</class>
    <extends>QPushButton</extends>
-   <header>src/ui/ColorWidget.h</header>
+   <header>ui/ColorWidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

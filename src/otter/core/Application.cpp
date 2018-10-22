@@ -97,9 +97,9 @@ bool Application::m_isUpdating(false);
 Application::Application(int &argc, char **argv) : QApplication(argc, argv), ActionExecutor(),
 	m_updateCheckTimer(nullptr)
 {
-	setApplicationName(QLatin1String("Otter"));
-	setApplicationDisplayName(QLatin1String("Otter Browser"));
-	setApplicationVersion(OTTER_VERSION_MAIN);
+    setApplicationName(QLatin1String("imchenwenOtter"));
+    setApplicationDisplayName(QLatin1String("imchenwen Otter Port"));
+    setApplicationVersion("1.0");
 	setWindowIcon(QIcon::fromTheme(QLatin1String("otter-browser"), QIcon(QLatin1String(":/icons/otter-browser.png"))));
 
 	m_instance = this;
@@ -1354,26 +1354,26 @@ QString Application::createReport(ReportOptions options)
 	stream << QLatin1String("\n\nVersion:\n\t");
 	stream.setFieldWidth(20);
 	stream << QLatin1String("Main Number");
-	stream << OTTER_VERSION_MAIN;
+    stream << "1.0.0";
 	stream.setFieldWidth(0);
 	stream << QLatin1String("\n\t");
 	stream.setFieldWidth(20);
 	stream << QLatin1String("Weekly Number");
 
-	if (QString(OTTER_VERSION_WEEKLY).trimmed().isEmpty())
+    if (QString("").trimmed().isEmpty())
 	{
 		stream << QLatin1Char('-');
 	}
 	else
 	{
-		stream << OTTER_VERSION_WEEKLY;
+        stream << "";
 	}
 
 	stream.setFieldWidth(0);
 	stream << QLatin1String("\n\t");
 	stream.setFieldWidth(20);
 	stream << QLatin1String("Context");
-	stream << OTTER_VERSION_CONTEXT;
+    stream << "-dev";
 	stream.setFieldWidth(0);
 	stream << QLatin1String("\n\t");
 	stream.setFieldWidth(20);
@@ -1482,7 +1482,7 @@ QString Application::createReport(ReportOptions options)
 
 QString Application::getFullVersion()
 {
-	return QStringLiteral("%1%2").arg(OTTER_VERSION_MAIN).arg(OTTER_VERSION_CONTEXT);
+    return QStringLiteral("%1%2").arg("1.0.0").arg("-dev");
 }
 
 QString Application::getLocalePath()

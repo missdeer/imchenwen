@@ -29,6 +29,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QToolBar>
+#include <QPointer>
 
 namespace Otter
 {

@@ -73,7 +73,7 @@ void UpdateChecker::runUpdateCheck()
 	const QJsonArray channelsArray(QJsonDocument::fromJson(m_networkReply->readAll()).object().value(QLatin1String("channels")).toArray());
 	const QString platform(integration ? integration->getPlatformName() : QString());
 	const int mainVersion(QCoreApplication::applicationVersion().remove(QLatin1Char('.')).toInt());
-	const int subVersion(QString(OTTER_VERSION_WEEKLY).toInt());
+    const int subVersion(QString("-dev").toInt());
 	int latestVersion(0);
 	int latestVersionIndex(0);
 	QVector<UpdateInformation> availableUpdates;

@@ -56,7 +56,7 @@
   <customwidget>
    <class>Otter::LineEditWidget</class>
    <extends>QLineEdit</extends>
-   <header>src/ui/LineEditWidget.h</header>
+   <header>ui/LineEditWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

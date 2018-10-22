@@ -94,7 +94,7 @@
   <customwidget>
    <class>Otter::TextLabelWidget</class>
    <extends>QWidget</extends>
-   <header>src/ui/TextLabelWidget.h</header>
+   <header>ui/TextLabelWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

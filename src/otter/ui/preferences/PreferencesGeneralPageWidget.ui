@@ -322,13 +322,13 @@
   <customwidget>
    <class>Otter::FilePathWidget</class>
    <extends>QWidget</extends>
-   <header>src/ui/FilePathWidget.h</header>
+   <header>ui/FilePathWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Otter::LineEditWidget</class>
    <extends>QLineEdit</extends>
-   <header>src/ui/LineEditWidget.h</header>
+   <header>ui/LineEditWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

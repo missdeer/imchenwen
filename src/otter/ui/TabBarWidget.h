@@ -24,6 +24,7 @@
 #include "WebWidget.h"
 
 #include <QtWidgets/QTabBar>
+#include <QPointer>
 
 namespace Otter
 {
@@ -134,8 +135,8 @@ protected slots:
 
 private:
 	PreviewWidget *m_previewWidget;
-	QPointer<TabHandleWidget> m_activeTabHandleWidget;
-	QPointer<QWidget> m_movableTabWidget;
+    QPointer<TabHandleWidget> m_activeTabHandleWidget;
+    QPointer<QWidget> m_movableTabWidget;
 	QPoint m_dragMovePosition;
 	QPoint m_dragStartPosition;
 	QSize m_maximumTabSize;

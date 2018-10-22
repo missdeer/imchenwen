@@ -463,17 +463,17 @@
   <customwidget>
    <class>Otter::BookmarksComboBoxWidget</class>
    <extends>QComboBox</extends>
-   <header>src/ui/BookmarksComboBoxWidget.h</header>
+   <header>ui/BookmarksComboBoxWidget.h</header>
   </customwidget>
   <customwidget>
    <class>Otter::ItemViewWidget</class>
    <extends>QTreeView</extends>
-   <header>src/ui/ItemViewWidget.h</header>
+   <header>ui/ItemViewWidget.h</header>
   </customwidget>
   <customwidget>
    <class>Otter::LineEditWidget</class>
    <extends>QLineEdit</extends>
-   <header>src/ui/LineEditWidget.h</header>
+   <header>ui/LineEditWidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

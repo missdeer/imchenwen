@@ -150,17 +150,17 @@
   <customwidget>
    <class>Otter::FeedsComboBoxWidget</class>
    <extends>QComboBox</extends>
-   <header>src/ui/FeedsComboBoxWidget.h</header>
+   <header>ui/FeedsComboBoxWidget.h</header>
   </customwidget>
   <customwidget>
    <class>Otter::LineEditWidget</class>
    <extends>QLineEdit</extends>
-   <header>src/ui/LineEditWidget.h</header>
+   <header>ui/LineEditWidget.h</header>
   </customwidget>
   <customwidget>
    <class>Otter::IconWidget</class>
    <extends>QToolButton</extends>
-   <header>src/ui/IconWidget.h</header>
+   <header>ui/IconWidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
