@@ -22,8 +22,6 @@ HEADERS += \
     websites.h \
     playdialog.h \
     settings.h \
-    streammanager.h \
-    streamreply.h \
     linkresolverprocess.h
 
 SOURCES += \
@@ -42,8 +40,6 @@ SOURCES += \
     websites.cpp \
     playdialog.cpp \
     settings.cpp \
-    streammanager.cpp \
-    streamreply.cpp \
     linkresolverprocess.cpp
 
 FORMS += \

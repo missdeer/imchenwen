@@ -57,6 +57,7 @@ private slots:
     void readYoutubeDLOutput(const QByteArray &data);
     void readAnnieOutput(const QByteArray &data);
 private:
+    QString m_lastUrl;
     LinkResolverProcess m_yougetProcess;
     LinkResolverProcess m_ykdlProcess;
     LinkResolverProcess m_youtubedlProcess;

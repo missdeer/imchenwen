@@ -53,7 +53,6 @@ QT_END_NAMESPACE
 
 class BrowserWindow;
 class WaitingSpinnerWidget;
-class StreamManager;
 
 class Browser : public QObject
 {
@@ -78,7 +77,6 @@ private slots:
     void finished();
     void ping();
 #endif
-    void readyRead();
     void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
     void resolvingError(const QString&);
@@ -100,7 +98,6 @@ private:
     LinkResolver m_linkResolver;
     Websites m_websites;
     QNetworkAccessManager* m_nam;
-    StreamManager* m_streamManager;
     void clearAtExit();
 };
 #endif // BROWSER_H

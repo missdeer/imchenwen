@@ -31,11 +31,21 @@ LinkResolver::LinkResolver(QObject *parent)
 
 void LinkResolver::resolve(const QString& url)
 {
-    m_mediaInfo->resultCount = 0;
-    resolveByYouGet(url);
-    resolveByYKDL(url);
-    resolveByYoutubeDL(url);
-    resolveByAnnie(url);
+    if (url == m_lastUrl)
+    {
+        emit resolvingFinished(m_mediaInfo);
+    }
+    else
+    {
+        m_mediaInfo->title.clear();
+        m_mediaInfo->site.clear();
+        m_mediaInfo->resultCount = 0;
+        resolveByYouGet(url);
+        resolveByYKDL(url);
+        resolveByYoutubeDL(url);
+        resolveByAnnie(url);
+        m_lastUrl = url;
+    }
 }
 
 void LinkResolver::resolveVIP(const QString &url)
@@ -135,6 +145,7 @@ void LinkResolver::parseYouGetNode(const QJsonObject &o, MediaInfoPtr mi, Stream
         {
             stream->urls.append(url.toString());
         }
+        stream->quality = format["video_profile"].toString();
         stream->container = format["container"].toString();
         streams.append(stream);
     }

@@ -4,7 +4,6 @@
 #include "linkresolver.h"
 #include "waitingspinnerwidget.h"
 #include "playdialog.h"
-#include "streammanager.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
@@ -63,14 +62,11 @@ Browser::Browser(QObject* parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
     , m_nam(nullptr)
-    , m_streamManager(new StreamManager)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
     connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
     connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
-    connect(m_streamManager, &StreamManager::readyRead, this, &Browser::readyRead);
-    connect(m_streamManager, &StreamManager::cancelRead, this, &Browser::stopWaiting);
 
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
 }
@@ -168,12 +164,6 @@ void Browser::playByMediaPlayer(const QString &u)
 void Browser::playVIPByMediaPlayer(const QString &u)
 {
     resolveLink(u, true);
-}
-
-void Browser::readyRead()
-{
-    stopWaiting();
-    m_process.start();
 }
 
 void Browser::clipboardChanged()
@@ -283,10 +273,7 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         if (!arg.isEmpty())
             args << arg.split(" ");
 
-        m_streamManager->stopDownload();
-        m_streamManager->startDownload(stream->urls);
-
-        args << m_streamManager->urls();
+        args << stream->urls;
         m_process.setArguments(args);
 
 #if defined(Q_OS_MAC)
@@ -297,6 +284,13 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         }
 #endif
         m_process.setProgram(std::get<0>(player));
+        m_process.start();
+
+        for ( auto w : m_windows)
+        {
+            if (w->isVisible())
+                w->showMinimized();
+        }
     }
 }
 
@@ -360,7 +354,7 @@ void Browser::errorOccurred(QProcess::ProcessError error)
 
 void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
-    m_streamManager->stopDownload();
+    stopWaiting();
 }
 
 #if defined(Q_OS_WIN)
