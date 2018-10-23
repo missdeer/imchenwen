@@ -7,6 +7,7 @@
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QStyle>
+#include <QWebEngineCertificateError>
 
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
