@@ -65,8 +65,8 @@ Browser::Browser(QObject* parent)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
-    connect(&m_process, &QProcess::errorOccurred, this, &Browser::errorOccurred);
-    connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
+    connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::errorOccurred);
+    connect(&m_playerProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
 
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
 }
@@ -74,10 +74,7 @@ Browser::Browser(QObject* parent)
 void Browser::clearAtExit()
 {
     stopWaiting();
-    if (m_process.state() == QProcess::Running)
-        m_process.terminate();
-    if (m_parsedProcess.state() == QProcess::Running)
-        m_parsedProcess.terminate();
+    m_playerProcess.kill();
 }
 
 Browser::~Browser()
@@ -251,10 +248,7 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         Tuple2 player = dlg.player();
         StreamInfoPtr stream = dlg.media();
 
-        if (m_process.state() != QProcess::NotRunning)
-        {
-            m_process.terminate();
-        }
+        m_playerProcess.kill();
         waiting(false);
         QStringList args;
 #if defined(Q_OS_MAC)
@@ -273,14 +267,15 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         {
             if (a == "{{referrer}}")
                 a = mi->url;
-            if (a == "{{title}}")
+            else if (a == "{{title}}")
                 a = mi->title;
-            if (a == "{{site}}")
-                a = mi->title;
+            else if (a == "{{site}}")
+                a = mi->site;
         }
 
         args << stream->urls;
-        m_process.setArguments(args);
+        qDebug() << args.length();
+        m_playerProcess.setArguments(args);
 
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")
@@ -289,9 +284,8 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
             return;
         }
 #endif
-        m_process.setProgram(std::get<0>(player));
-        m_process.start();
-
+        m_playerProcess.setProgram(std::get<0>(player));
+        m_playerProcess.start();
         for ( auto w : m_windows)
         {
             if (w->isMaximized())

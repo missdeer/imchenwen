@@ -98,8 +98,7 @@ private:
     QVector<BrowserWindow*> m_windows;
     QMap<BrowserWindow*, WindowState> m_windowsState;
     WaitingSpinnerWidget* m_waitingSpinner;
-    QProcess m_process;
-    QProcess m_parsedProcess;
+    QProcess m_playerProcess;
     LinkResolver m_linkResolver;
     Websites m_websites;
     QNetworkAccessManager* m_nam;
