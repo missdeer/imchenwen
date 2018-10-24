@@ -158,7 +158,7 @@ void Browser::loadSettings()
 
 void Browser::playByMediaPlayer(const QString &u)
 {
-    resolveLink(u, false);
+    resolveLink(u);
 }
 
 void Browser::playVIPByMediaPlayer(const QString &u)
@@ -235,14 +235,11 @@ Websites &Browser::websites()
     return m_websites;
 }
 
-void Browser::resolveLink(const QString &u, bool vip)
+void Browser::resolveLink(const QString &u)
 {
     waiting();
 
-    if (vip)
-        m_linkResolver.resolveVIP(u);
-    else
-        m_linkResolver.resolve(u);
+    m_linkResolver.resolve(u);
 }
 
 void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)

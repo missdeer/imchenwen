@@ -90,7 +90,7 @@ private slots:
     void stopWaiting();
 private:
     explicit Browser(QObject *parent = nullptr);
-    void resolveLink(const QString &u, bool vip);
+    void resolveLink(const QString &u);
     void doPlayByMediaPlayer(MediaInfoPtr mi);
     void clean();
     void waiting(bool disableParent = true);
