@@ -274,7 +274,7 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         }
 
         args << stream->urls;
-        qDebug() << args.length();
+        //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
         m_playerProcess.setArguments(args);
 
 #if defined(Q_OS_MAC)
