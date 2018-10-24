@@ -56,6 +56,14 @@ class WaitingSpinnerWidget;
 
 class Browser : public QObject
 {
+    enum WindowState
+    {
+        isMaximized,
+        isMinimized,
+        isNormal,
+        isHidden,
+    };
+
     Q_OBJECT
 public:
     static Browser &instance();
@@ -92,6 +100,7 @@ private:
     void waiting(bool disableParent = true);
 private:
     QVector<BrowserWindow*> m_windows;
+    QMap<BrowserWindow*, WindowState> m_windowsState;
     WaitingSpinnerWidget* m_waitingSpinner;
     QProcess m_process;
     QProcess m_parsedProcess;

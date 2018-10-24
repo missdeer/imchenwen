@@ -288,8 +288,24 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 
         for ( auto w : m_windows)
         {
-            if (w->isVisible())
+            if (w->isMaximized())
+            {
+                m_windowsState[w] = isMaximized;
+            }
+            else if (w->isMinimized())
+            {
+                m_windowsState[w] = isMinimized;
                 w->showMinimized();
+            }
+            else if (!w->isVisible())
+            {
+                m_windowsState[w] = isHidden;
+            }
+            else
+            {
+                m_windowsState[w] = isNormal;
+                w->showMinimized();
+            }
         }
     }
 }
@@ -355,6 +371,21 @@ void Browser::errorOccurred(QProcess::ProcessError error)
 void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     stopWaiting();
+    for (auto w : m_windows)
+    {
+        switch (m_windowsState[w])
+        {
+        case isMaximized:
+            w->showMaximized();
+            break;
+        case isNormal:
+            w->showNormal();
+            break;
+        default:
+            break;
+        }
+    }
+    m_windowsState.clear();
 }
 
 #if defined(Q_OS_WIN)

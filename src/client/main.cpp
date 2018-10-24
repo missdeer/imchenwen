@@ -18,7 +18,7 @@ QString getCommandLineUrlArgument()
 
 int main(int argc, char **argv)
 {
-    QCoreApplication::setOrganizationName(QLatin1String("Leaky Software"));
+    QCoreApplication::setOrganizationName(QLatin1String("DForD Software"));
     QCoreApplication::setApplicationName(QLatin1String("imchenwen"));
     QCoreApplication::setApplicationVersion(QLatin1String("1.0"));
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
