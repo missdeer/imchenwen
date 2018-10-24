@@ -273,6 +273,16 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         if (!arg.isEmpty())
             args << arg.split(" ");
 
+        for (QString& a : args)
+        {
+            if (a == "{{referrer}}")
+                a = mi->url;
+            if (a == "{{title}}")
+                a = mi->title;
+            if (a == "{{site}}")
+                a = mi->title;
+        }
+
         args << stream->urls;
         m_process.setArguments(args);
 

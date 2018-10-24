@@ -18,6 +18,7 @@ typedef QList<StreamInfoPtr> Streams;
 
 struct MediaInfo
 {
+    QString url;
     QString site;
     QString title;
     Streams ykdl;

@@ -40,6 +40,7 @@ void LinkResolver::resolve(const QString& url)
         m_mediaInfo->title.clear();
         m_mediaInfo->site.clear();
         m_mediaInfo->resultCount = 0;
+        m_mediaInfo->url = url;
         resolveByYouGet(url);
         resolveByYKDL(url);
         resolveByYoutubeDL(url);
