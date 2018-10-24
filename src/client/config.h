@@ -64,5 +64,7 @@ template<> bool Config::read<bool>(const QString& key);
 template<> bool Config::read<bool>(const QString& key, bool defaultValue);
 template<> int Config::read<int>(const QString& key);
 template<> int Config::read<int>(const QString& key, int defaultValue);
+template<> quint16 Config::read<quint16>(const QString& key);
+template<> quint16 Config::read<quint16>(const QString& key, quint16 defaultValue);
 
 #endif // CONFIG_H

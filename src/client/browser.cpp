@@ -149,7 +149,7 @@ void Browser::loadSettings()
         else
             proxy = QNetworkProxy::HttpProxy;
         proxy.setHostName(cfg.read<QString>(QLatin1String("proxyHostName")));
-        proxy.setPort(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+        proxy.setPort(cfg.read<quint16>(QLatin1String("proxyPort"), 1080));
         proxy.setUser(cfg.read<QString>(QLatin1String("proxyUserName")));
         proxy.setPassword(cfg.read<QString>(QLatin1String("proxyPassword")));
     }
@@ -163,7 +163,6 @@ void Browser::playByMediaPlayer(const QString &u)
 
 void Browser::playVIPByMediaPlayer(const QString &u)
 {
-    resolveLink(u, true);
 }
 
 void Browser::clipboardChanged()
@@ -398,20 +397,3 @@ void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus
     m_windowsState.clear();
 }
 
-#if defined(Q_OS_WIN)
-void Browser::ping()
-{
-    m_nam = new QNetworkAccessManager;
-    QNetworkReply* reply = m_nam->get(QNetworkRequest(QUrl("https://if.yii.li")));
-    connect(reply, SIGNAL(finished()), this, SLOT(finished()));
-}
-
-void Browser::finished()
-{
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    delete m_nam;
-    m_nam = nullptr;
-    reply->deleteLater();
-}
-
-#endif

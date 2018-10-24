@@ -81,10 +81,6 @@ public:
 signals:
 
 private slots:
-#if defined(Q_OS_WIN)
-    void finished();
-    void ping();
-#endif
     void clipboardChanged();
     void resolvingFinished(MediaInfoPtr mi);
     void resolvingError(const QString&);

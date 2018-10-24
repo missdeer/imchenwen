@@ -94,6 +94,13 @@ bool Config::read<bool>(const QString &key)
 }
 
 template<>
+quint16 Config::read<quint16>(const QString& key)
+{
+    return static_cast<quint16>( settings().value(key, QVariant(0)).toUInt());
+}
+
+
+template<>
 int Config::read<int>(const QString& key)
 {
     return settings().value(key, QVariant(0)).toInt();
@@ -110,6 +117,13 @@ int Config::read<int>(const QString& key, int defaultValue)
 {
     return settings().value(key, QVariant(defaultValue)).toInt();
 }
+
+template<>
+quint16 Config::read<quint16>(const QString& key, quint16 defaultValue)
+{
+    return static_cast<quint16>(settings().value(key, QVariant(defaultValue)).toUInt());
+}
+
 
 QString Config::read(const QString& key, const QString& defaultValue)
 {
