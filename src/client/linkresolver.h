@@ -46,7 +46,6 @@ class LinkResolver : public QObject
 public:
     explicit LinkResolver(QObject *parent = nullptr);
     void resolve(const QString & url);
-    void resolveVIP(const QString& url);
 signals:
     void resolvingFinished(MediaInfoPtr);
     void resolvingError(const QString&);
@@ -73,6 +72,7 @@ private:
     void resolveByYKDL(const QString& url);
     void resolveByYoutubeDL(const QString &url);
     void resolveByAnnie(const QString& url);
+    void submitResolveResult();
 };
 
 #endif // LINKRESOLVER_H

@@ -21,10 +21,6 @@ PlayDialog::~PlayDialog()
 
 void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 {
-    qDebug() << "ykdl:" << mi->ykdl.length()
-             << ", you-get:" << mi->you_get.length()
-             << ", youtube-dl:" << mi->youtube_dl.length()
-             << ", annie:" << mi->annie.length();
     for (auto stream : mi->ykdl)
     {
         addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by ykdl"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);

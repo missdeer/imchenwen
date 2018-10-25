@@ -188,7 +188,7 @@ void Browser::addWindow(BrowserWindow *mainWindow)
         if (m_windows.isEmpty())
             clearAtExit();
     });
-    mainWindow->show();
+    mainWindow->showMaximized();
 }
 
 BrowserWindow *Browser::mainWindow()

@@ -49,8 +49,19 @@ void LinkResolver::resolve(const QString& url)
     }
 }
 
-void LinkResolver::resolveVIP(const QString &url)
+void LinkResolver::submitResolveResult()
 {
+    m_mediaInfo->resultCount++;
+    if (m_mediaInfo->resultCount == 4)
+    {
+        if (m_mediaInfo->title.isEmpty() && m_mediaInfo->site.isEmpty())
+        {
+            m_lastUrl.clear();
+            emit resolvingError("Resolving failed.");
+        }
+        else
+            emit resolvingFinished(m_mediaInfo);
+    }
 }
 
 void LinkResolver::readYouGetOutput(const QByteArray &data)
@@ -61,9 +72,7 @@ void LinkResolver::readYouGetOutput(const QByteArray &data)
     if (doc.isObject())
         parseYouGetNode(doc.object(), m_mediaInfo, m_mediaInfo->you_get);
 
-    m_mediaInfo->resultCount++;
-    if (m_mediaInfo->resultCount == 4)
-        emit resolvingFinished(m_mediaInfo);
+    submitResolveResult();
 }
 
 void LinkResolver::readYKDLOutput(const QByteArray &data)
@@ -75,9 +84,7 @@ void LinkResolver::readYKDLOutput(const QByteArray &data)
     if (doc.isObject())
         parseYKDLNode(doc.object(), m_mediaInfo, m_mediaInfo->ykdl);
 
-    m_mediaInfo->resultCount++;
-    if (m_mediaInfo->resultCount == 4)
-        emit resolvingFinished(m_mediaInfo);
+    submitResolveResult();
 }
 
 void LinkResolver::readYoutubeDLOutput(const QByteArray &data)
@@ -88,9 +95,7 @@ void LinkResolver::readYoutubeDLOutput(const QByteArray &data)
     if (doc.isObject())
         parseYoutubeDLNode(doc.object(), m_mediaInfo, m_mediaInfo->youtube_dl);
 
-    m_mediaInfo->resultCount++;
-    if (m_mediaInfo->resultCount == 4)
-        emit resolvingFinished(m_mediaInfo);
+    submitResolveResult();
 }
 
 void LinkResolver::readAnnieOutput(const QByteArray &data)
@@ -101,9 +106,7 @@ void LinkResolver::readAnnieOutput(const QByteArray &data)
     if (doc.isObject())
         parseAnnieNode(doc.object(), m_mediaInfo, m_mediaInfo->annie);
 
-    m_mediaInfo->resultCount++;
-    if (m_mediaInfo->resultCount == 4)
-        emit resolvingFinished(m_mediaInfo);
+    submitResolveResult();
 }
 
 void LinkResolver::parseYouGetNode(const QJsonObject &o, MediaInfoPtr mi, Streams &streams)
