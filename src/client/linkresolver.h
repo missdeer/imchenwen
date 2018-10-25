@@ -43,6 +43,15 @@ typedef QSharedPointer<HistoryItem> HistoryItemPtr;
 class LinkResolver : public QObject
 {
     Q_OBJECT
+
+    struct Resolver {
+        QString name;
+        LinkResolverProcess* process;
+        std::function<void(const QJsonObject , MediaInfoPtr , Streams &)> parse;
+        Streams* streams;
+        QStringList args;
+    };
+
 public:
     explicit LinkResolver(QObject *parent = nullptr);
     void resolve(const QString & url);
@@ -60,6 +69,7 @@ private:
     LinkResolverProcess m_ykdlProcess;
     LinkResolverProcess m_youtubedlProcess;
     LinkResolverProcess m_annieProcess;
+    QList<Resolver> m_resolvers;
     void parseYouGetNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYKDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYoutubeDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);

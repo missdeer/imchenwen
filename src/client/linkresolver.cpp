@@ -14,19 +14,19 @@ static QNetworkAccessManager nam;
 LinkResolver::LinkResolver(QObject *parent)
     : QObject(parent)
     , m_mediaInfo(new MediaInfo)
+    , m_resolvers({
+        { "you-get", &m_yougetProcess, std::bind(&LinkResolver::parseYouGetNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->you_get, QStringList() << "--json"  },
+        { "ykdl", &m_ykdlProcess, std::bind(&LinkResolver::parseYKDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->ykdl, QStringList()  << "--json"},
+        { "youtube-dl", &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json"},
+        { "annie", &m_annieProcess, std::bind(&LinkResolver::parseAnnieNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->annie, QStringList() << "-j"},
+})
 {
     Config cfg;
-    m_yougetProcess.setProgram(cfg.read<QString>("you-get"));
-    connect(&m_yougetProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
-
-    m_ykdlProcess.setProgram(cfg.read<QString>("ykdl"));
-    connect(&m_ykdlProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
-
-    m_youtubedlProcess.setProgram(cfg.read<QString>("youtube-dl"));
-    connect(&m_youtubedlProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
-
-    m_annieProcess.setProgram(cfg.read<QString>("annie"));
-    connect(&m_annieProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
+    for (auto & r : m_resolvers)
+    {
+        r.process->setProgram(cfg.read<QString>(r.name));
+        connect(r.process, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
+    }
 }
 
 void LinkResolver::resolve(const QString& url)
@@ -41,23 +41,12 @@ void LinkResolver::resolve(const QString& url)
         m_mediaInfo->site.clear();
         m_mediaInfo->resultCount = 0;
         m_mediaInfo->url = url;
-
-        struct {
-            LinkResolverProcess* p;
-            Streams*  ss;
-            QStringList args;
-        } resolvers[] = {
-        { &m_yougetProcess, &m_mediaInfo->you_get, QStringList() << "--json" << url },
-        { &m_ykdlProcess, &m_mediaInfo->ykdl, QStringList()  << "--json" << url},
-        { &m_youtubedlProcess, &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json" << url },
-        { &m_annieProcess, &m_mediaInfo->annie, QStringList() << "-j" << url },
-        };
-        for ( auto & r : resolvers)
+        for ( auto & r : m_resolvers)
         {
-            r.ss->clear();
-            r.p->terminate();
-            r.p->setArguments(r.args);
-            r.p->start();
+            r.streams->clear();
+            r.process->terminate();
+            r.process->setArguments(QStringList() << r.args << url);
+            r.process->start();
         }
         m_lastUrl = url;
     }
@@ -72,26 +61,15 @@ void LinkResolver::readResolverOutput(const QByteArray &data)
     qDebug() << __FUNCTION__ << error.errorString();
     if (doc.isObject())
     {
-        struct {
-            LinkResolverProcess* p;
-            std::function<void(const QJsonObject , MediaInfoPtr , Streams &)> f;
-            Streams& ss;
-        } parsers []{
-        { &m_yougetProcess, std::bind(&LinkResolver::parseYouGetNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->you_get},
-        { &m_ykdlProcess, std::bind(&LinkResolver::parseYKDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->ykdl},
-        { &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->youtube_dl},
-        { &m_annieProcess, std::bind(&LinkResolver::parseAnnieNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->annie},
-        };
-
-        auto it = std::find_if(std::begin(parsers), std::end(parsers), [p](const auto &parser ) {
-            return parser.p == p;
+        auto it = std::find_if(m_resolvers.begin(), m_resolvers.end(), [p](const auto &r ) {
+            return r.process == p;
         });
-        if (std::end(parsers) != it)
-            it->f(doc.object(),m_mediaInfo, it->ss);
+        if (m_resolvers.end() != it)
+            it->parse(doc.object(), m_mediaInfo, *it->streams);
     }
 
     m_mediaInfo->resultCount++;
-    if (m_mediaInfo->resultCount == 4)
+    if (m_mediaInfo->resultCount == m_resolvers.length())
     {
         if (m_mediaInfo->title.isEmpty() && m_mediaInfo->site.isEmpty())
         {
