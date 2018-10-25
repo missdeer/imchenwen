@@ -52,27 +52,18 @@ signals:
 public slots:
 
 private slots:
-    void readYouGetOutput(const QByteArray& data);
-    void readYKDLOutput(const QByteArray &data);
-    void readYoutubeDLOutput(const QByteArray &data);
-    void readAnnieOutput(const QByteArray &data);
+    void readResolverOutput(const QByteArray& data);
 private:
     QString m_lastUrl;
+    MediaInfoPtr m_mediaInfo;
     LinkResolverProcess m_yougetProcess;
     LinkResolverProcess m_ykdlProcess;
     LinkResolverProcess m_youtubedlProcess;
     LinkResolverProcess m_annieProcess;
-    MediaInfoPtr m_mediaInfo;
-    void parseNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYouGetNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYKDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYoutubeDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseAnnieNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
-    void resolveByYouGet(const QString &url);
-    void resolveByYKDL(const QString& url);
-    void resolveByYoutubeDL(const QString &url);
-    void resolveByAnnie(const QString& url);
-    void submitResolveResult();
 };
 
 #endif // LINKRESOLVER_H

@@ -17,16 +17,16 @@ LinkResolver::LinkResolver(QObject *parent)
 {
     Config cfg;
     m_yougetProcess.setProgram(cfg.read<QString>("you-get"));
-    connect(&m_yougetProcess, &LinkResolverProcess::data, this, &LinkResolver::readYouGetOutput);
+    connect(&m_yougetProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
 
     m_ykdlProcess.setProgram(cfg.read<QString>("ykdl"));
-    connect(&m_ykdlProcess, &LinkResolverProcess::data, this, &LinkResolver::readYKDLOutput);
+    connect(&m_ykdlProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
 
     m_youtubedlProcess.setProgram(cfg.read<QString>("youtube-dl"));
-    connect(&m_youtubedlProcess, &LinkResolverProcess::data, this, &LinkResolver::readYoutubeDLOutput);
+    connect(&m_youtubedlProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
 
     m_annieProcess.setProgram(cfg.read<QString>("annie"));
-    connect(&m_annieProcess, &LinkResolverProcess::data, this, &LinkResolver::readAnnieOutput);
+    connect(&m_annieProcess, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
 }
 
 void LinkResolver::resolve(const QString& url)
@@ -41,16 +41,55 @@ void LinkResolver::resolve(const QString& url)
         m_mediaInfo->site.clear();
         m_mediaInfo->resultCount = 0;
         m_mediaInfo->url = url;
-        resolveByYouGet(url);
-        resolveByYKDL(url);
-        resolveByYoutubeDL(url);
-        resolveByAnnie(url);
+
+        struct {
+            LinkResolverProcess* p;
+            Streams*  ss;
+            QStringList args;
+        } resolvers[] = {
+        { &m_yougetProcess, &m_mediaInfo->you_get, QStringList() << "--json" << url },
+        { &m_ykdlProcess, &m_mediaInfo->ykdl, QStringList()  << "--json" << url},
+        { &m_youtubedlProcess, &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json" << url },
+        { &m_annieProcess, &m_mediaInfo->annie, QStringList() << "-j" << url },
+        };
+        for ( auto & r : resolvers)
+        {
+            r.ss->clear();
+            r.p->terminate();
+            r.p->setArguments(r.args);
+            r.p->start();
+        }
         m_lastUrl = url;
     }
 }
 
-void LinkResolver::submitResolveResult()
+void LinkResolver::readResolverOutput(const QByteArray &data)
 {
+    LinkResolverProcess* p = qobject_cast<LinkResolverProcess*>(sender());
+
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
+    qDebug() << __FUNCTION__ << error.errorString();
+    if (doc.isObject())
+    {
+        struct {
+            LinkResolverProcess* p;
+            std::function<void(const QJsonObject , MediaInfoPtr , Streams &)> f;
+            Streams& ss;
+        } parsers []{
+        { &m_yougetProcess, std::bind(&LinkResolver::parseYouGetNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->you_get},
+        { &m_ykdlProcess, std::bind(&LinkResolver::parseYKDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->ykdl},
+        { &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->youtube_dl},
+        { &m_annieProcess, std::bind(&LinkResolver::parseAnnieNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), m_mediaInfo->annie},
+        };
+
+        auto it = std::find_if(std::begin(parsers), std::end(parsers), [p](const auto &parser ) {
+            return parser.p == p;
+        });
+        if (std::end(parsers) != it)
+            it->f(doc.object(),m_mediaInfo, it->ss);
+    }
+
     m_mediaInfo->resultCount++;
     if (m_mediaInfo->resultCount == 4)
     {
@@ -62,51 +101,6 @@ void LinkResolver::submitResolveResult()
         else
             emit resolvingFinished(m_mediaInfo);
     }
-}
-
-void LinkResolver::readYouGetOutput(const QByteArray &data)
-{
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    qDebug() << __FUNCTION__ << error.errorString();
-    if (doc.isObject())
-        parseYouGetNode(doc.object(), m_mediaInfo, m_mediaInfo->you_get);
-
-    submitResolveResult();
-}
-
-void LinkResolver::readYKDLOutput(const QByteArray &data)
-{
-    QJsonParseError error;
-    QTextStream in(data);
-    QJsonDocument doc = QJsonDocument::fromJson(in.readAll().toUtf8(), &error);
-    qDebug() << __FUNCTION__ << error.errorString();
-    if (doc.isObject())
-        parseYKDLNode(doc.object(), m_mediaInfo, m_mediaInfo->ykdl);
-
-    submitResolveResult();
-}
-
-void LinkResolver::readYoutubeDLOutput(const QByteArray &data)
-{
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    qDebug() << __FUNCTION__ << error.errorString();
-    if (doc.isObject())
-        parseYoutubeDLNode(doc.object(), m_mediaInfo, m_mediaInfo->youtube_dl);
-
-    submitResolveResult();
-}
-
-void LinkResolver::readAnnieOutput(const QByteArray &data)
-{
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    qDebug() << __FUNCTION__ << error.errorString();
-    if (doc.isObject())
-        parseAnnieNode(doc.object(), m_mediaInfo, m_mediaInfo->annie);
-
-    submitResolveResult();
 }
 
 void LinkResolver::parseYouGetNode(const QJsonObject &o, MediaInfoPtr mi, Streams &streams)
@@ -284,40 +278,4 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
         stream->quality = format["Quality"].toString();
         streams.append(stream);
     }
-}
-
-void LinkResolver::resolveByYouGet(const QString &url)
-{
-    m_mediaInfo->you_get.clear();
-    m_yougetProcess.terminate();
-
-    m_yougetProcess.setArguments(QStringList() << "--json" << url);
-    m_yougetProcess.start();
-}
-
-void LinkResolver::resolveByYKDL(const QString &url)
-{
-    m_mediaInfo->ykdl.clear();
-    m_ykdlProcess.terminate();
-
-    m_ykdlProcess.setArguments(QStringList() << "--json" << url);
-    m_ykdlProcess.start();
-}
-
-void LinkResolver::resolveByYoutubeDL(const QString &url)
-{
-    m_mediaInfo->youtube_dl.clear();
-    m_youtubedlProcess.terminate();
-
-    m_youtubedlProcess.setArguments(QStringList() << "--skip-download" << "--print-json" << url);
-    m_youtubedlProcess.start();
-}
-
-void LinkResolver::resolveByAnnie(const QString &url)
-{
-    m_mediaInfo->annie.clear();
-    m_annieProcess.terminate();
-
-    m_annieProcess.setArguments(QStringList() << "-j" << url);
-    m_annieProcess.start();
 }
