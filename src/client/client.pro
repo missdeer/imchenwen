@@ -15,7 +15,6 @@ HEADERS += \
     webview.h \
     webpage.h \
     webpopupwindow.h \
-    aboutdialog.h \
     config.h \
     waitingspinnerwidget.h \
     linkresolver.h \
@@ -33,7 +32,6 @@ SOURCES += \
     webview.cpp \
     webpage.cpp \
     webpopupwindow.cpp \
-    aboutdialog.cpp \
     config.cpp \
     waitingspinnerwidget.cpp \
     linkresolver.cpp \
@@ -45,7 +43,6 @@ SOURCES += \
 FORMS += \
     certificateerrordialog.ui \
     passworddialog.ui \
-    aboutdialog.ui \
     playdialog.ui \
     settings.ui
 

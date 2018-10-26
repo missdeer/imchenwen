@@ -4,7 +4,6 @@
 #include "urllineedit.h"
 #include "webview.h"
 #include "settings.h"
-#include "aboutdialog.h"
 #include "websites.h"
 #include "config.h"
 #include <QApplication>
@@ -262,9 +261,10 @@ QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
 
-    connect(helpMenu->addAction(tr("About imchenwen")), &QAction::triggered, [this]() {
-        AboutDialog dlg(this);
-        dlg.exec();
+    connect(helpMenu->addAction(tr("About...")), &QAction::triggered, [this]() {
+        QMessageBox::about(this,
+                           tr("About imchenwen"),
+                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."));
     });
 
     connect(helpMenu->addAction(tr("Install Flash")), &QAction::triggered, []() {
