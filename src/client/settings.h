@@ -10,7 +10,7 @@ class SettingsDialog : public QDialog, public Ui_Settings
     Q_OBJECT
 
 public:
-    SettingsDialog(QWidget *parent = 0);
+    SettingsDialog(QWidget *parent = nullptr);
     void accept();
     void setCurrentPage(int index);
 private slots:
@@ -38,10 +38,35 @@ private slots:
     void onBrowseYKDLPath();
     void onBrowseYoutubeDLPath();
     void onBrowseAnniePath();
+
+    void onAddLiveTVItem();
+    void onRemoveLiveTVItem();
+    void onModifyLiveTVItem();
+    void onImportLiveTVItems();
+    void onExportLiveTVItems();
+    void onCheckLiveTVItems();
+    void onLiveTVTableItemSelectionChanged();
+
+    void onAddVIPVideo();
+    void onRemoveVIPVideo();
+    void onModifyVIPVideo();
+    void onImportVIPVideo();
+    void onExportVIPVideo();
+    void onVIPVideoTableItemSelectionChanged();
 private:
     QFont standardFont;
     QFont fixedFont;
     Tuple2List m_players;
+    Tuple3List m_liveTV;
+    Tuple2List m_vipVideo;
+    void importLiveTVAsJSON(const QString& path);
+    void importLiveTVAsPlainText(const QString& path);
+    void exportLiveTVAsJSON(const QString& path);
+    void exportLiveTVAsPlainText(const QString& path);
+    void importVIPVideoAsJSON(const QString& path);
+    void importVIPVideoAsPlainText(const QString& path);
+    void exportVIPVideoAsJSON(const QString& path);
+    void exportVIPVideoAsPlainText(const QString& path);
 };
 
 #endif // SETTINGS_H

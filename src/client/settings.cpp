@@ -11,20 +11,38 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
-    connect(setHomeToCurrentPageButton, SIGNAL(clicked()), this, SLOT(setHomeToCurrentPage()));
-    connect(standardFontButton, SIGNAL(clicked()), this, SLOT(chooseFont()));
-    connect(fixedFontButton, SIGNAL(clicked()), this, SLOT(chooseFixedFont()));
+    tblLiveTV->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL") << tr("Availability"));
+    tblVIPVideo->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
 
-    connect(btnSelectPlayer, SIGNAL(clicked()), this, SLOT(onSelectExternalPlayer()));
-    connect(btnAddPlayer, SIGNAL(clicked()), this, SLOT(onAddExternalPlayer()));
-    connect(btnRemovePlayer, SIGNAL(clicked()), this, SLOT(onRemoveExternalPlayer()));
-    connect(btnModifyPlayer, SIGNAL(clicked()), this, SLOT(onModifyExternalPlayer()));
-    connect(listPlayer, SIGNAL(currentRowChanged(int)), this, SLOT(onExternalPlayerListCurrentRowChanged(int)));
+    connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::setHomeToCurrentPage);
+    connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::chooseFont);
+    connect(fixedFontButton, &QPushButton::clicked, this, &SettingsDialog::chooseFixedFont);
 
-    connect(btnBrowseYouGetPath, SIGNAL(clicked()), this, SLOT(onBrowseYouGetPath()));
-    connect(btnBrowseYKDLPath, SIGNAL(clicked()), this, SLOT(onBrowseYKDLPath()));
-    connect(btnBrowseYoutubeDLPath, SIGNAL(clicked()), this, SLOT(onBrowseYoutubeDLPath()));
-    connect(btnBrowseAnniePath, SIGNAL(clicked()), this, SLOT(onBrowseAnniePath()));
+    connect(btnSelectPlayer, &QPushButton::clicked, this, &SettingsDialog::onSelectExternalPlayer);
+    connect(btnAddPlayer, &QPushButton::clicked, this, &SettingsDialog::onAddExternalPlayer);
+    connect(btnRemovePlayer, &QPushButton::clicked, this, &SettingsDialog::onRemoveExternalPlayer);
+    connect(btnModifyPlayer, &QPushButton::clicked, this, &SettingsDialog::onModifyExternalPlayer);
+    connect(listPlayer, &QListWidget::currentRowChanged, this, &SettingsDialog::onExternalPlayerListCurrentRowChanged);
+
+    connect(btnAddLiveTVItem, &QPushButton::clicked, this, &SettingsDialog::onAddLiveTVItem);
+    connect(btnRemoveLiveTVItem, &QPushButton::clicked, this, &SettingsDialog::onRemoveLiveTVItem);
+    connect(btnModifyLiveTVItem, &QPushButton::clicked, this, &SettingsDialog::onModifyLiveTVItem);
+    connect(btnImportLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onImportLiveTVItems);
+    connect(btnExportLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onExportLiveTVItems);
+    connect(btnCheckLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onCheckLiveTVItems);
+    connect(tblLiveTV, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onLiveTVTableItemSelectionChanged);
+
+    connect(btnAddVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onAddVIPVideo);
+    connect(btnRemoveVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onRemoveVIPVideo);
+    connect(btnModifyVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onModifyVIPVideo);
+    connect(btnImportVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onImportVIPVideo);
+    connect(btnExportVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onExportVIPVideo);
+    connect(tblVIPVideo, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onVIPVideoTableItemSelectionChanged);
+
+    connect(btnBrowseYouGetPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYouGetPath);
+    connect(btnBrowseYKDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYKDLPath);
+    connect(btnBrowseYoutubeDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYoutubeDLPath);
+    connect(btnBrowseAnniePath, &QPushButton::clicked, this, &SettingsDialog::onBrowseAnniePath);
     loadDefaults();
     loadFromSettings();
 }
@@ -134,9 +152,33 @@ void SettingsDialog::loadFromSettings()
 
     // external player
     cfg.read("externalPlayers", m_players);
-    for (auto p : m_players)
+    for (const auto& p : m_players)
     {
         listPlayer->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
+    }
+
+    // Live TV
+    cfg.read("liveTV", m_liveTV);
+    for (const auto & tv : m_liveTV)
+    {
+        tblLiveTV->insertRow(0);
+        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
+        tblLiveTV->setItem(0, 0, name);
+        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
+        tblLiveTV->setItem(0, 1, url);
+        QTableWidgetItem* availability = new QTableWidgetItem(std::get<2>(tv));
+        tblLiveTV->setItem(0, 2, availability);
+    }
+
+    // VIP video
+    cfg.read("vipVideo", m_vipVideo);
+    for (const auto & vv : m_vipVideo)
+    {
+        tblVIPVideo->insertRow(0);
+        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
+        tblVIPVideo->setItem(0, 0, name);
+        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
+        tblVIPVideo->setItem(0, 1, url);
     }
 
     // resolver
@@ -387,6 +429,405 @@ void SettingsDialog::onBrowseAnniePath()
     if (!path.isEmpty())
     {
         edtAnniePath->setText(path);
+    }
+}
+
+void SettingsDialog::onAddLiveTVItem()
+{
+    if (edtLiveTVName->text().isEmpty() || edtLiveTVURL->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please input Live TV name and URL."), QMessageBox::Ok);
+        return;
+    }
+    auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(),
+                           [this](const Tuple3& t) { return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text();});
+    if (m_liveTV.end() != it)
+    {
+        QMessageBox::warning(this, tr("Duplicated"), tr("This Live TV item exists already."), QMessageBox::Ok);
+        return;
+    }
+    m_liveTV.push_back(std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), tr("unknown")));
+    Config cfg;
+    cfg.write("liveTV", m_liveTV);
+    int rowIndex = tblLiveTV->rowCount();
+    tblLiveTV->insertRow(rowIndex);
+    QTableWidgetItem* name = new QTableWidgetItem(edtLiveTVName->text());
+    tblLiveTV->setItem(rowIndex, 0, name);
+    QTableWidgetItem* url = new QTableWidgetItem(edtLiveTVURL->text());
+    tblLiveTV->setItem(rowIndex, 1, url);
+    QTableWidgetItem* availability = new QTableWidgetItem(tr("unknown"));
+    tblLiveTV->setItem(rowIndex, 2, availability);
+    edtLiveTVName->setText("");
+    edtLiveTVURL->setText("");
+}
+
+void SettingsDialog::onRemoveLiveTVItem()
+{
+    auto ranges = tblLiveTV->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    m_liveTV.removeAt(currentRow);
+    Config cfg;
+    cfg.write("liveTV", m_liveTV);
+    tblLiveTV->removeRow(currentRow);
+}
+
+void SettingsDialog::onModifyLiveTVItem()
+{
+    auto ranges = tblLiveTV->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    m_liveTV[currentRow] = std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), std::get<2>(m_liveTV[currentRow]));
+    auto item = tblLiveTV->takeItem(currentRow, 0);
+    item->setText(edtLiveTVName->text());
+    item = tblLiveTV->takeItem(currentRow, 1);
+    item->setText(edtLiveTVURL->text());
+    Config cfg;
+    cfg.write("liveTV", m_liveTV);
+}
+
+void SettingsDialog::onImportLiveTVItems()
+{
+    QStringList paths = QFileDialog::getOpenFileNames(this,
+                                                      tr("Select Live TV list to import"),
+                                                      QString(),
+                                                      tr("JSON format (*.json);;Plain text format (*.txt)")
+                                                      );
+    for (const QString& path : paths)
+    {
+        QFileInfo fi(path);
+        if (fi.suffix().toLower() == "json")
+        {
+            importLiveTVAsJSON(path);
+        }
+        else
+        {
+            importLiveTVAsPlainText(path);
+        }
+    }
+}
+
+void SettingsDialog::onExportLiveTVItems()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Export Live tv list to"),
+                                                    QString(),
+                                                    tr("JSON format (*.json);;Plain text format (*.txt)")
+                                                    );
+    QFileInfo fi(fileName);
+    if (fi.suffix().toLower() == "json")
+    {
+        exportLiveTVAsJSON(fileName);
+    }
+    else
+    {
+        exportLiveTVAsPlainText(fileName);
+    }
+}
+
+void SettingsDialog::onCheckLiveTVItems()
+{
+
+}
+
+void SettingsDialog::onLiveTVTableItemSelectionChanged()
+{
+    auto ranges = tblLiveTV->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    edtLiveTVName->setText(std::get<0>(m_liveTV[currentRow]));
+    edtLiveTVURL->setText(std::get<1>(m_liveTV[currentRow]));
+}
+
+void SettingsDialog::onAddVIPVideo()
+{
+    if (edtVIPVideoName->text().isEmpty() || edtVIPVideoURL->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please input VIP video name and URL."), QMessageBox::Ok);
+        return;
+    }
+    auto it = std::find_if(m_vipVideo.begin(), m_vipVideo.end(),
+                           [this](const Tuple2& t) { return std::get<0>(t) == edtVIPVideoName->text() && std::get<1>(t) == edtVIPVideoURL->text();});
+    if (m_vipVideo.end() != it)
+    {
+        QMessageBox::warning(this, tr("Duplicated"), tr("This VIP video item exists already."), QMessageBox::Ok);
+        return;
+    }
+    m_vipVideo.push_back(std::make_tuple(edtVIPVideoName->text(), edtVIPVideoURL->text()));
+    Config cfg;
+    cfg.write("vipVideo", m_vipVideo);
+    int rowIndex = tblVIPVideo->rowCount();
+    tblVIPVideo->insertRow(rowIndex);
+    QTableWidgetItem* name = new QTableWidgetItem(edtVIPVideoName->text());
+    tblVIPVideo->setItem(rowIndex, 0, name);
+    QTableWidgetItem* url = new QTableWidgetItem(edtVIPVideoURL->text());
+    tblVIPVideo->setItem(rowIndex, 1, url);
+    edtVIPVideoName->setText("");
+    edtVIPVideoURL->setText("");
+}
+
+void SettingsDialog::onRemoveVIPVideo()
+{
+    auto ranges = tblVIPVideo->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    m_vipVideo.removeAt(currentRow);
+    Config cfg;
+    cfg.write("vipVideo", m_vipVideo);
+    tblVIPVideo->removeRow(currentRow);
+}
+
+void SettingsDialog::onModifyVIPVideo()
+{
+    auto ranges = tblVIPVideo->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    m_vipVideo[currentRow] = std::make_tuple(edtVIPVideoName->text(), edtVIPVideoURL->text());
+    auto item = tblVIPVideo->takeItem(currentRow, 0);
+    item->setText(edtVIPVideoName->text());
+    item = tblVIPVideo->takeItem(currentRow, 1);
+    item->setText(edtVIPVideoURL->text());
+    Config cfg;
+    cfg.write("vipVideo", m_vipVideo);
+}
+
+void SettingsDialog::onImportVIPVideo()
+{
+    QStringList paths = QFileDialog::getOpenFileNames(this,
+                                                      tr("Select VIP video list to import"),
+                                                      QString(),
+                                                      tr("JSON format (*.json);;Plain text format (*.txt)")
+                                                      );
+
+    for (const QString& path : paths)
+    {
+        QFileInfo fi(path);
+        if (fi.suffix().toLower() == "json")
+        {
+            importVIPVideoAsJSON(path);
+        }
+        else
+        {
+            importVIPVideoAsPlainText(path);
+        }
+    }
+}
+
+void SettingsDialog::onExportVIPVideo()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Export Live tv list to"),
+                                                    QString(),
+                                                    tr("JSON format (*.json);;Plain text format (*.txt)")
+                                                    );
+    QFileInfo fi(fileName);
+    if (fi.suffix().toLower() == "json")
+    {
+        exportVIPVideoAsJSON(fileName);
+    }
+    else
+    {
+        exportVIPVideoAsPlainText(fileName);
+    }
+}
+
+void SettingsDialog::onVIPVideoTableItemSelectionChanged()
+{
+    auto ranges = tblVIPVideo->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    edtVIPVideoName->setText(std::get<0>(m_vipVideo[currentRow]));
+    edtVIPVideoURL->setText(std::get<1>(m_vipVideo[currentRow]));
+}
+
+void SettingsDialog::importLiveTVAsJSON(const QString &path)
+{
+    QFile f(path);
+    if (f.open(QIODevice::ReadOnly))
+    {
+        auto d = f.readAll();
+        f.close();
+        QJsonParseError error;
+        QJsonDocument doc = QJsonDocument::fromJson(d, &error);
+        if (error.error != QJsonParseError::NoError)
+        {
+            QMessageBox::warning(this, tr("Error"), error.errorString(), QMessageBox::Ok);
+            return;
+        }
+        if (doc.isArray())
+        {
+            auto arr = doc.array();
+            for (auto a : arr)
+            {
+                if (!a.isObject())
+                    continue;
+                auto o = a.toObject();
+                if (!o["name"].isString() || o["name"].toString().isEmpty() || !o["url"].isString() || o["url"].toString().isEmpty())
+                    continue;
+
+                auto vv = std::make_tuple(o["name"].toString(), o["url"].toString(), tr("unknown"));
+                auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple3& v){
+                    return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
+                });
+                if (m_liveTV.end() == it)
+                    m_liveTV.push_back(vv);
+            }
+        }
+    }
+}
+
+void SettingsDialog::importLiveTVAsPlainText(const QString &path)
+{
+    QFile f(path);
+    if (f.open(QIODevice::ReadOnly))
+    {
+        auto d = f.readAll();
+        f.close();
+        auto lines = d.split('\n');
+        for (const auto& line : lines)
+        {
+            auto ele = line.split(' ');
+            if (ele.length() != 2)
+            continue;
+
+            auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]), tr("unknown"));
+            auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple3& v){
+                return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
+            });
+            if (m_liveTV.end() == it)
+                m_liveTV.push_back(vv);
+        }
+    }
+}
+
+void SettingsDialog::exportLiveTVAsJSON(const QString &path)
+{
+    QJsonDocument doc = QJsonDocument::fromJson("[]");
+    QJsonArray a = doc.array();
+    for (const auto& vv : m_liveTV)
+    {
+        QJsonObject o;
+        o.insert("name", std::get<0>(vv));
+        o.insert("url", std::get<1>(vv));
+        a.append(o);
+    }
+    auto d = doc.toJson(QJsonDocument::Indented);
+    QFile f(path);
+    if (f.open(QIODevice::WriteOnly))
+    {
+        f.write(d);
+        f.close();
+    }
+}
+
+void SettingsDialog::exportLiveTVAsPlainText(const QString &path)
+{
+    QFile f(path);
+    if (f.open(QIODevice::WriteOnly))
+    {
+        for (const auto& tv : m_liveTV)
+        {
+            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8());
+        }
+        f.close();
+    }
+}
+
+void SettingsDialog::importVIPVideoAsJSON(const QString &path)
+{
+    QFile f(path);
+    if (f.open(QIODevice::ReadOnly))
+    {
+        auto d = f.readAll();
+        f.close();
+        QJsonParseError error;
+        QJsonDocument doc = QJsonDocument::fromJson(d, &error);
+        if (error.error != QJsonParseError::NoError)
+        {
+            QMessageBox::warning(this, tr("Error"), error.errorString(), QMessageBox::Ok);
+            return;
+        }
+        if (doc.isArray())
+        {
+            auto arr = doc.array();
+            for (auto a : arr)
+            {
+                if (!a.isObject())
+                    continue;
+                auto o = a.toObject();
+                if (!o["name"].isString() || o["name"].toString().isEmpty() || !o["url"].isString() || o["url"].toString().isEmpty())
+                    continue;
+
+                auto vv = std::make_tuple(o["name"].toString(), o["url"].toString());
+                auto it = std::find_if(m_vipVideo.begin(), m_vipVideo.end(), [&vv](const Tuple2& v){
+                    return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
+                });
+                if (m_vipVideo.end() == it)
+                    m_vipVideo.push_back(vv);
+            }
+        }
+    }
+}
+
+void SettingsDialog::importVIPVideoAsPlainText(const QString &path)
+{
+    QFile f(path);
+    if (f.open(QIODevice::ReadOnly))
+    {
+        auto d = f.readAll();
+        f.close();
+        auto lines = d.split('\n');
+        for (const auto& line : lines)
+        {
+            auto ele = line.split(' ');
+            if (ele.length() != 2)
+                continue;
+            auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]));
+            auto it = std::find_if(m_vipVideo.begin(), m_vipVideo.end(), [&vv](const Tuple2& v){
+                return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
+            });
+            if (m_vipVideo.end() == it)
+                m_vipVideo.push_back(vv);
+        }
+    }
+}
+
+void SettingsDialog::exportVIPVideoAsJSON(const QString &path)
+{
+    QJsonDocument doc = QJsonDocument::fromJson("[]");
+    QJsonArray a = doc.array();
+    for (const auto& vv : m_vipVideo)
+    {
+        QJsonObject o;
+        o.insert("name", std::get<0>(vv));
+        o.insert("url", std::get<1>(vv));
+        a.append(o);
+    }
+    auto d = doc.toJson(QJsonDocument::Indented);
+    QFile f(path);
+    if (f.open(QIODevice::WriteOnly))
+    {
+        f.write(d);
+        f.close();
+    }
+}
+
+void SettingsDialog::exportVIPVideoAsPlainText(const QString &path)
+{
+    QFile f(path);
+    if (f.open(QIODevice::WriteOnly))
+    {
+        for (const auto& vv : m_vipVideo)
+        {
+            f.write(std::get<0>(vv).toUtf8() + " " + std::get<1>(vv).toUtf8());
+        }
+        f.close();
     }
 }
 

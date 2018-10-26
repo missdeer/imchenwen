@@ -46,6 +46,9 @@ public:
     void read(const QString& key, QString& value);
     void read(const QString& key, QStringList& array);
     void read(const QString& key, Tuple2List& array);
+    void read(const QString& key, Tuple3List& array);
+    void read(const QString& key, Tuple4List& array);
+    void read(const QString& key, Tuple5List& array);
     void write(const QString& key, const QStringList& array);
     void write(const QString& key, const Tuple2List& array);
     void write(const QString& key, const Tuple3List& array);
