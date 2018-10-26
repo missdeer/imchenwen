@@ -319,6 +319,7 @@ QMenu *BrowserWindow::createShortcutMenu()
     for (auto w : websitesInChina)
     {
         QAction *action = chinaMenu->addAction(w->name);
+        action->setData(w->url);
         connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutTriggered);
         if (w->favourite)
             shortcutMenu->addAction(action);
@@ -328,11 +329,11 @@ QMenu *BrowserWindow::createShortcutMenu()
     for (auto w : websitesAbroad)
     {
         QAction *action = abroadMenu->addAction(w->name);
+        action->setData(w->url);
         connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutTriggered);
         if (w->favourite)
             shortcutMenu->addAction(action);
     }
-
 
     shortcutMenu->addSeparator();
     shortcutMenu->addMenu(chinaMenu);
@@ -484,7 +485,7 @@ void BrowserWindow::handleShortcutTriggered()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
-    auto url = Browser::instance().websites().findURL(action->text());
+    auto url = action->data().toString();
     if (!url.isEmpty())
     {
         m_tabWidget->navigateInNewTab(url);
