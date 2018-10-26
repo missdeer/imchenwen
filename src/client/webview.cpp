@@ -133,7 +133,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
             QAction *playVIPAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play Link as VIP by Media Player"), this);
             menu->addAction(playVIPAction);
             connect(playVIPAction, &QAction::triggered, [this]() {
-                Browser::instance().playVIPByMediaPlayer(m_rightClickedUrl);
+                Browser::instance().watchVIPVideo(m_rightClickedUrl);
             });
             QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
             connect(openAction, &QAction::triggered, [this](){

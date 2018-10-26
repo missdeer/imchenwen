@@ -76,7 +76,7 @@ public:
 
     void loadSettings();
     void playByMediaPlayer(const QString& u);
-    void playVIPByMediaPlayer(const QString &u);
+    void watchVIPVideo(const QString &u);
     Websites &websites();
 signals:
 

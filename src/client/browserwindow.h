@@ -40,6 +40,8 @@ private slots:
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
 
     void handleShortcutTriggered();
+    void handleVIPVideoTriggered();
+    void handleLiveTVTriggered();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);

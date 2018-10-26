@@ -6,6 +6,7 @@
 #include "settings.h"
 #include "websites.h"
 #include "config.h"
+#include "popupmenutoolbutton.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -393,16 +394,59 @@ QToolBar *BrowserWindow::createToolBar()
     navigationBar->setIconSize(QSize(size, size));
 
     QAction *playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
+    playInMediaPlayerAction->setToolTip(playInMediaPlayerAction->text());
     connect(playInMediaPlayerAction, &QAction::triggered, [this]() {
         Browser::instance().playByMediaPlayer(m_urlLineEdit->text());
     });
     navigationBar->addAction(playInMediaPlayerAction);
 
-    QAction *playVIPInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play as VIP by Media Player"), this);
-    connect(playVIPInMediaPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().playVIPByMediaPlayer(m_urlLineEdit->text());
-    });
-    navigationBar->addAction(playVIPInMediaPlayerAction);
+    Config cfg;
+    Tuple2List vipVideos;
+    cfg.read("vipVideo", vipVideos);
+    if (!vipVideos.isEmpty())
+    {
+        QMenu* popupMenu = new QMenu(this);
+
+        for (const auto& vv : vipVideos)
+        {
+            QAction* action  = new QAction(std::get<0>(vv), this);
+            action->setData(std::get<1>(vv));
+            action->setToolTip(std::get<1>(vv));
+            action->setStatusTip(std::get<1>(vv));
+            connect(action, &QAction::triggered, this, &BrowserWindow::handleVIPVideoTriggered);
+            popupMenu->addAction(action);
+        }
+
+        PopupMenuToolButton* toolButton = new PopupMenuToolButton(this);
+        toolButton->setIcon(QIcon(QStringLiteral(":playvip.png")));
+        toolButton->setText(tr("Watch as VIP video"));
+        toolButton->setMenu(popupMenu);
+        navigationBar->addWidget(toolButton);
+    }
+
+    Tuple3List liveTVs;
+    cfg.read("liveTV", liveTVs);
+    if (!liveTVs.isEmpty())
+    {
+        QMenu* popupMenu = new QMenu(this);
+
+        for (const auto& tv : liveTVs)
+        {
+            QAction* action  = new QAction(std::get<0>(tv), this);
+            action->setData(std::get<1>(tv));
+            action->setToolTip(std::get<1>(tv));
+            action->setStatusTip(std::get<1>(tv));
+            connect(action, &QAction::triggered, this, &BrowserWindow::handleLiveTVTriggered);
+            popupMenu->addAction(action);
+        }
+
+        PopupMenuToolButton* toolButton = new PopupMenuToolButton(this);
+        toolButton->setIcon(QIcon(QStringLiteral(":playvip.png")));
+        toolButton->setText(tr("Watch Live TV"));
+        toolButton->setMenu(popupMenu);
+        navigationBar->addWidget(toolButton);
+    }
+
     return navigationBar;
 }
 
@@ -490,6 +534,16 @@ void BrowserWindow::handleShortcutTriggered()
     {
         m_tabWidget->navigateInNewTab(url);
     }
+}
+
+void BrowserWindow::handleVIPVideoTriggered()
+{
+
+}
+
+void BrowserWindow::handleLiveTVTriggered()
+{
+
 }
 
 void BrowserWindow::handleWebViewTitleChanged(const QString &title)

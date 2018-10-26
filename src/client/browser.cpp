@@ -158,7 +158,7 @@ void Browser::playByMediaPlayer(const QString &u)
     resolveLink(u);
 }
 
-void Browser::playVIPByMediaPlayer(const QString &u)
+void Browser::watchVIPVideo(const QString &u)
 {
 }
 
