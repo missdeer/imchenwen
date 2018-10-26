@@ -158,10 +158,6 @@ void Browser::playByMediaPlayer(const QString &u)
     resolveLink(u);
 }
 
-void Browser::watchVIPVideo(const QString &u)
-{
-}
-
 void Browser::clipboardChanged()
 {
     QClipboard *clipboard = QApplication::clipboard();
