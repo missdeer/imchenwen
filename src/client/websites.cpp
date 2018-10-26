@@ -10,7 +10,7 @@ bool Websites::isInChina(const QUrl &url)
     pos = host.lastIndexOf(QChar('.'), pos-host.length()-1);
     host = host.mid(pos+1, -1);
     auto it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [this, &host](WebsitePtr w) { return w->url.contains(host); });
+                           [&host](WebsitePtr w) { return w->url.contains(host); });
 
     if (m_websites.end() != it)
         return (*it)->inChina;
@@ -18,7 +18,7 @@ bool Websites::isInChina(const QUrl &url)
     pos = host.lastIndexOf(QChar('.'));
     host = host.left(pos);
     it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [this, &host](WebsitePtr w) { return w->url.contains(host); });
+                           [&host](WebsitePtr w) { return w->url.contains(host); });
 
     if (m_websites.end() != it)
         return (*it)->inChina;
@@ -28,28 +28,28 @@ bool Websites::isInChina(const QUrl &url)
 
 const QString &Websites::findURL(const QString &name)
 {
-    auto it = std::find_if(m_websites.begin(), m_websites.end(), [this, name](WebsitePtr w) { return w->name == name;});
+    auto it = std::find_if(m_websites.begin(), m_websites.end(), [&name](WebsitePtr w) { return w->name == name;});
     return (*it)->url;
 }
 
 WebsiteList Websites::favourites()
 {
     WebsiteList res;
-    std::copy_if(m_websites.begin(), m_websites.end(), std::back_inserter(res), [this](WebsitePtr w) { return w->favourite;});
+    std::copy_if(m_websites.begin(), m_websites.end(), std::back_inserter(res), [](WebsitePtr w) { return w->favourite;});
     return res;
 }
 
 WebsiteList Websites::inChina()
 {
     WebsiteList res;
-    std::copy_if(m_websites.begin(), m_websites.end(), std::back_inserter(res), [this](WebsitePtr w) { return w->inChina;});
+    std::copy_if(m_websites.begin(), m_websites.end(), std::back_inserter(res), [](WebsitePtr w) { return w->inChina;});
     return res;
 }
 
 WebsiteList Websites::abroad()
 {
     WebsiteList res;
-    std::copy_if(m_websites.begin(), m_websites.end(), std::back_inserter(res), [this](WebsitePtr w) { return !w->inChina;});
+    std::copy_if(m_websites.begin(), m_websites.end(), std::back_inserter(res), [](WebsitePtr w) { return !w->inChina;});
     return res;
 }
 
