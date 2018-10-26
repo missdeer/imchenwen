@@ -128,7 +128,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
             QAction *playAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play Link by Media Player"), this);
             menu->addAction(playAction);
             connect(playAction, &QAction::triggered, [this]() {
-                Browser::instance().playByMediaPlayer(m_rightClickedUrl);
+                Browser::instance().resolveAndPlayByMediaPlayer(m_rightClickedUrl);
             });
             QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
             connect(openAction, &QAction::triggered, [this](){

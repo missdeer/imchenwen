@@ -75,6 +75,7 @@ public:
     BrowserWindow *newMainWindow();
 
     void loadSettings();
+    void resolveAndPlayByMediaPlayer(const QString& u);
     void playByMediaPlayer(const QString& u);
     Websites &websites();
 signals:

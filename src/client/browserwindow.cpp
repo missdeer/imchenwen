@@ -108,7 +108,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
         {
             if (u.startsWith("http://") || u.startsWith("https://"))
             {
-                Browser::instance().playByMediaPlayer(u);
+                Browser::instance().resolveAndPlayByMediaPlayer(u);
             }
             else
             {
@@ -396,7 +396,7 @@ QToolBar *BrowserWindow::createToolBar()
     QAction *playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
     playInMediaPlayerAction->setToolTip(playInMediaPlayerAction->text());
     connect(playInMediaPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().playByMediaPlayer(m_urlLineEdit->text());
+        Browser::instance().resolveAndPlayByMediaPlayer(m_urlLineEdit->text());
     });
     navigationBar->addAction(playInMediaPlayerAction);
 
@@ -538,12 +538,18 @@ void BrowserWindow::handleShortcutTriggered()
 
 void BrowserWindow::handleVIPVideoTriggered()
 {
-
+    QAction* action = qobject_cast<QAction*>(sender());
+    Q_ASSERT(action);
+    auto url = action->data().toString();
+    loadPage(url+m_urlLineEdit->text());
 }
 
 void BrowserWindow::handleLiveTVTriggered()
 {
-
+    QAction* action = qobject_cast<QAction*>(sender());
+    Q_ASSERT(action);
+    auto url = action->data().toString();
+    Browser::instance().playByMediaPlayer(url);
 }
 
 void BrowserWindow::handleWebViewTitleChanged(const QString &title)

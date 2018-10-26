@@ -153,9 +153,81 @@ void Browser::loadSettings()
     QNetworkProxy::setApplicationProxy(proxy);
 }
 
-void Browser::playByMediaPlayer(const QString &u)
+void Browser::resolveAndPlayByMediaPlayer(const QString &u)
 {
     resolveLink(u);
+}
+
+void Browser::playByMediaPlayer(const QString &u)
+{
+    Config cfg;
+    Tuple2List players;
+    cfg.read("externalPlayers", players);
+    if (players.isEmpty())
+    {
+        QMessageBox::warning(m_windows[0], tr("Error"), tr("External player information is not added."), QMessageBox::Ok);
+        return;
+    }
+    auto player = players[0];
+
+    m_playerProcess.kill();
+    waiting(false);
+    QStringList args;
+#if defined(Q_OS_MAC)
+    QFileInfo fi(std::get<0>(player));
+    if (fi.suffix() == "app")
+    {
+        m_process.setProgram("/usr/bin/open");
+        args << std::get<0>(player) << "--args";
+    }
+#endif
+    QString arg = std::get<1>(player);
+    if (!arg.isEmpty())
+        args << arg.split(" ");
+
+    for (QString& a : args)
+    {
+        if (a == "{{referrer}}")
+            a = "";
+        else if (a == "{{title}}")
+            a = "";
+        else if (a == "{{site}}")
+            a = "";
+    }
+
+    args << u;
+    m_playerProcess.setArguments(args);
+
+#if defined(Q_OS_MAC)
+    if (fi.suffix() == "app")
+    {
+        m_process.setProgram("/usr/bin/open");
+        return;
+    }
+#endif
+    m_playerProcess.setProgram(std::get<0>(player));
+    m_playerProcess.start();
+    for ( auto w : m_windows)
+    {
+        if (w->isMaximized())
+        {
+            m_windowsState[w] = isMaximized;
+        }
+        else if (w->isMinimized())
+        {
+            m_windowsState[w] = isMinimized;
+            w->showMinimized();
+        }
+        else if (!w->isVisible())
+        {
+            m_windowsState[w] = isHidden;
+        }
+        else
+        {
+            m_windowsState[w] = isNormal;
+            w->showMinimized();
+        }
+    }
 }
 
 void Browser::clipboardChanged()
