@@ -11,8 +11,13 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    tblLiveTV->setColumnCount(3);
     tblLiveTV->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL") << tr("Availability"));
+    tblLiveTV->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    tblVIPVideo->setColumnCount(2);
     tblVIPVideo->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
+    tblVIPVideo->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
     connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::setHomeToCurrentPage);
     connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::chooseFont);
@@ -95,6 +100,32 @@ void SettingsDialog::loadDefaults()
         faviconDownloadMode->setCurrentIndex(2);
 }
 
+void SettingsDialog::fillLiveTVTable()
+{
+    for (const auto & tv : m_liveTV)
+    {
+        tblLiveTV->insertRow(0);
+        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
+        tblLiveTV->setItem(0, 0, name);
+        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
+        tblLiveTV->setItem(0, 1, url);
+        QTableWidgetItem* availability = new QTableWidgetItem(std::get<2>(tv));
+        tblLiveTV->setItem(0, 2, availability);
+    }
+}
+
+void SettingsDialog::fillVIPVideoTable()
+{
+    for (const auto & vv : m_vipVideo)
+    {
+        tblVIPVideo->insertRow(0);
+        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
+        tblVIPVideo->setItem(0, 0, name);
+        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
+        tblVIPVideo->setItem(0, 1, url);
+    }
+}
+
 void SettingsDialog::loadFromSettings()
 {
     Config cfg;
@@ -159,27 +190,11 @@ void SettingsDialog::loadFromSettings()
 
     // Live TV
     cfg.read("liveTV", m_liveTV);
-    for (const auto & tv : m_liveTV)
-    {
-        tblLiveTV->insertRow(0);
-        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
-        tblLiveTV->setItem(0, 0, name);
-        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
-        tblLiveTV->setItem(0, 1, url);
-        QTableWidgetItem* availability = new QTableWidgetItem(std::get<2>(tv));
-        tblLiveTV->setItem(0, 2, availability);
-    }
+    fillLiveTVTable();
 
     // VIP video
     cfg.read("vipVideo", m_vipVideo);
-    for (const auto & vv : m_vipVideo)
-    {
-        tblVIPVideo->insertRow(0);
-        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
-        tblVIPVideo->setItem(0, 0, name);
-        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
-        tblVIPVideo->setItem(0, 1, url);
-    }
+    fillVIPVideoTable();
 
     // resolver
     edtYouGetPath->setText(cfg.read<QString>(QLatin1String("you-get")));
@@ -495,24 +510,32 @@ void SettingsDialog::onImportLiveTVItems()
                                                       QString(),
                                                       tr("JSON format (*.json);;Plain text format (*.txt)")
                                                       );
+    bool changed = false;
     for (const QString& path : paths)
     {
         QFileInfo fi(path);
         if (fi.suffix().toLower() == "json")
         {
-            importLiveTVAsJSON(path);
+            changed |= importLiveTVAsJSON(path);
         }
         else
         {
-            importLiveTVAsPlainText(path);
+            changed |= importLiveTVAsPlainText(path);
         }
+    }
+    if (changed)
+    {
+        tblLiveTV->clearContents();
+        fillLiveTVTable();
+        Config cfg;
+        cfg.write("liveTV", m_liveTV);
     }
 }
 
 void SettingsDialog::onExportLiveTVItems()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Export Live tv list to"),
+                                                    tr("Export Live TV list to"),
                                                     QString(),
                                                     tr("JSON format (*.json);;Plain text format (*.txt)")
                                                     );
@@ -534,6 +557,8 @@ void SettingsDialog::onCheckLiveTVItems()
 
 void SettingsDialog::onLiveTVTableItemSelectionChanged()
 {
+    edtLiveTVName->setText("");
+    edtLiveTVURL->setText("");
     auto ranges = tblLiveTV->selectedRanges();
     if (ranges.isEmpty())
         return;
@@ -603,18 +628,25 @@ void SettingsDialog::onImportVIPVideo()
                                                       QString(),
                                                       tr("JSON format (*.json);;Plain text format (*.txt)")
                                                       );
-
+    bool changed = false;
     for (const QString& path : paths)
     {
         QFileInfo fi(path);
         if (fi.suffix().toLower() == "json")
         {
-            importVIPVideoAsJSON(path);
+            changed |= importVIPVideoAsJSON(path);
         }
         else
         {
-            importVIPVideoAsPlainText(path);
+            changed |= importVIPVideoAsPlainText(path);
         }
+    }
+    if (changed)
+    {
+        tblVIPVideo->clearContents();
+        fillVIPVideoTable();
+        Config cfg;
+        cfg.write("vipVideo", m_vipVideo);
     }
 }
 
@@ -638,6 +670,8 @@ void SettingsDialog::onExportVIPVideo()
 
 void SettingsDialog::onVIPVideoTableItemSelectionChanged()
 {
+    edtVIPVideoName->setText("");
+    edtVIPVideoURL->setText("");
     auto ranges = tblVIPVideo->selectedRanges();
     if (ranges.isEmpty())
         return;
@@ -646,9 +680,10 @@ void SettingsDialog::onVIPVideoTableItemSelectionChanged()
     edtVIPVideoURL->setText(std::get<1>(m_vipVideo[currentRow]));
 }
 
-void SettingsDialog::importLiveTVAsJSON(const QString &path)
+bool SettingsDialog::importLiveTVAsJSON(const QString &path)
 {
     QFile f(path);
+    int c = m_liveTV.length();
     if (f.open(QIODevice::ReadOnly))
     {
         auto d = f.readAll();
@@ -657,8 +692,8 @@ void SettingsDialog::importLiveTVAsJSON(const QString &path)
         QJsonDocument doc = QJsonDocument::fromJson(d, &error);
         if (error.error != QJsonParseError::NoError)
         {
-            QMessageBox::warning(this, tr("Error"), error.errorString(), QMessageBox::Ok);
-            return;
+            QMessageBox::warning(this, tr("Error on importing live TV list as JSON"), error.errorString(), QMessageBox::Ok);
+            return false;
         }
         if (doc.isArray())
         {
@@ -680,11 +715,13 @@ void SettingsDialog::importLiveTVAsJSON(const QString &path)
             }
         }
     }
+    return m_liveTV.length() != c;
 }
 
-void SettingsDialog::importLiveTVAsPlainText(const QString &path)
+bool SettingsDialog::importLiveTVAsPlainText(const QString &path)
 {
     QFile f(path);
+    int c = m_liveTV.length();
     if (f.open(QIODevice::ReadOnly))
     {
         auto d = f.readAll();
@@ -704,6 +741,7 @@ void SettingsDialog::importLiveTVAsPlainText(const QString &path)
                 m_liveTV.push_back(vv);
         }
     }
+    return m_liveTV.length() != c;
 }
 
 void SettingsDialog::exportLiveTVAsJSON(const QString &path)
@@ -739,9 +777,10 @@ void SettingsDialog::exportLiveTVAsPlainText(const QString &path)
     }
 }
 
-void SettingsDialog::importVIPVideoAsJSON(const QString &path)
+bool SettingsDialog::importVIPVideoAsJSON(const QString &path)
 {
     QFile f(path);
+    int c = m_vipVideo.length();
     if (f.open(QIODevice::ReadOnly))
     {
         auto d = f.readAll();
@@ -750,8 +789,8 @@ void SettingsDialog::importVIPVideoAsJSON(const QString &path)
         QJsonDocument doc = QJsonDocument::fromJson(d, &error);
         if (error.error != QJsonParseError::NoError)
         {
-            QMessageBox::warning(this, tr("Error"), error.errorString(), QMessageBox::Ok);
-            return;
+            QMessageBox::warning(this, tr("Error on importing VIP video list as JSON"), error.errorString(), QMessageBox::Ok);
+            return false;
         }
         if (doc.isArray())
         {
@@ -773,11 +812,13 @@ void SettingsDialog::importVIPVideoAsJSON(const QString &path)
             }
         }
     }
+    return m_vipVideo.length() != c;
 }
 
-void SettingsDialog::importVIPVideoAsPlainText(const QString &path)
+bool SettingsDialog::importVIPVideoAsPlainText(const QString &path)
 {
     QFile f(path);
+    int c = m_vipVideo.length();
     if (f.open(QIODevice::ReadOnly))
     {
         auto d = f.readAll();
@@ -796,6 +837,7 @@ void SettingsDialog::importVIPVideoAsPlainText(const QString &path)
                 m_vipVideo.push_back(vv);
         }
     }
+    return m_liveTV.length() != c;
 }
 
 void SettingsDialog::exportVIPVideoAsJSON(const QString &path)

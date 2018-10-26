@@ -6,11 +6,13 @@
 
 QT_BEGIN_NAMESPACE
 class QProgressBar;
+class QToolBar;
 QT_END_NAMESPACE
 
 class TabWidget;
 class UrlLineEdit;
 class WebView;
+class PopupMenuToolButton;
 
 class BrowserWindow : public QMainWindow
 {
@@ -42,6 +44,7 @@ private slots:
     void handleShortcutTriggered();
     void handleVIPVideoTriggered();
     void handleLiveTVTriggered();
+    void handleOptionsTriggered();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);
@@ -60,6 +63,11 @@ private:
     QAction *m_reloadAction;
     QAction *m_stopReloadAction;
     UrlLineEdit *m_urlLineEdit;
+    PopupMenuToolButton* m_vipVideoAction;
+    PopupMenuToolButton* m_liveTVAction;
+    QToolBar *m_toolbar;
+    void createVIPVideoToolButton(QToolBar *navigationBar = nullptr);
+    void createLiveTVToolButton(QToolBar *navigationBar = nullptr);
 };
 
 #endif // BROWSERWINDOW_H

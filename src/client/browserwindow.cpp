@@ -31,14 +31,16 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     , m_reloadAction(nullptr)
     , m_stopReloadAction(nullptr)
     , m_urlLineEdit(new UrlLineEdit(this))
+    , m_vipVideoAction(nullptr)
+    , m_liveTVAction(nullptr)
 {
     setToolButtonStyle(Qt::ToolButtonFollowStyle);
     setAttribute(Qt::WA_DeleteOnClose, true);
 
-    QToolBar *toolbar = createToolBar();
-    addToolBar(toolbar);
+    m_toolbar = createToolBar();
+    addToolBar(m_toolbar);
     menuBar()->addMenu(createFileMenu(m_tabWidget));
-    menuBar()->addMenu(createViewMenu(toolbar));
+    menuBar()->addMenu(createViewMenu(m_toolbar));
     menuBar()->addMenu(createShortcutMenu());
     menuBar()->addMenu(createWindowMenu(m_tabWidget));
     menuBar()->addMenu(createHelpMenu());
@@ -118,10 +120,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     });
 
     QAction *options = fileMenu->addAction(tr("Options..."));
-    connect(options, &QAction::triggered, [this]() {
-        SettingsDialog dlg(this);
-        dlg.exec();
-    });
+    connect(options, &QAction::triggered, this, &BrowserWindow::handleOptionsTriggered);
 
     fileMenu->addSeparator();
 
@@ -291,30 +290,8 @@ QMenu *BrowserWindow::createHelpMenu()
 QMenu *BrowserWindow::createShortcutMenu()
 {
     QMenu *shortcutMenu = new QMenu(tr("&Shortcut"));
-
     QMenu *chinaMenu = new QMenu(tr("In China"));
-
     QMenu *abroadMenu = new QMenu(tr("Out of China"));
-
-    Config cfg;
-    if (cfg.read<bool>("showLocalModeMenuItems"))
-    {
-        QAction *inChinaLocalMode = chinaMenu->addAction(tr("InChina Local Mode"));
-        inChinaLocalMode->setCheckable(true);
-        inChinaLocalMode->setChecked(cfg.read<bool>("inChinaLocalMode"));
-        connect(inChinaLocalMode, &QAction::triggered, [&cfg]() {
-            cfg.write("inChinaLocalMode", !cfg.read<bool>("inChinaLocalMode"));
-        });
-        chinaMenu->addSeparator();
-
-        QAction *abroadLocalMode = abroadMenu->addAction(tr("Abroad Local Mode"));
-        abroadLocalMode->setCheckable(true);
-        abroadLocalMode->setChecked(cfg.read<bool>("abroadLocalMode"));
-        connect(abroadLocalMode, &QAction::triggered, [&cfg]() {
-            cfg.write("abroadLocalMode", !cfg.read<bool>("abroadLocalMode"));
-        });
-        abroadMenu->addSeparator();
-    }
 
     auto&& websitesInChina = Browser::instance().websites().inChina();
     for (auto w : websitesInChina)
@@ -340,6 +317,72 @@ QMenu *BrowserWindow::createShortcutMenu()
     shortcutMenu->addMenu(chinaMenu);
     shortcutMenu->addMenu(abroadMenu);
     return shortcutMenu;
+}
+
+void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)
+{
+    Config cfg;
+    Tuple2List vipVideos;
+    cfg.read("vipVideo", vipVideos);
+    if (!vipVideos.isEmpty())
+    {
+        QMenu* popupMenu = new QMenu();
+
+        for (const auto& vv : vipVideos)
+        {
+            QAction* action  = new QAction(std::get<0>(vv), popupMenu);
+            action->setData(std::get<1>(vv));
+            action->setToolTip(std::get<1>(vv));
+            action->setStatusTip(std::get<1>(vv));
+            connect(action, &QAction::triggered, this, &BrowserWindow::handleVIPVideoTriggered);
+            popupMenu->addAction(action);
+        }
+
+        if (!m_vipVideoAction)
+        {
+            m_vipVideoAction = new PopupMenuToolButton(this);
+            m_vipVideoAction->setIcon(QIcon(QStringLiteral(":playvip.png")));
+            m_vipVideoAction->setText(tr("Watch as VIP video"));
+            navigationBar->addWidget(m_vipVideoAction);
+        } else {
+            QMenu* p = m_vipVideoAction->menu();
+            p->deleteLater();
+        }
+        m_vipVideoAction->setMenu(popupMenu);
+    }
+}
+
+void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
+{
+    Config cfg;
+    Tuple3List liveTVs;
+    cfg.read("liveTV", liveTVs);
+    if (!liveTVs.isEmpty())
+    {
+        QMenu* popupMenu = new QMenu(this);
+
+        for (const auto& tv : liveTVs)
+        {
+            QAction* action  = new QAction(std::get<0>(tv), this);
+            action->setData(std::get<1>(tv));
+            action->setToolTip(std::get<1>(tv));
+            action->setStatusTip(std::get<1>(tv));
+            connect(action, &QAction::triggered, this, &BrowserWindow::handleLiveTVTriggered);
+            popupMenu->addAction(action);
+        }
+
+        if (!m_liveTVAction)
+        {
+            m_liveTVAction = new PopupMenuToolButton(this);
+            m_liveTVAction->setIcon(QIcon(QStringLiteral(":playvip.png")));
+            m_liveTVAction->setText(tr("Watch Live TV"));
+            navigationBar->addWidget(m_liveTVAction);
+        } else {
+            QMenu* p = m_vipVideoAction->menu();
+            p->deleteLater();
+        }
+        m_liveTVAction->setMenu(popupMenu);
+    }
 }
 
 QToolBar *BrowserWindow::createToolBar()
@@ -400,52 +443,8 @@ QToolBar *BrowserWindow::createToolBar()
     });
     navigationBar->addAction(playInMediaPlayerAction);
 
-    Config cfg;
-    Tuple2List vipVideos;
-    cfg.read("vipVideo", vipVideos);
-    if (!vipVideos.isEmpty())
-    {
-        QMenu* popupMenu = new QMenu(this);
-
-        for (const auto& vv : vipVideos)
-        {
-            QAction* action  = new QAction(std::get<0>(vv), this);
-            action->setData(std::get<1>(vv));
-            action->setToolTip(std::get<1>(vv));
-            action->setStatusTip(std::get<1>(vv));
-            connect(action, &QAction::triggered, this, &BrowserWindow::handleVIPVideoTriggered);
-            popupMenu->addAction(action);
-        }
-
-        PopupMenuToolButton* toolButton = new PopupMenuToolButton(this);
-        toolButton->setIcon(QIcon(QStringLiteral(":playvip.png")));
-        toolButton->setText(tr("Watch as VIP video"));
-        toolButton->setMenu(popupMenu);
-        navigationBar->addWidget(toolButton);
-    }
-
-    Tuple3List liveTVs;
-    cfg.read("liveTV", liveTVs);
-    if (!liveTVs.isEmpty())
-    {
-        QMenu* popupMenu = new QMenu(this);
-
-        for (const auto& tv : liveTVs)
-        {
-            QAction* action  = new QAction(std::get<0>(tv), this);
-            action->setData(std::get<1>(tv));
-            action->setToolTip(std::get<1>(tv));
-            action->setStatusTip(std::get<1>(tv));
-            connect(action, &QAction::triggered, this, &BrowserWindow::handleLiveTVTriggered);
-            popupMenu->addAction(action);
-        }
-
-        PopupMenuToolButton* toolButton = new PopupMenuToolButton(this);
-        toolButton->setIcon(QIcon(QStringLiteral(":playvip.png")));
-        toolButton->setText(tr("Watch Live TV"));
-        toolButton->setMenu(popupMenu);
-        navigationBar->addWidget(toolButton);
-    }
+    createVIPVideoToolButton(navigationBar);
+    createLiveTVToolButton(navigationBar);
 
     return navigationBar;
 }
@@ -538,10 +537,13 @@ void BrowserWindow::handleShortcutTriggered()
 
 void BrowserWindow::handleVIPVideoTriggered()
 {
-    QAction* action = qobject_cast<QAction*>(sender());
-    Q_ASSERT(action);
-    auto url = action->data().toString();
-    loadPage(url+m_urlLineEdit->text());
+    if (!m_urlLineEdit->text().isEmpty())
+    {
+        QAction* action = qobject_cast<QAction*>(sender());
+        Q_ASSERT(action);
+        auto url = action->data().toString();
+        loadPage(url+m_urlLineEdit->text());
+    }
 }
 
 void BrowserWindow::handleLiveTVTriggered()
@@ -550,6 +552,16 @@ void BrowserWindow::handleLiveTVTriggered()
     Q_ASSERT(action);
     auto url = action->data().toString();
     Browser::instance().playByMediaPlayer(url);
+}
+
+void BrowserWindow::handleOptionsTriggered()
+{
+    SettingsDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        createVIPVideoToolButton(m_toolbar);
+        createLiveTVToolButton(m_toolbar);
+    }
 }
 
 void BrowserWindow::handleWebViewTitleChanged(const QString &title)

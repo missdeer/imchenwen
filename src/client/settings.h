@@ -59,14 +59,16 @@ private:
     Tuple2List m_players;
     Tuple3List m_liveTV;
     Tuple2List m_vipVideo;
-    void importLiveTVAsJSON(const QString& path);
-    void importLiveTVAsPlainText(const QString& path);
+    bool importLiveTVAsJSON(const QString& path);
+    bool importLiveTVAsPlainText(const QString& path);
     void exportLiveTVAsJSON(const QString& path);
     void exportLiveTVAsPlainText(const QString& path);
-    void importVIPVideoAsJSON(const QString& path);
-    void importVIPVideoAsPlainText(const QString& path);
+    bool importVIPVideoAsJSON(const QString& path);
+    bool importVIPVideoAsPlainText(const QString& path);
     void exportVIPVideoAsJSON(const QString& path);
     void exportVIPVideoAsPlainText(const QString& path);
+    void fillLiveTVTable();
+    void fillVIPVideoTable();
 };
 
 #endif // SETTINGS_H
