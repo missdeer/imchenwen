@@ -58,7 +58,15 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
 
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    qDebug() << __FUNCTION__ << error.errorString();
+    if (error.error == QJsonParseError::IllegalUTF8String)
+    {
+        QTextStream in(data);
+        auto d = in.readAll();
+        doc = QJsonDocument::fromJson(d.toUtf8(), &error);
+    }
+    if (error.error != QJsonParseError::NoError)
+        qDebug() << __FUNCTION__ << error.errorString() << QString(data);
+
     if (doc.isObject())
     {
         auto it = std::find_if(m_resolvers.begin(), m_resolvers.end(), [p](const auto &r ) {
