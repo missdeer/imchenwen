@@ -126,6 +126,14 @@ void SettingsDialog::fillVIPVideoTable()
     }
 }
 
+void SettingsDialog::fillExternalPlayerTable()
+{
+    for (const auto& p : m_players)
+    {
+        listPlayer->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
+    }
+}
+
 void SettingsDialog::loadFromSettings()
 {
     Config cfg;
@@ -183,10 +191,7 @@ void SettingsDialog::loadFromSettings()
 
     // external player
     cfg.read("externalPlayers", m_players);
-    for (const auto& p : m_players)
-    {
-        listPlayer->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
-    }
+    fillExternalPlayerTable();
 
     // Live TV
     cfg.read("liveTV", m_liveTV);
@@ -253,6 +258,15 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("ykdl"), edtYKDLPath->text());
     cfg.write(QLatin1String("youtube-dl"), edtYoutubeDLPath->text());
     cfg.write(QLatin1String("annie"), edtAnniePath->text());
+
+    // external players
+    cfg.write("externalPlayers", m_players);
+
+    // live TV
+    cfg.write("liveTV", m_liveTV);
+
+    // VIP video
+    cfg.write("vipVideo", m_vipVideo);
 
     Browser::instance().loadSettings();
 }
@@ -332,8 +346,6 @@ void SettingsDialog::onAddExternalPlayer()
         return;
     }
     m_players.push_back(std::make_tuple(edtPlayerPath->text(), edtPlayerArguments->text()));
-    Config cfg;
-    cfg.write("externalPlayers", m_players);
     listPlayer->addItem(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
     edtPlayerPath->setText("");
     edtPlayerArguments->setText("");
@@ -349,8 +361,6 @@ void SettingsDialog::onRemoveExternalPlayer()
     }
     int currentRow = listPlayer->currentRow();
     m_players.removeAt(currentRow);
-    Config cfg;
-    cfg.write("externalPlayers", m_players);
     currentItem = listPlayer->takeItem(currentRow);
     delete currentItem;
 }
@@ -365,8 +375,6 @@ void SettingsDialog::onModifyExternalPlayer()
     int currentRow = listPlayer->currentRow();
     m_players[currentRow] = std::make_tuple(edtPlayerPath->text(), edtPlayerArguments->text());
     currentItem->setText(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
-    Config cfg;
-    cfg.write("externalPlayers", m_players);
 }
 
 void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
@@ -462,8 +470,7 @@ void SettingsDialog::onAddLiveTVItem()
         return;
     }
     m_liveTV.push_back(std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), tr("unknown")));
-    Config cfg;
-    cfg.write("liveTV", m_liveTV);
+
     int rowIndex = tblLiveTV->rowCount();
     tblLiveTV->insertRow(rowIndex);
     QTableWidgetItem* name = new QTableWidgetItem(edtLiveTVName->text());
@@ -483,8 +490,6 @@ void SettingsDialog::onRemoveLiveTVItem()
         return;
     int currentRow = ranges.begin()->topRow();
     m_liveTV.removeAt(currentRow);
-    Config cfg;
-    cfg.write("liveTV", m_liveTV);
     tblLiveTV->removeRow(currentRow);
 }
 
@@ -499,8 +504,6 @@ void SettingsDialog::onModifyLiveTVItem()
     item->setText(edtLiveTVName->text());
     item = tblLiveTV->takeItem(currentRow, 1);
     item->setText(edtLiveTVURL->text());
-    Config cfg;
-    cfg.write("liveTV", m_liveTV);
 }
 
 void SettingsDialog::onImportLiveTVItems()
@@ -527,8 +530,6 @@ void SettingsDialog::onImportLiveTVItems()
     {
         tblLiveTV->clearContents();
         fillLiveTVTable();
-        Config cfg;
-        cfg.write("liveTV", m_liveTV);
     }
 }
 
@@ -582,8 +583,6 @@ void SettingsDialog::onAddVIPVideo()
         return;
     }
     m_vipVideo.push_back(std::make_tuple(edtVIPVideoName->text(), edtVIPVideoURL->text()));
-    Config cfg;
-    cfg.write("vipVideo", m_vipVideo);
     int rowIndex = tblVIPVideo->rowCount();
     tblVIPVideo->insertRow(rowIndex);
     QTableWidgetItem* name = new QTableWidgetItem(edtVIPVideoName->text());
@@ -601,8 +600,6 @@ void SettingsDialog::onRemoveVIPVideo()
         return;
     int currentRow = ranges.begin()->topRow();
     m_vipVideo.removeAt(currentRow);
-    Config cfg;
-    cfg.write("vipVideo", m_vipVideo);
     tblVIPVideo->removeRow(currentRow);
 }
 
@@ -617,8 +614,6 @@ void SettingsDialog::onModifyVIPVideo()
     item->setText(edtVIPVideoName->text());
     item = tblVIPVideo->takeItem(currentRow, 1);
     item->setText(edtVIPVideoURL->text());
-    Config cfg;
-    cfg.write("vipVideo", m_vipVideo);
 }
 
 void SettingsDialog::onImportVIPVideo()
@@ -645,8 +640,6 @@ void SettingsDialog::onImportVIPVideo()
     {
         tblVIPVideo->clearContents();
         fillVIPVideoTable();
-        Config cfg;
-        cfg.write("vipVideo", m_vipVideo);
     }
 }
 

@@ -69,6 +69,7 @@ private:
     void exportVIPVideoAsPlainText(const QString& path);
     void fillLiveTVTable();
     void fillVIPVideoTable();
+    void fillExternalPlayerTable();
 };
 
 #endif // SETTINGS_H
