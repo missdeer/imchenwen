@@ -32,19 +32,20 @@ protected:
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
-    void handleNewWindowTriggered();
-    void handleFileOpenTriggered();
-    void handleShowWindowTriggered();
-    void handleWebViewLoadProgress(int);
-    void handleWebViewTitleChanged(const QString &title);
-    void handleWebViewUrlChanged(const QUrl &url);
-    void handleWebViewIconChanged(const QIcon &icon);
-    void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
+    void onNewWindow();
+    void onFileOpen();
+    void onShowWindow();
+    void onWebViewLoadProgress(int);
+    void onWebViewTitleChanged(const QString &title);
+    void onWebViewUrlChanged(const QUrl &url);
+    void onWebViewIconChanged(const QIcon &icon);
+    void onWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
 
-    void handleShortcutTriggered();
-    void handleVIPVideoTriggered();
-    void handleLiveTVTriggered();
-    void handleOptionsTriggered();
+    void onShortcut();
+    void onVIPVideo();
+    void onLiveTV();
+    void onOptions();
+    void onPlayByExternalMediaPlayer();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);

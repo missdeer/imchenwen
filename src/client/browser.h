@@ -76,7 +76,7 @@ public:
 
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString& u);
-    void playByMediaPlayer(const QString& u);
+    void doPlayByMediaPlayer(const QString& u, const QString& title);
     Websites &websites();
 signals:
 

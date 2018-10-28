@@ -60,14 +60,14 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
 
-    connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::handleWebViewTitleChanged);
+    connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::onWebViewTitleChanged);
     connect(m_tabWidget, &TabWidget::linkHovered, [this](const QString& url) {
         statusBar()->showMessage(url);
     });
-    connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
-    connect(m_tabWidget, &TabWidget::urlChanged, this, &BrowserWindow::handleWebViewUrlChanged);
-    connect(m_tabWidget, &TabWidget::iconChanged, this, &BrowserWindow::handleWebViewIconChanged);
-    connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::handleWebActionEnabledChanged);
+    connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::onWebViewLoadProgress);
+    connect(m_tabWidget, &TabWidget::urlChanged, this, &BrowserWindow::onWebViewUrlChanged);
+    connect(m_tabWidget, &TabWidget::iconChanged, this, &BrowserWindow::onWebViewIconChanged);
+    connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::onWebActionEnabledChanged);
     connect(m_urlLineEdit, &QLineEdit::returnPressed, this, [this]() {
         m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
         loadPage(m_urlLineEdit->url());
@@ -75,7 +75,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
 
     m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
 
-    handleWebViewTitleChanged(tr("imchenwen"));
+    onWebViewTitleChanged(tr("imchenwen"));
     m_tabWidget->createTab();
 }
 
@@ -93,7 +93,7 @@ QSize BrowserWindow::sizeHint() const
 QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
 {
     QMenu *fileMenu = new QMenu(tr("&File"));
-    fileMenu->addAction(tr("&New Window"), this, &BrowserWindow::handleNewWindowTriggered, QKeySequence::New);
+    fileMenu->addAction(tr("&New Window"), this, &BrowserWindow::onNewWindow, QKeySequence::New);
 
     QAction *newTabAction = new QAction(QIcon(QLatin1String(":addtab.png")), tr("New &Tab"), this);
     newTabAction->setShortcuts(QKeySequence::AddTab);
@@ -120,7 +120,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     });
 
     QAction *options = fileMenu->addAction(tr("Options..."));
-    connect(options, &QAction::triggered, this, &BrowserWindow::handleOptionsTriggered);
+    connect(options, &QAction::triggered, this, &BrowserWindow::onOptions);
 
     fileMenu->addSeparator();
 
@@ -247,7 +247,7 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
         QVector<BrowserWindow*> windows = Browser::instance().windows();
         int index(-1);
         for (auto window : windows) {
-            QAction *action = menu->addAction(window->windowTitle(), this, &BrowserWindow::handleShowWindowTriggered);
+            QAction *action = menu->addAction(window->windowTitle(), this, &BrowserWindow::onShowWindow);
             action->setData(++index);
             action->setCheckable(true);
             if (window == this)
@@ -298,7 +298,7 @@ QMenu *BrowserWindow::createShortcutMenu()
     {
         QAction *action = chinaMenu->addAction(w->name);
         action->setData(w->url);
-        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutTriggered);
+        connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
         if (w->favourite)
             shortcutMenu->addAction(action);
     }
@@ -308,7 +308,7 @@ QMenu *BrowserWindow::createShortcutMenu()
     {
         QAction *action = abroadMenu->addAction(w->name);
         action->setData(w->url);
-        connect(action, &QAction::triggered, this, &BrowserWindow::handleShortcutTriggered);
+        connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
         if (w->favourite)
             shortcutMenu->addAction(action);
     }
@@ -334,7 +334,7 @@ void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)
             action->setData(std::get<1>(vv));
             action->setToolTip(std::get<1>(vv));
             action->setStatusTip(std::get<1>(vv));
-            connect(action, &QAction::triggered, this, &BrowserWindow::handleVIPVideoTriggered);
+            connect(action, &QAction::triggered, this, &BrowserWindow::onVIPVideo);
             popupMenu->addAction(action);
         }
 
@@ -367,7 +367,7 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
             action->setData(std::get<1>(tv));
             action->setToolTip(std::get<1>(tv));
             action->setStatusTip(std::get<1>(tv));
-            connect(action, &QAction::triggered, this, &BrowserWindow::handleLiveTVTriggered);
+            connect(action, &QAction::triggered, this, &BrowserWindow::onLiveTV);
             popupMenu->addAction(action);
         }
 
@@ -378,7 +378,7 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
             m_liveTVAction->setText(tr("Watch Live TV"));
             navigationBar->addWidget(m_liveTVAction);
         } else {
-            QMenu* p = m_vipVideoAction->menu();
+            QMenu* p = m_liveTVAction->menu();
             p->deleteLater();
         }
         m_liveTVAction->setMenu(popupMenu);
@@ -436,12 +436,10 @@ QToolBar *BrowserWindow::createToolBar()
     int size = m_urlLineEdit->sizeHint().height();
     navigationBar->setIconSize(QSize(size, size));
 
-    QAction *playInMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
-    playInMediaPlayerAction->setToolTip(playInMediaPlayerAction->text());
-    connect(playInMediaPlayerAction, &QAction::triggered, [this]() {
-        Browser::instance().resolveAndPlayByMediaPlayer(m_urlLineEdit->text());
-    });
-    navigationBar->addAction(playInMediaPlayerAction);
+    QAction *playByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
+    playByMediaPlayerAction->setToolTip(playByMediaPlayerAction->text());
+    connect(playByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onPlayByExternalMediaPlayer);
+    navigationBar->addAction(playByMediaPlayerAction);
 
     createVIPVideoToolButton(navigationBar);
     createLiveTVToolButton(navigationBar);
@@ -492,19 +490,19 @@ QString BrowserWindow::findURL(const QString &area, const QString &name)
     return QString();
 }
 
-void BrowserWindow::handleWebViewIconChanged(const QIcon &icon)
+void BrowserWindow::onWebViewIconChanged(const QIcon &icon)
 {
     m_urlLineEdit->setFavIcon(icon);
 }
 
-void BrowserWindow::handleWebViewUrlChanged(const QUrl &url)
+void BrowserWindow::onWebViewUrlChanged(const QUrl &url)
 {
     m_urlLineEdit->setUrl(url);
     if (url.isEmpty())
         m_urlLineEdit->setFocus();
 }
 
-void BrowserWindow::handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled)
+void BrowserWindow::onWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled)
 {
     switch (action) {
     case QWebEnginePage::Back:
@@ -524,7 +522,7 @@ void BrowserWindow::handleWebActionEnabledChanged(QWebEnginePage::WebAction acti
     }
 }
 
-void BrowserWindow::handleShortcutTriggered()
+void BrowserWindow::onShortcut()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
@@ -535,7 +533,7 @@ void BrowserWindow::handleShortcutTriggered()
     }
 }
 
-void BrowserWindow::handleVIPVideoTriggered()
+void BrowserWindow::onVIPVideo()
 {
     if (!m_urlLineEdit->text().isEmpty())
     {
@@ -546,15 +544,15 @@ void BrowserWindow::handleVIPVideoTriggered()
     }
 }
 
-void BrowserWindow::handleLiveTVTriggered()
+void BrowserWindow::onLiveTV()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
-    Browser::instance().playByMediaPlayer(url);
+    Browser::instance().doPlayByMediaPlayer(url, action->text());
 }
 
-void BrowserWindow::handleOptionsTriggered()
+void BrowserWindow::onOptions()
 {
     SettingsDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
@@ -564,7 +562,12 @@ void BrowserWindow::handleOptionsTriggered()
     }
 }
 
-void BrowserWindow::handleWebViewTitleChanged(const QString &title)
+void BrowserWindow::onPlayByExternalMediaPlayer()
+{
+    Browser::instance().resolveAndPlayByMediaPlayer(m_urlLineEdit->text());
+}
+
+void BrowserWindow::onWebViewTitleChanged(const QString &title)
 {
     if (title.isEmpty())
         setWindowTitle(tr("imchenwen"));
@@ -572,14 +575,14 @@ void BrowserWindow::handleWebViewTitleChanged(const QString &title)
         setWindowTitle(tr("%1 - imchenwen").arg(title));
 }
 
-void BrowserWindow::handleNewWindowTriggered()
+void BrowserWindow::onNewWindow()
 {
     BrowserWindow *window = new BrowserWindow();
     Browser::instance().addWindow(window);
     window->loadHomePage();
 }
 
-void BrowserWindow::handleFileOpenTriggered()
+void BrowserWindow::onFileOpen()
 {
     QString file = QFileDialog::getOpenFileName(this, tr("Open Web Resource"), QString(),
                                                 tr("Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)"));
@@ -634,7 +637,7 @@ WebView *BrowserWindow::currentTab() const
     return m_tabWidget->currentWebView();
 }
 
-void BrowserWindow::handleWebViewLoadProgress(int progress)
+void BrowserWindow::onWebViewLoadProgress(int progress)
 {
     static QIcon stopIcon(QStringLiteral(":process-stop.png"));
     static QIcon reloadIcon(QStringLiteral(":view-refresh.png"));
@@ -651,7 +654,7 @@ void BrowserWindow::handleWebViewLoadProgress(int progress)
     m_progressBar->setValue(progress < 100 ? progress : 0);
 }
 
-void BrowserWindow::handleShowWindowTriggered()
+void BrowserWindow::onShowWindow()
 {
     if (QAction *action = qobject_cast<QAction*>(sender())) {
         int offset = action->data().toInt();

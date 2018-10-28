@@ -158,7 +158,7 @@ void Browser::resolveAndPlayByMediaPlayer(const QString &u)
     resolveLink(u);
 }
 
-void Browser::playByMediaPlayer(const QString &u)
+void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 {
     Config cfg;
     Tuple2List players;
@@ -190,9 +190,9 @@ void Browser::playByMediaPlayer(const QString &u)
         if (a == "{{referrer}}")
             a = "";
         else if (a == "{{title}}")
-            a = "";
+            a = title;
         else if (a == "{{site}}")
-            a = "";
+            a = title;
     }
 
     args << u;

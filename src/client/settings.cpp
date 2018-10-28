@@ -104,13 +104,14 @@ void SettingsDialog::fillLiveTVTable()
 {
     for (const auto & tv : m_liveTV)
     {
-        tblLiveTV->insertRow(0);
+        int index = tblLiveTV->rowCount();
+        tblLiveTV->insertRow(index);
         QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
-        tblLiveTV->setItem(0, 0, name);
+        tblLiveTV->setItem(index, 0, name);
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
-        tblLiveTV->setItem(0, 1, url);
+        tblLiveTV->setItem(index, 1, url);
         QTableWidgetItem* availability = new QTableWidgetItem(std::get<2>(tv));
-        tblLiveTV->setItem(0, 2, availability);
+        tblLiveTV->setItem(index, 2, availability);
     }
 }
 
@@ -118,11 +119,12 @@ void SettingsDialog::fillVIPVideoTable()
 {
     for (const auto & vv : m_vipVideo)
     {
-        tblVIPVideo->insertRow(0);
+        int index = tblVIPVideo->rowCount();
+        tblVIPVideo->insertRow(index);
         QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
-        tblVIPVideo->setItem(0, 0, name);
+        tblVIPVideo->setItem(index, 0, name);
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
-        tblVIPVideo->setItem(0, 1, url);
+        tblVIPVideo->setItem(index, 1, url);
     }
 }
 
@@ -722,7 +724,7 @@ bool SettingsDialog::importLiveTVAsPlainText(const QString &path)
         auto lines = d.split('\n');
         for (const auto& line : lines)
         {
-            auto ele = line.split(' ');
+            auto ele = line.trimmed().split(' ');
             if (ele.length() != 2)
             continue;
 
@@ -819,7 +821,7 @@ bool SettingsDialog::importVIPVideoAsPlainText(const QString &path)
         auto lines = d.split('\n');
         for (const auto& line : lines)
         {
-            auto ele = line.split(' ');
+            auto ele = line.trimmed().split(' ');
             if (ele.length() != 2)
                 continue;
             auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]));
