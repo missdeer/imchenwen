@@ -21,6 +21,7 @@ public:
     explicit PlayDialog(QWidget *parent = 0);
     ~PlayDialog();
     void setMediaInfo(MediaInfoPtr mi);
+    void setMediaInfo(const QString& title, const QString& url);
     Tuple2 player() { return m_selectedPlayer; }
     StreamInfoPtr media() { return m_selectedMedia; }
 private slots:
@@ -38,6 +39,7 @@ private:
     Tuple2 m_selectedPlayer;
     StreamInfoPtr m_selectedMedia;
     MediaInfoPtr m_mediaInfo;
+    bool m_multiMediaResources;
     void createExternalPlayerList();
     void doOk();
     void addItem(const QString& text, const QColor& backgroundColor);

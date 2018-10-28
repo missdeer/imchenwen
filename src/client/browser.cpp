@@ -160,72 +160,69 @@ void Browser::resolveAndPlayByMediaPlayer(const QString &u)
 
 void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 {
-    Config cfg;
-    Tuple2List players;
-    cfg.read("externalPlayers", players);
-    if (players.isEmpty())
+    PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    dlg.setMediaInfo(title, u);
+    if (dlg.exec())
     {
-        QMessageBox::warning(m_windows[0], tr("Error"), tr("External player information is not added."), QMessageBox::Ok);
-        return;
-    }
-    auto player = players[0];
+        Tuple2 player = dlg.player();
 
-    m_playerProcess.kill();
-    waiting(false);
-    QStringList args;
+        m_playerProcess.kill();
+        waiting(false);
+        QStringList args;
 #if defined(Q_OS_MAC)
-    QFileInfo fi(std::get<0>(player));
-    if (fi.suffix() == "app")
-    {
-        m_process.setProgram("/usr/bin/open");
-        args << std::get<0>(player) << "--args";
-    }
+        QFileInfo fi(std::get<0>(player));
+        if (fi.suffix() == "app")
+        {
+            m_process.setProgram("/usr/bin/open");
+            args << std::get<0>(player) << "--args";
+        }
 #endif
-    QString arg = std::get<1>(player);
-    if (!arg.isEmpty())
-        args << arg.split(" ");
+        QString arg = std::get<1>(player);
+        if (!arg.isEmpty())
+            args << arg.split(" ");
 
-    for (QString& a : args)
-    {
-        if (a == "{{referrer}}")
-            a = "";
-        else if (a == "{{title}}")
-            a = title;
-        else if (a == "{{site}}")
-            a = title;
-    }
+        for (QString& a : args)
+        {
+            if (a == "{{referrer}}")
+                a = "";
+            else if (a == "{{title}}")
+                a = title;
+            else if (a == "{{site}}")
+                a = title;
+        }
 
-    args << u;
-    m_playerProcess.setArguments(args);
+        args << u;
+        m_playerProcess.setArguments(args);
 
 #if defined(Q_OS_MAC)
-    if (fi.suffix() == "app")
-    {
-        m_process.setProgram("/usr/bin/open");
-        return;
-    }
+        if (fi.suffix() == "app")
+        {
+            m_process.setProgram("/usr/bin/open");
+            return;
+        }
 #endif
-    m_playerProcess.setProgram(std::get<0>(player));
-    m_playerProcess.start();
-    for ( auto w : m_windows)
-    {
-        if (w->isMaximized())
+        m_playerProcess.setProgram(std::get<0>(player));
+        m_playerProcess.start();
+        for ( auto w : m_windows)
         {
-            m_windowsState[w] = isMaximized;
-        }
-        else if (w->isMinimized())
-        {
-            m_windowsState[w] = isMinimized;
-            w->showMinimized();
-        }
-        else if (!w->isVisible())
-        {
-            m_windowsState[w] = isHidden;
-        }
-        else
-        {
-            m_windowsState[w] = isNormal;
-            w->showMinimized();
+            if (w->isMaximized())
+            {
+                m_windowsState[w] = isMaximized;
+            }
+            else if (w->isMinimized())
+            {
+                m_windowsState[w] = isMinimized;
+                w->showMinimized();
+            }
+            else if (!w->isVisible())
+            {
+                m_windowsState[w] = isHidden;
+            }
+            else
+            {
+                m_windowsState[w] = isNormal;
+                w->showMinimized();
+            }
         }
     }
 }

@@ -7,7 +7,8 @@
 
 PlayDialog::PlayDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PlayDialog)
+    ui(new Ui::PlayDialog),
+    m_multiMediaResources(false)
 {
     ui->setupUi(this);
 
@@ -39,6 +40,14 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
     }
     ui->listMedia->setCurrentRow(0);
     m_mediaInfo = mi;
+    m_multiMediaResources = true;
+}
+
+void PlayDialog::setMediaInfo(const QString &title, const QString &url)
+{
+    addItem(title + "\n" + url, Qt::white);
+    ui->listMedia->setCurrentRow(0);
+    m_multiMediaResources = false;
 }
 
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
@@ -80,22 +89,6 @@ void PlayDialog::createExternalPlayerList()
 
 void PlayDialog::doOk()
 {
-    QListWidgetItem *currentItem = ui->listMedia->currentItem();
-    if (!currentItem)
-    {
-        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
-        return;
-    }
-    int currentRow = ui->listMedia->currentRow();
-    if (currentRow < m_mediaInfo->ykdl.length())
-        m_selectedMedia = m_mediaInfo->ykdl[currentRow];
-    else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())
-        m_selectedMedia = m_mediaInfo->you_get[currentRow - m_mediaInfo->ykdl.length()];
-    else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())
-        m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())];
-    else
-        m_selectedMedia = m_mediaInfo->annie[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
-
     int currentIndex = ui->cbPlayers->currentIndex();
     if (currentIndex == m_players.length() - 1)
     {
@@ -139,6 +132,25 @@ void PlayDialog::doOk()
     }
     else
         m_selectedPlayer = m_players.at(currentIndex);
+
+    if (m_multiMediaResources)
+    {
+        QListWidgetItem *currentItem = ui->listMedia->currentItem();
+        if (!currentItem)
+        {
+            QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
+            return;
+        }
+        int currentRow = ui->listMedia->currentRow();
+        if (currentRow < m_mediaInfo->ykdl.length())
+            m_selectedMedia = m_mediaInfo->ykdl[currentRow];
+        else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())
+            m_selectedMedia = m_mediaInfo->you_get[currentRow - m_mediaInfo->ykdl.length()];
+        else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())
+            m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())];
+        else
+            m_selectedMedia = m_mediaInfo->annie[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
+    }
     if (QFile::exists(std::get<0>(m_selectedPlayer)))
         accept();
     else
