@@ -71,21 +71,21 @@ signals:
 
 public slots:
     // current tab/page slots
-    void setUrl(const QUrl &url);
-    void triggerWebPageAction(QWebEnginePage::WebAction action);
+    void onSetUrl(const QUrl &url);
+    void onTriggerWebPageAction(QWebEnginePage::WebAction action);
 
-    WebView *createTab(bool makeCurrent = true);
-    void closeTab(int index);
-    void nextTab();
-    void previousTab();
+    WebView *onCreateTab(bool makeCurrent = true);
+    void onCloseTab(int index);
+    void onNextTab();
+    void onPreviousTab();
 
 private slots:
-    void handleCurrentChanged(int index);
-    void handleContextMenuRequested(const QPoint &pos);
-    void cloneTab(int index);
-    void closeOtherTabs(int index);
-    void reloadAllTabs();
-    void reloadTab(int index);
+    void onCurrentChanged(int index);
+    void onContextMenuRequested(const QPoint &pos);
+    void onCloneTab(int index);
+    void onCloseOtherTabs(int index);
+    void onReloadAllTabs();
+    void onReloadTab(int index);
 
 private:
     WebView *webView(int index) const;

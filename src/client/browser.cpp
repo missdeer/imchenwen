@@ -63,12 +63,11 @@ Browser::Browser(QObject* parent)
     , m_linkResolver(this)
     , m_nam(nullptr)
 {
-    connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::resolvingFinished);
-    connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::resolvingError);
-    connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::errorOccurred);
-    connect(&m_playerProcess, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(playerFinished(int,QProcess::ExitStatus)));
-
-    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::clipboardChanged);
+    connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
+    connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
+    connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
+    connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
 void Browser::clearAtExit()
@@ -207,7 +206,7 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
     }
 }
 
-void Browser::clipboardChanged()
+void Browser::onClipboardChanged()
 {
     QClipboard *clipboard = QApplication::clipboard();
     QString originalText = clipboard->text();
@@ -377,7 +376,7 @@ void Browser::stopWaiting()
     }
 }
 
-void Browser::resolvingFinished(MediaInfoPtr mi)
+void Browser::onResolved(MediaInfoPtr mi)
 {
     stopWaiting();
 
@@ -391,7 +390,7 @@ void Browser::resolvingFinished(MediaInfoPtr mi)
     doPlayByMediaPlayer(mi);
 }
 
-void Browser::resolvingError(const QString &u)
+void Browser::onResolvingError(const QString &u)
 {
     stopWaiting();
 
@@ -399,7 +398,7 @@ void Browser::resolvingError(const QString &u)
                          tr("Error"), tr("Resolving link address ") + u + tr(" failed!"), QMessageBox::Ok);
 }
 
-void Browser::errorOccurred(QProcess::ProcessError error)
+void Browser::onProcessError(QProcess::ProcessError error)
 {
     QString msg;
     switch(error)
@@ -418,7 +417,7 @@ void Browser::errorOccurred(QProcess::ProcessError error)
                          tr("Error on launching external player"), msg, QMessageBox::Ok);
 }
 
-void Browser::playerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
+void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     stopWaiting();
     for (auto w : m_windows)

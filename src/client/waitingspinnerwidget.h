@@ -74,7 +74,7 @@ public:
     bool isSpinning() const;
 
 private slots:
-    void rotate();
+    void onRotate();
 
 protected:
     void paintEvent(QPaintEvent *paintEvent);

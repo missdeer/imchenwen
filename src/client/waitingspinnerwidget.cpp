@@ -70,7 +70,7 @@ void WaitingSpinnerWidget::initialize() {
     _isSpinning = false;
 
     _timer = new QTimer(this);
-    connect(_timer, SIGNAL(timeout()), this, SLOT(rotate()));
+    connect(_timer, &QTimer::timeout, this, &WaitingSpinnerWidget::onRotate);
     updateSize();
     updateTimer();
     hide();
@@ -220,7 +220,7 @@ void WaitingSpinnerWidget::setMinimumTrailOpacity(qreal minimumTrailOpacity) {
     _minimumTrailOpacity = minimumTrailOpacity;
 }
 
-void WaitingSpinnerWidget::rotate() {
+void WaitingSpinnerWidget::onRotate() {
     ++_currentCounter;
     if (_currentCounter >= _numberOfLines) {
         _currentCounter = 0;

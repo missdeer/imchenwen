@@ -61,7 +61,7 @@ signals:
 public slots:
 
 private slots:
-    void readResolverOutput(const QByteArray& data);
+    void onReadResolverOutput(const QByteArray& data);
 private:
     QString m_lastUrl;
     MediaInfoPtr m_mediaInfo;

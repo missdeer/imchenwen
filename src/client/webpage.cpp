@@ -12,8 +12,8 @@
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
 {
-    connect(this, &QWebEnginePage::authenticationRequired, this, &WebPage::handleAuthenticationRequired);
-    connect(this, &QWebEnginePage::proxyAuthenticationRequired, this, &WebPage::handleProxyAuthenticationRequired);
+    connect(this, &QWebEnginePage::authenticationRequired, this, &WebPage::onAuthenticationRequired);
+    connect(this, &QWebEnginePage::proxyAuthenticationRequired, this, &WebPage::onProxyAuthenticationRequired);
 }
 
 bool WebPage::certificateError(const QWebEngineCertificateError &error)
@@ -28,7 +28,7 @@ bool WebPage::certificateError(const QWebEngineCertificateError &error)
     return false;
 }
 
-void WebPage::handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth)
+void WebPage::onAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth)
 {
     QWidget *mainWindow = view()->window();
     QDialog dialog(mainWindow);
@@ -56,7 +56,7 @@ void WebPage::handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticato
     }
 }
 
-void WebPage::handleProxyAuthenticationRequired(const QUrl &, QAuthenticator *auth, const QString &proxyHost)
+void WebPage::onProxyAuthenticationRequired(const QUrl &, QAuthenticator *auth, const QString &proxyHost)
 {
     QWidget *mainWindow = view()->window();
     QDialog dialog(mainWindow);

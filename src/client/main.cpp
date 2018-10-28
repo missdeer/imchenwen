@@ -22,6 +22,7 @@ int main(int argc, char **argv)
     QCoreApplication::setApplicationName(QLatin1String("imchenwen"));
     QCoreApplication::setApplicationVersion(QLatin1String("1.0"));
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
     QApplication app(argc, argv);
 #if defined(Q_OS_MAC)

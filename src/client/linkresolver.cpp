@@ -25,7 +25,7 @@ LinkResolver::LinkResolver(QObject *parent)
     for (auto & r : m_resolvers)
     {
         r.process->setProgram(cfg.read<QString>(r.name));
-        connect(r.process, &LinkResolverProcess::data, this, &LinkResolver::readResolverOutput);
+        connect(r.process, &LinkResolverProcess::data, this, &LinkResolver::onReadResolverOutput);
     }
 }
 
@@ -52,7 +52,7 @@ void LinkResolver::resolve(const QString& url)
     }
 }
 
-void LinkResolver::readResolverOutput(const QByteArray &data)
+void LinkResolver::onReadResolverOutput(const QByteArray &data)
 {
     LinkResolverProcess* p = qobject_cast<LinkResolverProcess*>(sender());
 

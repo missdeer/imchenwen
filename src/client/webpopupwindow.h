@@ -61,8 +61,8 @@ public:
     void setUrl(const QUrl &url);
 
 private slots:
-    void handleGeometryChangeRequested(const QRect &newGeometry);
-    void handleIconChanged(const QIcon &icon);
+    void onGeometryChangeRequested(const QRect &newGeometry);
+    void onIconChanged(const QIcon &icon);
 
 private:
     UrlLineEdit *m_addressBar;

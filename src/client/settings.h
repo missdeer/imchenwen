@@ -14,19 +14,9 @@ public:
     void accept();
     void setCurrentPage(int index);
 private slots:
-    void loadDefaults();
-    void loadFromSettings();
-    void saveToSettings();
-
-    void setHomeToCurrentPage();
-    void showCookies();
-    void showExceptions();
-
-    void chooseFont();
-    void chooseFixedFont();
-
-    void on_httpUserAgent_editingFinished();
-    void on_httpAcceptLanguage_editingFinished();
+    void onSetHomeToCurrentPage();
+    void onChooseFont();
+    void onChooseFixedFont();
 
     void onSelectExternalPlayer();
     void onAddExternalPlayer();
@@ -70,6 +60,12 @@ private:
     void fillLiveTVTable();
     void fillVIPVideoTable();
     void fillExternalPlayerTable();
+
+    void loadDefaults();
+    void loadFromSettings();
+    void saveToSettings();
+    void showCookies();
+    void showExceptions();
 };
 
 #endif // SETTINGS_H

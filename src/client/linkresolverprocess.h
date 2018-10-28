@@ -18,8 +18,8 @@ signals:
 public slots:
 
 private slots:
-    void readStandardOutput();
-    void finished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onReadStandardOutput();
+    void onFinished(int, QProcess::ExitStatus);
 private:
     QProcess m_process;
     QByteArray m_data;

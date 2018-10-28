@@ -19,9 +19,9 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     tblVIPVideo->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
     tblVIPVideo->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
-    connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::setHomeToCurrentPage);
-    connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::chooseFont);
-    connect(fixedFontButton, &QPushButton::clicked, this, &SettingsDialog::chooseFixedFont);
+    connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::onSetHomeToCurrentPage);
+    connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::onChooseFont);
+    connect(fixedFontButton, &QPushButton::clicked, this, &SettingsDialog::onChooseFixedFont);
 
     connect(btnSelectPlayer, &QPushButton::clicked, this, &SettingsDialog::onSelectExternalPlayer);
     connect(btnAddPlayer, &QPushButton::clicked, this, &SettingsDialog::onAddExternalPlayer);
@@ -237,7 +237,9 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("enableScrollAnimator"), enableScrollAnimator->isChecked());
     cfg.write(QLatin1String("userStyleSheet"), userStyleSheet->toPlainText());
     cfg.write(QLatin1String("httpUserAgent"), httpUserAgent->text());
+    QWebEngineProfile::defaultProfile()->setHttpUserAgent(httpUserAgent->text());
     cfg.write(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text());
+    QWebEngineProfile::defaultProfile()->setHttpAcceptLanguage(httpAcceptLanguage->text());
     cfg.write(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex());
 
     //Privacy
@@ -292,7 +294,7 @@ void SettingsDialog::showExceptions()
 {
 }
 
-void SettingsDialog::chooseFont()
+void SettingsDialog::onChooseFont()
 {
     bool ok;
     QFont font = QFontDialog::getFont(&ok, standardFont, this);
@@ -302,7 +304,7 @@ void SettingsDialog::chooseFont()
     }
 }
 
-void SettingsDialog::chooseFixedFont()
+void SettingsDialog::onChooseFixedFont()
 {
     bool ok;
     QFont font = QFontDialog::getFont(&ok, fixedFont, this);
@@ -310,16 +312,6 @@ void SettingsDialog::chooseFixedFont()
         fixedFont = font;
         fixedLabel->setText(QString(QLatin1String("%1 %2")).arg(font.family()).arg(font.pointSize()));
     }
-}
-
-void SettingsDialog::on_httpUserAgent_editingFinished()
-{
-    QWebEngineProfile::defaultProfile()->setHttpUserAgent(httpUserAgent->text());
-}
-
-void SettingsDialog::on_httpAcceptLanguage_editingFinished()
-{
-    QWebEngineProfile::defaultProfile()->setHttpAcceptLanguage(httpAcceptLanguage->text());
 }
 
 void SettingsDialog::onSelectExternalPlayer()
@@ -868,7 +860,7 @@ void SettingsDialog::exportVIPVideoAsPlainText(const QString &path)
     }
 }
 
-void SettingsDialog::setHomeToCurrentPage()
+void SettingsDialog::onSetHomeToCurrentPage()
 {
     BrowserWindow *mw = static_cast<BrowserWindow*>(parent());
     WebView *webView = mw->currentTab();

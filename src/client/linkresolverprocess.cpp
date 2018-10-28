@@ -3,8 +3,8 @@
 LinkResolverProcess::LinkResolverProcess(QObject *parent) : QObject(parent)
 {
     m_process.setProcessChannelMode(QProcess::MergedChannels);
-    connect(&m_process, &QProcess::readyReadStandardOutput, this, &LinkResolverProcess::readStandardOutput);
-    connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &LinkResolverProcess::finished);
+    connect(&m_process, &QProcess::readyReadStandardOutput, this, &LinkResolverProcess::onReadStandardOutput);
+    connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &LinkResolverProcess::onFinished);
 }
 
 void LinkResolverProcess::setProgram(const QString &program)
@@ -29,12 +29,12 @@ void LinkResolverProcess::start()
     m_process.start();
 }
 
-void LinkResolverProcess::readStandardOutput()
+void LinkResolverProcess::onReadStandardOutput()
 {
     m_data.append(m_process.readAll());
 }
 
-void LinkResolverProcess::finished(int exitCode, QProcess::ExitStatus exitStatus)
+void LinkResolverProcess::onFinished(int , QProcess::ExitStatus )
 {
     emit data(m_data);
 }

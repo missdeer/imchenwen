@@ -53,8 +53,8 @@ public:
 protected:
     bool certificateError(const QWebEngineCertificateError &error) override;
 private slots:
-    void handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth);
-    void handleProxyAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth, const QString &proxyHost);
+    void onAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth);
+    void onProxyAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth, const QString &proxyHost);
 };
 
 #endif // WEBPAGE_H

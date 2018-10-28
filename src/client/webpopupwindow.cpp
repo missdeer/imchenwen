@@ -25,8 +25,8 @@ WebPopupWindow::WebPopupWindow(QWebEngineProfile *profile)
 
     connect(m_view, &WebView::titleChanged, this, &QWidget::setWindowTitle);
     connect(m_view, &WebView::urlChanged, this, &WebPopupWindow::setUrl);
-    connect(m_view->page(), &WebPage::iconChanged, this, &WebPopupWindow::handleIconChanged);
-    connect(m_view->page(), &WebPage::geometryChangeRequested, this, &WebPopupWindow::handleGeometryChangeRequested);
+    connect(m_view->page(), &WebPage::iconChanged, this, &WebPopupWindow::onIconChanged);
+    connect(m_view->page(), &WebPage::geometryChangeRequested, this, &WebPopupWindow::onGeometryChangeRequested);
     connect(m_view->page(), &WebPage::windowCloseRequested, this, &QWidget::close);
 }
 
@@ -40,7 +40,7 @@ void WebPopupWindow::setUrl(const QUrl &url)
     m_addressBar->setUrl(url);
 }
 
-void WebPopupWindow::handleGeometryChangeRequested(const QRect &newGeometry)
+void WebPopupWindow::onGeometryChangeRequested(const QRect &newGeometry)
 {
     m_view->setMinimumSize(newGeometry.width(), newGeometry.height());
     move(newGeometry.topLeft() - m_view->pos());
@@ -49,7 +49,7 @@ void WebPopupWindow::handleGeometryChangeRequested(const QRect &newGeometry)
     show();
 }
 
-void WebPopupWindow::handleIconChanged(const QIcon &icon)
+void WebPopupWindow::onIconChanged(const QIcon &icon)
 {
     if (icon.isNull())
         m_addressBar->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));

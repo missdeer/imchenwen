@@ -5,6 +5,5 @@ PopupMenuToolButton::PopupMenuToolButton(QWidget *parent)
     : QToolButton (parent)
 {
     setPopupMode(QToolButton::MenuButtonPopup);
-    connect(this, SIGNAL(triggered(QAction*)),
-                     this, SLOT(setDefaultAction(QAction*)));
+    connect(this, &QToolButton::triggered, this, &QToolButton::setDefaultAction);
 }

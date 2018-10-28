@@ -76,7 +76,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
 
     onWebViewTitleChanged(tr("imchenwen"));
-    m_tabWidget->createTab();
+    m_tabWidget->onCreateTab();
 }
 
 BrowserWindow::~BrowserWindow()
@@ -98,7 +98,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     QAction *newTabAction = new QAction(QIcon(QLatin1String(":addtab.png")), tr("New &Tab"), this);
     newTabAction->setShortcuts(QKeySequence::AddTab);
     newTabAction->setIconVisibleInMenu(false);
-    connect(newTabAction, &QAction::triggered, tabWidget, &TabWidget::createTab);
+    connect(newTabAction, &QAction::triggered, tabWidget, &TabWidget::onCreateTab);
     fileMenu->addAction(newTabAction);
 
     QAction *playUrlAction = fileMenu->addAction(tr("Play Url..."));
@@ -128,7 +128,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     closeTabAction->setShortcuts(QKeySequence::Close);
     closeTabAction->setIconVisibleInMenu(false);
     connect(closeTabAction, &QAction::triggered, [tabWidget]() {
-        tabWidget->closeTab(tabWidget->currentIndex());
+        tabWidget->onCloseTab(tabWidget->currentIndex());
     });
     fileMenu->addAction(closeTabAction);
 
@@ -156,13 +156,13 @@ QMenu *BrowserWindow::createViewMenu(QToolBar *toolbar)
     shortcuts.append(Qt::Key_Escape);
     m_stopAction->setShortcuts(shortcuts);
     connect(m_stopAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::Stop);
+        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Stop);
     });
 
     m_reloadAction = viewMenu->addAction(tr("Reload Page"));
     m_reloadAction->setShortcuts(QKeySequence::Refresh);
     connect(m_reloadAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::Reload);
+        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Reload);
     });
 
     QAction *zoomIn = viewMenu->addAction(tr("Zoom &In"));
@@ -227,7 +227,7 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
     shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_BracketRight));
     shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Less));
     nextTabAction->setShortcuts(shortcuts);
-    connect(nextTabAction, &QAction::triggered, tabWidget, &TabWidget::nextTab);
+    connect(nextTabAction, &QAction::triggered, tabWidget, &TabWidget::onNextTab);
 
     QAction *previousTabAction = new QAction(tr("Show Previous Tab"), this);
     shortcuts.clear();
@@ -236,7 +236,7 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
     shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_BracketLeft));
     shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Greater));
     previousTabAction->setShortcuts(shortcuts);
-    connect(previousTabAction, &QAction::triggered, tabWidget, &TabWidget::previousTab);
+    connect(previousTabAction, &QAction::triggered, tabWidget, &TabWidget::onPreviousTab);
 
     connect(menu, &QMenu::aboutToShow, [this, menu, nextTabAction, previousTabAction]() {
         menu->clear();
@@ -406,7 +406,7 @@ QToolBar *BrowserWindow::createToolBar()
     m_historyBackAction->setIconVisibleInMenu(false);
     m_historyBackAction->setIcon(QIcon(QStringLiteral(":go-previous.png")));
     connect(m_historyBackAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::Back);
+        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Back);
     });
     navigationBar->addAction(m_historyBackAction);
 
@@ -423,13 +423,13 @@ QToolBar *BrowserWindow::createToolBar()
     m_historyForwardAction->setIconVisibleInMenu(false);
     m_historyForwardAction->setIcon(QIcon(QStringLiteral(":go-next.png")));
     connect(m_historyForwardAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::Forward);
+        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Forward);
     });
     navigationBar->addAction(m_historyForwardAction);
 
     m_stopReloadAction = new QAction(this);
     connect(m_stopReloadAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::WebAction(m_stopReloadAction->data().toInt()));
+        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::WebAction(m_stopReloadAction->data().toInt()));
     });
     navigationBar->addAction(m_stopReloadAction);
     navigationBar->addWidget(m_urlLineEdit);
@@ -580,7 +580,7 @@ void BrowserWindow::loadPage(const QUrl &url)
 {
     if (url.isValid()) {
         m_urlLineEdit->setUrl(url);
-        m_tabWidget->setUrl(url);
+        m_tabWidget->onSetUrl(url);
     }
 }
 

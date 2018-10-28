@@ -81,13 +81,11 @@ public:
 signals:
 
 private slots:
-    void clipboardChanged();
-    void resolvingFinished(MediaInfoPtr mi);
-    void resolvingError(const QString&);
-    void errorOccurred(QProcess::ProcessError error);
-    void playerFinished(int exitCode, QProcess::ExitStatus exitStatus);
-
-    void stopWaiting();
+    void onClipboardChanged();
+    void onResolved(MediaInfoPtr mi);
+    void onResolvingError(const QString&);
+    void onProcessError(QProcess::ProcessError error);
+    void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
 private:
     QVector<BrowserWindow*> m_windows;
     QMap<BrowserWindow*, WindowState> m_windowsState;
@@ -104,5 +102,6 @@ private:
     void waiting(bool disableParent = true);
     void clearAtExit();
     void minimizeWindows();
+    void stopWaiting();
 };
 #endif // BROWSER_H

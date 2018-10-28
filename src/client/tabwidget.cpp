@@ -13,25 +13,25 @@ TabWidget::TabWidget(QWidget *parent)
     tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
     tabBar->setMovable(true);
     tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(tabBar, &QTabBar::customContextMenuRequested, this, &TabWidget::handleContextMenuRequested);
-    connect(tabBar, &QTabBar::tabCloseRequested, this, &TabWidget::closeTab);
+    connect(tabBar, &QTabBar::customContextMenuRequested, this, &TabWidget::onContextMenuRequested);
+    connect(tabBar, &QTabBar::tabCloseRequested, this, &TabWidget::onCloseTab);
     connect(tabBar, &QTabBar::tabBarDoubleClicked, [this](int index) {
         if (index != -1)
             return;
-        createTab();
+        onCreateTab();
     });
 
     setDocumentMode(true);
     setElideMode(Qt::ElideRight);
 
-    connect(this, &QTabWidget::currentChanged, this, &TabWidget::handleCurrentChanged);
+    connect(this, &QTabWidget::currentChanged, this, &TabWidget::onCurrentChanged);
 }
 
 TabWidget::~TabWidget()
 {
 }
 
-void TabWidget::handleCurrentChanged(int index)
+void TabWidget::onCurrentChanged(int index)
 {
     if (index != -1) {
         WebView *view = webView(index);
@@ -61,36 +61,36 @@ void TabWidget::handleCurrentChanged(int index)
     }
 }
 
-void TabWidget::handleContextMenuRequested(const QPoint &pos)
+void TabWidget::onContextMenuRequested(const QPoint &pos)
 {
     QMenu menu;
-    menu.addAction(tr("New &Tab"), this, &TabWidget::createTab, QKeySequence::AddTab);
+    menu.addAction(tr("New &Tab"), this, &TabWidget::onCreateTab, QKeySequence::AddTab);
     int index = tabBar()->tabAt(pos);
     if (index != -1) {
         QAction *action = menu.addAction(tr("Clone Tab"));
         connect(action, &QAction::triggered, this, [this,index]() {
-            cloneTab(index);
+            onCloneTab(index);
         });
         menu.addSeparator();
         action = menu.addAction(tr("&Close Tab"));
         action->setShortcut(QKeySequence::Close);
         connect(action, &QAction::triggered, this, [this,index]() {
-            closeTab(index);
+            onCloseTab(index);
         });
         action = menu.addAction(tr("Close &Other Tabs"));
         connect(action, &QAction::triggered, this, [this,index]() {
-            closeOtherTabs(index);
+            onCloseOtherTabs(index);
         });
         menu.addSeparator();
         action = menu.addAction(tr("Reload Tab"));
         action->setShortcut(QKeySequence::Refresh);
         connect(action, &QAction::triggered, this, [this,index]() {
-            reloadTab(index);
+            onReloadTab(index);
         });
     } else {
         menu.addSeparator();
     }
-    menu.addAction(tr("Reload All Tabs"), this, &TabWidget::reloadAllTabs);
+    menu.addAction(tr("Reload All Tabs"), this, &TabWidget::onReloadAllTabs);
     menu.exec(QCursor::pos());
 }
 
@@ -101,7 +101,7 @@ WebView *TabWidget::currentWebView() const
 
 WebView *TabWidget::navigateInNewTab(const QUrl &url, bool makeCurrent)
 {
-    auto v = createTab(makeCurrent);
+    auto v = onCreateTab(makeCurrent);
     v->setUrl(url);
     if (makeCurrent)
     {
@@ -164,11 +164,11 @@ void TabWidget::setupView(WebView *webView)
     connect(webPage, &QWebEnginePage::windowCloseRequested, [this, webView]() {
         int index = indexOf(webView);
         if (index >= 0)
-            closeTab(index);
+            onCloseTab(index);
     });
 }
 
-WebView *TabWidget::createTab(bool makeCurrent)
+WebView *TabWidget::onCreateTab(bool makeCurrent)
 {
     WebView *webView = new WebView;
     WebPage *webPage = new WebPage(QWebEngineProfile::defaultProfile(), webView);
@@ -180,21 +180,21 @@ WebView *TabWidget::createTab(bool makeCurrent)
     return webView;
 }
 
-void TabWidget::reloadAllTabs()
+void TabWidget::onReloadAllTabs()
 {
     for (int i = 0; i < count(); ++i)
         webView(i)->reload();
 }
 
-void TabWidget::closeOtherTabs(int index)
+void TabWidget::onCloseOtherTabs(int index)
 {
     for (int i = count() - 1; i > index; --i)
-        closeTab(i);
+        onCloseTab(i);
     for (int i = index - 1; i >= 0; --i)
-        closeTab(i);
+        onCloseTab(i);
 }
 
-void TabWidget::closeTab(int index)
+void TabWidget::onCloseTab(int index)
 {
     if (WebView *view = webView(index)) {
         bool hasFocus = view->hasFocus();
@@ -202,20 +202,20 @@ void TabWidget::closeTab(int index)
         if (hasFocus && count() > 0)
             currentWebView()->setFocus();
         if (count() == 0)
-            createTab();
+            onCreateTab();
         view->deleteLater();
     }
 }
 
-void TabWidget::cloneTab(int index)
+void TabWidget::onCloneTab(int index)
 {
     if (WebView *view = webView(index)) {
-        WebView *tab = createTab(false);
+        WebView *tab = onCreateTab(false);
         tab->setUrl(view->url());
     }
 }
 
-void TabWidget::setUrl(const QUrl &url)
+void TabWidget::onSetUrl(const QUrl &url)
 {
     if (WebView *view = currentWebView()) {
         view->setUrl(url);
@@ -223,7 +223,7 @@ void TabWidget::setUrl(const QUrl &url)
     }
 }
 
-void TabWidget::triggerWebPageAction(QWebEnginePage::WebAction action)
+void TabWidget::onTriggerWebPageAction(QWebEnginePage::WebAction action)
 {
     if (WebView *webView = currentWebView()) {
         webView->triggerPageAction(action);
@@ -231,7 +231,7 @@ void TabWidget::triggerWebPageAction(QWebEnginePage::WebAction action)
     }
 }
 
-void TabWidget::nextTab()
+void TabWidget::onNextTab()
 {
     int next = currentIndex() + 1;
     if (next == count())
@@ -239,7 +239,7 @@ void TabWidget::nextTab()
     setCurrentIndex(next);
 }
 
-void TabWidget::previousTab()
+void TabWidget::onPreviousTab()
 {
     int next = currentIndex() - 1;
     if (next < 0)
@@ -247,7 +247,7 @@ void TabWidget::previousTab()
     setCurrentIndex(next);
 }
 
-void TabWidget::reloadTab(int index)
+void TabWidget::onReloadTab(int index)
 {
     if (WebView *view = webView(index))
         view->reload();
