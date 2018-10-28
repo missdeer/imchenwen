@@ -374,7 +374,7 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
         if (!m_liveTVAction)
         {
             m_liveTVAction = new PopupMenuToolButton(this);
-            m_liveTVAction->setIcon(QIcon(QStringLiteral(":playvip.png")));
+            m_liveTVAction->setIcon(QIcon(QStringLiteral(":playtv.png")));
             m_liveTVAction->setText(tr("Watch Live TV"));
             navigationBar->addWidget(m_liveTVAction);
         } else {
@@ -433,8 +433,7 @@ QToolBar *BrowserWindow::createToolBar()
     });
     navigationBar->addAction(m_stopReloadAction);
     navigationBar->addWidget(m_urlLineEdit);
-    int size = m_urlLineEdit->sizeHint().height();
-    navigationBar->setIconSize(QSize(size, size));
+    navigationBar->setIconSize(QSize(32, 32));
 
     QAction *playByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
     playByMediaPlayerAction->setToolTip(playByMediaPlayerAction->text());

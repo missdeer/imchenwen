@@ -15,12 +15,10 @@
         <file>imchenwen64.png</file>
         <file>imchenwen128.png</file>
         <file>imchenwen256.png</file>
-        <file>parse.png</file>
-        <file>parseplaylist.png</file>
-        <file>parseurl.png</file>
         <file>search.png</file>
         <file>websites.xml</file>
         <file>play.png</file>
         <file>playvip.png</file>
+        <file>playtv.png</file>
     </qresource>
 </RCC>
