@@ -89,12 +89,6 @@ private slots:
 
     void stopWaiting();
 private:
-    explicit Browser(QObject *parent = nullptr);
-    void resolveLink(const QString &u);
-    void doPlayByMediaPlayer(MediaInfoPtr mi);
-    void clean();
-    void waiting(bool disableParent = true);
-private:
     QVector<BrowserWindow*> m_windows;
     QMap<BrowserWindow*, WindowState> m_windowsState;
     WaitingSpinnerWidget* m_waitingSpinner;
@@ -102,6 +96,13 @@ private:
     LinkResolver m_linkResolver;
     Websites m_websites;
     QNetworkAccessManager* m_nam;
+
+    explicit Browser(QObject *parent = nullptr);
+    void resolveLink(const QString &u);
+    void doPlayByMediaPlayer(MediaInfoPtr mi);
+    void clean();
+    void waiting(bool disableParent = true);
     void clearAtExit();
+    void minimizeWindows();
 };
 #endif // BROWSER_H

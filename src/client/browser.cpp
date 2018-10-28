@@ -203,27 +203,7 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 #endif
         m_playerProcess.setProgram(std::get<0>(player));
         m_playerProcess.start();
-        for ( auto w : m_windows)
-        {
-            if (w->isMaximized())
-            {
-                m_windowsState[w] = isMaximized;
-            }
-            else if (w->isMinimized())
-            {
-                m_windowsState[w] = isMinimized;
-                w->showMinimized();
-            }
-            else if (!w->isVisible())
-            {
-                m_windowsState[w] = isHidden;
-            }
-            else
-            {
-                m_windowsState[w] = isNormal;
-                w->showMinimized();
-            }
-        }
+        minimizeWindows();
     }
 }
 
@@ -304,6 +284,31 @@ void Browser::resolveLink(const QString &u)
     m_linkResolver.resolve(u);
 }
 
+void Browser::minimizeWindows()
+{
+    for ( auto w : m_windows)
+    {
+        if (w->isMaximized())
+        {
+            m_windowsState[w] = isMaximized;
+            w->showMinimized();
+        }
+        else if (w->isMinimized())
+        {
+            m_windowsState[w] = isMinimized;
+        }
+        else if (!w->isVisible())
+        {
+            m_windowsState[w] = isHidden;
+        }
+        else
+        {
+            m_windowsState[w] = isNormal;
+            w->showMinimized();
+        }
+    }
+}
+
 void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 {
     PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
@@ -351,27 +356,7 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 #endif
         m_playerProcess.setProgram(std::get<0>(player));
         m_playerProcess.start();
-        for ( auto w : m_windows)
-        {
-            if (w->isMaximized())
-            {
-                m_windowsState[w] = isMaximized;
-            }
-            else if (w->isMinimized())
-            {
-                m_windowsState[w] = isMinimized;
-                w->showMinimized();
-            }
-            else if (!w->isVisible())
-            {
-                m_windowsState[w] = isHidden;
-            }
-            else
-            {
-                m_windowsState[w] = isNormal;
-                w->showMinimized();
-            }
-        }
+        minimizeWindows();
     }
 }
 
