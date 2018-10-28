@@ -30,7 +30,8 @@ public:
     void loadHomePage();
 protected:
     void closeEvent(QCloseEvent *event) override;
-
+public slots:
+    void runScriptOnOpenViews(const QString &source);
 private slots:
     void onNewWindow();
     void onFileOpen();
@@ -53,6 +54,8 @@ private:
     QMenu *createHelpMenu();
     QMenu *createShortcutMenu();
     QToolBar *createToolBar();
+    void createVIPVideoToolButton(QToolBar *navigationBar = nullptr);
+    void createLiveTVToolButton(QToolBar *navigationBar = nullptr);
 private:
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;
@@ -65,8 +68,6 @@ private:
     PopupMenuToolButton* m_vipVideoAction;
     PopupMenuToolButton* m_liveTVAction;
     QToolBar *m_toolbar;
-    void createVIPVideoToolButton(QToolBar *navigationBar = nullptr);
-    void createLiveTVToolButton(QToolBar *navigationBar = nullptr);
 };
 
 #endif // BROWSERWINDOW_H
