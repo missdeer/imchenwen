@@ -28,10 +28,12 @@ public:
     void loadPage(const QString &url);
     void loadPage(const QUrl &url);
     void loadHomePage();
+    bool isCurrentVIPVideo();
 protected:
     void closeEvent(QCloseEvent *event) override;
 public slots:
     void runScriptOnOpenViews(const QString &source);
+    void onCloseCurrentTab();
 private slots:
     void onNewWindow();
     void onFileOpen();

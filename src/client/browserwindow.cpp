@@ -127,9 +127,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     QAction *closeTabAction = new QAction(QIcon(QLatin1String(":closetab.png")), tr("&Close Tab"), this);
     closeTabAction->setShortcuts(QKeySequence::Close);
     closeTabAction->setIconVisibleInMenu(false);
-    connect(closeTabAction, &QAction::triggered, [tabWidget]() {
-        tabWidget->onCloseTab(tabWidget->currentIndex());
-    });
+    connect(closeTabAction, &QAction::triggered, this, &BrowserWindow::onCloseCurrentTab);
     fileMenu->addAction(closeTabAction);
 
 
@@ -568,10 +566,28 @@ void BrowserWindow::runScriptOnOpenViews(const QString& source)
 
 }
 
+void BrowserWindow::onCloseCurrentTab()
+{
+    m_tabWidget->onCloseTab(m_tabWidget->currentIndex());
+}
+
 void BrowserWindow::loadHomePage()
 {
     Config cfg;
     loadPage(cfg.read<QString>("defaultHome"));
+}
+
+bool BrowserWindow::isCurrentVIPVideo()
+{
+    QString u = currentTab()->url().toString();
+
+    Config cfg;
+    Tuple2List vipVideos;
+    cfg.read("vipVideo", vipVideos);
+    auto it = std::find_if(vipVideos.begin(), vipVideos.end(), [&u](const Tuple2& vv){
+        return u.startsWith(std::get<1>(vv));
+    });
+    return vipVideos.end() != it;
 }
 
 void BrowserWindow::loadPage(const QString &page)

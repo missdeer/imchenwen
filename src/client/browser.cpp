@@ -67,6 +67,7 @@ Browser::Browser(QObject* parent)
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
     connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
+    connect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
@@ -137,6 +138,8 @@ void Browser::loadSettings()
     defaultProfile->setPersistentCookiesPolicy(persistentCookiesPolicy);
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
+
+    defaultProfile->setRequestInterceptor(&m_urlRequestInterceptor);
 
     QNetworkProxy proxy;
     if (cfg.read<bool>(QLatin1String("enableProxy"), false)) {
@@ -435,5 +438,14 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
         }
     }
     m_windowsState.clear();
+}
+
+void Browser::onSniffedMediaUrl(const QString &u)
+{
+    auto mw = const_cast<BrowserWindow*>(mainWindow());
+    if (!mw->isCurrentVIPVideo())
+        return;
+    mw->onCloseCurrentTab();
+    doPlayByMediaPlayer(u, "VIP video from imchenwen");
 }
 

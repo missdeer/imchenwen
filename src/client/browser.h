@@ -46,6 +46,7 @@
 #include <QProcess>
 #include "linkresolver.h"
 #include "websites.h"
+#include "urlrequestinterceptor.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -86,6 +87,7 @@ private slots:
     void onResolvingError(const QString&);
     void onProcessError(QProcess::ProcessError error);
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onSniffedMediaUrl(const QString& u);
 private:
     QVector<BrowserWindow*> m_windows;
     QMap<BrowserWindow*, WindowState> m_windowsState;
@@ -93,6 +95,7 @@ private:
     QProcess m_playerProcess;
     LinkResolver m_linkResolver;
     Websites m_websites;
+    UrlRequestInterceptor m_urlRequestInterceptor;
     QNetworkAccessManager* m_nam;
 
     explicit Browser(QObject *parent = nullptr);

@@ -22,7 +22,8 @@ HEADERS += \
     playdialog.h \
     settings.h \
     linkresolverprocess.h \
-    popupmenutoolbutton.h
+    popupmenutoolbutton.h \
+    urlrequestinterceptor.h
 
 SOURCES += \
     browser.cpp \
@@ -40,7 +41,8 @@ SOURCES += \
     playdialog.cpp \
     settings.cpp \
     linkresolverprocess.cpp \
-    popupmenutoolbutton.cpp
+    popupmenutoolbutton.cpp \
+    urlrequestinterceptor.cpp
 
 FORMS += \
     certificateerrordialog.ui \
