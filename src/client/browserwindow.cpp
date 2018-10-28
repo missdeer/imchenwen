@@ -447,49 +447,6 @@ QToolBar *BrowserWindow::createToolBar()
     return navigationBar;
 }
 
-QString BrowserWindow::findURL(const QString &area, const QString &name)
-{
-    QDomDocument doc("websites");
-    QFile file(":websites.xml");
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        qCritical() << "can't open websites configuration file";
-        return QString();
-    }
-
-    if (!doc.setContent(&file))
-    {
-        qCritical() << "can't set websites configuration content to dom";
-        file.close();
-        return QString();
-    }
-    file.close();
-
-    // print out the element names of all elements that are direct children
-    // of the outermost element.
-    QDomElement docElem = doc.documentElement();
-
-    QDomElement chinaNode = docElem.firstChildElement(area);
-    if (chinaNode.isNull())
-    {
-        qCritical() << "no china node";
-        return QString();
-    }
-
-    QDomElement website = chinaNode.firstChildElement("website");
-    while(!website.isNull())
-    {
-        QDomElement nameElem = website.firstChildElement("name");
-        if (name == nameElem.text())
-        {
-            QDomElement urlElem = website.firstChildElement("url");
-            return urlElem.text();
-        }
-        website = website.nextSiblingElement("website");
-    }
-    return QString();
-}
-
 void BrowserWindow::onWebViewIconChanged(const QIcon &icon)
 {
     m_urlLineEdit->setFavIcon(icon);

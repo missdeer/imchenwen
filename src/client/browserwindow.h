@@ -53,8 +53,6 @@ private:
     QMenu *createHelpMenu();
     QMenu *createShortcutMenu();
     QToolBar *createToolBar();
-
-    QString findURL(const QString& area, const QString& name);
 private:
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;
