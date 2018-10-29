@@ -82,7 +82,7 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
 
     if (doc.isObject())
     {
-        auto it = std::find_if(m_resolvers.begin(), m_resolvers.end(), [p](const auto &r ) {
+        auto it = std::find_if(m_resolvers.begin(), m_resolvers.end(), [p](const Resolver &r ) {
             return r.process == p;
         });
         if (m_resolvers.end() != it)

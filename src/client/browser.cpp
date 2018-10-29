@@ -175,7 +175,7 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
         QFileInfo fi(std::get<0>(player));
         if (fi.suffix() == "app")
         {
-            m_process.setProgram("/usr/bin/open");
+            m_playerProcess.setProgram("/usr/bin/open");
             args << std::get<0>(player) << "--args";
         }
 #endif
@@ -199,7 +199,7 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")
         {
-            m_process.setProgram("/usr/bin/open");
+            m_playerProcess.setProgram("/usr/bin/open");
             return;
         }
 #endif
@@ -327,7 +327,7 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         QFileInfo fi(std::get<0>(player));
         if (fi.suffix() == "app")
         {
-            m_process.setProgram("/usr/bin/open");
+            m_playerProcess.setProgram("/usr/bin/open");
             args << std::get<0>(player) << "--args";
         }
 #endif
@@ -352,7 +352,7 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")
         {
-            m_process.setProgram("/usr/bin/open");
+            m_playerProcess.setProgram("/usr/bin/open");
             return;
         }
 #endif
