@@ -4,43 +4,43 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="389"/>
-        <location filename="../browser.cpp" line="401"/>
+        <location filename="../browser.cpp" line="393"/>
+        <location filename="../browser.cpp" line="405"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="389"/>
+        <location filename="../browser.cpp" line="393"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="401"/>
+        <location filename="../browser.cpp" line="405"/>
         <source>Resolving link address </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="401"/>
+        <location filename="../browser.cpp" line="405"/>
         <source> failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="410"/>
+        <location filename="../browser.cpp" line="414"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="413"/>
+        <location filename="../browser.cpp" line="417"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="416"/>
+        <location filename="../browser.cpp" line="420"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="420"/>
+        <location filename="../browser.cpp" line="424"/>
         <source>Error on launching external player</source>
         <translation type="unfinished"></translation>
     </message>

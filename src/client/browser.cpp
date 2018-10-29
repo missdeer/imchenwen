@@ -191,6 +191,8 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
                 a = title;
             else if (a == "{{site}}")
                 a = title;
+            else if (a == "{{user-agent}}")
+                a = Config().read<QString>(QLatin1String("httpUserAgent"));
         }
 
         args << u;
@@ -343,6 +345,8 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
                 a = mi->title;
             else if (a == "{{site}}")
                 a = mi->site;
+            else if (a == "{{user-agent}}")
+                a = Config().read<QString>(QLatin1String("httpUserAgent"));
         }
 
         args << stream->urls;

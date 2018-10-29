@@ -4,43 +4,43 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="389"/>
-        <location filename="../browser.cpp" line="401"/>
+        <location filename="../browser.cpp" line="393"/>
+        <location filename="../browser.cpp" line="405"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="389"/>
+        <location filename="../browser.cpp" line="393"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="401"/>
+        <location filename="../browser.cpp" line="405"/>
         <source>Resolving link address </source>
         <translation>解析链接地址</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="401"/>
+        <location filename="../browser.cpp" line="405"/>
         <source> failed!</source>
         <translation>失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="410"/>
+        <location filename="../browser.cpp" line="414"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="413"/>
+        <location filename="../browser.cpp" line="417"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="416"/>
+        <location filename="../browser.cpp" line="420"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="420"/>
+        <location filename="../browser.cpp" line="424"/>
         <source>Error on launching external player</source>
         <translation>启动外部播放器失败</translation>
     </message>
