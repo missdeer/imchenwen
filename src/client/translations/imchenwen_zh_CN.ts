@@ -1017,7 +1017,7 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../settings.cpp" line="938"/>
         <location filename="../settings.cpp" line="945"/>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Export Live tv list to</source>
