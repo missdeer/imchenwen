@@ -143,6 +143,8 @@ void LinkResolver::parseYouGetNode(const QJsonObject &o, MediaInfoPtr mi, Stream
             stream->urls.append(url.toString());
         }
         stream->quality = format["video_profile"].toString();
+        if (stream->quality.isEmpty())
+            stream->quality = key;
         stream->container = format["container"].toString();
         streams.append(stream);
     }
