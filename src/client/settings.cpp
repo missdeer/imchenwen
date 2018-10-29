@@ -822,7 +822,7 @@ void SettingsDialog::exportLiveTVAsPlainText(const QString &path)
     {
         for (const auto& tv : m_liveTV)
         {
-            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8() + " " + std::get<2>(tv).toUtf8());
+            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8() + " " + std::get<2>(tv).toUtf8() + "\n");
         }
         f.close();
     }
@@ -918,7 +918,7 @@ void SettingsDialog::exportVIPVideoAsPlainText(const QString &path)
     {
         for (const auto& vv : m_vipVideo)
         {
-            f.write(std::get<0>(vv).toUtf8() + " " + std::get<1>(vv).toUtf8());
+            f.write(std::get<0>(vv).toUtf8() + " " + std::get<1>(vv).toUtf8() + "\n");
         }
         f.close();
     }
