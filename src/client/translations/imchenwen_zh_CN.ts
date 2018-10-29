@@ -295,7 +295,8 @@
         <location filename="../browserwindow.cpp" line="568"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
-        <translation>你确定要关闭窗口吗？\n有%1个标签页仍打开着。</translation>
+        <translation>你确定要关闭窗口吗？
+有%1个标签页仍打开着。</translation>
     </message>
     <message>
         <location filename="../browserwindow.cpp" line="660"/>
@@ -1127,7 +1128,8 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../webview.cpp" line="49"/>
         <source>Render process exited with code: %1
 Do you want to reload the page ?</source>
-        <translation>渲染进程退出，退出码：%1\n要重新载入页面吗？</translation>
+        <translation>渲染进程退出，退出码：%1
+要重新载入页面吗？</translation>
     </message>
     <message>
         <location filename="../webview.cpp" line="120"/>
