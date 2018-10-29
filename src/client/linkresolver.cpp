@@ -29,6 +29,14 @@ LinkResolver::LinkResolver(QObject *parent)
     }
 }
 
+LinkResolver::~LinkResolver()
+{
+    m_yougetProcess.terminate();
+    m_ykdlProcess.terminate();
+    m_youtubedlProcess.terminate();
+    m_annieProcess.terminate();
+}
+
 void LinkResolver::resolve(const QString& url)
 {
     if (url == m_lastUrl)

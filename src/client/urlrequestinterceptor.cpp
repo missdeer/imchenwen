@@ -32,7 +32,7 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
-    if (u.hasQuery() && (path.endsWith("mp4") || path.endsWith("flv")))
+    if ((u.hasQuery() || u.url().length() > 80) && (path.endsWith("mp4") || path.endsWith("flv")))
     {
         emit maybeMediaUrl(request.requestUrl().url());
         return;

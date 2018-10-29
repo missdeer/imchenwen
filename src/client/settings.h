@@ -66,6 +66,8 @@ private:
     void saveToSettings();
     void showCookies();
     void showExceptions();
+    void setupLiveTVTable();
+    void setupVIPVideoTable();
 };
 
 #endif // SETTINGS_H

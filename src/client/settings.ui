@@ -889,6 +889,25 @@
          <item row="1" column="1">
           <widget class="QLineEdit" name="edtLiveTVURL"/>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_29">
+           <property name="text">
+            <string>Category</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cbLiveTVCategory">
+           <property name="currentText">
+            <string>unknown</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>unknown</string>
+            </property>
+           </item>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
