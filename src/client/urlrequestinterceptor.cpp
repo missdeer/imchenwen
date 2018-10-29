@@ -10,6 +10,21 @@ UrlRequestInterceptor::UrlRequestInterceptor(QObject *parent)
 
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
 {
+    switch (request.resourceType()) {
+    case QWebEngineUrlRequestInfo::ResourceTypeMainFrame:
+    case QWebEngineUrlRequestInfo::ResourceTypeSubFrame:
+    case QWebEngineUrlRequestInfo::ResourceTypeStylesheet:
+    case QWebEngineUrlRequestInfo::ResourceTypeScript:
+    case QWebEngineUrlRequestInfo::ResourceTypeImage:
+    case QWebEngineUrlRequestInfo::ResourceTypeFontResource:
+    case QWebEngineUrlRequestInfo::ResourceTypePrefetch:
+    case QWebEngineUrlRequestInfo::ResourceTypeFavicon:
+    case QWebEngineUrlRequestInfo::ResourceTypeXhr:
+    case QWebEngineUrlRequestInfo::ResourceTypePing:
+        return;
+    default:
+        break;
+    }
     QUrl u = request.requestUrl();
     QString path = u.path().toLower();
     if (path.endsWith("m3u8"))
@@ -22,5 +37,5 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
-    qDebug() << request.requestUrl();
+    qDebug() << request.resourceType() << request.requestUrl();
 }
