@@ -36,6 +36,7 @@ private slots:
     void onExportLiveTVItems();
     void onCheckLiveTVItems();
     void onLiveTVTableItemSelectionChanged();
+    void onLiveTVCategoryCurrentTextChanged(const QString& text);
 
     void onAddVIPVideo();
     void onRemoveVIPVideo();
@@ -66,6 +67,8 @@ private:
     void saveToSettings();
     void showCookies();
     void showExceptions();
+    void setupLiveTVTable();
+    void setupVIPVideoTable();
 };
 
 #endif // SETTINGS_H

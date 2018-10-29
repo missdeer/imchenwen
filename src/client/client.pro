@@ -93,3 +93,39 @@ win32: {
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
     }
 }
+
+CODECFORTR      = UTF-8
+CODECFORSRC     = UTF-8
+TRANSLATIONS    = translations/imchenwen_en_US.ts \
+                  translations/imchenwen_zh_CN.ts
+
+isEmpty(QMAKE_LUPDATE) {
+    win32:QMAKE_LUPDATE = $$[QT_INSTALL_BINS]\lupdate.exe
+    else:QMAKE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate
+}
+
+isEmpty(QMAKE_LRELEASE) {
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+    else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+
+lupdate.commands = $$QMAKE_LUPDATE $$PWD/client.pro
+lupdates.depends = $$SOURCES $$HEADERS $$FORMS $$TRANSLATIONS
+lrelease.commands = $$QMAKE_LRELEASE $$PWD/client.pro
+lrelease.depends = lupdate
+translate.depends = lrelease
+QMAKE_EXTRA_TARGETS += lupdate lrelease translate
+POST_TARGETDEPS += translate
+
+# Mac OS X icon
+macx: {
+    translate.depends = lrelease
+    translate.files = $$system("find $$PWD/translations -name '*.qm' ")
+    translate.path = Contents/Resources/translations/
+    QMAKE_BUNDLE_DATA += translate
+} win32: {
+    CONFIG(release, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
+    else: CONFIG(debug, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
+} else {
+    translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD)'
+}

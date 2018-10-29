@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QtWebEngine>
 #include <QWebEngineSettings>
+#include <QTranslator>
 
 QString getCommandLineUrlArgument()
 {
@@ -24,11 +25,54 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
-    QApplication app(argc, argv);
+    QApplication a(argc, argv);
+
+
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    QTranslator qtTranslator;
+
+    // main application and dynamic linked library locale
 #if defined(Q_OS_MAC)
-    app.setWindowIcon(QIcon(QLatin1String(":imchenwen.icns")));
+    QString localeDirPath = QApplication::applicationDirPath() + "/../Resources/translations";
 #else
-    app.setWindowIcon(QIcon(QLatin1String(":imchenwen.ico")));
+    QString localeDirPath = QApplication::applicationDirPath() + "/translations";
+    if (!QDir(localeDirPath).exists())
+    {
+        localeDirPath = QApplication::applicationDirPath() + "/../translations";
+    }
+#endif
+    QDir localeDir(localeDirPath);
+    QStringList filters;
+    filters << "*_" + locale + ".qm";
+    QFileInfoList fil = localeDir.entryInfoList(filters, QDir::Files);
+    foreach(const QFileInfo& fi, fil)
+    {
+        bool b = translator.load("imchenwen_zh_CN.qm", localeDirPath); // always load simplified chinese translation file
+        if (!b)
+        {
+            qDebug() << "loading " << fi.fileName() << " from " << localeDirPath << " failed";
+        }
+        else
+        {
+            qDebug() << "loading " << fi.fileName() << " from " << localeDirPath << " success";
+        }
+    }
+    bool b = a.installTranslator(&translator);
+    if (!b)
+    {
+        qDebug() << "installing translator failed ";
+    }
+
+    // qt locale
+    qtTranslator.load("qt_" + locale, localeDirPath + "/qt");
+
+    a.installTranslator(&qtTranslator);
+
+#if defined(Q_OS_MAC)
+    a.setWindowIcon(QIcon(QLatin1String(":imchenwen.icns")));
+#else
+    a.setWindowIcon(QIcon(QLatin1String(":imchenwen.ico")));
 #endif
     QtWebEngine::initialize();
 
@@ -42,5 +86,5 @@ int main(int argc, char **argv)
     else
         window->loadHomePage();
 
-    return app.exec();
+    return a.exec();
 }

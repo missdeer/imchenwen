@@ -29,6 +29,9 @@ public:
     void loadPage(const QUrl &url);
     void loadHomePage();
     bool isCurrentVIPVideo();
+    void recoverCurrentTabUrl();
+    const QString& maybeVIPVideoTitle() const;
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 public slots:
@@ -70,6 +73,7 @@ private:
     PopupMenuToolButton* m_vipVideoAction;
     PopupMenuToolButton* m_liveTVAction;
     QToolBar *m_toolbar;
+    QString m_maybeVIPVideoTitle;
 };
 
 #endif // BROWSERWINDOW_H

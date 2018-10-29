@@ -11,13 +11,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
-    tblLiveTV->setColumnCount(3);
-    tblLiveTV->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL") << tr("Availability"));
-    tblLiveTV->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-
-    tblVIPVideo->setColumnCount(2);
-    tblVIPVideo->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
-    tblVIPVideo->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    setupLiveTVTable();
+    setupVIPVideoTable();
 
     connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::onSetHomeToCurrentPage);
     connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::onChooseFont);
@@ -36,6 +31,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnExportLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onExportLiveTVItems);
     connect(btnCheckLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onCheckLiveTVItems);
     connect(tblLiveTV, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onLiveTVTableItemSelectionChanged);
+    connect(cbLiveTVCategory, &QComboBox::currentTextChanged, this, &SettingsDialog::onLiveTVCategoryCurrentTextChanged);
 
     connect(btnAddVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onAddVIPVideo);
     connect(btnRemoveVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onRemoveVIPVideo);
@@ -102,17 +98,29 @@ void SettingsDialog::loadDefaults()
 
 void SettingsDialog::fillLiveTVTable()
 {
+    QMap<QString, bool> c;
     for (const auto & tv : m_liveTV)
     {
         int index = tblLiveTV->rowCount();
         tblLiveTV->insertRow(index);
         QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
         tblLiveTV->setItem(index, 0, name);
+        emit tblLiveTV->itemChanged(name);
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
         tblLiveTV->setItem(index, 1, url);
-        QTableWidgetItem* availability = new QTableWidgetItem(std::get<2>(tv));
-        tblLiveTV->setItem(index, 2, availability);
+        emit tblLiveTV->itemChanged(url);
+        QTableWidgetItem* category = new QTableWidgetItem(tr(qPrintable(std::get<2>(tv))));
+        tblLiveTV->setItem(index, 2, category);
+        emit tblLiveTV->itemChanged(category);
+        c[category->text()] = true;
     }
+
+    auto categories = c.keys();
+    categories.removeAll(tr("unknown"));
+    cbLiveTVCategory->clear();
+    cbLiveTVCategory->addItem(tr("unknown"));
+    cbLiveTVCategory->addItems(categories);
+    cbLiveTVCategory->addItem(tr("New category..."));
 }
 
 void SettingsDialog::fillVIPVideoTable()
@@ -123,8 +131,10 @@ void SettingsDialog::fillVIPVideoTable()
         tblVIPVideo->insertRow(index);
         QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
         tblVIPVideo->setItem(index, 0, name);
+        emit tblVIPVideo->itemChanged(name);
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
         tblVIPVideo->setItem(index, 1, url);
+        emit tblVIPVideo->itemChanged(url);
     }
 }
 
@@ -457,7 +467,9 @@ void SettingsDialog::onAddLiveTVItem()
         return;
     }
     auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(),
-                           [this](const Tuple3& t) { return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text();});
+                           [this](const Tuple3& t) {
+        return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text() && tr(qPrintable(std::get<2>(t)))  == cbLiveTVCategory->currentText();
+    });
     if (m_liveTV.end() != it)
     {
         QMessageBox::warning(this, tr("Duplicated"), tr("This Live TV item exists already."), QMessageBox::Ok);
@@ -469,12 +481,16 @@ void SettingsDialog::onAddLiveTVItem()
     tblLiveTV->insertRow(rowIndex);
     QTableWidgetItem* name = new QTableWidgetItem(edtLiveTVName->text());
     tblLiveTV->setItem(rowIndex, 0, name);
+    emit tblLiveTV->itemChanged(name);
     QTableWidgetItem* url = new QTableWidgetItem(edtLiveTVURL->text());
     tblLiveTV->setItem(rowIndex, 1, url);
-    QTableWidgetItem* availability = new QTableWidgetItem(tr("unknown"));
-    tblLiveTV->setItem(rowIndex, 2, availability);
+    emit tblLiveTV->itemChanged(url);
+    QTableWidgetItem* category = new QTableWidgetItem(cbLiveTVCategory->currentText());
+    tblLiveTV->setItem(rowIndex, 2, category);
+    emit tblLiveTV->itemChanged(category);
     edtLiveTVName->setText("");
     edtLiveTVURL->setText("");
+    cbLiveTVCategory->setCurrentIndex(0);
 }
 
 void SettingsDialog::onRemoveLiveTVItem()
@@ -483,6 +499,7 @@ void SettingsDialog::onRemoveLiveTVItem()
     if (ranges.isEmpty())
         return;
     int currentRow = ranges.begin()->topRow();
+    qDebug() << __FUNCTION__ << currentRow;
     m_liveTV.removeAt(currentRow);
     tblLiveTV->removeRow(currentRow);
 }
@@ -493,11 +510,15 @@ void SettingsDialog::onModifyLiveTVItem()
     if (ranges.isEmpty())
         return;
     int currentRow = ranges.begin()->topRow();
-    m_liveTV[currentRow] = std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), std::get<2>(m_liveTV[currentRow]));
-    auto item = tblLiveTV->takeItem(currentRow, 0);
-    item->setText(edtLiveTVName->text());
-    item = tblLiveTV->takeItem(currentRow, 1);
-    item->setText(edtLiveTVURL->text());
+    m_liveTV[currentRow] = std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), cbLiveTVCategory->currentText());
+
+    auto items = tblLiveTV->selectedItems();
+    items[0]->setText(edtLiveTVName->text());
+    emit tblLiveTV->itemChanged(items[0]);
+    items[1]->setText(edtLiveTVURL->text());
+    emit tblLiveTV->itemChanged(items[1]);
+    items[2]->setText(cbLiveTVCategory->currentText());
+    emit tblLiveTV->itemChanged(items[2]);
 }
 
 void SettingsDialog::onImportLiveTVItems()
@@ -505,7 +526,7 @@ void SettingsDialog::onImportLiveTVItems()
     QStringList paths = QFileDialog::getOpenFileNames(this,
                                                       tr("Select Live TV list to import"),
                                                       QString(),
-                                                      tr("JSON format (*.json);;Plain text format (*.txt)")
+                                                      tr("Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)")
                                                       );
     bool changed = false;
     for (const QString& path : paths)
@@ -522,7 +543,8 @@ void SettingsDialog::onImportLiveTVItems()
     }
     if (changed)
     {
-        tblLiveTV->clearContents();
+        tblLiveTV->clear();
+        setupLiveTVTable();
         fillLiveTVTable();
     }
 }
@@ -554,12 +576,46 @@ void SettingsDialog::onLiveTVTableItemSelectionChanged()
 {
     edtLiveTVName->setText("");
     edtLiveTVURL->setText("");
-    auto ranges = tblLiveTV->selectedRanges();
-    if (ranges.isEmpty())
+    cbLiveTVCategory->setCurrentIndex(0);
+    auto items = tblLiveTV->selectedItems();
+    if (items.isEmpty())
         return;
-    int currentRow = ranges.begin()->topRow();
-    edtLiveTVName->setText(std::get<0>(m_liveTV[currentRow]));
-    edtLiveTVURL->setText(std::get<1>(m_liveTV[currentRow]));
+    edtLiveTVName->setText(items[0]->text());
+    edtLiveTVURL->setText(items[1]->text());
+    cbLiveTVCategory->setCurrentText(items[2]->text());
+}
+
+void SettingsDialog::onLiveTVCategoryCurrentTextChanged(const QString &text)
+{
+    if (text == tr("New category..."))
+    {
+        bool ok = false;
+        QString category = QInputDialog::getText(this,
+                                                 tr("New category"),
+                                                 tr("Please input new category name:"),
+                                                 QLineEdit::Normal,
+                                                 QString(),
+                                                 &ok);
+        if (ok && !category.isEmpty())
+        {
+            if (category == tr("New category..."))
+            {
+                QMessageBox::warning(this, tr("Reserved name"), tr("This name is reserved, please choose another one."), QMessageBox::Ok);
+                return;
+            }
+
+            if (cbLiveTVCategory->findText(category) >= 0)
+            {
+                QMessageBox::warning(this, tr("Existing name"), tr("This name exists, please choose another one."), QMessageBox::Ok);
+                return;
+            }
+
+            cbLiveTVCategory->insertItem(cbLiveTVCategory->count()-1, category);
+            cbLiveTVCategory->setCurrentText(category);
+        } else {
+            cbLiveTVCategory->setCurrentIndex(0);
+        }
+    }
 }
 
 void SettingsDialog::onAddVIPVideo()
@@ -581,8 +637,10 @@ void SettingsDialog::onAddVIPVideo()
     tblVIPVideo->insertRow(rowIndex);
     QTableWidgetItem* name = new QTableWidgetItem(edtVIPVideoName->text());
     tblVIPVideo->setItem(rowIndex, 0, name);
+    emit tblVIPVideo->itemChanged(name);
     QTableWidgetItem* url = new QTableWidgetItem(edtVIPVideoURL->text());
     tblVIPVideo->setItem(rowIndex, 1, url);
+    emit tblVIPVideo->itemChanged(url);
     edtVIPVideoName->setText("");
     edtVIPVideoURL->setText("");
 }
@@ -604,10 +662,12 @@ void SettingsDialog::onModifyVIPVideo()
         return;
     int currentRow = ranges.begin()->topRow();
     m_vipVideo[currentRow] = std::make_tuple(edtVIPVideoName->text(), edtVIPVideoURL->text());
-    auto item = tblVIPVideo->takeItem(currentRow, 0);
-    item->setText(edtVIPVideoName->text());
-    item = tblVIPVideo->takeItem(currentRow, 1);
-    item->setText(edtVIPVideoURL->text());
+
+    auto items = tblVIPVideo->selectedItems();
+    items[0]->setText(edtVIPVideoName->text());
+    emit tblVIPVideo->itemChanged(items[0]);
+    items[1]->setText(edtVIPVideoURL->text());
+    emit tblVIPVideo->itemChanged(items[1]);
 }
 
 void SettingsDialog::onImportVIPVideo()
@@ -615,7 +675,7 @@ void SettingsDialog::onImportVIPVideo()
     QStringList paths = QFileDialog::getOpenFileNames(this,
                                                       tr("Select VIP video list to import"),
                                                       QString(),
-                                                      tr("JSON format (*.json);;Plain text format (*.txt)")
+                                                      tr("Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)")
                                                       );
     bool changed = false;
     for (const QString& path : paths)
@@ -632,7 +692,8 @@ void SettingsDialog::onImportVIPVideo()
     }
     if (changed)
     {
-        tblVIPVideo->clearContents();
+        tblVIPVideo->clear();
+        setupVIPVideoTable();
         fillVIPVideoTable();
     }
 }
@@ -640,7 +701,7 @@ void SettingsDialog::onImportVIPVideo()
 void SettingsDialog::onExportVIPVideo()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Export Live tv list to"),
+                                                    tr("Export VIP video list to"),
                                                     QString(),
                                                     tr("JSON format (*.json);;Plain text format (*.txt)")
                                                     );
@@ -659,12 +720,11 @@ void SettingsDialog::onVIPVideoTableItemSelectionChanged()
 {
     edtVIPVideoName->setText("");
     edtVIPVideoURL->setText("");
-    auto ranges = tblVIPVideo->selectedRanges();
-    if (ranges.isEmpty())
+    auto items = tblVIPVideo->selectedItems();
+    if (items.isEmpty())
         return;
-    int currentRow = ranges.begin()->topRow();
-    edtVIPVideoName->setText(std::get<0>(m_vipVideo[currentRow]));
-    edtVIPVideoURL->setText(std::get<1>(m_vipVideo[currentRow]));
+    edtVIPVideoName->setText(items[0]->text());
+    edtVIPVideoURL->setText(items[1]->text());
 }
 
 bool SettingsDialog::importLiveTVAsJSON(const QString &path)
@@ -692,10 +752,12 @@ bool SettingsDialog::importLiveTVAsJSON(const QString &path)
                 auto o = a.toObject();
                 if (!o["name"].isString() || o["name"].toString().isEmpty() || !o["url"].isString() || o["url"].toString().isEmpty())
                     continue;
-
-                auto vv = std::make_tuple(o["name"].toString(), o["url"].toString(), tr("unknown"));
+                QString category = tr("unknown");
+                if (o["category"].isString() && !o["category"].toString().isEmpty())
+                    category = o["category"].toString();
+                auto vv = std::make_tuple(o["name"].toString(), o["url"].toString(), category);
                 auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple3& v){
-                    return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
+                    return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv) && std::get<2>(v) == std::get<2>(vv);
                 });
                 if (m_liveTV.end() == it)
                     m_liveTV.push_back(vv);
@@ -717,12 +779,15 @@ bool SettingsDialog::importLiveTVAsPlainText(const QString &path)
         for (const auto& line : lines)
         {
             auto ele = line.trimmed().split(' ');
-            if (ele.length() != 2)
+            if (ele.length() <2 )
             continue;
 
-            auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]), tr("unknown"));
+            QString category = tr("unknown");
+            if (ele.length() > 2)
+                category = QString(ele[2]);
+            auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]), category);
             auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple3& v){
-                return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
+                return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv) && std::get<2>(v) == std::get<2>(vv);
             });
             if (m_liveTV.end() == it)
                 m_liveTV.push_back(vv);
@@ -740,6 +805,7 @@ void SettingsDialog::exportLiveTVAsJSON(const QString &path)
         QJsonObject o;
         o.insert("name", std::get<0>(vv));
         o.insert("url", std::get<1>(vv));
+        o.insert("category", std::get<2>(vv));
         a.append(o);
     }
     auto d = doc.toJson(QJsonDocument::Indented);
@@ -758,7 +824,7 @@ void SettingsDialog::exportLiveTVAsPlainText(const QString &path)
     {
         for (const auto& tv : m_liveTV)
         {
-            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8());
+            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8() + " " + std::get<2>(tv).toUtf8() + "\n");
         }
         f.close();
     }
@@ -854,7 +920,7 @@ void SettingsDialog::exportVIPVideoAsPlainText(const QString &path)
     {
         for (const auto& vv : m_vipVideo)
         {
-            f.write(std::get<0>(vv).toUtf8() + " " + std::get<1>(vv).toUtf8());
+            f.write(std::get<0>(vv).toUtf8() + " " + std::get<1>(vv).toUtf8() + "\n");
         }
         f.close();
     }
@@ -866,4 +932,18 @@ void SettingsDialog::onSetHomeToCurrentPage()
     WebView *webView = mw->currentTab();
     if (webView)
         homeLineEdit->setText(webView->url().toString());
+}
+
+void SettingsDialog::setupLiveTVTable()
+{
+    tblLiveTV->setColumnCount(3);
+    tblLiveTV->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL") << tr("Category"));
+    tblLiveTV->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+}
+
+void SettingsDialog::setupVIPVideoTable()
+{
+    tblVIPVideo->setColumnCount(2);
+    tblVIPVideo->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
+    tblVIPVideo->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 }
