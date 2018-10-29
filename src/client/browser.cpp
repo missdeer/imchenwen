@@ -445,7 +445,7 @@ void Browser::onSniffedMediaUrl(const QString &u)
     auto mw = const_cast<BrowserWindow*>(mainWindow());
     if (!mw->isCurrentVIPVideo())
         return;
-    mw->onCloseCurrentTab();
-    doPlayByMediaPlayer(u, "VIP video from imchenwen");
+    mw->recoverCurrentTabUrl();
+    doPlayByMediaPlayer(u, mw->maybeVIPVideoTitle());
 }
 

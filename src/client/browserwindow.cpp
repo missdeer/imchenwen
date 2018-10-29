@@ -383,6 +383,11 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
     }
 }
 
+const QString &BrowserWindow::maybeVIPVideoTitle() const
+{
+    return m_maybeVIPVideoTitle;
+}
+
 QToolBar *BrowserWindow::createToolBar()
 {
     QToolBar *navigationBar = new QToolBar(tr("Navigation"));
@@ -489,12 +494,23 @@ void BrowserWindow::onShortcut()
 
 void BrowserWindow::onVIPVideo()
 {
-    if (!m_urlLineEdit->text().isEmpty())
+    m_maybeVIPVideoTitle = currentTab()->title();
+    QString currentUrl = currentTab()->url().url();
+
+    if (!currentUrl.isEmpty())
     {
         QAction* action = qobject_cast<QAction*>(sender());
         Q_ASSERT(action);
-        auto url = action->data().toString();
-        loadPage(url+m_urlLineEdit->text());
+        auto vipResolverUrl = action->data().toString();
+
+        int index = currentUrl.indexOf("http://");
+        if (index > 10)
+            currentUrl = currentUrl.mid(index);
+        index = currentUrl.indexOf("https://");
+        if (index > 10)
+            currentUrl = currentUrl.mid(index);
+
+        loadPage(vipResolverUrl+currentUrl);
     }
 }
 
@@ -580,6 +596,8 @@ void BrowserWindow::loadHomePage()
 bool BrowserWindow::isCurrentVIPVideo()
 {
     QString u = currentTab()->url().toString();
+    if (u.indexOf("http://") > 10 || u.indexOf("https://") > 10)
+        return true;
 
     Config cfg;
     Tuple2List vipVideos;
@@ -588,6 +606,24 @@ bool BrowserWindow::isCurrentVIPVideo()
         return u.startsWith(std::get<1>(vv));
     });
     return vipVideos.end() != it;
+}
+
+void BrowserWindow::recoverCurrentTabUrl()
+{
+    QString u = currentTab()->url().toString();
+
+    Config cfg;
+    Tuple2List vipVideos;
+    cfg.read("vipVideo", vipVideos);
+
+    auto it = std::find_if(vipVideos.begin(), vipVideos.end(), [&u](const Tuple2& vv){
+        return u.startsWith(std::get<1>(vv));
+    });
+    if (vipVideos.end() != it)
+    {
+        u = u.right(u.length() - std::get<1>(*it).length());
+    }
+    loadPage(u);
 }
 
 void BrowserWindow::loadPage(const QString &page)

@@ -29,12 +29,17 @@ LinkResolver::LinkResolver(QObject *parent)
     }
 }
 
-LinkResolver::~LinkResolver()
+void LinkResolver::terminateResolvers()
 {
     m_yougetProcess.terminate();
     m_ykdlProcess.terminate();
     m_youtubedlProcess.terminate();
     m_annieProcess.terminate();
+}
+
+LinkResolver::~LinkResolver()
+{
+    terminateResolvers();
 }
 
 void LinkResolver::resolve(const QString& url)
@@ -45,6 +50,7 @@ void LinkResolver::resolve(const QString& url)
     }
     else
     {
+        terminateResolvers();
         m_mediaInfo->title.clear();
         m_mediaInfo->site.clear();
         m_mediaInfo->resultCount = 0;
@@ -52,7 +58,6 @@ void LinkResolver::resolve(const QString& url)
         for ( auto & r : m_resolvers)
         {
             r.streams->clear();
-            r.process->terminate();
             r.process->setArguments(QStringList() << r.args << url);
             r.process->start();
         }
