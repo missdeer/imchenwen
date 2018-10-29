@@ -109,7 +109,7 @@ void SettingsDialog::fillLiveTVTable()
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
         tblLiveTV->setItem(index, 1, url);
         emit tblLiveTV->itemChanged(url);
-        QTableWidgetItem* category = new QTableWidgetItem(std::get<2>(tv));
+        QTableWidgetItem* category = new QTableWidgetItem(tr(qPrintable(std::get<2>(tv))));
         tblLiveTV->setItem(index, 2, category);
         emit tblLiveTV->itemChanged(category);
         c[category->text()] = true;
@@ -468,7 +468,7 @@ void SettingsDialog::onAddLiveTVItem()
     }
     auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(),
                            [this](const Tuple3& t) {
-        return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text() && std::get<2>(t) == cbLiveTVCategory->currentText();
+        return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text() && tr(qPrintable(std::get<2>(t)))  == cbLiveTVCategory->currentText();
     });
     if (m_liveTV.end() != it)
     {
@@ -612,6 +612,8 @@ void SettingsDialog::onLiveTVCategoryCurrentTextChanged(const QString &text)
 
             cbLiveTVCategory->insertItem(cbLiveTVCategory->count()-1, category);
             cbLiveTVCategory->setCurrentText(category);
+        } else {
+            cbLiveTVCategory->setCurrentIndex(0);
         }
     }
 }
@@ -699,7 +701,7 @@ void SettingsDialog::onImportVIPVideo()
 void SettingsDialog::onExportVIPVideo()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Export Live tv list to"),
+                                                    tr("Export VIP video list to"),
                                                     QString(),
                                                     tr("JSON format (*.json);;Plain text format (*.txt)")
                                                     );
