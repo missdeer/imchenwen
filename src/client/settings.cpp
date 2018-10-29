@@ -12,7 +12,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 {
     setupUi(this);
     setupLiveTVTable();
-
     setupVIPVideoTable();
 
     connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::onSetHomeToCurrentPage);
@@ -32,6 +31,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnExportLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onExportLiveTVItems);
     connect(btnCheckLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onCheckLiveTVItems);
     connect(tblLiveTV, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onLiveTVTableItemSelectionChanged);
+    connect(cbLiveTVCategory, &QComboBox::currentTextChanged, this, &SettingsDialog::onLiveTVCategoryCurrentTextChanged);
 
     connect(btnAddVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onAddVIPVideo);
     connect(btnRemoveVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onRemoveVIPVideo);
@@ -98,17 +98,29 @@ void SettingsDialog::loadDefaults()
 
 void SettingsDialog::fillLiveTVTable()
 {
+    QMap<QString, bool> c;
     for (const auto & tv : m_liveTV)
     {
         int index = tblLiveTV->rowCount();
         tblLiveTV->insertRow(index);
         QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
         tblLiveTV->setItem(index, 0, name);
+        emit tblLiveTV->itemChanged(name);
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
         tblLiveTV->setItem(index, 1, url);
+        emit tblLiveTV->itemChanged(url);
         QTableWidgetItem* category = new QTableWidgetItem(std::get<2>(tv));
         tblLiveTV->setItem(index, 2, category);
+        emit tblLiveTV->itemChanged(category);
+        c[category->text()] = true;
     }
+
+    auto categories = c.keys();
+    categories.removeAll(tr("unknown"));
+    cbLiveTVCategory->clear();
+    cbLiveTVCategory->addItem(tr("unknown"));
+    cbLiveTVCategory->addItems(categories);
+    cbLiveTVCategory->addItem(tr("New category..."));
 }
 
 void SettingsDialog::fillVIPVideoTable()
@@ -119,8 +131,10 @@ void SettingsDialog::fillVIPVideoTable()
         tblVIPVideo->insertRow(index);
         QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
         tblVIPVideo->setItem(index, 0, name);
+        emit tblVIPVideo->itemChanged(name);
         QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
         tblVIPVideo->setItem(index, 1, url);
+        emit tblVIPVideo->itemChanged(url);
     }
 }
 
@@ -467,10 +481,13 @@ void SettingsDialog::onAddLiveTVItem()
     tblLiveTV->insertRow(rowIndex);
     QTableWidgetItem* name = new QTableWidgetItem(edtLiveTVName->text());
     tblLiveTV->setItem(rowIndex, 0, name);
+    emit tblLiveTV->itemChanged(name);
     QTableWidgetItem* url = new QTableWidgetItem(edtLiveTVURL->text());
     tblLiveTV->setItem(rowIndex, 1, url);
+    emit tblLiveTV->itemChanged(url);
     QTableWidgetItem* category = new QTableWidgetItem(cbLiveTVCategory->currentText());
     tblLiveTV->setItem(rowIndex, 2, category);
+    emit tblLiveTV->itemChanged(category);
     edtLiveTVName->setText("");
     edtLiveTVURL->setText("");
     cbLiveTVCategory->setCurrentIndex(0);
@@ -494,12 +511,14 @@ void SettingsDialog::onModifyLiveTVItem()
         return;
     int currentRow = ranges.begin()->topRow();
     m_liveTV[currentRow] = std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), cbLiveTVCategory->currentText());
-    auto item = tblLiveTV->takeItem(currentRow, 0);
-    item->setText(edtLiveTVName->text());
-    item = tblLiveTV->takeItem(currentRow, 1);
-    item->setText(edtLiveTVURL->text());
-    item = tblLiveTV->takeItem(currentRow, 2);
-    item->setText(cbLiveTVCategory->currentText());
+
+    auto items = tblLiveTV->selectedItems();
+    items[0]->setText(edtLiveTVName->text());
+    emit tblLiveTV->itemChanged(items[0]);
+    items[1]->setText(edtLiveTVURL->text());
+    emit tblLiveTV->itemChanged(items[1]);
+    items[2]->setText(cbLiveTVCategory->currentText());
+    emit tblLiveTV->itemChanged(items[2]);
 }
 
 void SettingsDialog::onImportLiveTVItems()
@@ -566,6 +585,37 @@ void SettingsDialog::onLiveTVTableItemSelectionChanged()
     cbLiveTVCategory->setCurrentText(items[2]->text());
 }
 
+void SettingsDialog::onLiveTVCategoryCurrentTextChanged(const QString &text)
+{
+    if (text == tr("New category..."))
+    {
+        bool ok = false;
+        QString category = QInputDialog::getText(this,
+                                                 tr("New category"),
+                                                 tr("Please input new category name:"),
+                                                 QLineEdit::Normal,
+                                                 QString(),
+                                                 &ok);
+        if (ok && !category.isEmpty())
+        {
+            if (category == tr("New category..."))
+            {
+                QMessageBox::warning(this, tr("Reserved name"), tr("This name is reserved, please choose another one."), QMessageBox::Ok);
+                return;
+            }
+
+            if (cbLiveTVCategory->findText(category) >= 0)
+            {
+                QMessageBox::warning(this, tr("Existing name"), tr("This name exists, please choose another one."), QMessageBox::Ok);
+                return;
+            }
+
+            cbLiveTVCategory->insertItem(cbLiveTVCategory->count()-1, category);
+            cbLiveTVCategory->setCurrentText(category);
+        }
+    }
+}
+
 void SettingsDialog::onAddVIPVideo()
 {
     if (edtVIPVideoName->text().isEmpty() || edtVIPVideoURL->text().isEmpty())
@@ -585,8 +635,10 @@ void SettingsDialog::onAddVIPVideo()
     tblVIPVideo->insertRow(rowIndex);
     QTableWidgetItem* name = new QTableWidgetItem(edtVIPVideoName->text());
     tblVIPVideo->setItem(rowIndex, 0, name);
+    emit tblVIPVideo->itemChanged(name);
     QTableWidgetItem* url = new QTableWidgetItem(edtVIPVideoURL->text());
     tblVIPVideo->setItem(rowIndex, 1, url);
+    emit tblVIPVideo->itemChanged(url);
     edtVIPVideoName->setText("");
     edtVIPVideoURL->setText("");
 }
@@ -608,10 +660,12 @@ void SettingsDialog::onModifyVIPVideo()
         return;
     int currentRow = ranges.begin()->topRow();
     m_vipVideo[currentRow] = std::make_tuple(edtVIPVideoName->text(), edtVIPVideoURL->text());
-    auto item = tblVIPVideo->takeItem(currentRow, 0);
-    item->setText(edtVIPVideoName->text());
-    item = tblVIPVideo->takeItem(currentRow, 1);
-    item->setText(edtVIPVideoURL->text());
+
+    auto items = tblVIPVideo->selectedItems();
+    items[0]->setText(edtVIPVideoName->text());
+    emit tblVIPVideo->itemChanged(items[0]);
+    items[1]->setText(edtVIPVideoURL->text());
+    emit tblVIPVideo->itemChanged(items[1]);
 }
 
 void SettingsDialog::onImportVIPVideo()
