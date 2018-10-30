@@ -278,7 +278,7 @@ QMenu *BrowserWindow::createHelpMenu()
 #endif
     helpMenu->addSeparator();
 
-    QAction* aboutAction = helpMenu->addAction(tr("About..."));
+    QAction *aboutAction = helpMenu->addAction(tr("About..."));
     aboutAction->setMenuRole(QAction::AboutRole);
     connect(aboutAction, &QAction::triggered, [this]() {
         QMessageBox::about(this,
@@ -286,7 +286,7 @@ QMenu *BrowserWindow::createHelpMenu()
                            tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."));
     });
 
-    QAction* aboutQtAction = helpMenu->addAction(tr("About Qt..."));
+    QAction *aboutQtAction = helpMenu->addAction(tr("About Qt..."));
     aboutQtAction->setMenuRole(QAction::AboutQtRole);
     connect(aboutQtAction, &QAction::triggered, [this](){QMessageBox::aboutQt(this, tr("imchenwen"));});
 
@@ -332,11 +332,11 @@ void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)
     cfg.read("vipVideo", vipVideos);
     if (!vipVideos.isEmpty())
     {
-        QMenu* popupMenu = new QMenu();
+        QMenu *popupMenu = new QMenu();
 
         for (const auto& vv : vipVideos)
         {
-            QAction* action  = new QAction(std::get<0>(vv), popupMenu);
+            QAction *action  = new QAction(std::get<0>(vv), popupMenu);
             action->setData(std::get<1>(vv));
             action->setToolTip(std::get<1>(vv));
             action->setStatusTip(std::get<1>(vv));
@@ -351,7 +351,7 @@ void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)
             m_vipVideoAction->setText(tr("Watch as VIP video"));
             navigationBar->addWidget(m_vipVideoAction);
         } else {
-            QMenu* p = m_vipVideoAction->menu();
+            QMenu *p = m_vipVideoAction->menu();
             p->deleteLater();
         }
         m_vipVideoAction->setMenu(popupMenu);
@@ -365,11 +365,11 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
     cfg.read("liveTV", liveTVs);
     if (!liveTVs.isEmpty())
     {
-        QMenu* popupMenu = new QMenu(this);
+        QMenu *popupMenu = new QMenu(this);
 
         for (const auto& tv : liveTVs)
         {
-            QAction* action  = new QAction(std::get<0>(tv), this);
+            QAction *action  = new QAction(std::get<0>(tv), this);
             action->setData(std::get<1>(tv));
             action->setToolTip(std::get<1>(tv));
             action->setStatusTip(std::get<1>(tv));
@@ -384,7 +384,7 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
             m_liveTVAction->setText(tr("Watch Live TV"));
             navigationBar->addWidget(m_liveTVAction);
         } else {
-            QMenu* p = m_liveTVAction->menu();
+            QMenu *p = m_liveTVAction->menu();
             p->deleteLater();
         }
         m_liveTVAction->setMenu(popupMenu);
@@ -491,7 +491,7 @@ void BrowserWindow::onWebActionEnabledChanged(QWebEnginePage::WebAction action, 
 
 void BrowserWindow::onShortcut()
 {
-    QAction* action = qobject_cast<QAction*>(sender());
+    QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
     if (!url.isEmpty())
@@ -507,7 +507,7 @@ void BrowserWindow::onVIPVideo()
 
     if (!currentUrl.isEmpty())
     {
-        QAction* action = qobject_cast<QAction*>(sender());
+        QAction *action = qobject_cast<QAction*>(sender());
         Q_ASSERT(action);
         auto vipResolverUrl = action->data().toString();
 
@@ -524,7 +524,7 @@ void BrowserWindow::onVIPVideo()
 
 void BrowserWindow::onLiveTV()
 {
-    QAction* action = qobject_cast<QAction*>(sender());
+    QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
     Browser::instance().doPlayByMediaPlayer(url, "Live TV - " + action->text());

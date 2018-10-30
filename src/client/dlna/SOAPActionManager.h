@@ -22,11 +22,8 @@ const QString SOAPXmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\" standalo
                                "&lt;res protocolInfo=\"http-get:*:%4:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000\" &gt;"
                                "%5&lt;/res&gt;&lt;/item&gt;&lt;/DIDL-Lite&gt;";
 
-/**
- * This class handles network requests from DLNARenderer.
- */
 
-
+// This class handles network requests from DLNARenderer.
 class SOAPActionManager : public QObject
 {
     Q_OBJECT
@@ -40,8 +37,8 @@ signals:
 private:
     QNetworkAccessManager *mgr;
 private slots:
-    void processData(QNetworkReply* reply);
-    void processPlaybackInfo(QNetworkReply* reply);
+    void processData(QNetworkReply *reply);
+    void processPlaybackInfo(QNetworkReply *reply);
 };
 
 #endif // SOAPACTIONMANAGER_H

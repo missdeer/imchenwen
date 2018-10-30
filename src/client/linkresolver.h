@@ -46,9 +46,9 @@ class LinkResolver : public QObject
 
     struct Resolver {
         QString name;
-        LinkResolverProcess* process;
+        LinkResolverProcess *process;
         std::function<void(const QJsonObject , MediaInfoPtr , Streams &)> parse;
-        Streams* streams;
+        Streams *streams;
         QStringList args;
     };
 

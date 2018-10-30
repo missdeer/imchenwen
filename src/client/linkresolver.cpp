@@ -67,7 +67,7 @@ void LinkResolver::resolve(const QString& url)
 
 void LinkResolver::onReadResolverOutput(const QByteArray &data)
 {
-    LinkResolverProcess* p = qobject_cast<LinkResolverProcess*>(sender());
+    LinkResolverProcess *p = qobject_cast<LinkResolverProcess*>(sender());
 
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(data, &error);

@@ -43,7 +43,7 @@ void HttpFileClient::disconnected()
     qDebug() << "FileServer: Client disconnected";
 }
 
-void HttpFileClient::bytesWritten(qint64 bytes)
+void HttpFileClient::bytesWritten(qint64 /*bytes*/)
 {
     if (writtenAction == "SENDDATA")
     {

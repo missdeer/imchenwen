@@ -40,7 +40,7 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     mgr->post(request, data.toUtf8());
 }
 
-void SOAPActionManager::processData(QNetworkReply* reply)
+void SOAPActionManager::processData(QNetworkReply *reply)
 {
     QString data = reply->readAll();
     reply->close();

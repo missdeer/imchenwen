@@ -57,7 +57,7 @@ static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSh
         QMetaObject::invokeMethod(mainWindow, "runScriptOnOpenViews", Qt::QueuedConnection, Q_ARG(QString, source));
 }
 
-Browser::Browser(QObject* parent)
+Browser::Browser(QObject *parent)
     : QObject(parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
@@ -249,9 +249,14 @@ BrowserWindow *Browser::mainWindow()
 
 BrowserWindow *Browser::newMainWindow()
 {
-    BrowserWindow* nmw = new BrowserWindow();
+    BrowserWindow *nmw = new BrowserWindow();
     addWindow(nmw);
     return nmw;
+}
+
+Kast *Browser::kast()
+{
+    return &m_kast;
 }
 
 void Browser::waiting(bool disableParent /*= true*/)

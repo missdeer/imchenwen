@@ -9,7 +9,7 @@ Kast::Kast(QObject *parent) : QObject(parent)
 
     fileServer = new HttpFileServer();
     fileServer->startServer();
-    SSDPdiscovery * discovery = new SSDPdiscovery(this);
+    SSDPdiscovery *discovery = new SSDPdiscovery(this);
     connect(discovery, SIGNAL(foundRenderer(DLNARenderer*)), this, SLOT(foundRenderer(DLNARenderer*)));
     // Start SSDP discovery
     discovery->run();

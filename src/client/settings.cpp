@@ -103,13 +103,13 @@ void SettingsDialog::fillLiveTVTable()
     {
         int index = tblLiveTV->rowCount();
         tblLiveTV->insertRow(index);
-        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(tv));
+        QTableWidgetItem *name = new QTableWidgetItem(std::get<0>(tv));
         tblLiveTV->setItem(index, 0, name);
         emit tblLiveTV->itemChanged(name);
-        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(tv));
+        QTableWidgetItem *url = new QTableWidgetItem(std::get<1>(tv));
         tblLiveTV->setItem(index, 1, url);
         emit tblLiveTV->itemChanged(url);
-        QTableWidgetItem* category = new QTableWidgetItem(tr(qPrintable(std::get<2>(tv))));
+        QTableWidgetItem *category = new QTableWidgetItem(tr(qPrintable(std::get<2>(tv))));
         tblLiveTV->setItem(index, 2, category);
         emit tblLiveTV->itemChanged(category);
         c[category->text()] = true;
@@ -129,10 +129,10 @@ void SettingsDialog::fillVIPVideoTable()
     {
         int index = tblVIPVideo->rowCount();
         tblVIPVideo->insertRow(index);
-        QTableWidgetItem* name = new QTableWidgetItem(std::get<0>(vv));
+        QTableWidgetItem *name = new QTableWidgetItem(std::get<0>(vv));
         tblVIPVideo->setItem(index, 0, name);
         emit tblVIPVideo->itemChanged(name);
-        QTableWidgetItem* url = new QTableWidgetItem(std::get<1>(vv));
+        QTableWidgetItem *url = new QTableWidgetItem(std::get<1>(vv));
         tblVIPVideo->setItem(index, 1, url);
         emit tblVIPVideo->itemChanged(url);
     }
@@ -479,13 +479,13 @@ void SettingsDialog::onAddLiveTVItem()
 
     int rowIndex = tblLiveTV->rowCount();
     tblLiveTV->insertRow(rowIndex);
-    QTableWidgetItem* name = new QTableWidgetItem(edtLiveTVName->text());
+    QTableWidgetItem *name = new QTableWidgetItem(edtLiveTVName->text());
     tblLiveTV->setItem(rowIndex, 0, name);
     emit tblLiveTV->itemChanged(name);
-    QTableWidgetItem* url = new QTableWidgetItem(edtLiveTVURL->text());
+    QTableWidgetItem *url = new QTableWidgetItem(edtLiveTVURL->text());
     tblLiveTV->setItem(rowIndex, 1, url);
     emit tblLiveTV->itemChanged(url);
-    QTableWidgetItem* category = new QTableWidgetItem(cbLiveTVCategory->currentText());
+    QTableWidgetItem *category = new QTableWidgetItem(cbLiveTVCategory->currentText());
     tblLiveTV->setItem(rowIndex, 2, category);
     emit tblLiveTV->itemChanged(category);
     edtLiveTVName->setText("");
@@ -635,10 +635,10 @@ void SettingsDialog::onAddVIPVideo()
     m_vipVideo.push_back(std::make_tuple(edtVIPVideoName->text(), edtVIPVideoURL->text()));
     int rowIndex = tblVIPVideo->rowCount();
     tblVIPVideo->insertRow(rowIndex);
-    QTableWidgetItem* name = new QTableWidgetItem(edtVIPVideoName->text());
+    QTableWidgetItem *name = new QTableWidgetItem(edtVIPVideoName->text());
     tblVIPVideo->setItem(rowIndex, 0, name);
     emit tblVIPVideo->itemChanged(name);
-    QTableWidgetItem* url = new QTableWidgetItem(edtVIPVideoURL->text());
+    QTableWidgetItem *url = new QTableWidgetItem(edtVIPVideoURL->text());
     tblVIPVideo->setItem(rowIndex, 1, url);
     emit tblVIPVideo->itemChanged(url);
     edtVIPVideoName->setText("");

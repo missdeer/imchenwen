@@ -70,8 +70,8 @@ private:
     QAction *m_reloadAction;
     QAction *m_stopReloadAction;
     UrlLineEdit *m_urlLineEdit;
-    PopupMenuToolButton* m_vipVideoAction;
-    PopupMenuToolButton* m_liveTVAction;
+    PopupMenuToolButton *m_vipVideoAction;
+    PopupMenuToolButton *m_liveTVAction;
     QToolBar *m_toolbar;
     QString m_maybeVIPVideoTitle;
 };

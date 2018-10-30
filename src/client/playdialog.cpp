@@ -159,7 +159,7 @@ void PlayDialog::doOk()
 
 void PlayDialog::addItem(const QString& text, const QColor &backgroundColor)
 {
-    QListWidgetItem* item = new QListWidgetItem(text, ui->listMedia);
+    QListWidgetItem *item = new QListWidgetItem(text, ui->listMedia);
     QFont font(item->font());
 #if defined(Q_OS_WIN)
     font.setFamily("Microsoft YaHei");

@@ -130,7 +130,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
             connect(playAction, &QAction::triggered, [this]() {
                 Browser::instance().resolveAndPlayByMediaPlayer(m_rightClickedUrl);
             });
-            QAction* openAction = menu->addAction(tr("Open URL in Default Web Browser"));
+            QAction *openAction = menu->addAction(tr("Open URL in Default Web Browser"));
             connect(openAction, &QAction::triggered, [this](){
                 QDesktopServices::openUrl(m_rightClickedUrl);
             });
