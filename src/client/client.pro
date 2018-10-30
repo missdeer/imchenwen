@@ -86,9 +86,9 @@ macx: {
         MACDEPLOYQT = $$[QT_INSTALL_BINS]/macdeployqt
 
         translate.depends = lrelease
-        translate.files = $$system("find $$PWD/translations -name '*.qm' ")
+        translate.files = $$system("find $${PWD}/translations -name '*.qm' ")
         translate.path = Contents/Resources/translations/
-        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/imchenwen.app/Contents/Resources/)'
+        translate.commands = '$(COPY_DIR) $$shell_path($${PWD}/translations) $$shell_path($${OUT_PWD}/$${TARGET}.app/Contents/Resources/)'
         QMAKE_BUNDLE_DATA += translate
 
         deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\" -appstore-compliant
