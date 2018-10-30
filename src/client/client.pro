@@ -124,9 +124,13 @@ macx: {
     translate.path = Contents/Resources/translations/
     translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/imchenwen.app/Contents/Resources/)'
     QMAKE_BUNDLE_DATA += translate
-} win32: {
+}
+
+win32: {
     CONFIG(release, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
     else: CONFIG(debug, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
-} else {
+}
+
+unix: !macx {
     translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD)'
 }
