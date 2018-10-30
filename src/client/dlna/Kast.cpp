@@ -48,6 +48,9 @@ void Kast::onHttpResponse(const QString responseType, const QString data)
     DLNARenderer *renderer = qobject_cast<DLNARenderer *>(sender());
     qDebug() << "^Detected response type: "+responseType;
 
+    if (m_queue.isEmpty())
+        return;
+
     // Handle responses
     if(responseType == "StopResponse")
     {
