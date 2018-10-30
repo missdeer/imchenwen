@@ -1,63 +1,63 @@
 TEMPLATE = app
 TARGET = imchenwen
 QT += webengine webenginecore webenginewidgets xml concurrent
-CONFIG += c++11
+CONFIG += c++14
 
 include(Boost.pri)
 
-INCLUDEPATH += $$PWD/httpserver
+INCLUDEPATH += $$PWD/dlna
 
-HEADERS += \
-    browser.h \
-    browserwindow.h \
-    tabwidget.h \
-    urllineedit.h \
-    webview.h \
-    webpage.h \
-    webpopupwindow.h \
-    config.h \
-    waitingspinnerwidget.h \
-    linkresolver.h \
-    websites.h \
-    playdialog.h \
-    settings.h \
-    linkresolverprocess.h \
-    popupmenutoolbutton.h \
-    urlrequestinterceptor.h
+HEADERS += $$PWD/dlna/*.h \
+    $$PWD/browser.h \
+    $$PWD/browserwindow.h \
+    $$PWD/tabwidget.h \
+    $$PWD/urllineedit.h \
+    $$PWD/webview.h \
+    $$PWD/webpage.h \
+    $$PWD/webpopupwindow.h \
+    $$PWD/config.h \
+    $$PWD/waitingspinnerwidget.h \
+    $$PWD/linkresolver.h \
+    $$PWD/websites.h \
+    $$PWD/playdialog.h \
+    $$PWD/settings.h \
+    $$PWD/linkresolverprocess.h \
+    $$PWD/popupmenutoolbutton.h \
+    $$PWD/urlrequestinterceptor.h
 
-SOURCES += \
-    browser.cpp \
-    browserwindow.cpp \
-    main.cpp \
-    tabwidget.cpp \
-    urllineedit.cpp \
-    webview.cpp \
-    webpage.cpp \
-    webpopupwindow.cpp \
-    config.cpp \
-    waitingspinnerwidget.cpp \
-    linkresolver.cpp \
-    websites.cpp \
-    playdialog.cpp \
-    settings.cpp \
-    linkresolverprocess.cpp \
-    popupmenutoolbutton.cpp \
-    urlrequestinterceptor.cpp
+SOURCES += $$PWD/dlna/*.cpp \
+    $$PWD/browser.cpp \
+    $$PWD/browserwindow.cpp \
+    $$PWD/main.cpp \
+    $$PWD/tabwidget.cpp \
+    $$PWD/urllineedit.cpp \
+    $$PWD/webview.cpp \
+    $$PWD/webpage.cpp \
+    $$PWD/webpopupwindow.cpp \
+    $$PWD/config.cpp \
+    $$PWD/waitingspinnerwidget.cpp \
+    $$PWD/linkresolver.cpp \
+    $$PWD/websites.cpp \
+    $$PWD/playdialog.cpp \
+    $$PWD/settings.cpp \
+    $$PWD/linkresolverprocess.cpp \
+    $$PWD/popupmenutoolbutton.cpp \
+    $$PWD/urlrequestinterceptor.cpp
 
 FORMS += \
-    certificateerrordialog.ui \
-    passworddialog.ui \
-    playdialog.ui \
-    settings.ui
+    $$PWD/certificateerrordialog.ui \
+    $$PWD/passworddialog.ui \
+    $$PWD/playdialog.ui \
+    $$PWD/settings.ui
 
-RESOURCES += res/imchenwen.qrc
+RESOURCES += $$PWD/res/imchenwen.qrc
 
-RC_FILE = imchenwen-win.rc
+RC_FILE = $$PWD/imchenwen-win.rc
 
 CODECFORTR      = UTF-8
 CODECFORSRC     = UTF-8
-TRANSLATIONS    = translations/imchenwen_en_US.ts \
-                  translations/imchenwen_zh_CN.ts
+TRANSLATIONS    = $$PWD/translations/imchenwen_en_US.ts \
+                  $$PWD/translations/imchenwen_zh_CN.ts
 
 isEmpty(QMAKE_LUPDATE) {
     win32:QMAKE_LUPDATE = $$[QT_INSTALL_BINS]\lupdate.exe
