@@ -259,18 +259,6 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
 QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
-    QAction* aboutAction = helpMenu->addAction(tr("About..."));
-    aboutAction->setMenuRole(QAction::AboutRole);
-    connect(aboutAction, &QAction::triggered, [this]() {
-        QMessageBox::about(this,
-                           tr("About imchenwen"),
-                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."));
-    });
-
-    QAction* aboutQtAction = helpMenu->addAction(tr("About Qt..."));
-    aboutQtAction->setMenuRole(QAction::AboutQtRole);
-    connect(aboutQtAction, &QAction::triggered, [this](){QMessageBox::aboutQt(this, tr("imchenwen"));});
-
     connect(helpMenu->addAction(tr("Install Flash")), &QAction::triggered, []() {
        QDesktopServices::openUrl(QUrl("https://get.adobe.com/flashplayer/otherversions"));
     });
@@ -288,6 +276,20 @@ QMenu *BrowserWindow::createHelpMenu()
        QDesktopServices::openUrl(QUrl("https://mpc-hc.org/"));
     });
 #endif
+    helpMenu->addSeparator();
+
+    QAction* aboutAction = helpMenu->addAction(tr("About..."));
+    aboutAction->setMenuRole(QAction::AboutRole);
+    connect(aboutAction, &QAction::triggered, [this]() {
+        QMessageBox::about(this,
+                           tr("About imchenwen"),
+                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."));
+    });
+
+    QAction* aboutQtAction = helpMenu->addAction(tr("About Qt..."));
+    aboutQtAction->setMenuRole(QAction::AboutQtRole);
+    connect(aboutQtAction, &QAction::triggered, [this](){QMessageBox::aboutQt(this, tr("imchenwen"));});
+
     return helpMenu;
 }
 

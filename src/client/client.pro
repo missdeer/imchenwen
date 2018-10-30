@@ -122,6 +122,7 @@ macx: {
     translate.depends = lrelease
     translate.files = $$system("find $$PWD/translations -name '*.qm' ")
     translate.path = Contents/Resources/translations/
+    translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/imchenwen.app/Contents/Resources/)'
     QMAKE_BUNDLE_DATA += translate
 } win32: {
     CONFIG(release, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
