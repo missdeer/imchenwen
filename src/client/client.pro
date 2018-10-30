@@ -52,47 +52,7 @@ FORMS += \
 
 RESOURCES += res/imchenwen.qrc
 
-
 RC_FILE = imchenwen-win.rc
-
-macx: {
-    ICON = res/imchenwen.icns
-    icon.files += res/imchenwen128.png
-
-    CONFIG(release, debug|release) : {
-        QMAKE_INFO_PLIST = osxInfo.plist
-        MACDEPLOYQT = $$[QT_INSTALL_BINS]/macdeployqt
-
-        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\" -appstore-compliant
-
-        deploy_webengine.depends += deploy
-        deploy_webengine.commands += # $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
-
-        APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
-        INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
-        BUNDLEID = com.dfordsoft.imchenwen
-
-        codesign.depends += deploy_webengine deploy_parsed
-        codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
-
-        makedmg.depends += codesign
-        makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
-
-        QMAKE_EXTRA_TARGETS += deploy deploy_webengine codesign makedmg
-    }
-}
-
-win32: {
-        DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
-        CONFIG(release, debug|release) : {
-
-        win32-*msvc* {
-                QMAKE_CXXFLAGS += /Zi
-                QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
-        }
-        WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
-    }
-}
 
 CODECFORTR      = UTF-8
 CODECFORSRC     = UTF-8
@@ -117,18 +77,49 @@ translate.depends = lrelease
 QMAKE_EXTRA_TARGETS += lupdate lrelease translate
 POST_TARGETDEPS += translate
 
-# Mac OS X icon
 macx: {
-    translate.depends = lrelease
-    translate.files = $$system("find $$PWD/translations -name '*.qm' ")
-    translate.path = Contents/Resources/translations/
-    translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/imchenwen.app/Contents/Resources/)'
-    QMAKE_BUNDLE_DATA += translate
+    ICON = res/imchenwen.icns
+    icon.files += res/imchenwen128.png
+
+    CONFIG(release, debug|release) : {
+        QMAKE_INFO_PLIST = osxInfo.plist
+        MACDEPLOYQT = $$[QT_INSTALL_BINS]/macdeployqt
+
+        translate.depends = lrelease
+        translate.files = $$system("find $$PWD/translations -name '*.qm' ")
+        translate.path = Contents/Resources/translations/
+        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/imchenwen.app/Contents/Resources/)'
+        QMAKE_BUNDLE_DATA += translate
+
+        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\" -appstore-compliant
+
+        deploy_webengine.depends += deploy
+        deploy_webengine.commands += # $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
+
+        APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
+        INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
+        BUNDLEID = com.dfordsoft.imchenwen
+
+        codesign.depends += deploy_webengine deploy_parsed
+        codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
+
+        makedmg.depends += codesign
+        makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
+
+        QMAKE_EXTRA_TARGETS += deploy deploy_webengine codesign makedmg
+    }
 }
 
 win32: {
-    CONFIG(release, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
-    else: CONFIG(debug, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
+        DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
+        CONFIG(release, debug|release) : {
+            win32-*msvc* {
+                    QMAKE_CXXFLAGS += /Zi
+                    QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
+            }
+            WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
+            translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
+        } else: CONFIG(debug, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
 }
 
 unix: !macx {
