@@ -16,8 +16,8 @@ public:
     void addItemToQueue(QString & item_url);
     QHostAddress getLocalAddress();
 private:
-    HttpFileServer *fileServer;
-    QStringList queue;
+    HttpFileServer *m_fileServer;
+    QStringList m_queue;
 private slots:
     void foundRenderer(DLNARenderer*);
     void handleResponse(const QString, const QString);

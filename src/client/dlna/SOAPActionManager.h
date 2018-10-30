@@ -35,7 +35,7 @@ signals:
     void receivePlaybackInfo(DLNAPlaybackInfo*);
     void receivedResponse(const QString, const QString);
 private:
-    QNetworkAccessManager *mgr;
+    QNetworkAccessManager *m_nam;
 private slots:
     void processData(QNetworkReply *reply);
     void processPlaybackInfo(QNetworkReply *reply);

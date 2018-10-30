@@ -17,7 +17,7 @@ public:
     int serveFile(const QUrl & path);
     QString getFilenameFromID(const int id);
 private:
-    QMap<int, QUrl> sharedFiles;
+    QMap<int, QUrl> m_sharedFiles;
 protected:
     void incomingConnection(qintptr socketDescriptor);
 };

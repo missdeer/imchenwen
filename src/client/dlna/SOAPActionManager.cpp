@@ -4,18 +4,21 @@
 #include <QDebug>
 
 
-SOAPActionManager::SOAPActionManager(QObject *parent) : QObject(parent)
+SOAPActionManager::SOAPActionManager(QObject *parent)
+    : QObject(parent)
+    , m_nam(new QNetworkAccessManager(this))
 {
-    mgr = new QNetworkAccessManager(this);
 }
 
 void SOAPActionManager::doAction(const QString &action, const QMap<QString, QString> &dataMap, const QUrl &controlUrl)
 {
     QNetworkRequest request;
     // Build xml data string
-    QString actionData = "";
-    if (!dataMap.isEmpty() || !dataMap.isDetached()) {
-        for (const QString &key : dataMap.keys()) {
+    QString actionData;
+    if (!dataMap.isEmpty() || !dataMap.isDetached())
+    {
+        for (const QString &key : dataMap.keys())
+        {
             actionData.append("<" + key + ">");
             actionData.append(dataMap.value(key));
             actionData.append("</" + key + ">");
@@ -33,11 +36,11 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     // If you want to add new action, which needs data processing, do it here.
 
     if (action == "GetPositionInfo")
-        connect(mgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
+        connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
 
-    else connect(mgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
+    else connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
 
-    mgr->post(request, data.toUtf8());
+    m_nam->post(request, data.toUtf8());
 }
 
 void SOAPActionManager::processData(QNetworkReply *reply)
@@ -46,7 +49,7 @@ void SOAPActionManager::processData(QNetworkReply *reply)
     reply->close();
 
     // We want to be able to connect it to few slots, so lets disconnect it for now
-    disconnect(mgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
+    disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
 
     qDebug() << "SOAPActionManager: Got xml response " + data;
     // Initial value, used if response type is not detected
@@ -70,7 +73,7 @@ void SOAPActionManager::processPlaybackInfo(QNetworkReply *reply)
     reply->close();
 
     // We want to be able to connect it to few slots, so lets disconnect it for now
-    disconnect(mgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
+    disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
 
     DLNAPlaybackInfo playbackInfo;
     // Parse return url

@@ -24,7 +24,7 @@ public slots:
 signals:
 
 private:
-    QTcpSocket *socket;
+    QTcpSocket *m_socket;
 };
 
 #endif // HTTPFILECLIENT_H

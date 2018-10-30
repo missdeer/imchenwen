@@ -16,7 +16,7 @@ public:
     QUrl getUrl();
     QString getControlUrl();
     QString getName();
-    DLNARendererIcon icon;
+    DLNARendererIcon m_icon;
     
     void setName(const QString & name);
     void setControlUrl(const QString & name);
@@ -34,9 +34,10 @@ public:
     void previousItem();
     void queryPlaybackInfo();
 private:
-    SOAPActionManager *sam;
-    QUrl serverUrl, fullcontrolUrl;
-    QString serverName;
+    SOAPActionManager *m_sam;
+    QUrl m_serverUrl;
+    QUrl m_fullcontrolUrl;
+    QString m_serverName;
 signals:
     void receivePlaybackInfo(DLNAPlaybackInfo*);
     void receivedResponse(const QString, const QString);

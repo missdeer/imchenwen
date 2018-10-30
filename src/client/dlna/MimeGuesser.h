@@ -13,7 +13,7 @@ public:
     QString fileMimeType(QFileInfo fileInfo);
     Q_INVOKABLE QString getMediaType(const QString & filePath);
 private:
-    QMimeDatabase mimedb;
+    QMimeDatabase m_mimedb;
 };
 
 #endif // MIMEGUESSER_H

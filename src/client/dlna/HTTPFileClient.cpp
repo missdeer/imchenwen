@@ -21,16 +21,16 @@ void HttpFileClient::setFileStack(QMap<int, QUrl> stack)
 
 void HttpFileClient::setSocket(qintptr descriptor)
 {
-    socket = new QTcpSocket(this);
+    m_socket = new QTcpSocket(this);
 
     qDebug() << "FileServer: New connection session started";
 
-    connect(socket, SIGNAL(connected()), this, SLOT(connected()));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
-    connect(socket, SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
+    connect(m_socket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(m_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(m_socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
+    connect(m_socket, SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
 
-    socket->setSocketDescriptor(descriptor);
+    m_socket->setSocketDescriptor(descriptor);
 }
 
 void HttpFileClient::connected()
@@ -47,17 +47,17 @@ void HttpFileClient::bytesWritten(qint64 /*bytes*/)
 {
     if (writtenAction == "SENDDATA")
     {
-        if (!file->atEnd() && socket->state() == QTcpSocket::ConnectedState)
+        if (!file->atEnd() && m_socket->state() == QTcpSocket::ConnectedState)
         {
             // Send part of file to client
             qint64 read = file->read(block.data(), 65536);
-            socket->write(block, read);
+            m_socket->write(block, read);
         } else {
-            socket->close();
+            m_socket->close();
             file->close();
         }
     }
-    else socket->disconnectFromHost();
+    else m_socket->disconnectFromHost();
 }
 
 
@@ -70,9 +70,9 @@ void HttpFileClient::readyRead()
     QString requestType; // Request handled for now - GET and HEAD
 
     // Read client's request
-    while(!socket->atEnd())
+    while(!m_socket->atEnd())
     {
-        QString line = socket->readLine();
+        QString line = m_socket->readLine();
 
         // Get type of request
         if(line.startsWith("GET /")) requestType = "GET";
@@ -101,7 +101,7 @@ void HttpFileClient::readyRead()
                 qDebug() << "File not valid: " + fileName;
 
                 writtenAction = "DISCONNECT";
-                socket->write("HTTP/1.0 404 NOT FOUND\r\n");
+                m_socket->write("HTTP/1.0 404 NOT FOUND\r\n");
                 return;
             }
         }
@@ -167,11 +167,11 @@ void HttpFileClient::readyRead()
         else writtenAction = "DISCONNECT";
 
         // Write header to client
-        socket->write(header.toUtf8());
+        m_socket->write(header.toUtf8());
     }
     else {
         // Send 404 if path is not valid
         writtenAction = "DISCONNECT";
-        socket->write("HTTP/1.0 404 NOT FOUND\r\n");
+        m_socket->write("HTTP/1.0 404 NOT FOUND\r\n");
     }
 }

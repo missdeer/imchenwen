@@ -17,10 +17,10 @@ private slots:
     void processData(QNetworkReply*);
     void processPendingDatagrams();
 private:
-    QNetworkAccessManager *nmgr;
-    QUdpSocket *udpSocket;
-    QSet<QString> known_urls;
-    QList<DLNARenderer*> known_renderers;
+    QNetworkAccessManager *m_nam;
+    QUdpSocket *m_multicastUdpSocket;
+    QSet<QString> m_knownURLs;
+    QList<DLNARenderer*> m_knownRenderers;
 signals:
     void foundRenderer(DLNARenderer *renderer);
 };

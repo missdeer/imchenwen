@@ -7,8 +7,8 @@ Kast::Kast(QObject *parent) : QObject(parent)
 {
     qDebug() << "Starting server...";
 
-    fileServer = new HttpFileServer();
-    fileServer->startServer();
+    m_fileServer = new HttpFileServer();
+    m_fileServer->startServer();
     SSDPdiscovery *discovery = new SSDPdiscovery(this);
     connect(discovery, SIGNAL(foundRenderer(DLNARenderer*)), this, SLOT(foundRenderer(DLNARenderer*)));
     // Start SSDP discovery
@@ -17,7 +17,7 @@ Kast::Kast(QObject *parent) : QObject(parent)
 
 void Kast::addItemToQueue(QString &item_url)
 {
-    queue.append(item_url);
+    m_queue.append(item_url);
 }
 
 void Kast::foundRenderer(DLNARenderer *renderer)
@@ -52,14 +52,14 @@ void Kast::handleResponse(const QString responseType, const QString data)
     if(responseType == "StopResponse")
     {
         // Host file, and send its url to renderer
-        int id = fileServer->serveFile(QUrl(queue[0])); // File to serve
+        int id = m_fileServer->serveFile(QUrl(m_queue[0])); // File to serve
 
-        QString fileName = fileServer->getFilenameFromID(id),
+        QString fileName = m_fileServer->getFilenameFromID(id),
                 local_address = getLocalAddress().toString(),
                 port_number = QString::number(port);
 
         renderer->setPlaybackUrl(QUrl(QString("http://%1:%2/%3/%4").arg(local_address, port_number,QString::number(id), fileName)),
-                                 QFileInfo(queue[0]));
+                                 QFileInfo(m_queue[0]));
 
     }
     else if(responseType == "SetAVTransportURIResponse")

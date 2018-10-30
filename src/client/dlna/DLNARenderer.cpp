@@ -3,21 +3,21 @@
 
 #include <QDebug>
 
-DLNARenderer::DLNARenderer(QUrl url, QObject *parent) : QObject(parent), sam(new SOAPActionManager()), serverUrl(url) {
+DLNARenderer::DLNARenderer(QUrl url, QObject *parent) : QObject(parent), m_sam(new SOAPActionManager()), m_serverUrl(url) {
     // Pass SOAPActionManager's signals to parent class
-    connect(sam, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)), this, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)));
-    connect(sam, SIGNAL(receivedResponse(const QString,const QString)), this, SIGNAL(receivedResponse(const QString, const QString)));
+    connect(m_sam, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)), this, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)));
+    connect(m_sam, SIGNAL(receivedResponse(const QString,const QString)), this, SIGNAL(receivedResponse(const QString, const QString)));
 }
 
-QString DLNARenderer::getName() { return serverName; }
-QUrl DLNARenderer::getUrl() { return serverUrl; }
+QString DLNARenderer::getName() { return m_serverName; }
+QUrl DLNARenderer::getUrl() { return m_serverUrl; }
 
-void DLNARenderer::setName(const QString & name) { serverName = name; }
+void DLNARenderer::setName(const QString & name) { m_serverName = name; }
 
 void DLNARenderer::setControlUrl(const QString & url)
 {
-    fullcontrolUrl = serverUrl;
-    fullcontrolUrl.setPath(url);
+    m_fullcontrolUrl = m_serverUrl;
+    m_fullcontrolUrl.setPath(url);
 }
 
 void DLNARenderer::setPlaybackUrl(const QUrl & url, const QFileInfo &fileInfo)
@@ -26,11 +26,11 @@ void DLNARenderer::setPlaybackUrl(const QUrl & url, const QFileInfo &fileInfo)
     // Add URI to request, URL-encode it
     QString urlString = url.toString().replace(url.fileName(), QString(QUrl::toPercentEncoding(url.fileName())));
     dataMap.insert("CurrentURI", urlString);
-    dataMap.insert("CurrentURIMetaData",sam->generateMetadata(fileInfo, urlString));
-    sam->doAction(
+    dataMap.insert("CurrentURIMetaData",m_sam->generateMetadata(fileInfo, urlString));
+    m_sam->doAction(
                 "SetAVTransportURI", // Action
                 dataMap,  // Action Data
-                fullcontrolUrl); // Control url
+                m_fullcontrolUrl); // Control url
 }
 
 void DLNARenderer::setNextPlaybackUrl(const QUrl & url)
@@ -40,29 +40,29 @@ void DLNARenderer::setNextPlaybackUrl(const QUrl & url)
     QString urlString = url.toString().replace(url.fileName(), QString(QUrl::toPercentEncoding(url.fileName())));
     dataMap.insert("NextURI", urlString);
     dataMap.insert("NextURIMetaData", "");
-    sam->doAction("SetNextAVTransportURI", dataMap, fullcontrolUrl);
+    m_sam->doAction("SetNextAVTransportURI", dataMap, m_fullcontrolUrl);
 }
 
 void DLNARenderer::queryPlaybackInfo()
 {
-    sam->doAction("GetPositionInfo", QMap<QString, QString>(), fullcontrolUrl);
+    m_sam->doAction("GetPositionInfo", QMap<QString, QString>(), m_fullcontrolUrl);
 }
 
 void DLNARenderer::playPlayback()
 {
     QMap<QString, QString> dataMap;
     dataMap.insert("Speed", "1");
-    sam->doAction("Play", dataMap, fullcontrolUrl);
+    m_sam->doAction("Play", dataMap, m_fullcontrolUrl);
 }
 
 void DLNARenderer::pausePlayback()
 {
-    sam->doAction("Pause", QMap<QString, QString>(), fullcontrolUrl);
+    m_sam->doAction("Pause", QMap<QString, QString>(), m_fullcontrolUrl);
 }
 
 void DLNARenderer::stopPlayback()
 {
-    sam->doAction("Stop", QMap<QString, QString>(), fullcontrolUrl);
+    m_sam->doAction("Stop", QMap<QString, QString>(), m_fullcontrolUrl);
 }
 
 void DLNARenderer::seekPlayback(QTime time)
@@ -71,15 +71,15 @@ void DLNARenderer::seekPlayback(QTime time)
     dataMap.insert("InstanceID", "0");
     dataMap.insert("Unit", "REL_TIME");
     dataMap.insert("Target", time.toString());
-    sam->doAction("Seek", dataMap, fullcontrolUrl);
+    m_sam->doAction("Seek", dataMap, m_fullcontrolUrl);
 }
 
 void DLNARenderer::previousItem()
 {
-    sam->doAction("Previous", QMap<QString, QString>(), fullcontrolUrl);
+    m_sam->doAction("Previous", QMap<QString, QString>(), m_fullcontrolUrl);
 }
 
 void DLNARenderer::nextItem()
 {
-    sam->doAction("Next", QMap<QString, QString>(), fullcontrolUrl);
+    m_sam->doAction("Next", QMap<QString, QString>(), m_fullcontrolUrl);
 }

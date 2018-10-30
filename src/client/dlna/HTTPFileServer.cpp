@@ -16,17 +16,17 @@ void HttpFileServer::startServer()
 void HttpFileServer::incomingConnection(qintptr socketDescriptor)
 {
     HttpFileClient *client = new HttpFileClient(this);
-    client->setFileStack(sharedFiles);
+    client->setFileStack(m_sharedFiles);
     client->setSocket(socketDescriptor);
 }
 
 int HttpFileServer::serveFile(const QUrl & path)
 {
-    sharedFiles.insert(sharedFiles.count(), path);
-    return sharedFiles.count() - 1;
+    m_sharedFiles.insert(m_sharedFiles.count(), path);
+    return m_sharedFiles.count() - 1;
 }
 
 QString HttpFileServer::getFilenameFromID(const int id)
 {
-    return QUrl(sharedFiles[id]).fileName();
+    return QUrl(m_sharedFiles[id]).fileName();
 }

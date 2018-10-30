@@ -7,8 +7,10 @@
 struct DLNARendererIcon
 {
     // Default value
-    int width=0, height=0;
-    QString mimetype, url;
+    int width=0;
+    int height=0;
+    QString mimetype;
+    QString url;
 };
 
 #endif // DLNARENDERERICON_H

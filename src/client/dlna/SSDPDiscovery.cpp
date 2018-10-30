@@ -1,11 +1,11 @@
 #include "SSDPDiscovery.h"
 
 // DLNA renderers discovery class
-SSDPdiscovery::SSDPdiscovery(QObject *parent) : QObject(parent)
+SSDPdiscovery::SSDPdiscovery(QObject *parent)
+    : QObject(parent)
+    , m_nam(new QNetworkAccessManager(this))
 {
-    // Create network manager, for quering info of renderers, and connect signal
-    nmgr = new QNetworkAccessManager(this);
-    connect(nmgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
+    connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
 }
 
 // Starts SSDP discovery. Dont call it, when you have IP adress specified, just procced to ->findRendererFromUrl
@@ -14,11 +14,11 @@ void SSDPdiscovery::run()
     // DLNA discovery adress
     QHostAddress groupAddress = QHostAddress("239.255.255.250");
 
-    udpSocket = new QUdpSocket(this);
-    udpSocket->bind(QHostAddress::AnyIPv4, 1901, QUdpSocket::ShareAddress);
-    udpSocket->joinMulticastGroup(groupAddress);
+    m_multicastUdpSocket = new QUdpSocket(this);
+    m_multicastUdpSocket->bind(QHostAddress::AnyIPv4, 1901, QUdpSocket::ShareAddress);
+    m_multicastUdpSocket->joinMulticastGroup(groupAddress);
 
-    connect(udpSocket, SIGNAL(readyRead()),
+    connect(m_multicastUdpSocket, SIGNAL(readyRead()),
             this, SLOT(processPendingDatagrams()));
 
     QByteArray datagram;
@@ -28,46 +28,38 @@ void SSDPdiscovery::run()
     datagram.append( "MX: 5\nMan: \"ssdp:discover\"\r\n" );
     datagram.append( "ST: urn:schemas-upnp-org:device:MediaRenderer:1\r\n\r\n" );
 
-    udpSocket->writeDatagram(datagram.data(), datagram.size(), groupAddress, 1900);
+    m_multicastUdpSocket->writeDatagram(datagram.data(), datagram.size(), groupAddress, 1900);
 }
 
 // Process received datagrams, and get IP of DLNA DMR
 void SSDPdiscovery::processPendingDatagrams()
 {
-    while(udpSocket->hasPendingDatagrams())
+    while(m_multicastUdpSocket->hasPendingDatagrams())
     {
-        QNetworkDatagram datagram = udpSocket->receiveDatagram();
+        QNetworkDatagram datagram = m_multicastUdpSocket->receiveDatagram();
         QStringList list = QString(datagram.data()).split("\r\n");
-
-        for(auto i : list)
-        {
-            // Get url of ip of renderer, send request to get more data
-            if(i.toLower().startsWith("location:"))
-            {
-                findRendererFromUrl(QUrl(i.mid(10).simplified()));
-                break;
-            }
-        }
+        auto it = std::find_if(list.begin(), list.end(), [](const QString& i) {
+            return i.toLower().startsWith("location:");
+        });
+        if (list.end() != it)
+            findRendererFromUrl(QUrl(it->mid(10).simplified()));
     }
 }
 
 void SSDPdiscovery::findRendererFromUrl(const QUrl & url)
 {
     // Query renderer info
-    nmgr->get(QNetworkRequest(url));
+    m_nam->get(QNetworkRequest(url));
 }
 
 // This function process request data, into DLNA Renderer
 void SSDPdiscovery::processData(QNetworkReply *reply)
 {
     QXmlStreamReader xml(reply->readAll());
-
-    if(!known_urls.contains(reply->url().toString()))
+    if(!m_knownURLs.contains(reply->url().toString()))
     {
         // Construct renderer object
         DLNARenderer *renderer = new DLNARenderer(reply->url(), this);
-
-        reply->close();
 
         // Parse return url
         while(!xml.hasError() && !xml.atEnd())
@@ -96,14 +88,15 @@ void SSDPdiscovery::processData(QNetworkReply *reply)
                     xml.readNextStartElement();
                 }
                 // Choose the largest icon
-                if(renderer->icon.width < icon.width) renderer->icon = icon;
+                if(renderer->m_icon.width < icon.width) renderer->m_icon = icon;
             }
         }
 
-        known_urls.insert(renderer->getUrl().toString());
-        known_renderers.append(renderer);
+        m_knownURLs.insert(renderer->getUrl().toString());
+        m_knownRenderers.append(renderer);
         emit foundRenderer(renderer);
     }
-    else
-        reply->close();
+
+    reply->close();
+    reply->deleteLater();
 }
