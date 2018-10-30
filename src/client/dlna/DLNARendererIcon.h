@@ -1,5 +1,8 @@
 #ifndef DLNARENDERERICON_H
 #define DLNARENDERERICON_H
+
+#include <QString>
+
 // Container for DLNARenderer's Icon information
 struct DLNARendererIcon
 {
@@ -7,4 +10,5 @@ struct DLNARendererIcon
     int width=0, height=0;
     QString mimetype, url;
 };
+
 #endif // DLNARENDERERICON_H

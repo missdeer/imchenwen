@@ -11,7 +11,7 @@ class HttpFileServer : public QTcpServer
 {
     Q_OBJECT
 public:
-    explicit HttpFileServer(QObject *parent = 0);
+    explicit HttpFileServer(QObject *parent = nullptr);
     void startServer();
     // Adds file to server stack and returns the ID of added file
     int serveFile(const QUrl & path);

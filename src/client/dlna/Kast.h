@@ -12,7 +12,7 @@ class Kast : public QObject
 {
     Q_OBJECT
 public:
-    Kast(QObject *parent = 0);
+    Kast(QObject *parent = nullptr);
     void addItemToQueue(QString & item_url);
     QHostAddress getLocalAddress();
 private:

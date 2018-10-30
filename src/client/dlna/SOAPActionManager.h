@@ -31,7 +31,7 @@ class SOAPActionManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit SOAPActionManager(QObject *parent = 0);
+    explicit SOAPActionManager(QObject *parent = nullptr);
     void doAction(const QString &action, const QMap<QString, QString> &dataMap, const QUrl &controlUrl);
     QString generateMetadata(const QFileInfo &fileInfo, const QString & address);
 signals:

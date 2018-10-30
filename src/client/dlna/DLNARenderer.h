@@ -11,7 +11,7 @@ class DLNARenderer : public QObject
 {
     Q_OBJECT
 public:
-    explicit DLNARenderer(QUrl url, QObject *parent = 0);
+    explicit DLNARenderer(QUrl url, QObject *parent = nullptr);
     
     QUrl getUrl();
     QString getControlUrl();

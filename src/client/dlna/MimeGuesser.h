@@ -9,7 +9,7 @@ class MimeGuesser : public QObject
 {
     Q_OBJECT
 public:
-    explicit MimeGuesser(QObject *parent = 0);
+    explicit MimeGuesser(QObject *parent = nullptr);
     QString fileMimeType(QFileInfo fileInfo);
     Q_INVOKABLE QString getMediaType(const QString & filePath);
 private:

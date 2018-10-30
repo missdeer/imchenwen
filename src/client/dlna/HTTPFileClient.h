@@ -8,7 +8,7 @@ class HttpFileClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit HttpFileClient(QObject *parent = 0);
+    explicit HttpFileClient(QObject *parent = nullptr);
     void setSocket(qintptr descriptor);
     void setFileStack(QMap<int, QUrl>);
 private:

@@ -10,7 +10,7 @@ class SSDPdiscovery : public QObject
 {
     Q_OBJECT
 public:
-    explicit SSDPdiscovery(QObject *parent = 0);
+    explicit SSDPdiscovery(QObject *parent = nullptr);
     void findRendererFromUrl(const QUrl & url);
     void run();
 private slots:
