@@ -19,7 +19,7 @@ private:
     HttpFileServer *m_fileServer;
     QStringList m_queue;
 private slots:
-    void foundRenderer(DLNARenderer*);
-    void handleResponse(const QString, const QString);
+    void onFoundRenderer(DLNARenderer*);
+    void onHttpResponse(const QString, const QString);
 };
 #endif // KAST_H

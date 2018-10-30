@@ -10,20 +10,20 @@ Kast::Kast(QObject *parent) : QObject(parent)
     m_fileServer = new HttpFileServer();
     m_fileServer->startServer();
     SSDPdiscovery *discovery = new SSDPdiscovery(this);
-    connect(discovery, SIGNAL(foundRenderer(DLNARenderer*)), this, SLOT(foundRenderer(DLNARenderer*)));
+    connect(discovery, SIGNAL(foundRenderer(DLNARenderer*)), this, SLOT(onFoundRenderer(DLNARenderer*)));
     // Start SSDP discovery
     discovery->run();
 }
 
-void Kast::addItemToQueue(QString &item_url)
+void Kast::addItemToQueue(QString &itemUrl)
 {
-    m_queue.append(item_url);
+    m_queue.append(itemUrl);
 }
 
-void Kast::foundRenderer(DLNARenderer *renderer)
+void Kast::onFoundRenderer(DLNARenderer *renderer)
 {
     qDebug() << "Renderer found: " + renderer->getName();
-    connect(renderer, SIGNAL(receivedResponse(QString,QString)), this, SLOT(handleResponse(QString,QString)));
+    connect(renderer, SIGNAL(receivedResponse(QString,QString)), this, SLOT(onHttpResponse(QString,QString)));
     // Stop playback. Responses will be handled in handleResponse
     renderer->stopPlayback();
 }
@@ -41,7 +41,7 @@ QHostAddress Kast::getLocalAddress()
     return QHostAddress();
 }
 
-void Kast::handleResponse(const QString responseType, const QString data)
+void Kast::onHttpResponse(const QString responseType, const QString data)
 {
     Q_UNUSED(data); //May be needed in the future
     // Get renderer object
@@ -55,10 +55,10 @@ void Kast::handleResponse(const QString responseType, const QString data)
         int id = m_fileServer->serveFile(QUrl(m_queue[0])); // File to serve
 
         QString fileName = m_fileServer->getFilenameFromID(id),
-                local_address = getLocalAddress().toString(),
-                port_number = QString::number(port);
+                localAddress = getLocalAddress().toString(),
+                portNumber = QString::number(port);
 
-        renderer->setPlaybackUrl(QUrl(QString("http://%1:%2/%3/%4").arg(local_address, port_number,QString::number(id), fileName)),
+        renderer->setPlaybackUrl(QUrl(QString("http://%1:%2/%3/%4").arg(localAddress, portNumber,QString::number(id), fileName)),
                                  QFileInfo(m_queue[0]));
 
     }

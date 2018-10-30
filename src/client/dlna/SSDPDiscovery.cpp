@@ -31,6 +31,11 @@ void SSDPdiscovery::run()
     m_multicastUdpSocket->writeDatagram(datagram.data(), datagram.size(), groupAddress, 1900);
 }
 
+QList<DLNARenderer *> &SSDPdiscovery::renderers()
+{
+    return m_knownRenderers;
+}
+
 // Process received datagrams, and get IP of DLNA DMR
 void SSDPdiscovery::processPendingDatagrams()
 {

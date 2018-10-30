@@ -3,16 +3,30 @@
 
 #include <QDebug>
 
-DLNARenderer::DLNARenderer(QUrl url, QObject *parent) : QObject(parent), m_sam(new SOAPActionManager()), m_serverUrl(url) {
+DLNARenderer::DLNARenderer(QUrl url, QObject *parent)
+    : QObject(parent)
+    , m_sam(new SOAPActionManager())
+    , m_serverUrl(url)
+{
     // Pass SOAPActionManager's signals to parent class
     connect(m_sam, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)), this, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)));
     connect(m_sam, SIGNAL(receivedResponse(const QString,const QString)), this, SIGNAL(receivedResponse(const QString, const QString)));
 }
 
-QString DLNARenderer::getName() { return m_serverName; }
-QUrl DLNARenderer::getUrl() { return m_serverUrl; }
+QString DLNARenderer::getName()
+{
+    return m_serverName;
+}
 
-void DLNARenderer::setName(const QString & name) { m_serverName = name; }
+QUrl DLNARenderer::getUrl()
+{
+    return m_serverUrl;
+}
+
+void DLNARenderer::setName(const QString & name)
+{
+    m_serverName = name;
+}
 
 void DLNARenderer::setControlUrl(const QString & url)
 {

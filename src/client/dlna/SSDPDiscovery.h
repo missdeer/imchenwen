@@ -13,6 +13,7 @@ public:
     explicit SSDPdiscovery(QObject *parent = nullptr);
     void findRendererFromUrl(const QUrl & url);
     void run();
+    QList<DLNARenderer *> &renderers();
 private slots:
     void processData(QNetworkReply*);
     void processPendingDatagrams();
