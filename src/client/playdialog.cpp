@@ -110,7 +110,7 @@ void PlayDialog::doOk()
                 }
             }
         }
-        m_selectedPlayer = std::make_tuple(playerPath, "--vo=direct3d --hwdec=dxva2 --ytdl=no --fs");
+        m_selectedPlayer = std::make_tuple(playerPath, "--vo=direct3d --hwdec=auto --hwdec-codecs=all --ytdl=no --fs");
 #elif defined(Q_OS_MAC)
         QString playerPath("/usr/local/bin/mpv");
         if (!QFile::exists(playerPath))
@@ -127,7 +127,7 @@ void PlayDialog::doOk()
                 }
             }
         }
-        m_selectedPlayer = std::make_tuple(playerPath, "--vo=opengl --hwdec=videotoolbox --ytdl=no --fs");
+        m_selectedPlayer = std::make_tuple(playerPath, "--vo=opengl --hwdec=auto --hwdec-codecs=all --ytdl=no --fs");
 #endif
     }
     else
