@@ -305,12 +305,12 @@ There are %1 tabs open.</source>
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="671"/>
+        <location filename="../browserwindow.cpp" line="680"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="675"/>
+        <location filename="../browserwindow.cpp" line="684"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>

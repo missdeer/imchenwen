@@ -20,5 +20,6 @@
         <file>play.png</file>
         <file>playvip.png</file>
         <file>playtv.png</file>
+        <file>vipplaying.html</file>
     </qresource>
 </RCC>

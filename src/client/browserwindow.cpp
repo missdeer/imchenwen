@@ -621,20 +621,29 @@ bool BrowserWindow::isCurrentVIPVideo()
 
 void BrowserWindow::recoverCurrentTabUrl()
 {
-    QString u = currentTab()->url().toString();
-
-    Config cfg;
-    Tuple2List vipVideos;
-    cfg.read("vipVideo", vipVideos);
-
-    auto it = std::find_if(vipVideos.begin(), vipVideos.end(), [&u](const Tuple2& vv){
-        return u.startsWith(std::get<1>(vv));
-    });
-    if (vipVideos.end() != it)
+    QFile f(":/vipplaying.html");
+    if (f.open(QIODevice::ReadOnly))
     {
-        u = u.right(u.length() - std::get<1>(*it).length());
+        QByteArray data = f.readAll();
+        f.close();
+        QString u = currentTab()->url().toString();
+
+        Config cfg;
+        Tuple2List vipVideos;
+        cfg.read("vipVideo", vipVideos);
+
+        auto it = std::find_if(vipVideos.begin(), vipVideos.end(), [&u](const Tuple2& vv){
+            return u.startsWith(std::get<1>(vv));
+        });
+        if (vipVideos.end() != it)
+        {
+            u = u.right(u.length() - std::get<1>(*it).length());
+        }
+
+        QString c = QString(data).arg(u);
+        auto v = m_tabWidget->currentWebView();
+        v->setHtml(c, QUrl("qrc:///vipplaying.html"));
     }
-    loadPage(u);
 }
 
 void BrowserWindow::loadPage(const QString &page)
