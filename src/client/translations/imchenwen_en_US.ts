@@ -50,7 +50,7 @@
     <message>
         <location filename="../browserwindow.cpp" line="78"/>
         <location filename="../browserwindow.cpp" line="291"/>
-        <location filename="../browserwindow.cpp" line="551"/>
+        <location filename="../browserwindow.cpp" line="554"/>
         <source>imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -278,38 +278,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="553"/>
+        <location filename="../browserwindow.cpp" line="556"/>
         <source>%1 - imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="565"/>
+        <location filename="../browserwindow.cpp" line="568"/>
         <source>Open Web Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="566"/>
+        <location filename="../browserwindow.cpp" line="569"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="575"/>
+        <location filename="../browserwindow.cpp" line="578"/>
         <source>Confirm close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="576"/>
+        <location filename="../browserwindow.cpp" line="579"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="668"/>
+        <location filename="../browserwindow.cpp" line="671"/>
         <source>Stop loading the current page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="672"/>
+        <location filename="../browserwindow.cpp" line="675"/>
         <source>Reload the current page</source>
         <translation type="unfinished"></translation>
     </message>

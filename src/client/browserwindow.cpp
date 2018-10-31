@@ -496,7 +496,10 @@ void BrowserWindow::onShortcut()
     auto url = action->data().toString();
     if (!url.isEmpty())
     {
-        m_tabWidget->navigateInNewTab(url);
+        if (m_tabWidget->currentWebView()->url().url().isEmpty())
+            loadPage(url);
+        else
+            m_tabWidget->navigateInNewTab(url);
     }
 }
 

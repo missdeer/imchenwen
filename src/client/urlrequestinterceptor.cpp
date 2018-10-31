@@ -21,6 +21,7 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
     case QWebEngineUrlRequestInfo::ResourceTypeFavicon:
     case QWebEngineUrlRequestInfo::ResourceTypeXhr:
     case QWebEngineUrlRequestInfo::ResourceTypePing:
+    case QWebEngineUrlRequestInfo::ResourceTypePluginResource:
         return;
     default:
         break;
@@ -32,7 +33,7 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
-    if ((u.hasQuery() || u.url().length() > 80) && (path.endsWith("mp4") || path.endsWith("flv")))
+    if ((u.hasQuery() || u.url().length() > 60) && (path.endsWith("mp4") || path.endsWith("flv")))
     {
         emit maybeMediaUrl(request.requestUrl().url());
         return;
