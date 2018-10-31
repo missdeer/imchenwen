@@ -24,19 +24,19 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 {
     for (auto stream : mi->ykdl)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by ykdl"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by ykdl"), Qt::white);
     }
     for (auto stream : mi->you_get)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by you-get"/*  + "\n"+ stream->urls.join("\n")*/, QColor(0xf0f0f0));
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by you-get"), QColor(0xf0f0f0));
     }
     for (auto stream : mi->youtube_dl)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by youtube-dl"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by youtube-dl"), Qt::white);
     }
     for (auto stream : mi->annie)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + " - by annie"/*  + "\n"+ stream->urls.join("\n")*/, Qt::white);
+        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by annie"), QColor(0xf0f0f0));
     }
     ui->listMedia->setCurrentRow(0);
     m_mediaInfo = mi;

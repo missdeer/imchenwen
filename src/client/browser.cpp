@@ -211,6 +211,59 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
     }
 }
 
+void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
+{
+    PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    dlg.setMediaInfo(mi);
+    if (dlg.exec())
+    {
+        Tuple2 player = dlg.player();
+        StreamInfoPtr stream = dlg.media();
+
+        m_playerProcess.kill();
+        waiting(false);
+        QStringList args;
+#if defined(Q_OS_MAC)
+        QFileInfo fi(std::get<0>(player));
+        if (fi.suffix() == "app")
+        {
+            m_playerProcess.setProgram("/usr/bin/open");
+            args << std::get<0>(player) << "--args";
+        }
+#endif
+        QString arg = std::get<1>(player);
+        if (!arg.isEmpty())
+            args << arg.split(" ");
+
+        for (QString& a : args)
+        {
+            if (a == "{{referrer}}")
+                a = mi->url;
+            else if (a == "{{title}}")
+                a = mi->title;
+            else if (a == "{{site}}")
+                a = mi->site;
+            else if (a == "{{user-agent}}")
+                a = Config().read<QString>(QLatin1String("httpUserAgent"));
+        }
+
+        args << stream->urls;
+        //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
+        m_playerProcess.setArguments(args);
+
+#if defined(Q_OS_MAC)
+        if (fi.suffix() == "app")
+        {
+            m_playerProcess.setProgram("/usr/bin/open");
+            return;
+        }
+#endif
+        m_playerProcess.setProgram(std::get<0>(player));
+        m_playerProcess.start();
+        minimizeWindows();
+    }
+}
+
 void Browser::onClipboardChanged()
 {
     QClipboard *clipboard = QApplication::clipboard();
@@ -315,59 +368,6 @@ void Browser::minimizeWindows()
             m_windowsState[w] = isNormal;
             w->showMinimized();
         }
-    }
-}
-
-void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
-{
-    PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    dlg.setMediaInfo(mi);
-    if (dlg.exec())
-    {
-        Tuple2 player = dlg.player();
-        StreamInfoPtr stream = dlg.media();
-
-        m_playerProcess.kill();
-        waiting(false);
-        QStringList args;
-#if defined(Q_OS_MAC)
-        QFileInfo fi(std::get<0>(player));
-        if (fi.suffix() == "app")
-        {
-            m_playerProcess.setProgram("/usr/bin/open");
-            args << std::get<0>(player) << "--args";
-        }
-#endif
-        QString arg = std::get<1>(player);
-        if (!arg.isEmpty())
-            args << arg.split(" ");
-
-        for (QString& a : args)
-        {
-            if (a == "{{referrer}}")
-                a = mi->url;
-            else if (a == "{{title}}")
-                a = mi->title;
-            else if (a == "{{site}}")
-                a = mi->site;
-            else if (a == "{{user-agent}}")
-                a = Config().read<QString>(QLatin1String("httpUserAgent"));
-        }
-
-        args << stream->urls;
-        //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
-        m_playerProcess.setArguments(args);
-
-#if defined(Q_OS_MAC)
-        if (fi.suffix() == "app")
-        {
-            m_playerProcess.setProgram("/usr/bin/open");
-            return;
-        }
-#endif
-        m_playerProcess.setProgram(std::get<0>(player));
-        m_playerProcess.start();
-        minimizeWindows();
     }
 }
 

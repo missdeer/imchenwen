@@ -401,6 +401,26 @@ Do you wish to override the security check and continue ?   </source>
         <translation>取消</translation>
     </message>
     <message>
+        <location filename="../playdialog.cpp" line="27"/>
+        <source> - by ykdl</source>
+        <translation> - 由ykdl提供解析服务</translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="31"/>
+        <source> - by you-get</source>
+        <translation> - 由you-get提供解析服务</translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="35"/>
+        <source> - by youtube-dl</source>
+        <translation> - 由youtube-dl提供解析服务</translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="39"/>
+        <source> - by annie</source>
+        <translation> - 由annie提供解析服务</translation>
+    </message>
+    <message>
         <location filename="../playdialog.cpp" line="79"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>

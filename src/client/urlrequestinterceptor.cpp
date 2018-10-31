@@ -10,6 +10,7 @@ UrlRequestInterceptor::UrlRequestInterceptor(QObject *parent)
 
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
 {
+    //qDebug() << "1st" <<request.resourceType() << request.requestUrl();
     switch (request.resourceType()) {
     case QWebEngineUrlRequestInfo::ResourceTypeMainFrame:
     case QWebEngineUrlRequestInfo::ResourceTypeSubFrame:
@@ -21,8 +22,11 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
     case QWebEngineUrlRequestInfo::ResourceTypeFavicon:
     case QWebEngineUrlRequestInfo::ResourceTypeXhr:
     case QWebEngineUrlRequestInfo::ResourceTypePing:
-    case QWebEngineUrlRequestInfo::ResourceTypePluginResource:
         return;
+    case QWebEngineUrlRequestInfo::ResourceTypePluginResource:
+    case QWebEngineUrlRequestInfo::ResourceTypeMedia:
+        qDebug() << "maybe:" << request.resourceType() << request.requestUrl();
+        break;
     default:
         break;
     }
@@ -38,5 +42,5 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
-    qDebug() << request.resourceType() << request.requestUrl();
+    qDebug() << "maybe not:" << request.resourceType() << request.requestUrl();
 }

@@ -400,6 +400,26 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../playdialog.cpp" line="27"/>
+        <source> - by ykdl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="31"/>
+        <source> - by you-get</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="35"/>
+        <source> - by youtube-dl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="39"/>
+        <source> - by annie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../playdialog.cpp" line="79"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
