@@ -238,7 +238,7 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
 {
     if (mi->site.isEmpty())
     {
-        auto site = o["Site"];
+        auto site = o["site"];
         if (site.isString())
         {
             mi->site = site.toString();
@@ -247,36 +247,36 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
 
     if (mi->title.isEmpty())
     {
-        auto title = o["Title"];
+        auto title = o["title"];
         if (title.isString())
         {
             mi->title = title.toString();
         }
     }
 
-    auto formats = o["Formats"];
-    if (!formats.isObject())
+    auto ss = o["streams"];
+    if (!ss.isObject())
     {
         qDebug() << "Formats is expected to be an object";
         return;
     }
 
-    auto fo = formats.toObject();
-    auto keys = fo.keys();
+    auto sso = ss.toObject();
+    auto keys = sso.keys();
 
     for (const QString& key : keys)
     {
         StreamInfoPtr stream(new StreamInfo);
-        auto formatObject = fo[key];
-        auto format = formatObject.toObject();
-        auto urlsArray = format["URLs"];
+        auto streamObject = sso[key];
+        auto s = streamObject.toObject();
+        auto urlsArray = s["urls"];
         auto urls = urlsArray.toArray();
         for (auto url : urls)
         {
             auto urlObj = url.toObject();
-            stream->urls.append(urlObj["URL"].toString());
+            stream->urls.append(urlObj["url"].toString());
         }
-        stream->quality = format["Quality"].toString();
+        stream->quality = s["quality"].toString();
         streams.append(stream);
     }
 }
