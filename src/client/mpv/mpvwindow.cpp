@@ -1,5 +1,5 @@
 #include "mpvwindow.h"
-#include "mpvwidget.h"
+#include "mpvopenglwidget.h"
 #include <QPushButton>
 #include <QSlider>
 #include <QLayout>
@@ -34,6 +34,7 @@ void MPVWindow::closeEvent(QCloseEvent *event)
 {
     m_mpv->command(QStringList() << "stop");
     event->accept();
+    Q_EMIT finished(0, QProcess::NormalExit);
 }
 
 void MPVWindow::seek(int pos)

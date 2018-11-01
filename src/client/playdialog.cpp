@@ -90,48 +90,7 @@ void PlayDialog::createExternalPlayerList()
 void PlayDialog::doOk()
 {
     int currentIndex = ui->cbPlayers->currentIndex();
-    if (currentIndex == m_players.length() - 1)
-    {
-#if defined(Q_OS_WIN)
-        QString playerPath = QApplication::applicationDirPath() + "/player/mpv.exe";
-        if (!QFile::exists(playerPath))
-            playerPath = QApplication::applicationDirPath() + "/mpv.exe";
-        if (!QFile::exists(playerPath))
-        {
-            QByteArray pathEnv = qgetenv("PATH");
-            QList<QByteArray> paths = pathEnv.split(';');
-            for (auto p : paths)
-            {
-                QString path(p + "/mpv.exe");
-                if (QFile::exists(path))
-                {
-                    playerPath = path;
-                    break;
-                }
-            }
-        }
-        m_selectedPlayer = std::make_tuple(playerPath, "--vo=direct3d --hwdec=auto --hwdec-codecs=all --ytdl=no --fs");
-#elif defined(Q_OS_MAC)
-        QString playerPath("/usr/local/bin/mpv");
-        if (!QFile::exists(playerPath))
-        {
-            QByteArray pathEnv = qgetenv("PATH");
-            QList<QByteArray> paths = pathEnv.split(':');
-            for (auto p : paths)
-            {
-                QString path(p + "/mpv");
-                if (QFile::exists(path))
-                {
-                    playerPath = path;
-                    break;
-                }
-            }
-        }
-        m_selectedPlayer = std::make_tuple(playerPath, "--vo=opengl --hwdec=auto --hwdec-codecs=all --ytdl=no --fs");
-#endif
-    }
-    else
-        m_selectedPlayer = m_players.at(currentIndex);
+    m_selectedPlayer = m_players.at(currentIndex);
 
     if (m_multiMediaResources)
     {
@@ -151,10 +110,10 @@ void PlayDialog::doOk()
         else
             m_selectedMedia = m_mediaInfo->annie[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
     }
-    if (QFile::exists(std::get<0>(m_selectedPlayer)))
+    if (QFile::exists(std::get<0>(m_selectedPlayer)) || currentIndex == m_players.length() - 1)
         accept();
     else
-        QMessageBox::warning(this, tr("Error"), tr("Cannot find builtin player, please select an external player."), QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Error"), tr("Cannot find player at '%1', please reconfiguration it.").arg(std::get<0>(m_selectedPlayer)), QMessageBox::Ok);
 }
 
 void PlayDialog::addItem(const QString& text, const QColor &backgroundColor)

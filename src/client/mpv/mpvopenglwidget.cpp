@@ -1,4 +1,4 @@
-#include "mpvwidget.h"
+#include "mpvopenglwidget.h"
 #include <stdexcept>
 #include <QtGui/QOpenGLContext>
 #include <QtCore/QMetaObject>

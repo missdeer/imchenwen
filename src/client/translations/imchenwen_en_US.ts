@@ -4,43 +4,48 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="413"/>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="175"/>
+        <source>Built-in player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browser.cpp" line="424"/>
+        <location filename="../browser.cpp" line="436"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="413"/>
+        <location filename="../browser.cpp" line="424"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="436"/>
         <source>Resolving link address </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="436"/>
         <source> failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="434"/>
+        <location filename="../browser.cpp" line="445"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="437"/>
+        <location filename="../browser.cpp" line="448"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="440"/>
+        <location filename="../browser.cpp" line="451"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="444"/>
+        <location filename="../browser.cpp" line="455"/>
         <source>Error on launching external player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -433,19 +438,19 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="141"/>
-        <location filename="../playdialog.cpp" line="157"/>
+        <location filename="../playdialog.cpp" line="100"/>
+        <location filename="../playdialog.cpp" line="116"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="141"/>
+        <location filename="../playdialog.cpp" line="100"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="157"/>
-        <source>Cannot find builtin player, please select an external player.</source>
+        <location filename="../playdialog.cpp" line="116"/>
+        <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

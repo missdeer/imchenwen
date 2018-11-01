@@ -4,43 +4,48 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="413"/>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="175"/>
+        <source>Built-in player</source>
+        <translation>内置播放器</translation>
+    </message>
+    <message>
+        <location filename="../browser.cpp" line="424"/>
+        <location filename="../browser.cpp" line="436"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="413"/>
+        <location filename="../browser.cpp" line="424"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="436"/>
         <source>Resolving link address </source>
         <translation>解析链接地址</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="436"/>
         <source> failed!</source>
         <translation>失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="434"/>
+        <location filename="../browser.cpp" line="445"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="437"/>
+        <location filename="../browser.cpp" line="448"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="440"/>
+        <location filename="../browser.cpp" line="451"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="444"/>
+        <location filename="../browser.cpp" line="455"/>
         <source>Error on launching external player</source>
         <translation>启动外部播放器失败</translation>
     </message>
@@ -434,20 +439,24 @@ Do you wish to override the security check and continue ?   </source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="141"/>
-        <location filename="../playdialog.cpp" line="157"/>
+        <location filename="../playdialog.cpp" line="100"/>
+        <location filename="../playdialog.cpp" line="116"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="141"/>
+        <location filename="../playdialog.cpp" line="100"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="157"/>
+        <location filename="../playdialog.cpp" line="116"/>
+        <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
+        <translation>找不到播放器‘%1’，请重新配置。</translation>
+    </message>
+    <message>
         <source>Cannot find builtin player, please select an external player.</source>
-        <translation>找不到内置播放器，请选择一个外部播放器。</translation>
+        <translation type="vanished">找不到内置播放器，请选择一个外部播放器。</translation>
     </message>
 </context>
 <context>

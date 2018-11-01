@@ -2,6 +2,7 @@
 #define MainWindow_H
 
 #include <QtWidgets/QWidget>
+#include <QProcess>
 
 class MPVOpenGLWidget;
 class QSlider;
@@ -13,6 +14,8 @@ public:
     explicit MPVWindow(QWidget *parent = nullptr);
     void playMedias(const QStringList& medias);
     void closeEvent(QCloseEvent *event) override;
+signals:
+    void finished(int , QProcess::ExitStatus );
 public Q_SLOTS:
     void seek(int pos);
 private Q_SLOTS:

@@ -171,42 +171,50 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 
         m_playerProcess.kill();
         waiting(false);
-        QStringList args;
-#if defined(Q_OS_MAC)
-        QFileInfo fi(std::get<0>(player));
-        if (fi.suffix() == "app")
-        {
-            m_playerProcess.setProgram("/usr/bin/open");
-            args << std::get<0>(player) << "--args";
-        }
-#endif
-        QString arg = std::get<1>(player);
-        if (!arg.isEmpty())
-            args << arg.split(" ");
 
-        for (QString& a : args)
+        if (std::get<0>(player) == tr("Built-in player"))
         {
-            if (a == "{{referrer}}")
-                a = "";
-            else if (a == "{{title}}")
-                a = title;
-            else if (a == "{{site}}")
-                a = title;
-            else if (a == "{{user-agent}}")
-                a = Config().read<QString>(QLatin1String("httpUserAgent"));
+            playByBuiltinPlayer(u, title);
         }
-
-        args << u;
-        m_playerProcess.setArguments(args);
+        else
+        {
+            QStringList args;
 #if defined(Q_OS_MAC)
-        if (fi.suffix() == "app")
-        {
-            m_playerProcess.setProgram("/usr/bin/open");
-            return;
-        }
+            QFileInfo fi(std::get<0>(player));
+            if (fi.suffix() == "app")
+            {
+                m_playerProcess.setProgram("/usr/bin/open");
+                args << std::get<0>(player) << "--args";
+            }
 #endif
-        m_playerProcess.setProgram(std::get<0>(player));
-        m_playerProcess.start();
+            QString arg = std::get<1>(player);
+            if (!arg.isEmpty())
+                args << arg.split(" ");
+
+            for (QString& a : args)
+            {
+                if (a == "{{referrer}}")
+                    a = "";
+                else if (a == "{{title}}")
+                    a = title;
+                else if (a == "{{site}}")
+                    a = title;
+                else if (a == "{{user-agent}}")
+                    a = Config().read<QString>(QLatin1String("httpUserAgent"));
+            }
+
+            args << u;
+            m_playerProcess.setArguments(args);
+#if defined(Q_OS_MAC)
+            if (fi.suffix() == "app")
+            {
+                m_playerProcess.setProgram("/usr/bin/open");
+                return;
+            }
+#endif
+            m_playerProcess.setProgram(std::get<0>(player));
+            m_playerProcess.start();
+        }
         minimizeWindows();
     }
 }
@@ -273,7 +281,10 @@ void Browser::playByBuiltinPlayer(MediaInfoPtr mi)
 void Browser::playByBuiltinPlayer(const QString &u, const QString &title)
 {
     if (!m_mpv)
+    {
         m_mpv = new MPVWindow;
+        connect(m_mpv, &MPVWindow::finished, this, &Browser::onPlayerFinished);
+    }
 
     m_mpv->show();
     m_mpv->playMedias(QStringList() << u);
