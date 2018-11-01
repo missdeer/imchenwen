@@ -646,6 +646,16 @@ void BrowserWindow::recoverCurrentTabUrl()
     }
 }
 
+void BrowserWindow::currentVIPVideoGoBack()
+{
+    auto v = m_tabWidget->currentWebView();
+    if (v->url().url() == "qrc:///vipplaying.html")
+    {
+        v->back();
+        v->back();
+    }
+}
+
 void BrowserWindow::loadPage(const QString &page)
 {
     loadPage(QUrl::fromUserInput(page));

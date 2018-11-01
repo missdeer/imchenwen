@@ -432,6 +432,8 @@ void Browser::onProcessError(QProcess::ProcessError error)
 void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     stopWaiting();
+    auto mw = const_cast<BrowserWindow*>(mainWindow());
+    mw->currentVIPVideoGoBack();
     for (auto w : m_windows)
     {
         switch (m_windowsState[w])
@@ -447,6 +449,7 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
         }
     }
     m_windowsState.clear();
+
 }
 
 void Browser::onSniffedMediaUrl(const QString &u)

@@ -30,6 +30,7 @@ public:
     void loadHomePage();
     bool isCurrentVIPVideo();
     void recoverCurrentTabUrl();
+    void currentVIPVideoGoBack();
     const QString& maybeVIPVideoTitle() const;
 
 protected:

@@ -304,12 +304,12 @@ There are %1 tabs open.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="680"/>
+        <location filename="../browserwindow.cpp" line="690"/>
         <source>Stop loading the current page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="684"/>
+        <location filename="../browserwindow.cpp" line="694"/>
         <source>Reload the current page</source>
         <translation type="unfinished"></translation>
     </message>
