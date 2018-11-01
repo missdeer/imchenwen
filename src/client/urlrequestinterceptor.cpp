@@ -42,5 +42,9 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
+    if (path.endsWith(".f4v"))
+    {
+        request.block(true);
+    }
     qDebug() << "maybe not:" << request.resourceType() << request.requestUrl();
 }
