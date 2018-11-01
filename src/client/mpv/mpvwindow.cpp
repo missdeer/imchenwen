@@ -30,6 +30,7 @@ void MPVWindow::playMedias(const QStringList &medias)
     if (medias.isEmpty())
         return;
     m_mpv->setProperty("cache-secs", 600);
+    m_mpv->setOption("ytdl", "no");
     m_mpv->command(QStringList() << "loadfile" << medias[0] << "replace");
     for (int i = 1; i < medias.length(); ++i) {
         m_mpv->command(QStringList() << "loadfile" << medias[i] << "append");
@@ -53,13 +54,13 @@ void MPVWindow::title(const QString &title)
 void MPVWindow::referrer(const QString &referrer)
 {
     if (!referrer.isEmpty())
-        m_mpv->setOption("referrer", referrer);
+        m_mpv->setProperty("referrer", referrer);
 }
 
 void MPVWindow::userAgent(const QString &userAgent)
 {
     if (!userAgent.isEmpty())
-        m_mpv->setOption("user-agent", userAgent);
+        m_mpv->setProperty("user-agent", userAgent);
 }
 
 void MPVWindow::seek(int pos)
