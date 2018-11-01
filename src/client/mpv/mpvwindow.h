@@ -14,6 +14,9 @@ public:
     explicit MPVWindow(QWidget *parent = nullptr);
     void playMedias(const QStringList& medias);
     void closeEvent(QCloseEvent *event) override;
+    void title(const QString& title);
+    void referrer(const QString& referrer);
+    void userAgent(const QString& userAgent);
 signals:
     void finished(int , QProcess::ExitStatus );
 public Q_SLOTS:

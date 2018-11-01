@@ -27,7 +27,11 @@ void MPVWindow::playMedias(const QStringList &medias)
 {
     if (medias.isEmpty())
         return;
-    m_mpv->command(QStringList() << "loadfile" << medias);
+    m_mpv->setProperty("cache-secs", 600);
+    m_mpv->command(QStringList() << "loadfile" << medias[0] << "replace");
+    for (int i = 1; i < medias.length(); ++i) {
+        m_mpv->command(QStringList() << "loadfile" << medias[i] << "append");
+    }
 }
 
 void MPVWindow::closeEvent(QCloseEvent *event)
@@ -35,6 +39,22 @@ void MPVWindow::closeEvent(QCloseEvent *event)
     m_mpv->command(QStringList() << "stop");
     event->accept();
     Q_EMIT finished(0, QProcess::NormalExit);
+}
+
+void MPVWindow::title(const QString &title)
+{
+    m_mpv->setProperty("title", title);
+    m_mpv->setProperty("media-title", title);
+}
+
+void MPVWindow::referrer(const QString &referrer)
+{
+    m_mpv->setProperty("referrer", referrer);
+}
+
+void MPVWindow::userAgent(const QString &userAgent)
+{
+    m_mpv->setProperty("user-agent", userAgent);
 }
 
 void MPVWindow::seek(int pos)
@@ -45,5 +65,5 @@ void MPVWindow::seek(int pos)
 void MPVWindow::setSliderRange(int duration)
 {
     m_slider->setRange(0, duration);
-    setWindowState(Qt::WindowFullScreen);
+    //setWindowState(Qt::WindowFullScreen);
 }

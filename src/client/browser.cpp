@@ -174,7 +174,7 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 
         if (std::get<0>(player) == tr("Built-in player"))
         {
-            playByBuiltinPlayer(u, title);
+            playByBuiltinPlayer(u, title, "", Config().read<QString>(QLatin1String("httpUserAgent")));
         }
         else
         {
@@ -230,55 +230,56 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 
         m_playerProcess.kill();
         waiting(false);
-        QStringList args;
+        if (std::get<0>(player) == tr("Built-in player"))
+        {
+            playByBuiltinPlayer(stream->urls, mi->title, mi->url, Config().read<QString>(QLatin1String("httpUserAgent")));
+        }
+        else
+        {
+            QStringList args;
 #if defined(Q_OS_MAC)
-        QFileInfo fi(std::get<0>(player));
-        if (fi.suffix() == "app")
-        {
-            m_playerProcess.setProgram("/usr/bin/open");
-            args << std::get<0>(player) << "--args";
-        }
+            QFileInfo fi(std::get<0>(player));
+            if (fi.suffix() == "app")
+            {
+                m_playerProcess.setProgram("/usr/bin/open");
+                args << std::get<0>(player) << "--args";
+            }
 #endif
-        QString arg = std::get<1>(player);
-        if (!arg.isEmpty())
-            args << arg.split(" ");
+            QString arg = std::get<1>(player);
+            if (!arg.isEmpty())
+                args << arg.split(" ");
 
-        for (QString& a : args)
-        {
-            if (a == "{{referrer}}")
-                a = mi->url;
-            else if (a == "{{title}}")
-                a = mi->title;
-            else if (a == "{{site}}")
-                a = mi->site;
-            else if (a == "{{user-agent}}")
-                a = Config().read<QString>(QLatin1String("httpUserAgent"));
-        }
+            for (QString& a : args)
+            {
+                if (a == "{{referrer}}")
+                    a = mi->url;
+                else if (a == "{{title}}")
+                    a = mi->title;
+                else if (a == "{{site}}")
+                    a = mi->site;
+                else if (a == "{{user-agent}}")
+                    a = Config().read<QString>(QLatin1String("httpUserAgent"));
+            }
 
-        args << stream->urls;
-        //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
-        m_playerProcess.setArguments(args);
+            args << stream->urls;
+            //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
+            m_playerProcess.setArguments(args);
 
 #if defined(Q_OS_MAC)
-        if (fi.suffix() == "app")
-        {
-            m_playerProcess.setProgram("/usr/bin/open");
-            return;
-        }
+            if (fi.suffix() == "app")
+            {
+                m_playerProcess.setProgram("/usr/bin/open");
+                return;
+            }
 #endif
-        m_playerProcess.setProgram(std::get<0>(player));
-        m_playerProcess.start();
+            m_playerProcess.setProgram(std::get<0>(player));
+            m_playerProcess.start();
+        }
         minimizeWindows();
     }
 }
 
-void Browser::playByBuiltinPlayer(MediaInfoPtr mi)
-{
-    if (!m_mpv)
-        m_mpv = new MPVWindow;
-}
-
-void Browser::playByBuiltinPlayer(const QString &u, const QString &title)
+void Browser::playByBuiltinPlayer(const QStringList& u, const QString& title, const QString& referrer, const QString& userAgent)
 {
     if (!m_mpv)
     {
@@ -287,6 +288,24 @@ void Browser::playByBuiltinPlayer(const QString &u, const QString &title)
     }
 
     m_mpv->show();
+    m_mpv->title(title);
+    m_mpv->referrer(referrer);
+    m_mpv->userAgent(userAgent);
+    m_mpv->playMedias(QStringList() << u);
+}
+
+void Browser::playByBuiltinPlayer(const QString &u, const QString &title, const QString &referrer, const QString &userAgent)
+{
+    if (!m_mpv)
+    {
+        m_mpv = new MPVWindow;
+        connect(m_mpv, &MPVWindow::finished, this, &Browser::onPlayerFinished);
+    }
+
+    m_mpv->show();
+    m_mpv->title(title);
+    m_mpv->referrer(referrer);
+    m_mpv->userAgent(userAgent);
     m_mpv->playMedias(QStringList() << u);
 }
 

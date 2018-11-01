@@ -24,7 +24,7 @@ MPVOpenGLWidget::MPVOpenGLWidget(QWidget *parent, Qt::WindowFlags f)
         throw std::runtime_error("could not create mpv context");
 
     mpv_set_option_string(mpv, "terminal", "yes");
-    mpv_set_option_string(mpv, "msg-level", "all=v");
+    mpv_set_option_string(mpv, "msg-level", "info");
     if (mpv_initialize(mpv) < 0)
         throw std::runtime_error("could not initialize mpv context");
 
@@ -41,6 +41,14 @@ MPVOpenGLWidget::MPVOpenGLWidget(QWidget *parent, Qt::WindowFlags f)
         throw std::runtime_error("OpenGL not compiled in");
     mpv_opengl_cb_set_update_callback(mpv_gl, MPVOpenGLWidget::on_update, (void *)this);
     connect(this, SIGNAL(frameSwapped()), SLOT(swapped()));
+
+    // Enable default bindings, because we're lazy. Normally, a player using
+    // mpv as backend would implement its own key bindings.
+    mpv_set_option_string(mpv, "input-default-bindings", "yes");
+
+    // Enable keyboard input on the X11 window. For the messy details, see
+    // --input-vo-keyboard on the manpage.
+    mpv_set_option_string(mpv, "input-vo-keyboard", "yes");
 
     mpv_observe_property(mpv, 0, "duration", MPV_FORMAT_DOUBLE);
     mpv_observe_property(mpv, 0, "time-pos", MPV_FORMAT_DOUBLE);
