@@ -10,8 +10,9 @@ class MPVWidget : public QWidget
     Q_OBJECT
 public:
     explicit MPVWidget(QWidget *parent = nullptr);
-    ~MPVWidget();
+    ~MPVWidget() override;
     void command(const QVariant& params);
+    void setOption(const QString& name, const QVariant& value);
     void setProperty(const QString& name, const QVariant& value);
     QVariant getProperty(const QString& name) const;
     QSize sizeHint() const override;

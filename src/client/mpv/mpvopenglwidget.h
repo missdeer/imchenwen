@@ -13,6 +13,7 @@ public:
     MPVOpenGLWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Widget);
     ~MPVOpenGLWidget() override;
     void command(const QVariant& params);
+    void setOption(const QString& name, const QVariant& value);
     void setProperty(const QString& name, const QVariant& value);
     QVariant getProperty(const QString& name) const;
     QSize sizeHint() const override;

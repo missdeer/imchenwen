@@ -11,8 +11,8 @@ MPVWindow::MPVWindow(QWidget *parent)
     : QWidget(parent)
 {
     setWindowTitle(tr("imchenwen builtin media player"));
-    //m_mpv = new MPVOpenGLWidget(this);
-    m_mpv = new MPVWidget(this);
+    m_mpv = new MPVOpenGLWidget(this);
+    //m_mpv = new MPVWidget(this);
     m_slider = new QSlider();
     m_slider->setOrientation(Qt::Horizontal);
     QVBoxLayout *vl = new QVBoxLayout();
@@ -46,18 +46,18 @@ void MPVWindow::closeEvent(QCloseEvent *event)
 
 void MPVWindow::title(const QString &title)
 {
-    m_mpv->setProperty("title", title);
-    m_mpv->setProperty("media-title", title);
+    m_mpv->setOption("title", title);
+    m_mpv->setOption("media-title", title);
 }
 
 void MPVWindow::referrer(const QString &referrer)
 {
-    m_mpv->setProperty("referrer", referrer);
+    m_mpv->setOption("referrer", referrer);
 }
 
 void MPVWindow::userAgent(const QString &userAgent)
 {
-    m_mpv->setProperty("user-agent", userAgent);
+    m_mpv->setOption("user-agent", userAgent);
 }
 
 void MPVWindow::seek(int pos)

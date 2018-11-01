@@ -25,8 +25,8 @@ public Q_SLOTS:
 private Q_SLOTS:
     void setSliderRange(int duration);
 private:
-    //MPVOpenGLWidget *m_mpv;
-    MPVWidget *m_mpv;
+    MPVOpenGLWidget *m_mpv;
+    //MPVWidget *m_mpv;
     QSlider *m_slider;
 };
 

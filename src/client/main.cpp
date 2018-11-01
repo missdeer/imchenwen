@@ -42,23 +42,18 @@ int main(int argc, char **argv)
         localeDirPath = QApplication::applicationDirPath() + "/../translations";
     }
 #endif
-    QDir localeDir(localeDirPath);
-    QStringList filters;
-    filters << "*_" + locale + ".qm";
-    QFileInfoList fil = localeDir.entryInfoList(filters, QDir::Files);
-    foreach(const QFileInfo& fi, fil)
+
+    bool b = translator.load("imchenwen_" + locale, localeDirPath); // always load simplified chinese translation file
+    if (!b)
     {
-        bool b = translator.load("imchenwen_zh_CN.qm", localeDirPath); // always load simplified chinese translation file
-        if (!b)
-        {
-            qDebug() << "loading " << fi.fileName() << " from " << localeDirPath << " failed";
-        }
-        else
-        {
-            qDebug() << "loading " << fi.fileName() << " from " << localeDirPath << " success";
-        }
+        qDebug() << "loading " << locale << " from " << localeDirPath << " failed";
     }
-    bool b = a.installTranslator(&translator);
+    else
+    {
+        qDebug() << "loading " << locale << " from " << localeDirPath << " success";
+    }
+
+    b = a.installTranslator(&translator);
     if (!b)
     {
         qDebug() << "installing translator failed ";

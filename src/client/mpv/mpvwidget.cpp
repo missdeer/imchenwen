@@ -39,11 +39,11 @@ MPVWidget::MPVWidget(QWidget *parent)
 
     // Enable default bindings, because we're lazy. Normally, a player using
     // mpv as backend would implement its own key bindings.
-    mpv_set_option_string(mpv, "input-default-bindings", "yes");
+    mpv::qt::set_option_variant(mpv, "input-default-bindings", "yes");
 
     // Enable keyboard input on the X11 window. For the messy details, see
     // --input-vo-keyboard on the manpage.
-    mpv_set_option_string(mpv, "input-vo-keyboard", "yes");
+    mpv::qt::set_option_variant(mpv, "input-vo-keyboard", "yes");
 
     mpv_observe_property(mpv, 0, "duration", MPV_FORMAT_DOUBLE);
     mpv_observe_property(mpv, 0, "time-pos", MPV_FORMAT_DOUBLE);
@@ -72,6 +72,11 @@ MPVWidget::~MPVWidget()
 void MPVWidget::command(const QVariant &params)
 {
     mpv::qt::command_variant(mpv, params);
+}
+
+void MPVWidget::setOption(const QString &name, const QVariant &value)
+{
+    mpv::qt::set_option_variant(mpv, name, value);
 }
 
 void MPVWidget::setProperty(const QString &name, const QVariant &value)

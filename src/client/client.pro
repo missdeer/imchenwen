@@ -113,27 +113,30 @@ macx: {
 }
 
 win32: {
-        DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
+    DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
 
-        INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
-        contains(QMAKE_HOST.arch, x86_64): {
-            LIBS += -L$$PWD/../3rdparty/libmpv/x86_64
-            copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/x86_64/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
-        } else : {
-            LIBS += -L$$PWD/../3rdparty/libmpv/i686
-            copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
-        }
-        LIBS += -lmpv
-        QMAKE_EXTRA_TARGETS += copy_mpv_dll
-        POST_TARGETDEPS += copy_mpv_dll
-        CONFIG(release, debug|release) : {
-            QMAKE_CXXFLAGS += /Zi
-            QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
-            WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
-            translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
-        } else: {
-            translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
-        }
+    INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
+    contains(QMAKE_HOST.arch, x86_64): {
+        LIBS += -L$$PWD/../3rdparty/libmpv/x86_64
+        copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/x86_64/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
+    } else : {
+        LIBS += -L$$PWD/../3rdparty/libmpv/i686
+        copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
+    }
+    LIBS += -lmpv
+    QMAKE_EXTRA_TARGETS += copy_mpv_dll
+    POST_TARGETDEPS += copy_mpv_dll
+    CONFIG(release, debug|release) : {
+        QMAKE_CXXFLAGS += /Zi
+        QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
+        WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
+        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
+    } else: {
+        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
+    }
+} else : {
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L/usr/local/lib -lmpv
 }
 
 unix: !macx {
