@@ -60,7 +60,7 @@ void MPVWindow::referrer(const QString &referrer)
 void MPVWindow::userAgent(const QString &userAgent)
 {
     if (!userAgent.isEmpty())
-        m_mpv->setProperty("user-agent", userAgent);
+        m_mpv->setOption("user-agent", userAgent);
 }
 
 void MPVWindow::seek(int pos)
