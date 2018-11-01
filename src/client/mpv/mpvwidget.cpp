@@ -145,17 +145,13 @@ void MPVWidget::handleMpvEvent(mpv_event *event)
                 // dimensions really changed.
                 // mpv itself will scale/letter box the video to the container size
                 // if the video doesn't fit.
-                std::stringstream ss;
-                ss << "Reconfig: " << w << " " << h;
-                qDebug() <<QString::fromStdString(ss.str());
+                qDebug() << "Reconfig: " << w << " " << h;
             }
             break;
         }
         case MPV_EVENT_LOG_MESSAGE: {
             struct mpv_event_log_message *msg = (struct mpv_event_log_message *)event->data;
-            std::stringstream ss;
-            ss << "[" << msg->prefix << "] " << msg->level << ": " << msg->text;
-            qDebug() << QString::fromStdString(ss.str());
+            qDebug() << "[" << msg->prefix << "] " << msg->level << ": " << msg->text;
             break;
         }
         case MPV_EVENT_SHUTDOWN: {
