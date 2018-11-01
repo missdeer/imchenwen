@@ -1,4 +1,5 @@
 #include "mpvwindow.h"
+#include "mpvwidget.h"
 #include "mpvopenglwidget.h"
 #include <QPushButton>
 #include <QSlider>
@@ -10,7 +11,8 @@ MPVWindow::MPVWindow(QWidget *parent)
     : QWidget(parent)
 {
     setWindowTitle(tr("imchenwen builtin media player"));
-    m_mpv = new MPVOpenGLWidget(this);
+    //m_mpv = new MPVOpenGLWidget(this);
+    m_mpv = new MPVWidget(this);
     m_slider = new QSlider();
     m_slider->setOrientation(Qt::Horizontal);
     QVBoxLayout *vl = new QVBoxLayout();
@@ -37,6 +39,7 @@ void MPVWindow::playMedias(const QStringList &medias)
 void MPVWindow::closeEvent(QCloseEvent *event)
 {
     m_mpv->command(QStringList() << "stop");
+    delete m_mpv;
     event->accept();
     Q_EMIT finished(0, QProcess::NormalExit);
 }

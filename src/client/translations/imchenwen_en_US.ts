@@ -348,7 +348,7 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>MPVWindow</name>
     <message>
-        <location filename="../mpv/mpvwindow.cpp" line="12"/>
+        <location filename="../mpv/mpvwindow.cpp" line="13"/>
         <source>imchenwen builtin media player</source>
         <translation type="unfinished"></translation>
     </message>

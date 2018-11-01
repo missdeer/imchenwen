@@ -5,6 +5,7 @@
 #include <QProcess>
 
 class MPVOpenGLWidget;
+class MPVWidget;
 class QSlider;
 class QPushButton;
 class MPVWindow : public QWidget
@@ -24,7 +25,8 @@ public Q_SLOTS:
 private Q_SLOTS:
     void setSliderRange(int duration);
 private:
-    MPVOpenGLWidget *m_mpv;
+    //MPVOpenGLWidget *m_mpv;
+    MPVWidget *m_mpv;
     QSlider *m_slider;
 };
 
