@@ -4,43 +4,43 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="398"/>
-        <location filename="../browser.cpp" line="410"/>
+        <location filename="../browser.cpp" line="413"/>
+        <location filename="../browser.cpp" line="425"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="398"/>
+        <location filename="../browser.cpp" line="413"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="410"/>
+        <location filename="../browser.cpp" line="425"/>
         <source>Resolving link address </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="410"/>
+        <location filename="../browser.cpp" line="425"/>
         <source> failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="419"/>
+        <location filename="../browser.cpp" line="434"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="422"/>
+        <location filename="../browser.cpp" line="437"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="425"/>
+        <location filename="../browser.cpp" line="440"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="429"/>
+        <location filename="../browser.cpp" line="444"/>
         <source>Error on launching external player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -336,6 +336,14 @@ There are %1 tabs open.</source>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MPVWindow</name>
+    <message>
+        <location filename="../mpv/mpvwindow.cpp" line="12"/>
+        <source>imchenwen builtin media player</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

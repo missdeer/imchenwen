@@ -62,6 +62,7 @@ Browser::Browser(QObject *parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
     , m_nam(nullptr)
+    , m_mpv(nullptr)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
@@ -197,7 +198,6 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 
         args << u;
         m_playerProcess.setArguments(args);
-
 #if defined(Q_OS_MAC)
         if (fi.suffix() == "app")
         {
@@ -262,6 +262,21 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         m_playerProcess.start();
         minimizeWindows();
     }
+}
+
+void Browser::playByBuiltinPlayer(MediaInfoPtr mi)
+{
+    if (!m_mpv)
+        m_mpv = new MPVWindow;
+}
+
+void Browser::playByBuiltinPlayer(const QString &u, const QString &title)
+{
+    if (!m_mpv)
+        m_mpv = new MPVWindow;
+
+    m_mpv->show();
+    m_mpv->playMedias(QStringList() << u);
 }
 
 void Browser::onClipboardChanged()

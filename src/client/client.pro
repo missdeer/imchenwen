@@ -5,9 +5,10 @@ CONFIG += c++14
 
 include(Boost.pri)
 
-INCLUDEPATH += $$PWD/dlna
+INCLUDEPATH += $$PWD/dlna $$PWD/mpv
 
 HEADERS += $$PWD/dlna/*.h \
+    $$PWD/mpv/*.h \
     $$PWD/browser.h \
     $$PWD/browserwindow.h \
     $$PWD/tabwidget.h \
@@ -26,6 +27,7 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/urlrequestinterceptor.h
 
 SOURCES += $$PWD/dlna/*.cpp \
+    $$PWD/mpv/*.cpp \
     $$PWD/browser.cpp \
     $$PWD/browserwindow.cpp \
     $$PWD/main.cpp \
@@ -112,14 +114,26 @@ macx: {
 
 win32: {
         DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
+
+        INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
+        contains(QMAKE_HOST.arch, x86_64): {
+            LIBS += -L$$PWD/../3rdparty/libmpv/x86_64
+            copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/x86_64/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
+        } else : {
+            LIBS += -L$$PWD/../3rdparty/libmpv/i686
+            copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
+        }
+        LIBS += -lmpv
+        QMAKE_EXTRA_TARGETS += copy_mpv_dll
+        POST_TARGETDEPS += copy_mpv_dll
         CONFIG(release, debug|release) : {
-            win32-*msvc* {
-                    QMAKE_CXXFLAGS += /Zi
-                    QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
-            }
+            QMAKE_CXXFLAGS += /Zi
+            QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
             WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
             translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
-        } else: CONFIG(debug, debug|release): translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
+        } else: {
+            translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
+        }
 }
 
 unix: !macx {

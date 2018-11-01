@@ -69,6 +69,10 @@ int main(int argc, char **argv)
 
     a.installTranslator(&qtTranslator);
 
+    // Qt sets the locale in the QApplication constructor, but libmpv requires
+    // the LC_NUMERIC category to be set to "C", so change it back.
+    setlocale(LC_NUMERIC, "C");
+
 #if defined(Q_OS_MAC)
     a.setWindowIcon(QIcon(QLatin1String(":imchenwen.icns")));
 #else

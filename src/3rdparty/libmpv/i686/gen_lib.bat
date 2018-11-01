@@ -1,0 +1,1 @@
+lib /def:libmpv.def /name:mpv-1.dll /out:mpv.lib /MACHINE:X86
