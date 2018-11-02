@@ -8,7 +8,7 @@
 #include "websites.h"
 #include "urlrequestinterceptor.h"
 #include "Kast.h"
-#include "mpvwindow.h"
+#include "playerview.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -61,7 +61,7 @@ private:
     UrlRequestInterceptor m_urlRequestInterceptor;
     QNetworkAccessManager *m_nam;
     Kast m_kast;
-    MPVWindow* m_mpv;
+    PlayerView* m_mpv;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);

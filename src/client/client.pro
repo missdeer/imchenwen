@@ -5,7 +5,9 @@ CONFIG += c++14
 
 include(Boost.pri)
 
-INCLUDEPATH += $$PWD/dlna $$PWD/mpv
+INCLUDEPATH += $$PWD \
+    $$PWD/dlna \
+    $$PWD/mpv
 
 HEADERS += $$PWD/dlna/*.h \
     $$PWD/mpv/*.h \
@@ -50,9 +52,10 @@ FORMS += \
     $$PWD/certificateerrordialog.ui \
     $$PWD/passworddialog.ui \
     $$PWD/playdialog.ui \
-    $$PWD/settings.ui
+    $$PWD/settings.ui \
+    $$PWD/mpv/*.ui
 
-RESOURCES += $$PWD/res/imchenwen.qrc
+RESOURCES += $$PWD/res/imchenwen.qrc $$PWD/res/icons.qrc
 
 RC_FILE = $$PWD/imchenwen-win.rc
 

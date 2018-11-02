@@ -4,6 +4,7 @@
 #include "linkresolver.h"
 #include "waitingspinnerwidget.h"
 #include "playdialog.h"
+#include "playerview.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
@@ -276,8 +277,8 @@ void Browser::playByBuiltinPlayer(const QStringList& u, const QString& title, co
 {
     if (!m_mpv)
     {
-        m_mpv = new MPVWindow;
-        connect(m_mpv, &MPVWindow::finished, this, &Browser::onPlayerFinished);
+        m_mpv = new PlayerView;
+        connect(m_mpv, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
 
     m_mpv->show();
@@ -291,8 +292,8 @@ void Browser::playByBuiltinPlayer(const QString &u, const QString &title, const 
 {
     if (!m_mpv)
     {
-        m_mpv = new MPVWindow;
-        connect(m_mpv, &MPVWindow::finished, this, &Browser::onPlayerFinished);
+        m_mpv = new PlayerView;
+        connect(m_mpv, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
 
     m_mpv->show();

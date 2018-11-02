@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>modern_ui/pause.png</file>
+        <file>modern_ui/play.png</file>
+        <file>modern_ui/stop.png</file>
+        <file>modern_ui/volume.png</file>
+        <file>modern_ui/net.png</file>
+        <file>modern_ui/playlist.png</file>
+        <file>modern_ui/close.png</file>
+        <file>modern_ui/max.png</file>
+        <file>modern_ui/min.png</file>
+        <file>modern_ui/settings.png</file>
+        <file>qrcodes/alipay.png</file>
+        <file>qrcodes/wechatpay.png</file>
+    </qresource>
+</RCC>
