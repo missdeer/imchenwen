@@ -114,8 +114,8 @@ PlayerView::PlayerView(QWidget *parent) :
     m_menu->addSeparator();
 
     // create cutterbar
-    m_oscBar = new CutterBar(this);
-    m_oscBar->setWindowFlags(m_oscBar->windowFlags() | Qt::Popup);
+    m_cutterBar = new CutterBar(this);
+    m_cutterBar->setWindowFlags(m_cutterBar->windowFlags() | Qt::Popup);
 
     // create timer
     m_hideTimer = new QTimer(this);
@@ -133,7 +133,7 @@ PlayerView::PlayerView(QWidget *parent) :
     connect(m_hideTimer, &QTimer::timeout, this, &PlayerView::hideElements);
     connect(m_volumeSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setVolume);
     connect(m_volumeSlider, &QSlider::valueChanged, this, &PlayerView::saveVolume);
-    connect(m_oscBar, &CutterBar::newFrame, m_playerCore, &PlayerCore::jumpTo);
+    connect(m_cutterBar, &CutterBar::newFrame, m_playerCore, &PlayerCore::jumpTo);
     connect(ui->stopButton, &QPushButton::clicked, this, &PlayerView::onStopButton);
     connect(ui->maxButton, &QPushButton::clicked, this, &PlayerView::onMaxButton);
     connect(ui->playButton, &QPushButton::clicked, m_playerCore, &PlayerCore::changeState);
@@ -471,19 +471,19 @@ void PlayerView::onSizeChanged(const QSize &sz)
 // show cutterbar
 void PlayerView::showCutterBar()
 {
-    if (m_playerCore->state == PlayerCore::STOPPING || m_playerCore->state == PlayerCore::TV_PLAYING || m_oscBar->isVisible())
+    if (m_playerCore->state == PlayerCore::STOPPING || m_playerCore->state == PlayerCore::TV_PLAYING || m_cutterBar->isVisible())
         return;
     QString filename = m_playerCore->currentFile();
-    if (filename.startsWith("http"))
+    if (!QFile::exists(filename))
     {
         QMessageBox::warning(this, tr("Error"), tr("Only support cutting local videos!"), QMessageBox::Ok);
         return;
     }
     if (m_playerCore->state == PlayerCore::VIDEO_PLAYING) //pause
         m_playerCore->changeState();
-    m_oscBar->init(filename, m_playerCore->getLength(), m_playerCore->getTime());
-    m_oscBar->move(mapToGlobal(QPoint(50, 50)));
-    m_oscBar->show();
+    m_cutterBar->init(filename, m_playerCore->getLength(), m_playerCore->getTime());
+    m_cutterBar->move(mapToGlobal(QPoint(50, 50)));
+    m_cutterBar->show();
 }
 
 

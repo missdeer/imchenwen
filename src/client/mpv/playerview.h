@@ -74,7 +74,7 @@ private:
     Border *m_bottomBorder;
     Border *m_bottomLeftBorder;
     Border *m_bottomRightBorder;
-    CutterBar *m_oscBar;
+    CutterBar *m_cutterBar;
     PlayerCore *m_playerCore;
     QMenu *m_menu;
     QSlider *m_volumeSlider;
