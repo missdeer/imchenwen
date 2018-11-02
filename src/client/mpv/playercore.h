@@ -107,6 +107,6 @@ private slots:
     void maybeUpdate();
 };
 
-extern PlayerCore *player_core;
+extern PlayerCore *g_playerCore;
 
 #endif // MPLAYER_H

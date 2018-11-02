@@ -96,16 +96,16 @@ macx: {
         translate.commands = '$(COPY_DIR) $$shell_path($${PWD}/translations) $$shell_path($${OUT_PWD}/$${TARGET}.app/Contents/Resources/)'
         QMAKE_BUNDLE_DATA += translate
 
-        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\" -appstore-compliant
+        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\"
 
         deploy_webengine.depends += deploy
-        deploy_webengine.commands += # $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\" -appstore-compliant
+        deploy_webengine.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\"
 
         APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
         INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
         BUNDLEID = com.dfordsoft.imchenwen
 
-        codesign.depends += deploy_webengine deploy_parsed
+        codesign.depends += deploy_webengine
         codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
 
         makedmg.depends += codesign

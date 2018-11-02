@@ -524,33 +524,33 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="264"/>
+        <location filename="../mpv/playercore.cpp" line="256"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="265"/>
+        <location filename="../mpv/playercore.cpp" line="257"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="266"/>
+        <location filename="../mpv/playercore.cpp" line="258"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="695"/>
+        <location filename="../mpv/playercore.cpp" line="683"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="696"/>
+        <location filename="../mpv/playercore.cpp" line="684"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="696"/>
+        <location filename="../mpv/playercore.cpp" line="684"/>
         <source>
 
 MPV Error: </source>
@@ -708,7 +708,7 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="479"/>
+        <location filename="../mpv/playerview.cpp" line="482"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -723,17 +723,17 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="479"/>
+        <location filename="../mpv/playerview.cpp" line="482"/>
         <source>Only support cutting local videos!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="546"/>
+        <location filename="../mpv/playerview.cpp" line="549"/>
         <source>Open audio track file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="561"/>
+        <location filename="../mpv/playerview.cpp" line="564"/>
         <source>Audio delay (sec):</source>
         <translation type="unfinished"></translation>
     </message>

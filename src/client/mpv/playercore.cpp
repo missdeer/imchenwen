@@ -42,14 +42,9 @@ static void *get_proc_address(void *, const char *name)
 
     QOpenGLContext *glctx = QOpenGLContext::currentContext();
     if (!glctx)
-        return NULL;
+        return nullptr;
     return (void*) glctx->getProcAddress(name);
 }
-
-
-PlayerCore *player_core = nullptr;
-
-static QHash<QString,int64_t> unfinished_time;
 
 PlayerCore::PlayerCore(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -129,8 +124,6 @@ PlayerCore::PlayerCore(QWidget *parent) :
     m_emitStoppedWhenIdle = false;
     m_unseekableForced = false;
     m_renderingPaused = false;
-
-    player_core = this;
 }
 
 // opengl
@@ -190,7 +183,6 @@ void PlayerCore::unpauseRendering()
 
 PlayerCore::~PlayerCore()
 {
-    player_core = nullptr;
     makeCurrent();
     if (m_mpvGL)
         mpv_opengl_cb_set_update_callback(m_mpvGL, nullptr, nullptr);
@@ -276,8 +268,6 @@ bool PlayerCore::event(QEvent *e)
                 m_noEmitStopped = false;
             else
             {
-                if (m_time > m_length - 5)
-                    unfinished_time.remove(m_mediaFile);
                 state = STOPPING;
                 m_emitStoppedWhenIdle = true;
             }
@@ -321,8 +311,6 @@ bool PlayerCore::event(QEvent *e)
             {
                 m_length = *(double*) prop->data;
                 emit lengthChanged(m_length);
-                if (unfinished_time.contains(m_mediaFile) && !m_unseekableForced)
-                    setProgress(unfinished_time[m_mediaFile]);
             }
             else if (propName == "width")
             {

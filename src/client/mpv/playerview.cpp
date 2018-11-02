@@ -159,7 +159,7 @@ PlayerView::~PlayerView()
 
 void PlayerView::playMedias(const QStringList &medias)
 {
-    player_core->openMedias(medias);
+    m_playerCore->openMedias(medias);
 }
 
 void PlayerView::title(const QString &title)
@@ -171,13 +171,13 @@ void PlayerView::title(const QString &title)
 void PlayerView::referrer(const QString &referrer)
 {
     if (!referrer.isEmpty())
-        player_core->setProperty("referrer", referrer);
+        m_playerCore->setProperty("referrer", referrer);
 }
 
 void PlayerView::userAgent(const QString &userAgent)
 {
     if (!userAgent.isEmpty())
-        player_core->setOption("user-agent", userAgent);
+        m_playerCore->setOption("user-agent", userAgent);
 }
 
 void PlayerView::onStopButton()
@@ -465,7 +465,10 @@ void PlayerView::onSizeChanged(const QSize &sz)
     if (sz.width() / devicePixelRatioF() > available.width() || sz.height()/ devicePixelRatioF() > available.height())
         setGeometry(available);
     else
+    {
         resize(sz / devicePixelRatioF());
+        move((available.width() - sz.width()/devicePixelRatioF())/2, (available.height() - sz.height()/devicePixelRatioF())/2);
+    }
 }
 
 // show cutterbar
