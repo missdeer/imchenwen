@@ -652,108 +652,108 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="99"/>
+        <location filename="../mpv/playerview.cpp" line="82"/>
         <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mpv/playerview.cpp" line="86"/>
         <location filename="../mpv/playerview.cpp" line="103"/>
-        <location filename="../mpv/playerview.cpp" line="120"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="105"/>
+        <location filename="../mpv/playerview.cpp" line="88"/>
         <source>Equalizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="107"/>
+        <location filename="../mpv/playerview.cpp" line="90"/>
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="108"/>
+        <location filename="../mpv/playerview.cpp" line="91"/>
         <source>Stereo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="109"/>
+        <location filename="../mpv/playerview.cpp" line="92"/>
         <source>Left channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="110"/>
+        <location filename="../mpv/playerview.cpp" line="93"/>
         <source>Right channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="111"/>
+        <location filename="../mpv/playerview.cpp" line="94"/>
         <source>Swap channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="113"/>
+        <location filename="../mpv/playerview.cpp" line="96"/>
         <source>Select track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="114"/>
+        <location filename="../mpv/playerview.cpp" line="97"/>
         <source>Load from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="115"/>
+        <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="117"/>
+        <location filename="../mpv/playerview.cpp" line="100"/>
         <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="118"/>
+        <location filename="../mpv/playerview.cpp" line="101"/>
         <source>Speed up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="119"/>
+        <location filename="../mpv/playerview.cpp" line="102"/>
         <source>Speed down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="185"/>
+        <location filename="../mpv/playerview.cpp" line="168"/>
         <source>imchenwen builtin media player</source>
         <translation type="unfinished">某橙内置媒体播放器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="496"/>
+        <location filename="../mpv/playerview.cpp" line="479"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="128"/>
+        <location filename="../mpv/playerview.cpp" line="111"/>
         <source>Screenshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="129"/>
+        <location filename="../mpv/playerview.cpp" line="112"/>
         <source>Cut video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="496"/>
+        <location filename="../mpv/playerview.cpp" line="479"/>
         <source>Only support cutting local videos!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="563"/>
+        <location filename="../mpv/playerview.cpp" line="546"/>
         <source>Open audio track file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="578"/>
+        <location filename="../mpv/playerview.cpp" line="561"/>
         <source>Audio delay (sec):</source>
         <translation type="unfinished"></translation>
     </message>

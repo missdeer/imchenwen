@@ -40,4 +40,6 @@ private slots:
     void onFinished(int status);
 };
 
+QString secToTime(int second, bool use_format = false);
+
 #endif // CUTTERBAR_H

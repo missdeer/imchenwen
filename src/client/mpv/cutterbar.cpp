@@ -7,7 +7,7 @@
 #include <QTextCodec>
 
 
-static QString secToTime(int second, bool use_format = false)
+QString secToTime(int second, bool use_format)
 {
     static QString format = "<span style=\" font-size:14pt; font-weight:600;color:#00ff00;\">%1:%2:%3</span>";
     QString  hour = QString::number(second / 3600);
