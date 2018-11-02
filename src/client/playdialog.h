@@ -39,6 +39,7 @@ private:
     Tuple2 m_selectedPlayer;
     StreamInfoPtr m_selectedMedia;
     MediaInfoPtr m_mediaInfo;
+    Streams m_streams;
     bool m_multiMediaResources;
     void createExternalPlayerList();
     void doOk();

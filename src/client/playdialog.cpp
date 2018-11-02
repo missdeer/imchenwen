@@ -22,21 +22,23 @@ PlayDialog::~PlayDialog()
 
 void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 {
-    for (auto stream : mi->ykdl)
+    struct {
+        Streams& streams;
+        QString tag;
+    } ss[] = {
+        { mi->ykdl,       tr(" - by ykdl")},
+        { mi->you_get,    tr(" - by you-get")},
+        { mi->youtube_dl, tr(" - by youtube_dl")},
+        { mi->annie,      tr(" - by annie")},
+    };
+    for (auto & s : ss)
     {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by ykdl"), Qt::white);
-    }
-    for (auto stream : mi->you_get)
-    {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by you-get"), QColor(0xf0f0f0));
-    }
-    for (auto stream : mi->youtube_dl)
-    {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by youtube-dl"), Qt::white);
-    }
-    for (auto stream : mi->annie)
-    {
-        addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + tr(" - by annie"), QColor(0xf0f0f0));
+        for (auto& stream : s.streams)
+        {
+            addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
+                    ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
+        }
+        m_streams.append(s.streams);
     }
     ui->listMedia->setCurrentRow(0);
     m_mediaInfo = mi;
@@ -74,9 +76,9 @@ void PlayDialog::on_btnCancel_clicked()
 void PlayDialog::createExternalPlayerList()
 {
     m_players.clear();
+    m_players.push_back(std::make_tuple(tr("Built-in player"), ""));
     Config cfg;
     cfg.read("externalPlayers", m_players);
-    m_players.push_back(std::make_tuple(tr("Built-in player"), ""));
     for (auto p : m_players)
     {
         ui->cbPlayers->addItem(std::get<0>(p) + " " + std::get<1>(p));
@@ -101,16 +103,9 @@ void PlayDialog::doOk()
             return;
         }
         int currentRow = ui->listMedia->currentRow();
-        if (currentRow < m_mediaInfo->ykdl.length())
-            m_selectedMedia = m_mediaInfo->ykdl[currentRow];
-        else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())
-            m_selectedMedia = m_mediaInfo->you_get[currentRow - m_mediaInfo->ykdl.length()];
-        else if (currentRow < m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())
-            m_selectedMedia = m_mediaInfo->youtube_dl[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length())];
-        else
-            m_selectedMedia = m_mediaInfo->annie[currentRow - (m_mediaInfo->ykdl.length() + m_mediaInfo->you_get.length() + m_mediaInfo->youtube_dl.length())];
+        m_selectedMedia = m_streams[currentRow];
     }
-    if (QFile::exists(std::get<0>(m_selectedPlayer)) || currentIndex == m_players.length() - 1)
+    if (QFile::exists(std::get<0>(m_selectedPlayer)) || currentIndex == 0)
         accept();
     else
         QMessageBox::warning(this, tr("Error"), tr("Cannot find player at '%1', please reconfiguration it.").arg(std::get<0>(m_selectedPlayer)), QMessageBox::Ok);

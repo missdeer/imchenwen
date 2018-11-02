@@ -15,9 +15,14 @@ public:
     Kast(QObject *parent = nullptr);
     void addItemToQueue(QString & item_url);
     QHostAddress getLocalAddress();
+    const QMap<QString, DLNARenderer *>& getRenderers() const;
+
 private:
     HttpFileServer *m_fileServer;
     QStringList m_queue;
+    QMap<QString, DLNARenderer *> m_renderers;
+signals:
+    void foundRenderer(const QString&);
 private slots:
     void onFoundRenderer(DLNARenderer*);
     void onHttpResponse(const QString, const QString);

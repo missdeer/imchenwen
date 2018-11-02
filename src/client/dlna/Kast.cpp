@@ -26,6 +26,8 @@ void Kast::onFoundRenderer(DLNARenderer *renderer)
     connect(renderer, SIGNAL(receivedResponse(QString,QString)), this, SLOT(onHttpResponse(QString,QString)));
     // Stop playback. Responses will be handled in handleResponse
     renderer->stopPlayback();
+    m_renderers[renderer->getName()] = renderer;
+    emit foundRenderer(renderer->getName());
 }
 
 QHostAddress Kast::getLocalAddress()
@@ -39,6 +41,11 @@ QHostAddress Kast::getLocalAddress()
              return address;
     }
     return QHostAddress();
+}
+
+const QMap<QString, DLNARenderer *> &Kast::getRenderers() const
+{
+    return m_renderers;
 }
 
 void Kast::onHttpResponse(const QString responseType, const QString data)

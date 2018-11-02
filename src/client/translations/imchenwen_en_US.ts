@@ -480,23 +480,23 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="27"/>
+        <location filename="../playdialog.cpp" line="29"/>
         <source> - by ykdl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="31"/>
+        <location filename="../playdialog.cpp" line="30"/>
         <source> - by you-get</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="35"/>
-        <source> - by youtube-dl</source>
+        <location filename="../playdialog.cpp" line="32"/>
+        <source> - by annie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="39"/>
-        <source> - by annie</source>
+        <location filename="../playdialog.cpp" line="31"/>
+        <source> - by youtube_dl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -505,18 +505,18 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="100"/>
-        <location filename="../playdialog.cpp" line="116"/>
+        <location filename="../playdialog.cpp" line="102"/>
+        <location filename="../playdialog.cpp" line="111"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="100"/>
+        <location filename="../playdialog.cpp" line="102"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="116"/>
+        <location filename="../playdialog.cpp" line="111"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>
