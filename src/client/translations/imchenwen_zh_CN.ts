@@ -355,64 +355,64 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../mpv/cutterbar.cpp" line="96"/>
         <source>FFMPEG is not installed. Please download it from</source>
-        <translation type="unfinished"></translation>
+        <translation>FFMPEG尚未安装。请从以下地址下载</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.cpp" line="96"/>
         <location filename="../mpv/cutterbar.cpp" line="104"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.cpp" line="98"/>
         <source>and place file &quot;ffmpeg&quot; into ~/.moonplayer/ or /usr/share/moonplayer/</source>
-        <translation type="unfinished"></translation>
+        <translation>并将文件“ffmpeg”放置到目录“~/.moonplayer/ or /usr/share/moonplayer/”</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.cpp" line="104"/>
         <source>Time position is not valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>时间位置无效</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.cpp" line="120"/>
         <source>FFMPEG ERROR</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.cpp" line="123"/>
         <source>Finished</source>
-        <translation type="unfinished"></translation>
+        <translation>完成</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>始于</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.ui" line="29"/>
         <source>Start position:</source>
-        <translation type="unfinished"></translation>
+        <translation>开始位置：</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.ui" line="43"/>
         <location filename="../mpv/cutterbar.ui" line="71"/>
         <source>00:00:00</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.ui" line="50"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.ui" line="57"/>
         <source>End position:</source>
-        <translation type="unfinished"></translation>
+        <translation>结束位置：</translation>
     </message>
     <message>
         <location filename="../mpv/cutterbar.ui" line="78"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -540,82 +540,80 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="266"/>
+        <location filename="../mpv/playercore.cpp" line="262"/>
         <source>Fails to load: </source>
-        <translation type="unfinished"></translation>
+        <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="267"/>
+        <location filename="../mpv/playercore.cpp" line="263"/>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="268"/>
+        <location filename="../mpv/playercore.cpp" line="264"/>
         <source>Try again</source>
-        <translation type="unfinished"></translation>
+        <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="689"/>
+        <location filename="../mpv/playercore.cpp" line="685"/>
         <source>MPV Error</source>
-        <translation type="unfinished"></translation>
+        <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="690"/>
+        <location filename="../mpv/playercore.cpp" line="686"/>
         <source>Error while playing file:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>播放文件错误：
+</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="690"/>
+        <location filename="../mpv/playercore.cpp" line="686"/>
         <source>
 
 MPV Error: </source>
-        <translation type="unfinished"></translation>
+        <translation>
+
+MPV错误：</translation>
     </message>
 </context>
 <context>
     <name>PlayerView</name>
     <message>
-        <location filename="../mpv/playerview.ui" line="17"/>
-        <source>MoonPlayer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mpv/playerview.ui" line="78"/>
         <location filename="../mpv/playerview.ui" line="218"/>
         <source>00:00</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="88"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="159"/>
         <source>Playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>播放列表</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="204"/>
         <source>Resources</source>
-        <translation type="unfinished"></translation>
+        <translation>资源</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="261"/>
         <source>Minimize</source>
-        <translation type="unfinished"></translation>
+        <translation>最小化</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="278"/>
         <source>Maximize</source>
-        <translation type="unfinished"></translation>
+        <translation>最大化</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="295"/>
         <location filename="../mpv/playerview.ui" line="433"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="351"/>
@@ -624,138 +622,139 @@ MPV Error: </source>
         <location filename="../mpv/playerview.ui" line="392"/>
         <location filename="../mpv/playerview.ui" line="473"/>
         <source>0</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="365"/>
         <source>Gamma</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="399"/>
         <source>Hue</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="406"/>
         <source>Contrast</source>
-        <translation type="unfinished"></translation>
+        <translation>对比度</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="413"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>亮度</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="480"/>
         <source>Saturation</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="82"/>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>视频</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="86"/>
         <location filename="../mpv/playerview.cpp" line="103"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="88"/>
         <source>Equalizer</source>
-        <translation type="unfinished"></translation>
+        <translation>均衡器</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="90"/>
         <source>Audio</source>
-        <translation type="unfinished"></translation>
+        <translation>音频</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="91"/>
         <source>Stereo</source>
-        <translation type="unfinished"></translation>
+        <translation>立体声</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="92"/>
         <source>Left channel</source>
-        <translation type="unfinished"></translation>
+        <translation>左声道</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="93"/>
         <source>Right channel</source>
-        <translation type="unfinished"></translation>
+        <translation>右声道</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="94"/>
         <source>Swap channel</source>
-        <translation type="unfinished"></translation>
+        <translation>交换声道</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="96"/>
         <source>Select track</source>
-        <translation type="unfinished"></translation>
+        <translation>选择音轨</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="97"/>
         <source>Load from file</source>
-        <translation type="unfinished"></translation>
+        <translation>载入文件</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>延迟</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="100"/>
         <source>Speed</source>
-        <translation type="unfinished"></translation>
+        <translation>速度</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="101"/>
         <source>Speed up</source>
-        <translation type="unfinished"></translation>
+        <translation>加速</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="102"/>
         <source>Speed down</source>
-        <translation type="unfinished"></translation>
+        <translation>减速</translation>
     </message>
     <message>
+        <location filename="../mpv/playerview.ui" line="17"/>
         <location filename="../mpv/playerview.cpp" line="168"/>
         <source>imchenwen builtin media player</source>
-        <translation type="unfinished">某橙内置媒体播放器</translation>
+        <translation>某橙内置媒体播放器</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="479"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="111"/>
         <source>Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>截屏</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="112"/>
         <source>Cut video</source>
-        <translation type="unfinished"></translation>
+        <translation>剪切视频</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="479"/>
         <source>Only support cutting local videos!</source>
-        <translation type="unfinished"></translation>
+        <translation>只支持剪切本地视频！</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="546"/>
         <source>Open audio track file</source>
-        <translation type="unfinished"></translation>
+        <translation>打开音频音轨文件</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.cpp" line="561"/>
         <source>Audio delay (sec):</source>
-        <translation type="unfinished"></translation>
+        <translation>音频延迟(秒)：</translation>
     </message>
 </context>
 <context>

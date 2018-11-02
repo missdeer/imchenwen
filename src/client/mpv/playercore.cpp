@@ -78,22 +78,18 @@ PlayerCore::PlayerCore(QWidget *parent) :
     if (Settings::hwdec == "auto")
     {
         mpv::qt::set_option_variant(m_mpv, "hwdec-preload", "auto");
-        mpv::qt::set_option_variant(m_mpv, "opengl-hwdec-interop", "auto");
     }
     else if (Settings::hwdec == "vaapi")
     {
         mpv::qt::set_option_variant(m_mpv, "hwdec-preload", "vaapi-egl");
-        mpv::qt::set_option_variant(m_mpv, "opengl-hwdec-interop", "vaapi-egl");
     }
     else
     {
         mpv::qt::set_option_variant(m_mpv, "hwdec-preload", "vdpau-glx");
-        mpv::qt::set_option_variant(m_mpv, "opengl-hwdec-interop", "vdpau-glx");
     }
 #elif defined(Q_OS_MAC)
-    mpv::qt::set_option_variant(m_mpv, "opengl-hwdec-interop", "videotoolbox");
 #elif defined(Q_OS_WIN)
-    mpv::qt::set_option_variant(m_mpv, "opengl-backend", "angle");
+    mpv::qt::set_option_variant(m_mpv, "gpu-context", "angle");
 #endif
     mpv::qt::set_option_variant(m_mpv, "hwdec", "auto");
     mpv::qt::set_option_variant(m_mpv, "hwdec-codecs", "all");

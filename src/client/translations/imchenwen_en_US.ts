@@ -524,33 +524,33 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="266"/>
+        <location filename="../mpv/playercore.cpp" line="262"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="267"/>
+        <location filename="../mpv/playercore.cpp" line="263"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="268"/>
+        <location filename="../mpv/playercore.cpp" line="264"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="689"/>
+        <location filename="../mpv/playercore.cpp" line="685"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="690"/>
+        <location filename="../mpv/playercore.cpp" line="686"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="690"/>
+        <location filename="../mpv/playercore.cpp" line="686"/>
         <source>
 
 MPV Error: </source>
@@ -559,11 +559,6 @@ MPV Error: </source>
 </context>
 <context>
     <name>PlayerView</name>
-    <message>
-        <location filename="../mpv/playerview.ui" line="17"/>
-        <source>MoonPlayer</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../mpv/playerview.ui" line="78"/>
         <location filename="../mpv/playerview.ui" line="218"/>
@@ -707,6 +702,7 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mpv/playerview.ui" line="17"/>
         <location filename="../mpv/playerview.cpp" line="168"/>
         <source>imchenwen builtin media player</source>
         <translation type="unfinished"></translation>

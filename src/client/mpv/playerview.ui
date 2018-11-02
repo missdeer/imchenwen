@@ -14,7 +14,7 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>MoonPlayer</string>
+   <string>imchenwen builtin media player</string>
   </property>
   <widget class="QWidget" name="controllerWidget" native="true">
    <property name="geometry">
