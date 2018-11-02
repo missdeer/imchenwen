@@ -241,6 +241,8 @@ bool PlayerCore::event(QEvent *e)
         {
             int f = 0;
             handleMpvError(mpv_set_property_async(m_mpv, 2, "pause", MPV_FORMAT_FLAG, &f));
+            state = VIDEO_PLAYING;
+            emit played();
         }
             break;
         case MPV_EVENT_UNPAUSE:
@@ -423,6 +425,10 @@ bool PlayerCore::event(QEvent *e)
 // open file
 void PlayerCore::openFile(const QString &file, const QString &audioTrack)
 {    
+    if (state != STOPPING)
+    {
+        m_noEmitStopped = true;
+    }
     this->m_mediaFile = file;
     this->m_audioTrack = audioTrack;
 
@@ -437,6 +443,10 @@ void PlayerCore::openMedias(const QStringList &medias)
 {
     if (medias.isEmpty())
         return;
+    if (state != STOPPING)
+    {
+        m_noEmitStopped = true;
+    }
     mpv::qt::set_property_variant(m_mpv, "cache-secs", 600);
     mpv::qt::set_option_variant(m_mpv, "ytdl", "no");
     mpv::qt::set_option_variant(m_mpv, "prefetch-playlist", "yes");
