@@ -63,7 +63,7 @@ PlayerCore::PlayerCore(QWidget *parent) :
     // set mpv options
     mpv::qt::set_option_variant(m_mpv, "softvol", "yes");         // mpv handles the volume
     mpv::qt::set_option_variant(m_mpv, "ytdl", "no");             // We handle video url parsing
-    mpv::qt::set_option_variant(m_mpv, "screenshot-directory", QDir::homePath().toUtf8().constData());
+    mpv::qt::set_option_variant(m_mpv, "screenshot-directory", QDir::toNativeSeparators( QDir::homePath()));
     mpv::qt::set_option_variant(m_mpv, "reset-on-next-file", "speed,video-aspect,af,sub-delay,sub-visibility,audio-delay");
     mpv::qt::set_option_variant(m_mpv, "vo", "opengl-cb");
     mpv_request_log_messages(m_mpv, "warn");

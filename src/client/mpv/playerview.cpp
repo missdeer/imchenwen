@@ -165,7 +165,11 @@ void PlayerView::playMedias(const QStringList &medias)
 void PlayerView::title(const QString &title)
 {
     if (!title.isEmpty())
+    {
         setWindowTitle(title + " - " + tr("imchenwen builtin media player"));
+        m_playerCore->setProperty("force-media-title", title);
+        m_playerCore->setProperty("title", title);
+    }
 }
 
 void PlayerView::referrer(const QString &referrer)
