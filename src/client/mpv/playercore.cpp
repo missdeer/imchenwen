@@ -63,6 +63,11 @@ PlayerCore::PlayerCore(QWidget *parent) :
     // set mpv options
     mpv::qt::set_option_variant(m_mpv, "softvol", "yes");         // mpv handles the volume
     mpv::qt::set_option_variant(m_mpv, "ytdl", "no");             // We handle video url parsing
+    mpv::qt::set_option_variant(m_mpv, "osc", "no");
+    mpv::qt::set_option_variant(m_mpv, "cache-secs", 60);
+    mpv::qt::set_option_variant(m_mpv, "cache-default", 8196);
+    mpv::qt::set_option_variant(m_mpv, "prefetch-playlist", "yes");
+    mpv::qt::set_option_variant(m_mpv, "merge-files", "yes");
     mpv::qt::set_option_variant(m_mpv, "screenshot-directory", QDir::toNativeSeparators( QDir::homePath()));
     mpv::qt::set_option_variant(m_mpv, "reset-on-next-file", "speed,video-aspect,af,sub-delay,sub-visibility,audio-delay");
     mpv::qt::set_option_variant(m_mpv, "vo", "opengl-cb");
@@ -435,10 +440,6 @@ void PlayerCore::openMedias(const QStringList &medias)
     {
         m_noEmitStopped = true;
     }
-    mpv::qt::set_property_variant(m_mpv, "cache-secs", 600);
-    mpv::qt::set_option_variant(m_mpv, "ytdl", "no");
-    mpv::qt::set_option_variant(m_mpv, "prefetch-playlist", "yes");
-    mpv::qt::set_option_variant(m_mpv, "merge-files", "yes");
 
     m_playSpeed = 1.0;
 

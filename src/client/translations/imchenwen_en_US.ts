@@ -411,15 +411,6 @@ Do you wish to override the security check and continue ?   </source>
     </message>
 </context>
 <context>
-    <name>MPVWindow</name>
-    <message>
-        <location filename="../mpv/mpvwindow.cpp" line="13"/>
-        <location filename="../mpv/mpvwindow.cpp" line="54"/>
-        <source>imchenwen builtin media player</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PasswordDialog</name>
     <message>
         <location filename="../passworddialog.ui" line="14"/>
@@ -524,33 +515,33 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="256"/>
+        <location filename="../mpv/playercore.cpp" line="261"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="257"/>
+        <location filename="../mpv/playercore.cpp" line="262"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="258"/>
+        <location filename="../mpv/playercore.cpp" line="263"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="683"/>
+        <location filename="../mpv/playercore.cpp" line="684"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="684"/>
+        <location filename="../mpv/playercore.cpp" line="685"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="684"/>
+        <location filename="../mpv/playercore.cpp" line="685"/>
         <source>
 
 MPV Error: </source>
@@ -703,12 +694,12 @@ MPV Error: </source>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="168"/>
+        <location filename="../mpv/playerview.cpp" line="169"/>
         <source>imchenwen builtin media player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="482"/>
+        <location filename="../mpv/playerview.cpp" line="486"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -723,17 +714,17 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="482"/>
+        <location filename="../mpv/playerview.cpp" line="486"/>
         <source>Only support cutting local videos!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="549"/>
+        <location filename="../mpv/playerview.cpp" line="553"/>
         <source>Open audio track file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="564"/>
+        <location filename="../mpv/playerview.cpp" line="568"/>
         <source>Audio delay (sec):</source>
         <translation type="unfinished"></translation>
     </message>

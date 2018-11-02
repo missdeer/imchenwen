@@ -425,10 +425,8 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>MPVWindow</name>
     <message>
-        <location filename="../mpv/mpvwindow.cpp" line="13"/>
-        <location filename="../mpv/mpvwindow.cpp" line="54"/>
         <source>imchenwen builtin media player</source>
-        <translation>某橙内置媒体播放器</translation>
+        <translation type="vanished">某橙内置媒体播放器</translation>
     </message>
 </context>
 <context>
@@ -544,34 +542,34 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="256"/>
+        <location filename="../mpv/playercore.cpp" line="261"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="257"/>
+        <location filename="../mpv/playercore.cpp" line="262"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="258"/>
+        <location filename="../mpv/playercore.cpp" line="263"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="683"/>
+        <location filename="../mpv/playercore.cpp" line="684"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="684"/>
+        <location filename="../mpv/playercore.cpp" line="685"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="684"/>
+        <location filename="../mpv/playercore.cpp" line="685"/>
         <source>
 
 MPV Error: </source>
@@ -726,12 +724,12 @@ MPV错误：</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="168"/>
+        <location filename="../mpv/playerview.cpp" line="169"/>
         <source>imchenwen builtin media player</source>
         <translation>某橙内置媒体播放器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="482"/>
+        <location filename="../mpv/playerview.cpp" line="486"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -746,17 +744,17 @@ MPV错误：</translation>
         <translation>剪切视频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="482"/>
+        <location filename="../mpv/playerview.cpp" line="486"/>
         <source>Only support cutting local videos!</source>
         <translation>只支持剪切本地视频！</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="549"/>
+        <location filename="../mpv/playerview.cpp" line="553"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="564"/>
+        <location filename="../mpv/playerview.cpp" line="568"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>
