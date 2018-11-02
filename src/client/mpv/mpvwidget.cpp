@@ -114,6 +114,7 @@ void MPVWidget::handleMpvEvent(mpv_event *event)
             if (strcmp(prop->name, "time-pos") == 0) {
                 if (prop->format == MPV_FORMAT_DOUBLE) {
                     double time = *(double *)prop->data;
+                    Q_EMIT positionChanged(time);
                 } else if (prop->format == MPV_FORMAT_NONE) {
                     // The property is unavailable, which probably means playback was stopped.
                     qDebug() << "mpv is quiting?";

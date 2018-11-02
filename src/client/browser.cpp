@@ -193,14 +193,10 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 
             for (QString& a : args)
             {
-                if (a == "{{referrer}}")
-                    a = "";
-                else if (a == "{{title}}")
-                    a = title;
-                else if (a == "{{site}}")
-                    a = title;
-                else if (a == "{{user-agent}}")
-                    a = Config().read<QString>(QLatin1String("httpUserAgent"));
+                a = a.replace("{{referrer}}", "\"\"");
+                a = a.replace("{{title}}", title);
+                a = a.replace("{{site}}",title);
+                a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
             }
 
             args << u;
@@ -251,14 +247,10 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 
             for (QString& a : args)
             {
-                if (a == "{{referrer}}")
-                    a = mi->url;
-                else if (a == "{{title}}")
-                    a = mi->title;
-                else if (a == "{{site}}")
-                    a = mi->site;
-                else if (a == "{{user-agent}}")
-                    a = Config().read<QString>(QLatin1String("httpUserAgent"));
+                a = a.replace("{{referrer}}", mi->url);
+                a = a.replace("{{title}}", mi->title);
+                a = a.replace("{{site}}",mi->site);
+                a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
             }
 
             args << stream->urls;
@@ -457,6 +449,7 @@ void Browser::onResolvingError(const QString &u)
 
 void Browser::onProcessError(QProcess::ProcessError error)
 {
+    onPlayerFinished(1, QProcess::CrashExit);
     QString msg;
     switch(error)
     {
@@ -471,7 +464,7 @@ void Browser::onProcessError(QProcess::ProcessError error)
         break;
     }
     QMessageBox::warning(mainWindow(),
-                         tr("Error on launching external player"), msg, QMessageBox::Ok);
+                         tr("Launching external player failed, please try built-in player"), msg, QMessageBox::Ok);
 }
 
 void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
@@ -494,7 +487,11 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
         }
     }
     m_windowsState.clear();
-
+    if (m_mpv)
+    {
+        m_mpv->deleteLater();
+        m_mpv = nullptr;
+    }
 }
 
 void Browser::onSniffedMediaUrl(const QString &u)

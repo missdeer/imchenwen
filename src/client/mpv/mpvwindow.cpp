@@ -31,6 +31,7 @@ void MPVWindow::playMedias(const QStringList &medias)
         return;
     m_mpv->setProperty("cache-secs", 600);
     m_mpv->setOption("ytdl", "no");
+    m_mpv->setOption("prefetch-playlist", "yes");
     m_mpv->command(QStringList() << "loadfile" << medias[0] << "replace");
     for (int i = 1; i < medias.length(); ++i) {
         m_mpv->command(QStringList() << "loadfile" << medias[i] << "append");

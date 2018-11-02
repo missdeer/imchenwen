@@ -5,49 +5,49 @@
     <name>Browser</name>
     <message>
         <location filename="../browser.cpp" line="175"/>
-        <location filename="../browser.cpp" line="233"/>
+        <location filename="../browser.cpp" line="229"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="443"/>
-        <location filename="../browser.cpp" line="455"/>
+        <location filename="../browser.cpp" line="435"/>
+        <location filename="../browser.cpp" line="447"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="443"/>
+        <location filename="../browser.cpp" line="435"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="455"/>
+        <location filename="../browser.cpp" line="447"/>
         <source>Resolving link address </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="455"/>
+        <location filename="../browser.cpp" line="447"/>
         <source> failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="464"/>
+        <location filename="../browser.cpp" line="457"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="467"/>
+        <location filename="../browser.cpp" line="460"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="470"/>
+        <location filename="../browser.cpp" line="463"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="474"/>
-        <source>Error on launching external player</source>
+        <location filename="../browser.cpp" line="467"/>
+        <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -349,7 +349,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>MPVWindow</name>
     <message>
         <location filename="../mpv/mpvwindow.cpp" line="13"/>
-        <location filename="../mpv/mpvwindow.cpp" line="51"/>
+        <location filename="../mpv/mpvwindow.cpp" line="52"/>
         <source>imchenwen builtin media player</source>
         <translation type="unfinished"></translation>
     </message>
