@@ -60,113 +60,113 @@ PlayerView::PlayerView(QWidget *parent) :
     ui->titleBar->setFixedHeight(24);
     ui->titlebarLayout->setContentsMargins(QMargins(8, 4, 8, 4));
     ui->titlebarLayout->setSpacing(4);
-    leftBorder = new Border(this, Border::LEFT);
-    rightBorder = new Border(this, Border::RIGHT);
-    bottomBorder = new Border(this, Border::BOTTOM);
-    bottomLeftBorder = new Border(this, Border::BOTTOMLEFT);
-    bottomRightBorder = new Border(this, Border::BOTTOMRIGHT);
+    m_leftBorder = new Border(this, Border::LEFT);
+    m_rightBorder = new Border(this, Border::RIGHT);
+    m_bottomBorder = new Border(this, Border::BOTTOM);
+    m_bottomLeftBorder = new Border(this, Border::BOTTOMLEFT);
+    m_bottomRightBorder = new Border(this, Border::BOTTOMRIGHT);
     QGridLayout *gridLayout = new QGridLayout(this);
     gridLayout->addWidget(ui->titleBar, 0, 0, 1, 3);
-    gridLayout->addWidget(leftBorder, 1, 0, 1, 1);
-    gridLayout->addWidget(rightBorder, 1, 2, 1, 1);
-    gridLayout->addWidget(bottomBorder, 2, 1, 1, 1);
-    gridLayout->addWidget(bottomLeftBorder, 2, 0, 1, 1);
-    gridLayout->addWidget(bottomRightBorder, 2, 2, 1, 1);
+    gridLayout->addWidget(m_leftBorder, 1, 0, 1, 1);
+    gridLayout->addWidget(m_rightBorder, 1, 2, 1, 1);
+    gridLayout->addWidget(m_bottomBorder, 2, 1, 1, 1);
+    gridLayout->addWidget(m_bottomLeftBorder, 2, 0, 1, 1);
+    gridLayout->addWidget(m_bottomRightBorder, 2, 2, 1, 1);
     gridLayout->setMargin(0);
     gridLayout->setSpacing(0);
     setAcceptDrops(true);
     setMinimumSize(QSize(640, 360));
 
-    quit_requested = false;
-    no_play_next = false;
-    ctrl_pressed = false;
+    m_quitRequested = false;
+    m_noPlayNext = false;
+    m_ctrlPressed = false;
 
     // create player core
-    core = new PlayerCore(this);
-    core->move(0, 0);
-    core->setAttribute(Qt::WA_TransparentForMouseEvents);
+    m_playerCore = new PlayerCore(this);
+    m_playerCore->move(0, 0);
+    m_playerCore->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     // create volume slider
     QWidget *volumePopup = new QWidget(this, Qt::Popup);
     volumePopup->resize(QSize(24, 80));
-    volumeSlider = new QSlider(Qt::Vertical, volumePopup);
-    volumeSlider->setRange(0, 10);
-    volumeSlider->setValue(10);
-    volumeSlider->resize(QSize(20, 70));
-    volumeSlider->move(2, 5);
+    m_volumeSlider = new QSlider(Qt::Vertical, volumePopup);
+    m_volumeSlider->setRange(0, 10);
+    m_volumeSlider->setValue(10);
+    m_volumeSlider->resize(QSize(20, 70));
+    m_volumeSlider->move(2, 5);
 
     // create menu
     QMenu *video_menu = new QMenu(tr("Video"));
-    video_menu->addAction("4:3", core, SLOT(setRatio_4_3()));
-    video_menu->addAction("16:9", core, SLOT(setRatio_16_9()));
-    video_menu->addAction("16:10", core, SLOT(setRatio_16_10()));
-    video_menu->addAction(tr("Default"), core, SLOT(setRatio_0()));
+    video_menu->addAction("4:3", m_playerCore, SLOT(setRatio_4_3()));
+    video_menu->addAction("16:9", m_playerCore, SLOT(setRatio_16_9()));
+    video_menu->addAction("16:10", m_playerCore, SLOT(setRatio_16_10()));
+    video_menu->addAction(tr("Default"), m_playerCore, SLOT(setRatio_0()));
     video_menu->addSeparator();
     video_menu->addAction(tr("Equalizer"), ui->equalizerWidget, SLOT(show()));
 
     QMenu *audio_menu = new QMenu(tr("Audio"));
-    audio_menu->addAction(tr("Stereo"), core, SLOT(setChannel_Stereo()));
-    audio_menu->addAction(tr("Left channel"), core, SLOT(setChannel_Left()));
-    audio_menu->addAction(tr("Right channel"), core, SLOT(setChannel_Right()));
-    audio_menu->addAction(tr("Swap channel"), core, SLOT(setChannel_Swap()));
+    audio_menu->addAction(tr("Stereo"), m_playerCore, SLOT(setChannel_Stereo()));
+    audio_menu->addAction(tr("Left channel"), m_playerCore, SLOT(setChannel_Left()));
+    audio_menu->addAction(tr("Right channel"), m_playerCore, SLOT(setChannel_Right()));
+    audio_menu->addAction(tr("Swap channel"), m_playerCore, SLOT(setChannel_Swap()));
     audio_menu->addSeparator();
     audio_menu->addAction(tr("Select track"), this, SLOT(selectAudioTrack()));
     audio_menu->addAction(tr("Load from file"), this, SLOT(addAudioTrack()));
     audio_menu->addAction(tr("Delay"), this, SLOT(setAudioDelay()));
 
     QMenu *speed_menu = new QMenu(tr("Speed"));
-    speed_menu->addAction(tr("Speed up") + "\tCtrl+Right", core, SLOT(speedUp()));
-    speed_menu->addAction(tr("Speed down") + "\tCtrl+Left", core, SLOT(speedDown()));
-    speed_menu->addAction(tr("Default") + "\tR", core, SLOT(speedSetToDefault()));
+    speed_menu->addAction(tr("Speed up") + "\tCtrl+Right", m_playerCore, SLOT(speedUp()));
+    speed_menu->addAction(tr("Speed down") + "\tCtrl+Left", m_playerCore, SLOT(speedDown()));
+    speed_menu->addAction(tr("Default") + "\tR", m_playerCore, SLOT(speedSetToDefault()));
 
-    menu = new QMenu(this);
-    menu->addMenu(video_menu);
-    menu->addMenu(audio_menu);
-    menu->addMenu(speed_menu);
+    m_menu = new QMenu(this);
+    m_menu->addMenu(video_menu);
+    m_menu->addMenu(audio_menu);
+    m_menu->addMenu(speed_menu);
 
-    menu->addSeparator();
-    menu->addAction(tr("Screenshot") + "\tS", core, SLOT(screenShot()));
-    menu->addAction(tr("Cut video") + "\tC", this, SLOT(showCutterBar()));
+    m_menu->addSeparator();
+    m_menu->addAction(tr("Screenshot") + "\tS", m_playerCore, SLOT(screenShot()));
+    m_menu->addAction(tr("Cut video") + "\tC", this, SLOT(showCutterBar()));
 
-    menu->addSeparator();
+    m_menu->addSeparator();
 
     // create cutterbar
-    cutterBar = new CutterBar(this);
-    cutterBar->setWindowFlags(cutterBar->windowFlags() | Qt::Popup);
+    m_oscBar = new CutterBar(this);
+    m_oscBar->setWindowFlags(m_oscBar->windowFlags() | Qt::Popup);
 
     // create timer
-    hideTimer = new QTimer(this);
-    hideTimer->setSingleShot(true);
+    m_hideTimer = new QTimer(this);
+    m_hideTimer->setSingleShot(true);
     setMouseTracking(true);
 
-    connect(core, &PlayerCore::lengthChanged, this, &PlayerView::onLengthChanged);
-    connect(core, &PlayerCore::sizeChanged, this, &PlayerView::onSizeChanged);
-    connect(core, &PlayerCore::timeChanged, this, &PlayerView::onTimeChanged);
-    connect(core, &PlayerCore::played, ui->pauseButton, &QPushButton::show);
-    connect(core, &PlayerCore::played, ui->playButton, &QPushButton::hide);
-    connect(core, &PlayerCore::paused, ui->playButton, &QPushButton::show);
-    connect(core, &PlayerCore::paused, ui->pauseButton, &QPushButton::hide);
-    connect(core, &PlayerCore::stopped, this, &PlayerView::onStopped);
-    connect(hideTimer, &QTimer::timeout, this, &PlayerView::hideElements);
-    connect(volumeSlider, &QSlider::valueChanged, core, &PlayerCore::setVolume);
-    connect(volumeSlider, &QSlider::valueChanged, this, &PlayerView::saveVolume);
-    connect(cutterBar, &CutterBar::newFrame, core, &PlayerCore::jumpTo);
+    connect(m_playerCore, &PlayerCore::lengthChanged, this, &PlayerView::onLengthChanged);
+    connect(m_playerCore, &PlayerCore::sizeChanged, this, &PlayerView::onSizeChanged);
+    connect(m_playerCore, &PlayerCore::timeChanged, this, &PlayerView::onTimeChanged);
+    connect(m_playerCore, &PlayerCore::played, ui->pauseButton, &QPushButton::show);
+    connect(m_playerCore, &PlayerCore::played, ui->playButton, &QPushButton::hide);
+    connect(m_playerCore, &PlayerCore::paused, ui->playButton, &QPushButton::show);
+    connect(m_playerCore, &PlayerCore::paused, ui->pauseButton, &QPushButton::hide);
+    connect(m_playerCore, &PlayerCore::stopped, this, &PlayerView::onStopped);
+    connect(m_hideTimer, &QTimer::timeout, this, &PlayerView::hideElements);
+    connect(m_volumeSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setVolume);
+    connect(m_volumeSlider, &QSlider::valueChanged, this, &PlayerView::saveVolume);
+    connect(m_oscBar, &CutterBar::newFrame, m_playerCore, &PlayerCore::jumpTo);
     connect(ui->stopButton, &QPushButton::clicked, this, &PlayerView::onStopButton);
     connect(ui->maxButton, &QPushButton::clicked, this, &PlayerView::onMaxButton);
-    connect(ui->playButton, &QPushButton::clicked, core, &PlayerCore::changeState);
-    connect(ui->pauseButton, &QPushButton::clicked, core, &PlayerCore::changeState);
+    connect(ui->playButton, &QPushButton::clicked, m_playerCore, &PlayerCore::changeState);
+    connect(ui->pauseButton, &QPushButton::clicked, m_playerCore, &PlayerCore::changeState);
     connect(ui->volumeButton, &QPushButton::clicked, this, &PlayerView::showVolumeSlider);
     connect(ui->timeSlider, &QSlider::sliderPressed, this, &PlayerView::onTimeSliderPressed);
     connect(ui->timeSlider, &QSlider::valueChanged, this, &PlayerView::onTimeSliderValueChanged);
     connect(ui->timeSlider, &QSlider::sliderReleased, this, &PlayerView::onTimeSliderReleased);
 
-    connect(ui->brightnessSlider, &QSlider::valueChanged, core, &PlayerCore::setBrightness);
-    connect(ui->contrastSlider, &QSlider::valueChanged, core, &PlayerCore::setContrast);
-    connect(ui->saturationSlider, &QSlider::valueChanged, core, &PlayerCore::setSaturation);
-    connect(ui->gammaSlider, &QSlider::valueChanged, core, &PlayerCore::setGamma);
-    connect(ui->hueSlider, &QSlider::valueChanged, core, &PlayerCore::setHue);
+    connect(ui->brightnessSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setBrightness);
+    connect(ui->contrastSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setContrast);
+    connect(ui->saturationSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setSaturation);
+    connect(ui->gammaSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setGamma);
+    connect(ui->hueSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setHue);
 
-    volumeSlider->setValue(50);
+    m_volumeSlider->setValue(50);
 }
 
 PlayerView::~PlayerView()
@@ -199,20 +199,20 @@ void PlayerView::userAgent(const QString &userAgent)
 
 void PlayerView::onStopButton()
 {
-    no_play_next = true;
-    core->stop();
+    m_noPlayNext = true;
+    m_playerCore->stop();
 }
 
 void PlayerView::onStopped()
 {
-    if (quit_requested)
+    if (m_quitRequested)
     {
-        quit_requested = false;
+        m_quitRequested = false;
         close();
     }
-    else if (no_play_next)
+    else if (m_noPlayNext)
     {
-        no_play_next = false;
+        m_noPlayNext = false;
         ui->playButton->show();
         ui->pauseButton->hide();
     }
@@ -220,13 +220,13 @@ void PlayerView::onStopped()
 
 void PlayerView::closeEvent(QCloseEvent *e)
 {
-    no_play_next = true;
+    m_noPlayNext = true;
 
     // It's not safe to quit until mpv is stopped
-    if (core->state != PlayerCore::STOPPING)
+    if (m_playerCore->state != PlayerCore::STOPPING)
     {
-        core->stop();
-        quit_requested = true;
+        m_playerCore->stop();
+        m_quitRequested = true;
         e->ignore();
     }
     else
@@ -265,7 +265,7 @@ void PlayerView::dropEvent(QDropEvent *e)
 void PlayerView::resizeEvent(QResizeEvent *e)
 {
     // resize player core
-    core->resize(e->size());
+    m_playerCore->resize(e->size());
 
     // move and resize controller
     int c_x = (e->size().width() - ui->controllerWidget->width()) / 2;
@@ -280,11 +280,11 @@ void PlayerView::resizeEvent(QResizeEvent *e)
     ui->equalizerWidget->raise();
 
     // raise borders and titlebar
-    leftBorder->raise();
-    rightBorder->raise();
-    bottomBorder->raise();
-    bottomLeftBorder->raise();
-    bottomRightBorder->raise();
+    m_leftBorder->raise();
+    m_rightBorder->raise();
+    m_bottomBorder->raise();
+    m_bottomLeftBorder->raise();
+    m_bottomRightBorder->raise();
     ui->titleBar->raise();
 
     e->accept();
@@ -296,30 +296,30 @@ void PlayerView::keyPressEvent(QKeyEvent *e)
     switch (e->key())
     {
     case Qt::Key_Control:
-        ctrl_pressed = true;
+        m_ctrlPressed = true;
         break;
     case Qt::Key_S:
-        core->screenShot();
+        m_playerCore->screenShot();
         break;
     case Qt::Key_C:
         showCutterBar();
         break;
     case Qt::Key_O:
-        if (ctrl_pressed)
+        if (m_ctrlPressed)
         {
             // key-release event may not be received after dialog is shown
-            ctrl_pressed = false;
+            m_ctrlPressed = false;
         }
         break;
     case Qt::Key_U:
-        if (ctrl_pressed)
+        if (m_ctrlPressed)
         {
             // key-release event may not be received after dialog is shown
-            ctrl_pressed = false;
+            m_ctrlPressed = false;
         }
         break;
     case Qt::Key_Space:
-        core->changeState();
+        m_playerCore->changeState();
         break;
     case Qt::Key_Return:
         setFullScreen();
@@ -329,34 +329,34 @@ void PlayerView::keyPressEvent(QKeyEvent *e)
             setFullScreen();
         break;
     case Qt::Key_R:
-        core->speedSetToDefault();
+        m_playerCore->speedSetToDefault();
         break;
     case Qt::Key_Comma:
-        if (ctrl_pressed)
+        if (m_ctrlPressed)
         {
             // key-release event may not be received after dialog is shown
-            ctrl_pressed = false;
+            m_ctrlPressed = false;
         }
         break;
     case Qt::Key_Left:
-        if (ctrl_pressed)
-            core->speedDown();
+        if (m_ctrlPressed)
+            m_playerCore->speedDown();
         else
             ui->timeSlider->setValue(ui->timeSlider->value() - 5);
         break;
 
     case Qt::Key_Right:
-        if (ctrl_pressed)
-            core->speedUp();
+        if (m_ctrlPressed)
+            m_playerCore->speedUp();
         else
             ui->timeSlider->setValue(ui->timeSlider->value() + 5);
         break;
 
     case Qt::Key_Up:
-        volumeSlider->setValue(volumeSlider->value() + 1);
+        m_volumeSlider->setValue(m_volumeSlider->value() + 1);
         break;
     case Qt::Key_Down:
-        volumeSlider->setValue(volumeSlider->value() - 1);
+        m_volumeSlider->setValue(m_volumeSlider->value() - 1);
         break;
     default: break;
     }
@@ -366,7 +366,7 @@ void PlayerView::keyPressEvent(QKeyEvent *e)
 void PlayerView::keyReleaseEvent(QKeyEvent *e)
 {
     if (e->key() == Qt::Key_Control)
-        ctrl_pressed = false;
+        m_ctrlPressed = false;
     e->accept();
 }
 
@@ -385,35 +385,35 @@ void PlayerView::mouseDoubleClickEvent(QMouseEvent *e)
 void PlayerView::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
-        dPos = e->pos();
+        m_dPos = e->pos();
     e->accept();
 }
 
 void PlayerView::mouseMoveEvent(QMouseEvent *e)
 {
     // move window
-    if (!dPos.isNull())
-        move(e->globalPos() - dPos);
+    if (!m_dPos.isNull())
+        move(e->globalPos() - m_dPos);
 
     // show controller, titlebar and cursor
-    hideTimer->stop();
+    m_hideTimer->stop();
     ui->controllerWidget->show();
     ui->titleBar->show();
     setCursor(QCursor(Qt::ArrowCursor));
-    if (core->state == PlayerCore::VIDEO_PLAYING || core->state == PlayerCore::TV_PLAYING)
-        hideTimer->start(2000);
+    if (m_playerCore->state == PlayerCore::VIDEO_PLAYING || m_playerCore->state == PlayerCore::TV_PLAYING)
+        m_hideTimer->start(2000);
     e->accept();
 }
 
 void PlayerView::mouseReleaseEvent(QMouseEvent *e)
 {
-    dPos = QPoint();
+    m_dPos = QPoint();
     e->accept();
 }
 
 void PlayerView::contextMenuEvent(QContextMenuEvent *e)
 {
-    menu->exec(QCursor::pos());
+    m_menu->exec(QCursor::pos());
     e->accept();
 }
 
@@ -451,7 +451,7 @@ void PlayerView::onTimeChanged(int time)
 
 void PlayerView::onTimeSliderPressed()
 {
-    if (core->state == PlayerCore::STOPPING)
+    if (m_playerCore->state == PlayerCore::STOPPING)
         return;
     QString time = secToTime(ui->timeSlider->value());
     ui->timeLabel->setText(time);
@@ -459,19 +459,19 @@ void PlayerView::onTimeSliderPressed()
 
 void PlayerView::onTimeSliderValueChanged(int time)
 {
-    if (core->state == PlayerCore::STOPPING)
+    if (m_playerCore->state == PlayerCore::STOPPING)
         return;
     if (ui->timeSlider->isSliderDown()) // move by mouse
         ui->timeLabel->setText(secToTime(time));
     else // move by keyboard
-        core->setProgress(time);
+        m_playerCore->setProgress(time);
 }
 
 void PlayerView::onTimeSliderReleased()
 {
-    if (core->state == PlayerCore::STOPPING)
+    if (m_playerCore->state == PlayerCore::STOPPING)
         return;
-    core->setProgress(ui->timeSlider->value());
+    m_playerCore->setProgress(ui->timeSlider->value());
 }
 
 void PlayerView::onSizeChanged(const QSize &sz)
@@ -488,26 +488,26 @@ void PlayerView::onSizeChanged(const QSize &sz)
 // show cutterbar
 void PlayerView::showCutterBar()
 {
-    if (core->state == PlayerCore::STOPPING || core->state == PlayerCore::TV_PLAYING || cutterBar->isVisible())
+    if (m_playerCore->state == PlayerCore::STOPPING || m_playerCore->state == PlayerCore::TV_PLAYING || m_oscBar->isVisible())
         return;
-    QString filename = core->currentFile();
+    QString filename = m_playerCore->currentFile();
     if (filename.startsWith("http"))
     {
         QMessageBox::warning(this, tr("Error"), tr("Only support cutting local videos!"), QMessageBox::Ok);
         return;
     }
-    if (core->state == PlayerCore::VIDEO_PLAYING) //pause
-        core->changeState();
-    cutterBar->init(filename, core->getLength(), core->getTime());
-    cutterBar->move(mapToGlobal(QPoint(50, 50)));
-    cutterBar->show();
+    if (m_playerCore->state == PlayerCore::VIDEO_PLAYING) //pause
+        m_playerCore->changeState();
+    m_oscBar->init(filename, m_playerCore->getLength(), m_playerCore->getTime());
+    m_oscBar->move(mapToGlobal(QPoint(50, 50)));
+    m_oscBar->show();
 }
 
 
 // show volume slider
 void PlayerView::showVolumeSlider()
 {
-    QWidget *volumePopup = volumeSlider->window();
+    QWidget *volumePopup = m_volumeSlider->window();
     QPoint vbPos = ui->controllerWidget->mapToGlobal(ui->volumeButton->pos());
     volumePopup->move(vbPos.x(), vbPos.y() - volumePopup->height());
     volumePopup->show();
@@ -522,8 +522,8 @@ void PlayerView::saveVolume(int vol)
 void PlayerView::setFullScreen()
 {
     // avoid freezing
-    core->pauseRendering();
-    QTimer::singleShot(1500, core, SLOT(unpauseRendering()));
+    m_playerCore->pauseRendering();
+    QTimer::singleShot(1500, m_playerCore, SLOT(unpauseRendering()));
 
     if (isFullScreen())
         showNormal();
@@ -558,11 +558,11 @@ void PlayerView::changeEvent(QEvent *e)
 // add audio track, select audio track and set audio delay
 void PlayerView::addAudioTrack()
 {
-    QString videoFile = core->currentFile();
+    QString videoFile = m_playerCore->currentFile();
     QString dir = videoFile.startsWith('/') ? QFileInfo(videoFile).path() : QDir::homePath();
     QString audioFile = QFileDialog::getOpenFileName(this, tr("Open audio track file"), dir);
     if (!audioFile.isEmpty())
-        core->openAudioTrack(audioFile);
+        m_playerCore->openAudioTrack(audioFile);
 }
 
 void PlayerView::selectAudioTrack()
@@ -575,9 +575,9 @@ void PlayerView::selectAudioTrack()
 void PlayerView::setAudioDelay()
 {
     bool ok = false;
-    double delay = QInputDialog::getDouble(this, "Input", tr("Audio delay (sec):"), core->getAudioDelay(), -100, 100, 1, &ok);
+    double delay = QInputDialog::getDouble(this, "Input", tr("Audio delay (sec):"), m_playerCore->getAudioDelay(), -100, 100, 1, &ok);
     if (ok)
-        core->setAudioDelay(delay);
+        m_playerCore->setAudioDelay(delay);
 }
 
 

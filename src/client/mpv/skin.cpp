@@ -7,9 +7,9 @@
 Border::Border(QWidget *topwin, BorderType t) :
     QWidget(nullptr)
 {
-    type = t;
-    topwindow = topwin;
-    switch (type) {
+    m_type = t;
+    m_topWindow = topwin;
+    switch (m_type) {
     case BOTTOM:
         setFixedHeight(4);
         break;
@@ -28,7 +28,7 @@ Border::Border(QWidget *topwin, BorderType t) :
 
 void Border::enterEvent(QEvent *)
 {
-    switch (type) {
+    switch (m_type) {
     case BOTTOM:
         setCursor(Qt::SizeVerCursor);
         break;
@@ -49,16 +49,16 @@ void Border::enterEvent(QEvent *)
 
 void Border::mousePressEvent(QMouseEvent *e)
 {
-    oldPos = e->globalPos();
+    m_oldPos = e->globalPos();
 }
 
 void Border::mouseMoveEvent(QMouseEvent *e)
 {
-    int dx = e->globalX() - oldPos.x();
-    int dy = e->globalY() - oldPos.y();
-    QRect g = topwindow->geometry();
+    int dx = e->globalX() - m_oldPos.x();
+    int dy = e->globalY() - m_oldPos.y();
+    QRect g = m_topWindow->geometry();
 
-    switch (type) {
+    switch (m_type) {
     case BOTTOM:
         g.setBottom(g.bottom() + dy);
         break;
@@ -78,8 +78,8 @@ void Border::mouseMoveEvent(QMouseEvent *e)
     default:
         break;
     }
-    topwindow->setGeometry(g);
-    oldPos = e->globalPos();
+    m_topWindow->setGeometry(g);
+    m_oldPos = e->globalPos();
 }
 
 void Border::leaveEvent(QEvent *)

@@ -117,22 +117,22 @@ PlayerCore::PlayerCore(QWidget *parent) :
     }
 
     // initialize opengl
-    mpv_gl = (mpv_opengl_cb_context*) mpv_get_sub_api(m_mpv, MPV_SUB_API_OPENGL_CB);
-    if (!mpv_gl)
+    m_mpvGL = (mpv_opengl_cb_context*) mpv_get_sub_api(m_mpv, MPV_SUB_API_OPENGL_CB);
+    if (!m_mpvGL)
     {
         qDebug("OpenGL not compiled in");
         exit(EXIT_FAILURE);
     }
-    mpv_opengl_cb_set_update_callback(mpv_gl, PlayerCore::on_update, (void*) this);
+    mpv_opengl_cb_set_update_callback(m_mpvGL, PlayerCore::on_update, (void*) this);
     connect(this, &PlayerCore::frameSwapped, this, &PlayerCore::swapped);
 
     // set state
     state = STOPPING;
-    no_emit_stopped = false;
-    reload_when_idle = false;
-    emit_stopped_when_idle = false;
-    unseekable_forced = false;
-    rendering_paused = false;
+    m_noEmitStopped = false;
+    m_reloadWhenIdle = false;
+    m_emitStoppedWhenIdle = false;
+    m_unseekableForced = false;
+    m_renderingPaused = false;
 
     player_core = this;
 }
@@ -144,7 +144,7 @@ void PlayerCore::initializeGL()
 #ifdef Q_OS_LINUX
     int r = mpv_opengl_cb_init_gl(mpv_gl, "GL_MP_MPGetNativeDisplay", get_proc_address, NULL);
 #else
-    int r = mpv_opengl_cb_init_gl(mpv_gl, nullptr, get_proc_address, nullptr);
+    int r = mpv_opengl_cb_init_gl(m_mpvGL, nullptr, get_proc_address, nullptr);
 #endif
     if (r < 0)
     {
@@ -155,17 +155,17 @@ void PlayerCore::initializeGL()
 
 void PlayerCore::paintGL()
 {
-    mpv_opengl_cb_draw(mpv_gl, defaultFramebufferObject(), width() * devicePixelRatioF(), -height() * devicePixelRatioF());
+    mpv_opengl_cb_draw(m_mpvGL, defaultFramebufferObject(), width() * devicePixelRatioF(), -height() * devicePixelRatioF());
 }
 
 void PlayerCore::swapped()
 {
-    mpv_opengl_cb_report_flip(mpv_gl, 0);
+    mpv_opengl_cb_report_flip(m_mpvGL, 0);
 }
 
 void PlayerCore::maybeUpdate()
 {
-    if (window()->isMinimized() || rendering_paused)
+    if (window()->isMinimized() || m_renderingPaused)
     {
         makeCurrent();
         paintGL();
@@ -184,22 +184,22 @@ void PlayerCore::on_update(void *ctx)
 
 void PlayerCore::pauseRendering()
 {
-    rendering_paused = true;
+    m_renderingPaused = true;
 }
 
 void PlayerCore::unpauseRendering()
 {
-    rendering_paused = false;
+    m_renderingPaused = false;
 }
 
 PlayerCore::~PlayerCore()
 {
     player_core = nullptr;
     makeCurrent();
-    if (mpv_gl)
-        mpv_opengl_cb_set_update_callback(mpv_gl, nullptr, nullptr);
-    mpv_opengl_cb_uninit_gl(mpv_gl);
-    mpv_gl = nullptr;
+    if (m_mpvGL)
+        mpv_opengl_cb_set_update_callback(m_mpvGL, nullptr, nullptr);
+    mpv_opengl_cb_uninit_gl(m_mpvGL);
+    m_mpvGL = nullptr;
 }
 
 void PlayerCore::command(const QVariant &params)
@@ -236,9 +236,9 @@ bool PlayerCore::event(QEvent *e)
         switch (event->event_id)
         {
         case MPV_EVENT_START_FILE:
-            videoWidth = videoHeight = 0;
-            time = 0;
-            emit timeChanged(time);
+            m_videoWidth = m_videoHeight = 0;
+            m_time = 0;
+            emit timeChanged(m_time);
             break;
 
         case MPV_EVENT_FILE_LOADED:
@@ -262,11 +262,11 @@ bool PlayerCore::event(QEvent *e)
             mpv_event_end_file *ef = static_cast<mpv_event_end_file*>(event->data);
             if (ef->error == MPV_ERROR_LOADING_FAILED)
             {
-                reload_when_idle = (bool) QMessageBox::question(this, "MPV Error",
-                                      tr("Fails to load: ") + file,
+                m_reloadWhenIdle = (bool) QMessageBox::question(this, "MPV Error",
+                                      tr("Fails to load: ") + m_mediaFile,
                                       tr("Skip"),
                                       tr("Try again"));
-                if (reload_when_idle)
+                if (m_reloadWhenIdle)
                 {
                     state = STOPPING;
                     break;
@@ -274,26 +274,26 @@ bool PlayerCore::event(QEvent *e)
             }
             else
                 handleMpvError(ef->error);
-            if (no_emit_stopped)  // switch to new file when playing
-                no_emit_stopped = false;
+            if (m_noEmitStopped)  // switch to new file when playing
+                m_noEmitStopped = false;
             else
             {
-                if (time > length - 5)
-                    unfinished_time.remove(file);
+                if (m_time > m_length - 5)
+                    unfinished_time.remove(m_mediaFile);
                 state = STOPPING;
-                emit_stopped_when_idle = true;
+                m_emitStoppedWhenIdle = true;
             }
             break;
         }
         case MPV_EVENT_IDLE:
-            if (reload_when_idle)
+            if (m_reloadWhenIdle)
             {
-                reload_when_idle = false;
-                openFile(file);
+                m_reloadWhenIdle = false;
+                openFile(m_mediaFile);
             }
-            else if (emit_stopped_when_idle)
+            else if (m_emitStoppedWhenIdle)
             {
-                emit_stopped_when_idle = false;
+                m_emitStoppedWhenIdle = false;
                 emit stopped();
             }
             break;
@@ -313,37 +313,37 @@ bool PlayerCore::event(QEvent *e)
             if (propName == "playback-time")
             {
                 int newTime = *(double*) prop->data;
-                if (newTime != time)
+                if (newTime != m_time)
                 {
-                    time = newTime;
-                    emit timeChanged(time);
+                    m_time = newTime;
+                    emit timeChanged(m_time);
                 }
             }
             else if (propName == "duration")
             {
-                length = *(double*) prop->data;
-                emit lengthChanged(length);
-                if (unfinished_time.contains(file) && !unseekable_forced)
-                    setProgress(unfinished_time[file]);
+                m_length = *(double*) prop->data;
+                emit lengthChanged(m_length);
+                if (unfinished_time.contains(m_mediaFile) && !m_unseekableForced)
+                    setProgress(unfinished_time[m_mediaFile]);
             }
             else if (propName == "width")
             {
-                videoWidth = *(int64_t*) prop->data;
-                if (videoWidth && videoHeight)
+                m_videoWidth = *(int64_t*) prop->data;
+                if (m_videoWidth && m_videoHeight)
                 {
-                    emit sizeChanged(QSize(videoWidth, videoHeight));
-                    if (!audioTrack.isEmpty())
-                        openAudioTrack(audioTrack);
+                    emit sizeChanged(QSize(m_videoWidth, m_videoHeight));
+                    if (!m_audioTrack.isEmpty())
+                        openAudioTrack(m_audioTrack);
                 }
             }
             else if (propName == "height")
             {
-                videoHeight = *(int64_t*) prop->data;
-                if (videoWidth && videoHeight)
+                m_videoHeight = *(int64_t*) prop->data;
+                if (m_videoWidth && m_videoHeight)
                 {
-                    emit sizeChanged(QSize(videoWidth, videoHeight));
-                    if (!audioTrack.isEmpty())
-                        openAudioTrack(audioTrack);
+                    emit sizeChanged(QSize(m_videoWidth, m_videoHeight));
+                    if (!m_audioTrack.isEmpty())
+                        openAudioTrack(m_audioTrack);
                 }
             }
             else if (propName == "paused-for-cache")
@@ -372,8 +372,8 @@ bool PlayerCore::event(QEvent *e)
             }
             else if (propName == "track-list") // read tracks info
             {
-                audioTracksList.clear();
-                subtitleList.clear();
+                m_audioTracksList.clear();
+                m_subtitleList.clear();
                 mpv_node *node = (mpv_node *) prop->data;
                 for (int i = 0; i < node->u.list->num; i++)
                 {
@@ -393,26 +393,26 @@ bool PlayerCore::event(QEvent *e)
                     // subtitles
                     if (type == "sub")
                     {
-                        if (subtitleList.size() <= id)
+                        if (m_subtitleList.size() <= id)
                         {
-                            for (int j = subtitleList.size(); j < id; j++)
-                                subtitleList.append('#' + QString::number(j));
-                            subtitleList.append(title.isEmpty() ? '#' + QString::number(id) : title);
+                            for (int j = m_subtitleList.size(); j < id; j++)
+                                m_subtitleList.append('#' + QString::number(j));
+                            m_subtitleList.append(title.isEmpty() ? '#' + QString::number(id) : title);
                         }
                         else
-                            subtitleList[id] = title.isEmpty() ? '#' + QString::number(id) : title;
+                            m_subtitleList[id] = title.isEmpty() ? '#' + QString::number(id) : title;
                     }
                     // audio tracks
                     if (type == "audio")
                     {
-                        if (audioTracksList.size() <= id)
+                        if (m_audioTracksList.size() <= id)
                         {
-                            for (int j = audioTracksList.size(); j < id; j++)
-                                audioTracksList.append('#' + QString::number(j));
-                            audioTracksList.append(title.isEmpty() ? '#' + QString::number(id) : title);
+                            for (int j = m_audioTracksList.size(); j < id; j++)
+                                m_audioTracksList.append('#' + QString::number(j));
+                            m_audioTracksList.append(title.isEmpty() ? '#' + QString::number(id) : title);
                         }
                         else
-                            audioTracksList[id] = title.isEmpty() ? '#' + QString::number(id) : title;
+                            m_audioTracksList[id] = title.isEmpty() ? '#' + QString::number(id) : title;
                     }
                 }
             }
@@ -427,10 +427,10 @@ bool PlayerCore::event(QEvent *e)
 // open file
 void PlayerCore::openFile(const QString &file, const QString &audioTrack)
 {    
-    this->file = file;
-    this->audioTrack = audioTrack;
+    this->m_mediaFile = file;
+    this->m_audioTrack = audioTrack;
 
-    speed = 1.0;
+    m_playSpeed = 1.0;
 
     QByteArray tmp = file.toUtf8();
     const char *args[] = {"loadfile", tmp.constData(), nullptr};
@@ -446,7 +446,7 @@ void PlayerCore::openMedias(const QStringList &medias)
     mpv::qt::set_option_variant(m_mpv, "prefetch-playlist", "yes");
     mpv::qt::set_option_variant(m_mpv, "merge-files", "yes");
 
-    speed = 1.0;
+    m_playSpeed = 1.0;
 
     mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << medias[0] << "replace");
     for (int i = 1; i < medias.length(); ++i) {
@@ -536,7 +536,7 @@ void PlayerCore::setProgress(int pos)
 {
     if (state == STOPPING)
         return;
-    if (pos != time)
+    if (pos != m_time)
     {
         QByteArray tmp = QByteArray::number(pos);
         const char *args[] = {"seek", tmp.constData(), "absolute", nullptr};
@@ -564,21 +564,21 @@ void PlayerCore::screenShot()
 // set playback speed
 void PlayerCore::speedDown()
 {
-    if (speed > 0.5 && state != STOPPING)
+    if (m_playSpeed > 0.5 && state != STOPPING)
     {
-        speed -= 0.1;
-        mpv_set_property_async(m_mpv, 2, "speed", MPV_FORMAT_DOUBLE, &speed);
-        showText("Speed: " + QByteArray::number(speed));
+        m_playSpeed -= 0.1;
+        mpv_set_property_async(m_mpv, 2, "speed", MPV_FORMAT_DOUBLE, &m_playSpeed);
+        showText("Speed: " + QByteArray::number(m_playSpeed));
     }
 }
 
 void PlayerCore::speedUp()
 {
-    if (speed < 2.0 && state != STOPPING)
+    if (m_playSpeed < 2.0 && state != STOPPING)
     {
-        speed += 0.1;
-        mpv_set_property_async(m_mpv, 2, "speed", MPV_FORMAT_DOUBLE, &speed);
-        showText("Speed: " + QByteArray::number(speed));
+        m_playSpeed += 0.1;
+        mpv_set_property_async(m_mpv, 2, "speed", MPV_FORMAT_DOUBLE, &m_playSpeed);
+        showText("Speed: " + QByteArray::number(m_playSpeed));
     }
 }
 
@@ -586,8 +586,8 @@ void PlayerCore::speedSetToDefault()
 {
     if (state != STOPPING)
     {
-        speed = 1;
-        mpv_set_property_async(m_mpv, 2, "speed", MPV_FORMAT_DOUBLE, &speed);
+        m_playSpeed = 1;
+        mpv_set_property_async(m_mpv, 2, "speed", MPV_FORMAT_DOUBLE, &m_playSpeed);
         showText("Speed: 1");
     }
 }
@@ -604,7 +604,7 @@ void PlayerCore::setAudioDelay(double v)
 {
     if (state == STOPPING)
         return;
-    audioDelay = v;
+    m_audioDelay = v;
     handleMpvError(mpv_set_property_async(m_mpv, 2, "audio-delay", MPV_FORMAT_DOUBLE, &v));
     showText("Audio delay: " + QByteArray::number(v));
 }
@@ -687,7 +687,7 @@ void PlayerCore::handleMpvError(int code)
     {
         QMessageBox::warning(this,
                              tr("MPV Error"),
-                             tr("Error while playing file:\n") + file + tr("\n\nMPV Error: ") + mpv_error_string(code),
+                             tr("Error while playing file:\n") + m_mediaFile + tr("\n\nMPV Error: ") + mpv_error_string(code),
                              QMessageBox::Ok);
     }
 }

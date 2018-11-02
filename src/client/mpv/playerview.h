@@ -69,20 +69,20 @@ private slots:
 
 private:
     Ui::PlayerView *ui;
-    Border *leftBorder;
-    Border *rightBorder;
-    Border *bottomBorder;
-    Border *bottomLeftBorder;
-    Border *bottomRightBorder;
-    CutterBar *cutterBar;
-    PlayerCore *core;
-    QMenu *menu;
-    QSlider *volumeSlider;
-    QTimer *hideTimer;
-    QPoint dPos;
-    bool quit_requested;
-    bool no_play_next;
-    bool ctrl_pressed;
+    Border *m_leftBorder;
+    Border *m_rightBorder;
+    Border *m_bottomBorder;
+    Border *m_bottomLeftBorder;
+    Border *m_bottomRightBorder;
+    CutterBar *m_oscBar;
+    PlayerCore *m_playerCore;
+    QMenu *m_menu;
+    QSlider *m_volumeSlider;
+    QTimer *m_hideTimer;
+    QPoint m_dPos;
+    bool m_quitRequested;
+    bool m_noPlayNext;
+    bool m_ctrlPressed;
 };
 
 #endif // PLAYERVIEW_H

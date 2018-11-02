@@ -14,22 +14,22 @@ class CutterBar : public QWidget
     Q_OBJECT
 
 public:
-    explicit CutterBar(QWidget *parent = 0);
+    explicit CutterBar(QWidget *parent = nullptr);
     ~CutterBar();
-    void init(QString filename, int length, int currentPos);
+    void init(QString m_filename, int length, int currentPos);
 
 signals:
-    void newFrame(int pos);
+    void newFrame(int m_pos);
     void finished(void);
 
 private:
     Ui::CutterBar *ui;
-    QString filename;
-    int pos;
-    int startPos;
-    int endPos;
-    bool slider_pressed;
-    QProcess *process;
+    QString m_filename;
+    int m_pos;
+    int m_startPos;
+    int m_endPos;
+    bool m_sliderPressed;
+    QProcess *m_process;
 
 private slots:
     void onStartSliderChanged(void);

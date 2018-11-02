@@ -33,11 +33,11 @@ public:
     explicit PlayerCore(QWidget *parent = nullptr);
     virtual ~PlayerCore();
     State state;
-    inline QString currentFile() { return file; }
-    inline int getTime() { return time; }
-    inline int getLength() { return length; }
-    inline double getAudioDelay() { return audioDelay; }
-    inline const QStringList &getAudioTracksList() { return audioTracksList; }
+    inline QString currentFile() { return m_mediaFile; }
+    inline int getTime() { return m_time; }
+    inline int getLength() { return m_length; }
+    inline double getAudioDelay() { return m_audioDelay; }
+    inline const QStringList &getAudioTracksList() { return m_audioTracksList; }
 
     void command(const QVariant& params);
     void setOption(const QString& name, const QVariant& value);
@@ -48,7 +48,7 @@ public slots:
     void jumpTo(int pos);
     void setProgress(int pos);
     void setVolume(int volume);
-    void openFile(const QString &file, const QString &audioTrack = QString());
+    void openFile(const QString &m_mediaFile, const QString &m_audioTrack = QString());
     void openMedias(const QStringList& files);
     void openAudioTrack(const QString &audioFile);
     void screenShot(void);
@@ -82,22 +82,22 @@ protected:
 
 private:
     mpv::qt::Handle m_mpv;
-    mpv_opengl_cb_context *mpv_gl;
-    QString file;
-    QString audioTrack;
-    QStringList audioTracksList;
-    QStringList subtitleList;
-    int64_t length;
-    int64_t time;
-    int64_t videoWidth;
-    int64_t videoHeight;
-    double speed;
-    double audioDelay;
-    bool no_emit_stopped;
-    bool reload_when_idle;
-    bool emit_stopped_when_idle;
-    bool unseekable_forced;
-    bool rendering_paused;
+    mpv_opengl_cb_context *m_mpvGL;
+    QString m_mediaFile;
+    QString m_audioTrack;
+    QStringList m_audioTracksList;
+    QStringList m_subtitleList;
+    int64_t m_length;
+    int64_t m_time;
+    int64_t m_videoWidth;
+    int64_t m_videoHeight;
+    double m_playSpeed;
+    double m_audioDelay;
+    bool m_noEmitStopped;
+    bool m_reloadWhenIdle;
+    bool m_emitStoppedWhenIdle;
+    bool m_unseekableForced;
+    bool m_renderingPaused;
 
     void handleMpvError(int code);
     static void on_update(void *ctx);

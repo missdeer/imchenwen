@@ -28,7 +28,7 @@ CutterBar::CutterBar(QWidget *parent) :
     ui(new Ui::CutterBar)
 {
     ui->setupUi(this);
-    slider_pressed = false;
+    m_sliderPressed = false;
     connect(ui->startSlider, SIGNAL(sliderPressed()), this, SLOT(onSliderPressed()));
     connect(ui->startSlider, SIGNAL(valueChanged(int)), this, SLOT(onStartSliderChanged()));
     connect(ui->startSlider, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
@@ -38,8 +38,8 @@ CutterBar::CutterBar(QWidget *parent) :
     connect(ui->cancelButton, SIGNAL(clicked()), this, SIGNAL(finished()));
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(startTask()));
 
-    process = new QProcess(this);
-    connect(process, SIGNAL(finished(int)), this, SLOT(onFinished(int)));
+    m_process = new QProcess(this);
+    connect(m_process, SIGNAL(finished(int)), this, SLOT(onFinished(int)));
 }
 
 CutterBar::~CutterBar()
@@ -49,42 +49,42 @@ CutterBar::~CutterBar()
 
 void CutterBar::init(QString filename, int length, int currentPos)
 {
-    this->filename = filename;
+    this->m_filename = filename;
     ui->startSlider->setMaximum(length);
     ui->startSlider->setValue(currentPos);
     ui->endSlider->setMaximum(length);
     ui->endSlider->setValue(currentPos + 1);
-    startPos = currentPos;
-    endPos = currentPos + 1;
+    m_startPos = currentPos;
+    m_endPos = currentPos + 1;
 }
 
 void CutterBar::onSliderPressed()
 {
-    slider_pressed = true;
+    m_sliderPressed = true;
 }
 
 void CutterBar::onStartSliderChanged()
 {
-    startPos = pos = ui->startSlider->value();
-    ui->startPosLabel->setText(secToTime(pos));
+    m_startPos = m_pos = ui->startSlider->value();
+    ui->startPosLabel->setText(secToTime(m_pos));
     //Show preview when the progress is changed by keyboard
-    if (isVisible() && !slider_pressed)
-        emit newFrame(pos);
+    if (isVisible() && !m_sliderPressed)
+        emit newFrame(m_pos);
 }
 
 void CutterBar::onEndSliderChanged()
 {
-    endPos = pos = ui->endSlider->value();
-    ui->endPosLabel->setText(secToTime(pos));
-    if (isVisible() && !slider_pressed)
-        emit newFrame(pos);
+    m_endPos = m_pos = ui->endSlider->value();
+    ui->endPosLabel->setText(secToTime(m_pos));
+    if (isVisible() && !m_sliderPressed)
+        emit newFrame(m_pos);
 }
 
 void CutterBar::onSliderReleased()
 {
-    slider_pressed = false;
+    m_sliderPressed = false;
     //Show preview when the progress is changed by mouse
-    emit newFrame(pos);
+    emit newFrame(m_pos);
 }
 
 void CutterBar::startTask()
@@ -99,25 +99,25 @@ void CutterBar::startTask()
         return;
     }
 
-    if (startPos >= endPos)
+    if (m_startPos >= m_endPos)
     {
         QMessageBox::warning(this,  tr("Error"), tr("Time position is not valid."));
         return;
     }
 
-    QString new_name = QString("%1_clip.%2").arg(filename.section('.', 0, -2), filename.section('.', -1));
+    QString new_name = QString("%1_clip.%2").arg(m_filename.section('.', 0, -2), m_filename.section('.', -1));
     QStringList args;
-    args << "-y" << "-ss" << secToTime(startPos) << "-i" << filename <<
-            "-acodec" << "copy" << "-vcodec" << "copy" << "-t" << secToTime(endPos - startPos) << new_name;
+    args << "-y" << "-ss" << secToTime(m_startPos) << "-i" << m_filename <<
+            "-acodec" << "copy" << "-vcodec" << "copy" << "-t" << secToTime(m_endPos - m_startPos) << new_name;
     ui->okButton->setEnabled(false);
     ui->cancelButton->setEnabled(false);
-    process->start(ffmpeg, args, QProcess::ReadOnly);
+    m_process->start(ffmpeg, args, QProcess::ReadOnly);
 }
 
 void CutterBar::onFinished(int status)
 {
     if (status)
-        QMessageBox::critical(this, tr("FFMPEG ERROR"), QTextCodec::codecForLocale()->toUnicode(process->readAllStandardError()));
+        QMessageBox::critical(this, tr("FFMPEG ERROR"), QTextCodec::codecForLocale()->toUnicode(m_process->readAllStandardError()));
     ui->okButton->setEnabled(true);
     ui->cancelButton->setEnabled(true);
     QMessageBox::information(this, tr("Finished"), tr("Finished"));
