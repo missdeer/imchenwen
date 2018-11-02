@@ -24,7 +24,7 @@ MPVOpenGLWidget::MPVOpenGLWidget(QWidget *parent, Qt::WindowFlags f)
         throw std::runtime_error("could not create mpv context");
 
     mpv_set_option_string(mpv, "terminal", "yes");
-    mpv_set_option_string(mpv, "msg-level", "info");
+    mpv_set_option_string(mpv, "msg-level", "warn");
     if (mpv_initialize(mpv) < 0)
         throw std::runtime_error("could not initialize mpv context");
 

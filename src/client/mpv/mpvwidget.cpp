@@ -52,7 +52,7 @@ MPVWidget::MPVWidget(QWidget *parent)
 
     // Request log messages with level "info" or higher.
     // They are received as MPV_EVENT_LOG_MESSAGE.
-    mpv_request_log_messages(mpv, "info");
+    mpv_request_log_messages(mpv, "warn");
 
     // From this point on, the wakeup function will be called. The callback
     // can come from any thread, so we use the QueuedConnection mechanism to

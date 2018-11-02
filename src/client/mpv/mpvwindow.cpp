@@ -41,6 +41,7 @@ void MPVWindow::playMedias(const QStringList &medias)
 void MPVWindow::closeEvent(QCloseEvent *event)
 {
     m_mpv->command(QStringList() << "stop");
+    m_mpv->command(QStringList() << "quit");
     delete m_mpv;
     event->accept();
     Q_EMIT finished(0, QProcess::NormalExit);
