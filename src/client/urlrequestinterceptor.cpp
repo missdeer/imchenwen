@@ -5,7 +5,8 @@
 UrlRequestInterceptor::UrlRequestInterceptor(QObject *parent)
     : QWebEngineUrlRequestInterceptor(parent)
 {
-
+    Config cfg;
+    cfg.read("vipVideo", m_vipVideos);
 }
 
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
@@ -30,21 +31,40 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
     default:
         break;
     }
-    QUrl u = request.requestUrl();
-    QString path = u.path().toLower();
+
+    QUrl url = request.requestUrl();
+    QString u = url.url();
+    QString path = url.path().toLower();
+
     if (path.endsWith("m3u8"))
     {
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
-    if ((u.hasQuery() || u.url().length() > 60) && (path.endsWith("mp4") || path.endsWith("flv")))
+    if ((url.hasQuery() || u.length() > 60) && (path.endsWith("mp4") || path.endsWith("flv")))
     {
         emit maybeMediaUrl(request.requestUrl().url());
         return;
     }
-    if (path.endsWith(".f4v"))
+
+    auto it = std::find_if(m_vipVideos.begin(), m_vipVideos.end(), [&u](const Tuple2& vv){
+        return u.startsWith(std::get<1>(vv));
+    });
+    if(m_vipVideos.end() == it)
     {
-        request.block(true);
+        // it's not a vip video
+        if (path.endsWith(".f4v") || path.endsWith(".mp4") || path.endsWith(".swf") || path.endsWith(".flv"))
+        {
+            request.block(true);
+            return;
+        }
     }
     qDebug() << "maybe not:" << request.resourceType() << request.requestUrl();
+}
+
+void UrlRequestInterceptor::updateVIPVideos()
+{
+    m_vipVideos.clear();
+    Config cfg;
+    cfg.read("vipVideo", m_vipVideos);
 }

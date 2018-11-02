@@ -140,6 +140,7 @@ void Browser::loadSettings()
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
 
+    m_urlRequestInterceptor.updateVIPVideos();
     defaultProfile->setRequestInterceptor(&m_urlRequestInterceptor);
 
     QNetworkProxy proxy;

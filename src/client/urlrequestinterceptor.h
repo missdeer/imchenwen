@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWebEngineUrlRequestInterceptor>
 #include <QWebEngineUrlRequestInfo>
+#include "config.h"
 
 class UrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
@@ -11,9 +12,12 @@ class UrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 public:
     explicit UrlRequestInterceptor(QObject *parent = nullptr);
     void interceptRequest(QWebEngineUrlRequestInfo &request) override;
-
+    void updateVIPVideos();
 signals:
     void maybeMediaUrl(const QString&);
+
+private:
+    Tuple2List m_vipVideos;
 };
 
 #endif // URLREQUESTINTERCEPTOR_H
