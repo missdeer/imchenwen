@@ -87,21 +87,23 @@ PlayerCore::PlayerCore(QWidget *parent) :
     {
         mpv::qt::set_option_variant(m_mpv, "hwdec-preload", "vdpau-glx");
     }
-    mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
     mpv::qt::set_option_variant(m_mpv, "hwdec", "auto");
 #elif defined(Q_OS_MAC)
-    mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
     mpv::qt::set_option_variant(m_mpv, "hwdec", "videotoolbox-co");
 #elif defined(Q_OS_WIN)
-    mpv::qt::set_option_variant(m_mpv, "vo", "direct3d");
     QString v = QSysInfo::productVersion();
     QStringList vv  = v.split(' ');
     int n = vv[0].toInt();
     if (n >= 8)
+    {
         mpv::qt::set_option_variant(m_mpv, "hwdec", "d3d11va-copy");
+    }
     else
+    {
         mpv::qt::set_option_variant(m_mpv, "hwdec", "dxva2-copy");
+    }
 #endif
+    mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
     mpv::qt::set_option_variant(m_mpv, "hwdec-codecs", "all");
 
     // listen mpv event

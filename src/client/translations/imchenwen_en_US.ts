@@ -520,33 +520,33 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="271"/>
+        <location filename="../mpv/playercore.cpp" line="273"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="272"/>
+        <location filename="../mpv/playercore.cpp" line="274"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="273"/>
+        <location filename="../mpv/playercore.cpp" line="275"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="694"/>
+        <location filename="../mpv/playercore.cpp" line="696"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="695"/>
+        <location filename="../mpv/playercore.cpp" line="697"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="695"/>
+        <location filename="../mpv/playercore.cpp" line="697"/>
         <source>
 
 MPV Error: </source>
