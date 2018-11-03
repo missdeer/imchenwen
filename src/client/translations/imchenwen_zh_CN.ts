@@ -4,49 +4,49 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="177"/>
-        <location filename="../browser.cpp" line="231"/>
+        <location filename="../browser.cpp" line="178"/>
+        <location filename="../browser.cpp" line="232"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="437"/>
-        <location filename="../browser.cpp" line="449"/>
+        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="451"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="437"/>
+        <location filename="../browser.cpp" line="439"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="449"/>
+        <location filename="../browser.cpp" line="451"/>
         <source>Resolving link address </source>
         <translation>解析链接地址</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="449"/>
+        <location filename="../browser.cpp" line="451"/>
         <source> failed!</source>
         <translation>失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="459"/>
+        <location filename="../browser.cpp" line="461"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="462"/>
+        <location filename="../browser.cpp" line="464"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="465"/>
+        <location filename="../browser.cpp" line="467"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="469"/>
+        <location filename="../browser.cpp" line="471"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../browserwindow.cpp" line="78"/>
         <location filename="../browserwindow.cpp" line="291"/>
-        <location filename="../browserwindow.cpp" line="554"/>
+        <location filename="../browserwindow.cpp" line="561"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -278,49 +278,49 @@
         <translation>观看在线电视直播</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="401"/>
+        <location filename="../browserwindow.cpp" line="408"/>
         <source>Navigation</source>
         <translation>导航</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="449"/>
+        <location filename="../browserwindow.cpp" line="456"/>
         <source>Play by Media Player</source>
         <translation>使用媒体播放器播放</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="556"/>
+        <location filename="../browserwindow.cpp" line="563"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="568"/>
+        <location filename="../browserwindow.cpp" line="575"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="569"/>
+        <location filename="../browserwindow.cpp" line="576"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="578"/>
+        <location filename="../browserwindow.cpp" line="585"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="579"/>
+        <location filename="../browserwindow.cpp" line="586"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="690"/>
+        <location filename="../browserwindow.cpp" line="697"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="694"/>
+        <location filename="../browserwindow.cpp" line="701"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>

@@ -396,6 +396,13 @@ const QString &BrowserWindow::maybeVIPVideoTitle() const
     return m_maybeVIPVideoTitle;
 }
 
+void BrowserWindow::center()
+{
+    QRect available = QApplication::desktop()->availableGeometry(this);
+    move((available.width() - width())/2,
+         (available.height() - height())/2);
+}
+
 QToolBar *BrowserWindow::createToolBar()
 {
     QToolBar *navigationBar = new QToolBar(tr("Navigation"));

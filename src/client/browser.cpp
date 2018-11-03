@@ -22,6 +22,7 @@
 #include <QThread>
 #include <QStandardPaths>
 #include <QtConcurrent>
+#include <QDesktopWidget>
 
 static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = nullptr)
 {
@@ -329,7 +330,8 @@ void Browser::addWindow(BrowserWindow *mainWindow)
         if (m_windows.isEmpty())
             clearAtExit();
     });
-    mainWindow->showMaximized();
+    mainWindow->show();
+    mainWindow->center();
 }
 
 BrowserWindow *Browser::mainWindow()

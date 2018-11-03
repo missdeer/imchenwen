@@ -4,49 +4,49 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="177"/>
-        <location filename="../browser.cpp" line="231"/>
+        <location filename="../browser.cpp" line="178"/>
+        <location filename="../browser.cpp" line="232"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="437"/>
-        <location filename="../browser.cpp" line="449"/>
+        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="451"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="437"/>
+        <location filename="../browser.cpp" line="439"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="449"/>
+        <location filename="../browser.cpp" line="451"/>
         <source>Resolving link address </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="449"/>
+        <location filename="../browser.cpp" line="451"/>
         <source> failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="459"/>
+        <location filename="../browser.cpp" line="461"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="462"/>
+        <location filename="../browser.cpp" line="464"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="465"/>
+        <location filename="../browser.cpp" line="467"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="469"/>
+        <location filename="../browser.cpp" line="471"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../browserwindow.cpp" line="78"/>
         <location filename="../browserwindow.cpp" line="291"/>
-        <location filename="../browserwindow.cpp" line="554"/>
+        <location filename="../browserwindow.cpp" line="561"/>
         <source>imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -274,48 +274,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="401"/>
+        <location filename="../browserwindow.cpp" line="408"/>
         <source>Navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="449"/>
+        <location filename="../browserwindow.cpp" line="456"/>
         <source>Play by Media Player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="556"/>
+        <location filename="../browserwindow.cpp" line="563"/>
         <source>%1 - imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="568"/>
+        <location filename="../browserwindow.cpp" line="575"/>
         <source>Open Web Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="569"/>
+        <location filename="../browserwindow.cpp" line="576"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="578"/>
+        <location filename="../browserwindow.cpp" line="585"/>
         <source>Confirm close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="579"/>
+        <location filename="../browserwindow.cpp" line="586"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="690"/>
+        <location filename="../browserwindow.cpp" line="697"/>
         <source>Stop loading the current page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="694"/>
+        <location filename="../browserwindow.cpp" line="701"/>
         <source>Reload the current page</source>
         <translation type="unfinished"></translation>
     </message>

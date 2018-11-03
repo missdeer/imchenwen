@@ -19,8 +19,8 @@ class BrowserWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    BrowserWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
-    ~BrowserWindow();
+    BrowserWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
+    ~BrowserWindow() override;
     QSize sizeHint() const override;
     TabWidget *tabWidget() const;
     WebView *currentTab() const;
@@ -32,7 +32,7 @@ public:
     void recoverCurrentTabUrl();
     void currentVIPVideoGoBack();
     const QString& maybeVIPVideoTitle() const;
-
+    void center();
 protected:
     void closeEvent(QCloseEvent *event) override;
 public slots:
