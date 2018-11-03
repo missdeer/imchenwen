@@ -471,43 +471,48 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="29"/>
+        <location filename="../playdialog.cpp" line="30"/>
         <source> - by ykdl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="30"/>
+        <location filename="../playdialog.cpp" line="31"/>
         <source> - by you-get</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="32"/>
+        <location filename="../playdialog.cpp" line="33"/>
         <source> - by annie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="31"/>
+        <location filename="../playdialog.cpp" line="32"/>
         <source> - by youtube_dl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="79"/>
+        <location filename="../playdialog.cpp" line="80"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="102"/>
-        <location filename="../playdialog.cpp" line="111"/>
+        <location filename="../playdialog.cpp" line="86"/>
+        <source>DLNA:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="105"/>
+        <location filename="../playdialog.cpp" line="114"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="102"/>
+        <location filename="../playdialog.cpp" line="105"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="111"/>
+        <location filename="../playdialog.cpp" line="114"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -515,33 +520,33 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="261"/>
+        <location filename="../mpv/playercore.cpp" line="264"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="262"/>
+        <location filename="../mpv/playercore.cpp" line="265"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="263"/>
+        <location filename="../mpv/playercore.cpp" line="266"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="684"/>
+        <location filename="../mpv/playercore.cpp" line="687"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="685"/>
+        <location filename="../mpv/playercore.cpp" line="688"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="685"/>
+        <location filename="../mpv/playercore.cpp" line="688"/>
         <source>
 
 MPV Error: </source>

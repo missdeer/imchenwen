@@ -71,7 +71,7 @@ Browser::Browser(QObject *parent)
     connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     connect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
-    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
+    //connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
 void Browser::clearAtExit()
@@ -348,9 +348,9 @@ BrowserWindow *Browser::newMainWindow()
     return nmw;
 }
 
-Kast *Browser::kast()
+Kast &Browser::kast()
 {
-    return &m_kast;
+    return m_kast;
 }
 
 void Browser::waiting(bool disableParent /*= true*/)

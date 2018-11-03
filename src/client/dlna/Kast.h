@@ -15,7 +15,7 @@ public:
     Kast(QObject *parent = nullptr);
     void addItemToQueue(QString & item_url);
     QHostAddress getLocalAddress();
-    const QMap<QString, DLNARenderer *>& getRenderers() const;
+    QStringList getRenderers();
 
 private:
     HttpFileServer *m_fileServer;

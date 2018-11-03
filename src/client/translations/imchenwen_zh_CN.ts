@@ -490,12 +490,12 @@ Do you wish to override the security check and continue ?   </source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="29"/>
+        <location filename="../playdialog.cpp" line="30"/>
         <source> - by ykdl</source>
         <translation> - 由ykdl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="30"/>
+        <location filename="../playdialog.cpp" line="31"/>
         <source> - by you-get</source>
         <translation> - 由you-get提供解析服务</translation>
     </message>
@@ -504,33 +504,38 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="vanished"> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="32"/>
+        <location filename="../playdialog.cpp" line="33"/>
         <source> - by annie</source>
         <translation> - 由annie提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="31"/>
+        <location filename="../playdialog.cpp" line="32"/>
         <source> - by youtube_dl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="79"/>
+        <location filename="../playdialog.cpp" line="80"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="102"/>
-        <location filename="../playdialog.cpp" line="111"/>
+        <location filename="../playdialog.cpp" line="86"/>
+        <source>DLNA:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../playdialog.cpp" line="105"/>
+        <location filename="../playdialog.cpp" line="114"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="102"/>
+        <location filename="../playdialog.cpp" line="105"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="111"/>
+        <location filename="../playdialog.cpp" line="114"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
@@ -542,34 +547,34 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="261"/>
+        <location filename="../mpv/playercore.cpp" line="264"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="262"/>
+        <location filename="../mpv/playercore.cpp" line="265"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="263"/>
+        <location filename="../mpv/playercore.cpp" line="266"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="684"/>
+        <location filename="../mpv/playercore.cpp" line="687"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="685"/>
+        <location filename="../mpv/playercore.cpp" line="688"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="685"/>
+        <location filename="../mpv/playercore.cpp" line="688"/>
         <source>
 
 MPV Error: </source>

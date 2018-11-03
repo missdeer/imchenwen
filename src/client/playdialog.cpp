@@ -1,6 +1,7 @@
 #include "playdialog.h"
 #include "ui_playdialog.h"
 #include "settings.h"
+#include "browser.h"
 #include <QtCore>
 #include <QMessageBox>
 #include <QFile>
@@ -79,14 +80,16 @@ void PlayDialog::createExternalPlayerList()
     m_players.push_back(std::make_tuple(tr("Built-in player"), ""));
     Config cfg;
     cfg.read("externalPlayers", m_players);
-    for (auto p : m_players)
+    auto dlnaRenderers = Browser::instance().kast().getRenderers();
+    for (auto& r : dlnaRenderers)
+    {
+        m_players.push_back(std::make_tuple(tr("DLNA:"), r));
+    }
+    for (auto& p : m_players)
     {
         ui->cbPlayers->addItem(std::get<0>(p) + " " + std::get<1>(p));
     }
-    if (!m_players.isEmpty())
-    {
-        ui->cbPlayers->setCurrentIndex(0);
-    }
+    ui->cbPlayers->setCurrentIndex(0);
 }
 
 void PlayDialog::doOk()

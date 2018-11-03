@@ -36,7 +36,7 @@ public:
     void addWindow(BrowserWindow *window);
     BrowserWindow *mainWindow();
     BrowserWindow *newMainWindow();
-    Kast *kast();
+    Kast &kast();
 
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString& u);
