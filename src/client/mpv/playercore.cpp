@@ -70,7 +70,6 @@ PlayerCore::PlayerCore(QWidget *parent) :
     mpv::qt::set_option_variant(m_mpv, "merge-files", "yes");
     mpv::qt::set_option_variant(m_mpv, "screenshot-directory", QDir::toNativeSeparators( QDir::homePath()));
     mpv::qt::set_option_variant(m_mpv, "reset-on-next-file", "speed,video-aspect,af,sub-delay,sub-visibility,audio-delay");
-    mpv::qt::set_option_variant(m_mpv, "vo", "opengl-cb");
     mpv_request_log_messages(m_mpv, "warn");
 
     // set hardware decoding
@@ -87,11 +86,15 @@ PlayerCore::PlayerCore(QWidget *parent) :
     {
         mpv::qt::set_option_variant(m_mpv, "hwdec-preload", "vdpau-glx");
     }
-#elif defined(Q_OS_MAC)
-#elif defined(Q_OS_WIN)
-    mpv::qt::set_option_variant(m_mpv, "gpu-context", "angle");
-#endif
+    mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
     mpv::qt::set_option_variant(m_mpv, "hwdec", "auto");
+#elif defined(Q_OS_MAC)
+    mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
+    mpv::qt::set_option_variant(m_mpv, "hwdec", "videotoolbox-co");
+#elif defined(Q_OS_WIN)
+    mpv::qt::set_option_variant(m_mpv, "vo", "direct3d");
+    mpv::qt::set_option_variant(m_mpv, "hwdec", "d3d11va-copy");
+#endif
     mpv::qt::set_option_variant(m_mpv, "hwdec-codecs", "all");
 
     // listen mpv event
