@@ -108,7 +108,7 @@ void PlayDialog::doOk()
         int currentRow = ui->listMedia->currentRow();
         m_selectedMedia = m_streams[currentRow];
     }
-    if (QFile::exists(std::get<0>(m_selectedPlayer)) || currentIndex == 0)
+    if (QFile::exists(std::get<0>(m_selectedPlayer)) || std::get<0>(m_selectedPlayer) == tr("DLNA:")|| currentIndex == 0)
         accept();
     else
         QMessageBox::warning(this, tr("Error"), tr("Cannot find player at '%1', please reconfiguration it.").arg(std::get<0>(m_selectedPlayer)), QMessageBox::Ok);

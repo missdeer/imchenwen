@@ -66,8 +66,12 @@ private:
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
     void doPlayByMediaPlayer(MediaInfoPtr mi);
-    void playByBuiltinPlayer(const QStringList &u, const QString& title, const QString &referrer, const QString &userAgent);
-    void playByBuiltinPlayer(const QString& u, const QString& title, const QString &referrer, const QString &userAgent);
+    void playByBuiltinPlayer(const QStringList &urls, const QString& title, const QString &referrer);
+    void playByBuiltinPlayer(const QString& url, const QString& title, const QString &referrer);
+    void playByExternalPlayer(Tuple2 &player, const QStringList &urls, const QString& title, const QString &referrer);
+    void playByExternalPlayer(Tuple2 &player, const QString& url, const QString& title, const QString &referrer);
+    void playByDLNARenderer(Tuple2 &player, const QStringList &urls, const QString& title, const QString &referrer);
+    void playByDLNARenderer(Tuple2 &player, const QString& url, const QString& title, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);
     void clearAtExit();

@@ -15,9 +15,36 @@ Kast::Kast(QObject *parent) : QObject(parent)
     discovery->run();
 }
 
-void Kast::addItemToQueue(QString &itemUrl)
+void Kast::addItemToQueue(const QString &itemUrl)
 {
     m_queue.append(itemUrl);
+}
+
+void Kast::play(const QString & renderer)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->playPlayback();
+    }
+}
+
+void Kast::pause(const QString & renderer)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->pausePlayback();
+    }
+}
+
+void Kast::stop(const QString & renderer)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->stopPlayback();
+    }
 }
 
 void Kast::onFoundRenderer(DLNARenderer *renderer)
@@ -27,7 +54,6 @@ void Kast::onFoundRenderer(DLNARenderer *renderer)
     // Stop playback. Responses will be handled in handleResponse
     //renderer->stopPlayback();
     m_renderers[renderer->getName()] = renderer;
-    emit foundRenderer(renderer->getName());
 }
 
 QHostAddress Kast::getLocalAddress()
@@ -48,6 +74,24 @@ QStringList Kast::getRenderers()
     return m_renderers.keys();
 }
 
+void Kast::setPlaybackUrl(const QString &renderer, const QUrl &url, const QFileInfo &fileInfo)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->setPlaybackUrl(url, fileInfo);
+    }
+}
+
+void Kast::setNextPlaybackUrl(const QString & renderer, const QUrl &url)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->setNextPlaybackUrl(url);
+    }
+}
+
 void Kast::onHttpResponse(const QString responseType, const QString data)
 {
     Q_UNUSED(data); //May be needed in the future
@@ -55,25 +99,16 @@ void Kast::onHttpResponse(const QString responseType, const QString data)
     DLNARenderer *renderer = qobject_cast<DLNARenderer *>(sender());
     qDebug() << "^Detected response type: "+responseType;
 
-    if (m_queue.isEmpty())
-        return;
-
     // Handle responses
     if(responseType == "StopResponse")
     {
-        // Host file, and send its url to renderer
-        int id = m_fileServer->serveFile(QUrl(m_queue[0])); // File to serve
-
-        QString fileName = m_fileServer->getFilenameFromID(id),
-                localAddress = getLocalAddress().toString(),
-                portNumber = QString::number(port);
-
-        renderer->setPlaybackUrl(QUrl(QString("http://%1:%2/%3/%4").arg(localAddress, portNumber,QString::number(id), fileName)),
-                                 QFileInfo(m_queue[0]));
 
     }
     else if(responseType == "SetAVTransportURIResponse")
-        renderer->playPlayback(); // Just play the playback url
+    {
+        // Just play the playback url
+        renderer->playPlayback();
+    }
 }
 
 

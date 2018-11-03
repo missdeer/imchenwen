@@ -5,48 +5,54 @@
     <name>Browser</name>
     <message>
         <location filename="../browser.cpp" line="178"/>
-        <location filename="../browser.cpp" line="232"/>
+        <location filename="../browser.cpp" line="205"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="439"/>
-        <location filename="../browser.cpp" line="451"/>
+        <location filename="../browser.cpp" line="182"/>
+        <location filename="../browser.cpp" line="209"/>
+        <source>DLNA:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browser.cpp" line="481"/>
+        <location filename="../browser.cpp" line="493"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="481"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="451"/>
+        <location filename="../browser.cpp" line="493"/>
         <source>Resolving link address </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="451"/>
+        <location filename="../browser.cpp" line="493"/>
         <source> failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="461"/>
+        <location filename="../browser.cpp" line="503"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="464"/>
+        <location filename="../browser.cpp" line="506"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="467"/>
+        <location filename="../browser.cpp" line="509"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="471"/>
+        <location filename="../browser.cpp" line="513"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -497,6 +503,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../playdialog.cpp" line="86"/>
+        <location filename="../playdialog.cpp" line="111"/>
         <source>DLNA:</source>
         <translation type="unfinished"></translation>
     </message>

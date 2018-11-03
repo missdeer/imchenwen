@@ -13,18 +13,22 @@ class Kast : public QObject
     Q_OBJECT
 public:
     Kast(QObject *parent = nullptr);
-    void addItemToQueue(QString & item_url);
-    QHostAddress getLocalAddress();
+    void addItemToQueue(const QString & item_url);
     QStringList getRenderers();
+    void setPlaybackUrl(const QString & renderer, const QUrl & url, const QFileInfo & fileInfo);
+    void setNextPlaybackUrl(const QString & renderer, const QUrl & url);
+    void play(const QString & renderer);
+    void pause(const QString & renderer);
+    void stop(const QString & renderer);
+signals:
 
+private slots:
+    void onFoundRenderer(DLNARenderer*);
+    void onHttpResponse(const QString, const QString);
 private:
     HttpFileServer *m_fileServer;
     QStringList m_queue;
     QMap<QString, DLNARenderer *> m_renderers;
-signals:
-    void foundRenderer(const QString&);
-private slots:
-    void onFoundRenderer(DLNARenderer*);
-    void onHttpResponse(const QString, const QString);
+    QHostAddress getLocalAddress();
 };
 #endif // KAST_H

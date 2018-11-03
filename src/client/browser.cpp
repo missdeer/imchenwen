@@ -177,42 +177,15 @@ void Browser::doPlayByMediaPlayer(const QString &u, const QString &title)
 
         if (std::get<0>(player) == tr("Built-in player"))
         {
-            playByBuiltinPlayer(u, title, "", Config().read<QString>(QLatin1String("httpUserAgent")));
+            playByBuiltinPlayer(u, title, "");
+        }
+        else if (std::get<0>(player).startsWith(tr("DLNA:")))
+        {
+            playByDLNARenderer(player, u, title, "");
         }
         else
         {
-            QStringList args;
-#if defined(Q_OS_MAC)
-            QFileInfo fi(std::get<0>(player));
-            if (fi.suffix() == "app")
-            {
-                m_playerProcess.setProgram("/usr/bin/open");
-                args << std::get<0>(player) << "--args";
-            }
-#endif
-            QString arg = std::get<1>(player);
-            if (!arg.isEmpty())
-                args << arg.split(" ");
-
-            for (QString& a : args)
-            {
-                a = a.replace("{{referrer}}", "\"\"");
-                a = a.replace("{{title}}", title);
-                a = a.replace("{{site}}",title);
-                a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
-            }
-
-            args << u;
-            m_playerProcess.setArguments(args);
-#if defined(Q_OS_MAC)
-            if (fi.suffix() == "app")
-            {
-                m_playerProcess.setProgram("/usr/bin/open");
-                return;
-            }
-#endif
-            m_playerProcess.setProgram(std::get<0>(player));
-            m_playerProcess.start();
+            playByExternalPlayer(player, u, title, "");
         }
         minimizeWindows();
     }
@@ -231,50 +204,21 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
         waiting(false);
         if (std::get<0>(player) == tr("Built-in player"))
         {
-            playByBuiltinPlayer(stream->urls, mi->title, mi->url, Config().read<QString>(QLatin1String("httpUserAgent")));
+            playByBuiltinPlayer(stream->urls, mi->title, mi->url);
+        }
+        else if (std::get<0>(player).startsWith(tr("DLNA:")))
+        {
+            playByDLNARenderer(player, stream->urls, mi->title, mi->url);
         }
         else
         {
-            QStringList args;
-#if defined(Q_OS_MAC)
-            QFileInfo fi(std::get<0>(player));
-            if (fi.suffix() == "app")
-            {
-                m_playerProcess.setProgram("/usr/bin/open");
-                args << std::get<0>(player) << "--args";
-            }
-#endif
-            QString arg = std::get<1>(player);
-            if (!arg.isEmpty())
-                args << arg.split(" ");
-
-            for (QString& a : args)
-            {
-                a = a.replace("{{referrer}}", mi->url);
-                a = a.replace("{{title}}", mi->title);
-                a = a.replace("{{site}}",mi->site);
-                a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
-            }
-
-            args << stream->urls;
-            //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
-            m_playerProcess.setArguments(args);
-
-#if defined(Q_OS_MAC)
-            if (fi.suffix() == "app")
-            {
-                m_playerProcess.setProgram("/usr/bin/open");
-                return;
-            }
-#endif
-            m_playerProcess.setProgram(std::get<0>(player));
-            m_playerProcess.start();
+            playByExternalPlayer(player, stream->urls, mi->title, mi->url);
         }
         minimizeWindows();
     }
 }
 
-void Browser::playByBuiltinPlayer(const QStringList& u, const QString& title, const QString& referrer, const QString& userAgent)
+void Browser::playByBuiltinPlayer(const QStringList& urls, const QString& title, const QString& referrer)
 {
     if (!m_mpv)
     {
@@ -285,11 +229,11 @@ void Browser::playByBuiltinPlayer(const QStringList& u, const QString& title, co
     m_mpv->show();
     m_mpv->title(title);
     m_mpv->referrer(referrer);
-    m_mpv->userAgent(userAgent);
-    m_mpv->playMedias(QStringList() << u);
+    m_mpv->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
+    m_mpv->playMedias(urls);
 }
 
-void Browser::playByBuiltinPlayer(const QString &u, const QString &title, const QString &referrer, const QString &userAgent)
+void Browser::playByBuiltinPlayer(const QString &url, const QString &title, const QString &referrer)
 {
     if (!m_mpv)
     {
@@ -300,8 +244,106 @@ void Browser::playByBuiltinPlayer(const QString &u, const QString &title, const 
     m_mpv->show();
     m_mpv->title(title);
     m_mpv->referrer(referrer);
-    m_mpv->userAgent(userAgent);
-    m_mpv->playMedias(QStringList() << u);
+    m_mpv->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
+    m_mpv->playMedias(QStringList() << url);
+}
+
+void Browser::playByExternalPlayer(Tuple2& player, const QStringList &urls, const QString &title, const QString &referrer)
+{
+    QStringList args;
+#if defined(Q_OS_MAC)
+    QFileInfo fi(std::get<0>(player));
+    if (fi.suffix() == "app")
+    {
+        m_playerProcess.setProgram("/usr/bin/open");
+        args << std::get<0>(player) << "--args";
+    }
+#endif
+    QString arg = std::get<1>(player);
+    if (!arg.isEmpty())
+        args << arg.split(" ");
+
+    for (QString& a : args)
+    {
+        a = a.replace("{{referrer}}", referrer);
+        a = a.replace("{{title}}", title);
+        a = a.replace("{{site}}", title);
+        a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
+    }
+
+    args << urls;
+    //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
+    m_playerProcess.setArguments(args);
+
+#if defined(Q_OS_MAC)
+    if (fi.suffix() == "app")
+    {
+        m_playerProcess.setProgram("/usr/bin/open");
+        return;
+    }
+#endif
+    m_playerProcess.setProgram(std::get<0>(player));
+    m_playerProcess.start();
+}
+
+void Browser::playByExternalPlayer(Tuple2 &player, const QString &url, const QString &title, const QString &referrer)
+{
+    QStringList args;
+#if defined(Q_OS_MAC)
+    QFileInfo fi(std::get<0>(player));
+    if (fi.suffix() == "app")
+    {
+        m_playerProcess.setProgram("/usr/bin/open");
+        args << std::get<0>(player) << "--args";
+    }
+#endif
+    QString arg = std::get<1>(player);
+    if (!arg.isEmpty())
+        args << arg.split(" ");
+
+    for (QString& a : args)
+    {
+        a = a.replace("{{referrer}}", referrer);
+        a = a.replace("{{title}}", title);
+        a = a.replace("{{site}}",title);
+        a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
+    }
+
+    args << url;
+    m_playerProcess.setArguments(args);
+#if defined(Q_OS_MAC)
+    if (fi.suffix() == "app")
+    {
+        m_playerProcess.setProgram("/usr/bin/open");
+        return;
+    }
+#endif
+    m_playerProcess.setProgram(std::get<0>(player));
+    m_playerProcess.start();
+}
+
+void Browser::playByDLNARenderer(Tuple2 &player, const QStringList &urls, const QString &title, const QString &referrer)
+{
+    if (urls.isEmpty())
+        return;
+    auto renderer = std::get<1>(player);
+    m_kast.stop(renderer);
+
+    QUrl u(urls[0]);
+    m_kast.setPlaybackUrl(renderer, u, QFileInfo(u.path()));
+    for (int i = 1; i < urls.length(); i++)
+    {
+        QUrl u(urls[i]);
+        m_kast.setNextPlaybackUrl(renderer, u);
+    }
+}
+
+void Browser::playByDLNARenderer(Tuple2 &player, const QString &url, const QString &title, const QString &referrer)
+{
+    auto renderer = std::get<1>(player);
+    m_kast.stop(renderer);
+    QUrl u(url);
+    m_kast.setPlaybackUrl(renderer, u, QFileInfo(u.path()));
 }
 
 void Browser::onClipboardChanged()
