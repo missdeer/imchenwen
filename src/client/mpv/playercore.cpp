@@ -1,7 +1,5 @@
 #include "playercore.h"
 #include "config.h"
-#include <stdio.h>
-#include <mpv/client.h>
 #include <QCoreApplication>
 #include <QDir>
 #include <QEvent>
@@ -11,6 +9,7 @@
 #include <QMouseEvent>
 #include <QOpenGLContext>
 #include <QSysInfo>
+#include <QtCore>
 
 // wayland fix
 #ifdef Q_OS_LINUX
@@ -50,7 +49,7 @@ static void *get_proc_address(void *, const char *name)
 PlayerCore::PlayerCore(QWidget *parent) :
     QOpenGLWidget(parent)
 {
-    printf("Initialize mpv backend...\n");
+    qDebug("Initialize mpv backend...\n");
     setFocusPolicy(Qt::StrongFocus);
 
     // create mpv instance
@@ -146,7 +145,7 @@ PlayerCore::PlayerCore(QWidget *parent) :
 // opengl
 void PlayerCore::initializeGL()
 {
-    printf("OpenGL Version: %i.%i\n", context()->format().majorVersion(), context()->format().minorVersion());
+    qDebug() << "OpenGL Version: " << context()->format().majorVersion() << "." << context()->format().minorVersion();
 #ifdef Q_OS_LINUX
     int r = mpv_opengl_cb_init_gl(mpv_gl, "GL_MP_MPGetNativeDisplay", get_proc_address, NULL);
 #else
@@ -269,7 +268,7 @@ bool PlayerCore::event(QEvent *e)
             mpv_event_end_file *ef = static_cast<mpv_event_end_file*>(event->data);
             if (ef->error == MPV_ERROR_LOADING_FAILED)
             {
-                m_reloadWhenIdle = (bool) QMessageBox::question(this, "MPV Error",
+                m_reloadWhenIdle = (bool) QMessageBox::question(this, tr("MPV Error"),
                                       tr("Fails to load: ") + m_mediaFile,
                                       tr("Skip"),
                                       tr("Try again"));

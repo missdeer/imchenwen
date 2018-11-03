@@ -56,10 +56,6 @@
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
-    <message>
-        <source>Error on launching external player</source>
-        <translation type="vanished">启动外部播放器失败</translation>
-    </message>
 </context>
 <context>
     <name>BrowserWindow</name>
@@ -422,20 +418,6 @@ Do you wish to override the security check and continue ?   </source>
     </message>
 </context>
 <context>
-    <name>Downloader</name>
-    <message>
-        <source>Play</source>
-        <translation type="obsolete">播放</translation>
-    </message>
-</context>
-<context>
-    <name>MPVWindow</name>
-    <message>
-        <source>imchenwen builtin media player</source>
-        <translation type="vanished">某橙内置媒体播放器</translation>
-    </message>
-</context>
-<context>
     <name>PasswordDialog</name>
     <message>
         <location filename="../passworddialog.ui" line="14"/>
@@ -506,10 +488,6 @@ Do you wish to override the security check and continue ?   </source>
         <translation> - 由you-get提供解析服务</translation>
     </message>
     <message>
-        <source> - by youtube-dl</source>
-        <translation type="vanished"> - 由youtube-dl提供解析服务</translation>
-    </message>
-    <message>
         <location filename="../playdialog.cpp" line="33"/>
         <source> - by annie</source>
         <translation> - 由annie提供解析服务</translation>
@@ -546,42 +524,39 @@ Do you wish to override the security check and continue ?   </source>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
-    <message>
-        <source>Cannot find builtin player, please select an external player.</source>
-        <translation type="vanished">找不到内置播放器，请选择一个外部播放器。</translation>
-    </message>
 </context>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="273"/>
+        <location filename="../mpv/playercore.cpp" line="272"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="274"/>
+        <location filename="../mpv/playercore.cpp" line="273"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="275"/>
+        <location filename="../mpv/playercore.cpp" line="274"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="696"/>
+        <location filename="../mpv/playercore.cpp" line="271"/>
+        <location filename="../mpv/playercore.cpp" line="695"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="697"/>
+        <location filename="../mpv/playercore.cpp" line="696"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="697"/>
+        <location filename="../mpv/playercore.cpp" line="696"/>
         <source>
 
 MPV Error: </source>
@@ -1382,10 +1357,6 @@ MPV错误：</translation>
         <location filename="../settings.cpp" line="947"/>
         <source>URL</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Export Live tv list to</source>
-        <translation type="vanished">导出电视直播列表到</translation>
     </message>
     <message>
         <location filename="../settings.cpp" line="742"/>
