@@ -742,6 +742,14 @@ MPV Error: </source>
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../main.cpp" line="23"/>
+        <source>imchenwen</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Settings</name>
     <message>
         <location filename="../settings.ui" line="14"/>

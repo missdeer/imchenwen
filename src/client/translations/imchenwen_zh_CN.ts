@@ -13,7 +13,7 @@
         <location filename="../browser.cpp" line="182"/>
         <location filename="../browser.cpp" line="209"/>
         <source>DLNA:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../browser.cpp" line="481"/>
@@ -517,7 +517,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../playdialog.cpp" line="32"/>
         <source> - by youtube_dl</source>
-        <translation type="unfinished"></translation>
+        <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
         <location filename="../playdialog.cpp" line="80"/>
@@ -528,7 +528,7 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../playdialog.cpp" line="86"/>
         <location filename="../playdialog.cpp" line="111"/>
         <source>DLNA:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../playdialog.cpp" line="105"/>
@@ -769,6 +769,14 @@ MPV错误：</translation>
         <location filename="../mpv/playerview.cpp" line="568"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../main.cpp" line="23"/>
+        <source>imchenwen</source>
+        <translation>某橙</translation>
     </message>
 </context>
 <context>

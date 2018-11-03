@@ -20,7 +20,7 @@ QString getCommandLineUrlArgument()
 int main(int argc, char **argv)
 {
     QCoreApplication::setOrganizationName(QLatin1String("DForD Software"));
-    QCoreApplication::setApplicationName(QLatin1String("imchenwen"));
+    QCoreApplication::setApplicationName(QObject::tr("imchenwen"));
     QCoreApplication::setApplicationVersion(QLatin1String("1.0"));
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
@@ -69,9 +69,9 @@ int main(int argc, char **argv)
     setlocale(LC_NUMERIC, "C");
 
 #if defined(Q_OS_MAC)
-    a.setWindowIcon(QIcon(QLatin1String(":imchenwen.icns")));
+    a.setWindowIcon(QIcon(":imchenwen.icns"));
 #else
-    a.setWindowIcon(QIcon(QLatin1String(":imchenwen.ico")));
+    a.setWindowIcon(QIcon(":imchenwen.ico"));
 #endif
     QtWebEngine::initialize();
 
