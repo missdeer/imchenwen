@@ -44,7 +44,7 @@ void SSDPdiscovery::processPendingDatagrams()
         QNetworkDatagram datagram = m_multicastUdpSocket->receiveDatagram();
         QStringList list = QString(datagram.data()).split("\r\n");
         auto it = std::find_if(list.begin(), list.end(), [](const QString& i) {
-            return i.toLower().startsWith("location:");
+            return i.startsWith("location:", Qt::CaseInsensitive);
         });
         if (list.end() != it)
             findRendererFromUrl(QUrl(it->mid(10).simplified()));
@@ -93,7 +93,8 @@ void SSDPdiscovery::processData(QNetworkReply *reply)
                     xml.readNextStartElement();
                 }
                 // Choose the largest icon
-                if(renderer->m_icon.width < icon.width) renderer->m_icon = icon;
+                if(renderer->m_icon.width < icon.width)
+                    renderer->m_icon = icon;
             }
         }
 

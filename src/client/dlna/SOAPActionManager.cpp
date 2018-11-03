@@ -34,11 +34,11 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     QString actionData;
     if (!dataMap.isEmpty() || !dataMap.isDetached())
     {
-        for (const QString &key : dataMap.keys())
+        for (auto it = dataMap.keyBegin(); dataMap.keyEnd() != it; ++it)
         {
-            actionData.append("<" + key + ">");
-            actionData.append(dataMap.value(key));
-            actionData.append("</" + key + ">");
+            actionData.append("<" + *it + ">");
+            actionData.append(dataMap.value(*it));
+            actionData.append("</" + *it + ">");
         }
     }
 
@@ -64,6 +64,7 @@ void SOAPActionManager::processData(QNetworkReply *reply)
 {
     QString data = reply->readAll();
     reply->close();
+    reply->deleteLater();
 
     // We want to be able to connect it to few slots, so lets disconnect it for now
     disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
@@ -88,6 +89,7 @@ void SOAPActionManager::processPlaybackInfo(QNetworkReply *reply)
     // Construct xml parser, from reply's data, close socket
     QXmlStreamReader xml(reply->readAll());
     reply->close();
+    reply->deleteLater();
 
     // We want to be able to connect it to few slots, so lets disconnect it for now
     disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
