@@ -53,6 +53,7 @@ void LinkResolver::resolve(const QString& url)
         terminateResolvers();
         m_mediaInfo->title.clear();
         m_mediaInfo->site.clear();
+
         m_mediaInfo->resultCount = 0;
         m_mediaInfo->url = url;
         for ( auto & r : m_resolvers)
@@ -257,8 +258,12 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
     auto ss = o["streams"];
     if (!ss.isObject())
     {
-        qDebug() << "Formats is expected to be an object";
-        return;
+        ss = o["formats"];
+        if (!ss.isObject())
+        {
+            qDebug() << "Formats is expected to be an object";
+            return;
+        }
     }
 
     auto sso = ss.toObject();
@@ -275,6 +280,7 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
         {
             auto urlObj = url.toObject();
             stream->urls.append(urlObj["url"].toString());
+            stream->container = urlObj["ext"].toString();
         }
         stream->quality = s["quality"].toString();
         streams.append(stream);

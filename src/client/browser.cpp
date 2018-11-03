@@ -433,7 +433,7 @@ void Browser::onResolved(MediaInfoPtr mi)
 {
     stopWaiting();
 
-    if (mi->title.isEmpty() && mi->site.isEmpty())
+    if (mi->ykdl.isEmpty() && mi->you_get.isEmpty() && mi->youtube_dl.isEmpty() && mi->annie.isEmpty())
     {
         QMessageBox::warning(mainWindow(),
                              tr("Error"), tr("Resolving link address failed! Please try again."), QMessageBox::Ok);
