@@ -547,34 +547,34 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="264"/>
+        <location filename="../mpv/playercore.cpp" line="271"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="265"/>
+        <location filename="../mpv/playercore.cpp" line="272"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="266"/>
+        <location filename="../mpv/playercore.cpp" line="273"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="687"/>
+        <location filename="../mpv/playercore.cpp" line="694"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="688"/>
+        <location filename="../mpv/playercore.cpp" line="695"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="688"/>
+        <location filename="../mpv/playercore.cpp" line="695"/>
         <source>
 
 MPV Error: </source>
