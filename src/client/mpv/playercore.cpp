@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QOpenGLContext>
+#include <QSysInfo>
 
 // wayland fix
 #ifdef Q_OS_LINUX
@@ -93,7 +94,13 @@ PlayerCore::PlayerCore(QWidget *parent) :
     mpv::qt::set_option_variant(m_mpv, "hwdec", "videotoolbox-co");
 #elif defined(Q_OS_WIN)
     mpv::qt::set_option_variant(m_mpv, "vo", "direct3d");
-    mpv::qt::set_option_variant(m_mpv, "hwdec", "d3d11va-copy");
+    QString v = QSysInfo::productVersion();
+    QStringList vv  = v.split(' ');
+    int n = vv[0].toInt();
+    if (n >= 8)
+        mpv::qt::set_option_variant(m_mpv, "hwdec", "d3d11va-copy");
+    else
+        mpv::qt::set_option_variant(m_mpv, "hwdec", "dxva2-copy");
 #endif
     mpv::qt::set_option_variant(m_mpv, "hwdec-codecs", "all");
 
