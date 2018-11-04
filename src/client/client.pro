@@ -85,6 +85,14 @@ POST_TARGETDEPS += translate
 macx: {
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
+    LIBS += -framework Cocoa -framework WebKit
+    HEADERS  += \
+        $$PWD/cocoawebview/*.h
+
+    OBJECTIVE_SOURCES += \
+        $$PWD/cocoawebview/*.mm
+
+    INCLUDEPATH += $$PWD/cocoawebview
 
     CONFIG(release, debug|release) : {
         QMAKE_INFO_PLIST = osxInfo.plist
