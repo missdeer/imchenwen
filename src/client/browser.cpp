@@ -489,8 +489,7 @@ void Browser::onResolvingError(const QString &u)
 {
     stopWaiting();
 
-    QMessageBox::warning(mainWindow(),
-                         tr("Error"), tr("Resolving link address ") + u + tr(" failed!"), QMessageBox::Ok);
+    doPlayByMediaPlayer(u, tr("Play movie online directly\n%1").arg(u));
 }
 
 void Browser::onProcessError(QProcess::ProcessError error)

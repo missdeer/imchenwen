@@ -17,7 +17,6 @@
     </message>
     <message>
         <location filename="../browser.cpp" line="481"/>
-        <location filename="../browser.cpp" line="493"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,32 +26,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="493"/>
-        <source>Resolving link address </source>
+        <location filename="../browser.cpp" line="492"/>
+        <source>Play movie online directly
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="493"/>
-        <source> failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../browser.cpp" line="503"/>
+        <location filename="../browser.cpp" line="502"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="506"/>
+        <location filename="../browser.cpp" line="505"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="509"/>
+        <location filename="../browser.cpp" line="508"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="513"/>
+        <location filename="../browser.cpp" line="512"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
