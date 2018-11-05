@@ -225,6 +225,7 @@ void Browser::playByBuiltinPlayer(const QStringList& urls, const QString& title,
         m_builtinPlayer = new PlayerView;
         connect(m_builtinPlayer, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
+    // ffmpeg.exe -y -protocol_whitelist "file,http,https,tcp,tls"  -i test.m3u8 -c:v libx265 -an -x265-params crf=25 -f mpegts udp://127.0.0.1:12345
 
     m_builtinPlayer->show();
     m_builtinPlayer->title(title);
