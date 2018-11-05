@@ -16,39 +16,39 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="485"/>
+        <location filename="../browser.cpp" line="486"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="485"/>
+        <location filename="../browser.cpp" line="486"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="496"/>
+        <location filename="../browser.cpp" line="497"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="506"/>
+        <location filename="../browser.cpp" line="507"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="509"/>
+        <location filename="../browser.cpp" line="510"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="512"/>
+        <location filename="../browser.cpp" line="513"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="516"/>
+        <location filename="../browser.cpp" line="517"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -395,7 +395,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../dlna/dlnaplayerview.ui" line="318"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;Playing...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;正在播放……&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -479,29 +479,29 @@ Do you wish to override the security check and continue ?   </source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="84"/>
+        <location filename="../playdialog.cpp" line="89"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="90"/>
-        <location filename="../playdialog.cpp" line="115"/>
+        <location filename="../playdialog.cpp" line="95"/>
+        <location filename="../playdialog.cpp" line="120"/>
         <source>DLNA:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="109"/>
-        <location filename="../playdialog.cpp" line="118"/>
+        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="123"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="109"/>
+        <location filename="../playdialog.cpp" line="114"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="118"/>
+        <location filename="../playdialog.cpp" line="123"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>

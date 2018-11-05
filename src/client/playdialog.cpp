@@ -37,9 +37,13 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
     {
         for (auto& stream : s.streams)
         {
-            addItem(s.icon,
-                    mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
-                    ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
+            auto item = addItem(s.icon,
+                                mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
+                                ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
+            if (stream->urls.length() > 1)
+                item->setToolTip(QString("%1 x %2").arg(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery)).arg(stream->urls.length()));
+            else
+                item->setToolTip(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
         }
         m_streams.append(s.streams);
     }
@@ -51,10 +55,11 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 
 void PlayDialog::setMediaInfo(const QString &title, const QString &url)
 {
-    addItem(QIcon(":/video.png"), title + "\n" + url, Qt::white);
+    auto item = addItem(QIcon(":/video.png"), title + "\n" + url, Qt::white);
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
     m_multiMediaResources = false;
+    item->setToolTip(QUrl(url).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
 }
 
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
@@ -118,7 +123,7 @@ void PlayDialog::doOk()
         QMessageBox::warning(this, tr("Error"), tr("Cannot find player at '%1', please reconfiguration it.").arg(std::get<0>(m_selectedPlayer)), QMessageBox::Ok);
 }
 
-void PlayDialog::addItem(const QIcon& icon, const QString& text, const QColor &backgroundColor)
+QListWidgetItem * PlayDialog::addItem(const QIcon& icon, const QString& text, const QColor &backgroundColor)
 {
     QListWidgetItem *item = new QListWidgetItem(icon, text, ui->listMedia);
     QFont font(item->font());
@@ -131,6 +136,7 @@ void PlayDialog::addItem(const QIcon& icon, const QString& text, const QColor &b
     item->setFont(font);
     item->setBackgroundColor(backgroundColor);
     ui->listMedia->addItem(item);
+    return item;
 }
 
 void PlayDialog::on_listMedia_itemActivated(QListWidgetItem *)

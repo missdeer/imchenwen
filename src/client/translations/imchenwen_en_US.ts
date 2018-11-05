@@ -16,38 +16,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="485"/>
+        <location filename="../browser.cpp" line="486"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="485"/>
+        <location filename="../browser.cpp" line="486"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="496"/>
+        <location filename="../browser.cpp" line="497"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="506"/>
+        <location filename="../browser.cpp" line="507"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="509"/>
+        <location filename="../browser.cpp" line="510"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="512"/>
+        <location filename="../browser.cpp" line="513"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="516"/>
+        <location filename="../browser.cpp" line="517"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -477,29 +477,29 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="84"/>
+        <location filename="../playdialog.cpp" line="89"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="90"/>
-        <location filename="../playdialog.cpp" line="115"/>
+        <location filename="../playdialog.cpp" line="95"/>
+        <location filename="../playdialog.cpp" line="120"/>
         <source>DLNA:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="109"/>
-        <location filename="../playdialog.cpp" line="118"/>
+        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="123"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="109"/>
+        <location filename="../playdialog.cpp" line="114"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="118"/>
+        <location filename="../playdialog.cpp" line="123"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>
