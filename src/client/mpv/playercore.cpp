@@ -147,7 +147,7 @@ void PlayerCore::initializeGL()
 {
     qDebug() << "OpenGL Version: " << context()->format().majorVersion() << "." << context()->format().minorVersion();
 #ifdef Q_OS_LINUX
-    int r = mpv_opengl_cb_init_gl(mpv_gl, "GL_MP_MPGetNativeDisplay", get_proc_address, NULL);
+    int r = mpv_opengl_cb_init_gl(m_mpvGL, "GL_MP_MPGetNativeDisplay", get_proc_address, nullptr);
 #else
     int r = mpv_opengl_cb_init_gl(m_mpvGL, nullptr, get_proc_address, nullptr);
 #endif
