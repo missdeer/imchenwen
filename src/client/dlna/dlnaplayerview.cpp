@@ -309,20 +309,6 @@ void DLNAPlayerView::onTimeSliderReleased()
     Browser::instance().kast().seekPlayback(m_renderer, QTime::fromString(secToTime(ui->timeSlider->value()), "h:m:s"));
 }
 
-void DLNAPlayerView::onSizeChanged(const QSize &sz)
-{
-    if (isFullScreen())
-        return;
-    QRect available = QApplication::desktop()->availableGeometry(this);
-    if (sz.width() / devicePixelRatioF() > available.width() || sz.height()/ devicePixelRatioF() > available.height())
-        setGeometry(available);
-    else
-    {
-        resize(sz / devicePixelRatioF());
-        move((available.width() - sz.width()/devicePixelRatioF())/2, (available.height() - sz.height()/devicePixelRatioF())/2);
-    }
-}
-
 // show volume slider
 void DLNAPlayerView::showVolumeSlider()
 {
@@ -335,16 +321,19 @@ void DLNAPlayerView::showVolumeSlider()
 void DLNAPlayerView::onPlay()
 {
     Browser::instance().kast().play(m_renderer);
+    m_paused = false;
 }
 
 void DLNAPlayerView::onPause()
 {
     Browser::instance().kast().pause(m_renderer);
+    m_paused = true;
 }
 
 void DLNAPlayerView::onResume()
 {
     Browser::instance().kast().resume(m_renderer);
+    m_paused = false;
 }
 
 void DLNAPlayerView::setRenderer(const QString &renderer)

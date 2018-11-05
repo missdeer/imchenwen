@@ -52,7 +52,6 @@ private slots:
     void onTimeSliderPressed(void);
     void onTimeSliderValueChanged(int time);
     void onTimeSliderReleased(void);
-    void onSizeChanged(const QSize &sz);
     void onMaxButton(void);
     void onStopButton(void);
     void onStopped(void);
