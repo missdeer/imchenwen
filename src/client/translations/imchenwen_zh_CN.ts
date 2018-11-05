@@ -454,49 +454,49 @@ Do you wish to override the security check and continue ?   </source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="30"/>
+        <location filename="../playdialog.cpp" line="32"/>
         <source> - by ykdl</source>
         <translation> - 由ykdl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="31"/>
+        <location filename="../playdialog.cpp" line="33"/>
         <source> - by you-get</source>
         <translation> - 由you-get提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="33"/>
+        <location filename="../playdialog.cpp" line="34"/>
         <source> - by annie</source>
         <translation> - 由annie提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="32"/>
+        <location filename="../playdialog.cpp" line="31"/>
         <source> - by youtube_dl</source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="80"/>
+        <location filename="../playdialog.cpp" line="84"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="86"/>
-        <location filename="../playdialog.cpp" line="111"/>
+        <location filename="../playdialog.cpp" line="90"/>
+        <location filename="../playdialog.cpp" line="115"/>
         <source>DLNA:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="105"/>
-        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="109"/>
+        <location filename="../playdialog.cpp" line="118"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="105"/>
+        <location filename="../playdialog.cpp" line="109"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="118"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>

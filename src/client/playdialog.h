@@ -43,7 +43,7 @@ private:
     bool m_multiMediaResources;
     void createExternalPlayerList();
     void doOk();
-    void addItem(const QString& text, const QColor& backgroundColor);
+    void addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);
 };
 
 #endif // EXTERNALPLAYDIALOG_H

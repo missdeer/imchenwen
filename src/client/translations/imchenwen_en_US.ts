@@ -452,49 +452,49 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="30"/>
+        <location filename="../playdialog.cpp" line="32"/>
         <source> - by ykdl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="31"/>
+        <location filename="../playdialog.cpp" line="33"/>
         <source> - by you-get</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="33"/>
+        <location filename="../playdialog.cpp" line="34"/>
         <source> - by annie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="32"/>
+        <location filename="../playdialog.cpp" line="31"/>
         <source> - by youtube_dl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="80"/>
+        <location filename="../playdialog.cpp" line="84"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="86"/>
-        <location filename="../playdialog.cpp" line="111"/>
+        <location filename="../playdialog.cpp" line="90"/>
+        <location filename="../playdialog.cpp" line="115"/>
         <source>DLNA:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="105"/>
-        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="109"/>
+        <location filename="../playdialog.cpp" line="118"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="105"/>
+        <location filename="../playdialog.cpp" line="109"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="118"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>

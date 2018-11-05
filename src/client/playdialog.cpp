@@ -26,30 +26,34 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
     struct {
         Streams& streams;
         QString tag;
+        QIcon icon;
     } ss[] = {
-        { mi->ykdl,       tr(" - by ykdl")},
-        { mi->you_get,    tr(" - by you-get")},
-        { mi->youtube_dl, tr(" - by youtube_dl")},
-        { mi->annie,      tr(" - by annie")},
+        { mi->youtube_dl, tr(" - by youtube_dl"), QIcon(":/youtube-dl.png")},
+        { mi->ykdl,       tr(" - by ykdl"),       QIcon(":/ykdl.png")},
+        { mi->you_get,    tr(" - by you-get"),    QIcon(":/you-get.png")},
+        { mi->annie,      tr(" - by annie"),      QIcon(":/annie.png")},
     };
     for (auto & s : ss)
     {
         for (auto& stream : s.streams)
         {
-            addItem(mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
+            addItem(s.icon,
+                    mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
                     ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
         }
         m_streams.append(s.streams);
     }
     ui->listMedia->setCurrentRow(0);
+    ui->listMedia->setIconSize(QSize(40, 40));
     m_mediaInfo = mi;
     m_multiMediaResources = true;
 }
 
 void PlayDialog::setMediaInfo(const QString &title, const QString &url)
 {
-    addItem(title + "\n" + url, Qt::white);
+    addItem(QIcon(":/video.png"), title + "\n" + url, Qt::white);
     ui->listMedia->setCurrentRow(0);
+    ui->listMedia->setIconSize(QSize(40, 40));
     m_multiMediaResources = false;
 }
 
@@ -114,9 +118,9 @@ void PlayDialog::doOk()
         QMessageBox::warning(this, tr("Error"), tr("Cannot find player at '%1', please reconfiguration it.").arg(std::get<0>(m_selectedPlayer)), QMessageBox::Ok);
 }
 
-void PlayDialog::addItem(const QString& text, const QColor &backgroundColor)
+void PlayDialog::addItem(const QIcon& icon, const QString& text, const QColor &backgroundColor)
 {
-    QListWidgetItem *item = new QListWidgetItem(text, ui->listMedia);
+    QListWidgetItem *item = new QListWidgetItem(icon, text, ui->listMedia);
     QFont font(item->font());
 #if defined(Q_OS_WIN)
     font.setFamily("Microsoft YaHei");

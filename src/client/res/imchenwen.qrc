@@ -21,5 +21,14 @@
         <file>playvip.png</file>
         <file>playtv.png</file>
         <file>vipplaying.html</file>
+        <file>down.png</file>
+        <file>up.png</file>
+        <file>downdown.png</file>
+        <file>upup.png</file>
+        <file>annie.png</file>
+        <file>video.png</file>
+        <file>ykdl.png</file>
+        <file>you-get.png</file>
+        <file>youtube-dl.png</file>
     </qresource>
 </RCC>
