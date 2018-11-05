@@ -21,6 +21,7 @@
 DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
     QWidget(parent, Qt::FramelessWindowHint),
     ui(new Ui::DLNAPlayerView),
+    m_getPositionInfoTimer(new QTimer(this)),
     m_renderer(nullptr)
 {
     // init ui
@@ -85,6 +86,10 @@ DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
     connect(ui->timeSlider, &QSlider::sliderPressed, this, &DLNAPlayerView::onTimeSliderPressed);
     connect(ui->timeSlider, &QSlider::valueChanged, this, &DLNAPlayerView::onTimeSliderValueChanged);
     connect(ui->timeSlider, &QSlider::sliderReleased, this, &DLNAPlayerView::onTimeSliderReleased);
+    connect(m_getPositionInfoTimer, &QTimer::timeout, [this](){
+        if (m_renderer)
+            m_renderer->queryPlaybackInfo();
+    });
 
     Config cfg;
     m_volumeSlider->setValue(cfg.read<int>("volumn", 50));
@@ -107,6 +112,7 @@ void DLNAPlayerView::playMedias(const QStringList &medias)
         QUrl u(medias[i]);
         m_renderer->setNextPlaybackUrl(u);
     }
+    m_getPositionInfoTimer->start(1000);
 }
 
 void DLNAPlayerView::title(const QString &title)
@@ -325,26 +331,37 @@ void DLNAPlayerView::showVolumeSlider()
 void DLNAPlayerView::onPlay()
 {
     m_renderer->playPlayback();
+    m_getPositionInfoTimer->start(1000);
     m_paused = false;
 }
 
 void DLNAPlayerView::onPause()
 {
     m_renderer->pausePlayback();
+    m_getPositionInfoTimer->stop();
     m_paused = true;
 }
 
 void DLNAPlayerView::onResume()
 {
     m_renderer->playPlayback();
+    m_getPositionInfoTimer->start(1000);
     m_paused = false;
+}
+
+void DLNAPlayerView::onReceivePlaybackInfo(DLNAPlaybackInfo *info)
+{
+    qDebug() << __FUNCTION__ << info->relTime << info->trackDuration;
 }
 
 void DLNAPlayerView::setRenderer(const QString &renderer)
 {
     Kast &kast = Browser::instance().kast();
-
+    if (m_renderer)
+        disconnect(m_renderer, &DLNARenderer::receivePlaybackInfo, this, &DLNAPlayerView::onReceivePlaybackInfo);
     m_renderer = kast.renderer(renderer);
+    if (m_renderer)
+        connect(m_renderer, &DLNARenderer::receivePlaybackInfo, this, &DLNAPlayerView::onReceivePlaybackInfo);
 }
 
 void DLNAPlayerView::saveVolume(int vol)

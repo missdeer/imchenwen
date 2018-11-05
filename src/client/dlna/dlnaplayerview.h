@@ -62,7 +62,7 @@ private slots:
     void onPlay();
     void onPause();
     void onResume();
-
+    void onReceivePlaybackInfo(DLNAPlaybackInfo* info);
 private:
     Ui::DLNAPlayerView *ui;
     Border *m_leftBorder;
@@ -71,6 +71,7 @@ private:
     Border *m_bottomLeftBorder;
     Border *m_bottomRightBorder;
     QSlider *m_volumeSlider;
+    QTimer *m_getPositionInfoTimer;
     QPoint m_dPos;
     bool m_quitRequested;
     bool m_noPlayNext;
