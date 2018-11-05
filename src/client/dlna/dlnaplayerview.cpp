@@ -146,7 +146,7 @@ void DLNAPlayerView::closeEvent(QCloseEvent *e)
 {
     m_noPlayNext = true;
 
-    //TODO: stop playback
+    Browser::instance().kast().stop(m_renderer);
 
     e->accept();
     Q_EMIT finished(0, QProcess::NormalExit);
