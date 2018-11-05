@@ -47,6 +47,24 @@ void Kast::stop(const QString & renderer)
     }
 }
 
+void Kast::resume(const QString &renderer)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->playPlayback();
+    }
+}
+
+void Kast::seekPlayback(const QString &renderer, QTime time)
+{
+    auto it = m_renderers.find(renderer);
+    if (m_renderers.end() != it)
+    {
+        (*it)->seekPlayback(time);
+    }
+}
+
 void Kast::onFoundRenderer(DLNARenderer *renderer)
 {
     qDebug() << "Renderer found: " + renderer->getName();

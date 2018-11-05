@@ -20,6 +20,8 @@ public:
     void play(const QString & renderer);
     void pause(const QString & renderer);
     void stop(const QString & renderer);
+    void resume(const QString & renderer);
+    void seekPlayback(const QString & renderer, QTime time);
 signals:
 
 private slots:

@@ -64,7 +64,7 @@ Browser::Browser(QObject *parent)
     , m_waitingSpinner(nullptr)
     , m_linkResolver(this)
     , m_nam(nullptr)
-    , m_mpv(nullptr)
+    , m_builtinPlayer(nullptr)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
@@ -220,32 +220,32 @@ void Browser::doPlayByMediaPlayer(MediaInfoPtr mi)
 
 void Browser::playByBuiltinPlayer(const QStringList& urls, const QString& title, const QString& referrer)
 {
-    if (!m_mpv)
+    if (!m_builtinPlayer)
     {
-        m_mpv = new PlayerView;
-        connect(m_mpv, &PlayerView::finished, this, &Browser::onPlayerFinished);
+        m_builtinPlayer = new PlayerView;
+        connect(m_builtinPlayer, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
 
-    m_mpv->show();
-    m_mpv->title(title);
-    m_mpv->referrer(referrer);
-    m_mpv->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
-    m_mpv->playMedias(urls);
+    m_builtinPlayer->show();
+    m_builtinPlayer->title(title);
+    m_builtinPlayer->referrer(referrer);
+    m_builtinPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
+    m_builtinPlayer->playMedias(urls);
 }
 
 void Browser::playByBuiltinPlayer(const QString &url, const QString &title, const QString &referrer)
 {
-    if (!m_mpv)
+    if (!m_builtinPlayer)
     {
-        m_mpv = new PlayerView;
-        connect(m_mpv, &PlayerView::finished, this, &Browser::onPlayerFinished);
+        m_builtinPlayer = new PlayerView;
+        connect(m_builtinPlayer, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
 
-    m_mpv->show();
-    m_mpv->title(title);
-    m_mpv->referrer(referrer);
-    m_mpv->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
-    m_mpv->playMedias(QStringList() << url);
+    m_builtinPlayer->show();
+    m_builtinPlayer->title(title);
+    m_builtinPlayer->referrer(referrer);
+    m_builtinPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
+    m_builtinPlayer->playMedias(QStringList() << url);
 }
 
 void Browser::playByExternalPlayer(Tuple2& player, const QStringList &urls, const QString &title, const QString &referrer)
@@ -326,24 +326,28 @@ void Browser::playByDLNARenderer(Tuple2 &player, const QStringList &urls, const 
 {
     if (urls.isEmpty())
         return;
-    auto renderer = std::get<1>(player);
-    m_kast.stop(renderer);
 
-    QUrl u(urls[0]);
-    m_kast.setPlaybackUrl(renderer, u, QFileInfo(u.path()));
-    for (int i = 1; i < urls.length(); i++)
+    if (!m_dlnaPlayer)
     {
-        QUrl u(urls[i]);
-        m_kast.setNextPlaybackUrl(renderer, u);
+        m_dlnaPlayer = new DLNAPlayerView();
+        connect(m_dlnaPlayer, &DLNAPlayerView::finished, this, &Browser::onPlayerFinished);
     }
+
+    auto renderer = std::get<1>(player);
+    m_dlnaPlayer->setRenderer(renderer);
+    m_dlnaPlayer->playMedias(urls);
 }
 
 void Browser::playByDLNARenderer(Tuple2 &player, const QString &url, const QString &title, const QString &referrer)
 {
+    if (!m_dlnaPlayer)
+    {
+        m_dlnaPlayer = new DLNAPlayerView();
+        connect(m_dlnaPlayer, &DLNAPlayerView::finished, this, &Browser::onPlayerFinished);
+    }
     auto renderer = std::get<1>(player);
-    m_kast.stop(renderer);
-    QUrl u(url);
-    m_kast.setPlaybackUrl(renderer, u, QFileInfo(u.path()));
+    m_dlnaPlayer->setRenderer(renderer);
+    m_dlnaPlayer->playMedias(QStringList() << url);
 }
 
 void Browser::onClipboardChanged()
@@ -532,10 +536,10 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
         }
     }
     m_windowsState.clear();
-    if (m_mpv)
+    if (m_builtinPlayer)
     {
-        m_mpv->deleteLater();
-        m_mpv = nullptr;
+        m_builtinPlayer->deleteLater();
+        m_builtinPlayer = nullptr;
     }
 }
 

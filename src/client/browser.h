@@ -9,6 +9,7 @@
 #include "urlrequestinterceptor.h"
 #include "Kast.h"
 #include "playerview.h"
+#include "dlnaplayerview.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -61,7 +62,8 @@ private:
     UrlRequestInterceptor m_urlRequestInterceptor;
     QNetworkAccessManager *m_nam;
     Kast m_kast;
-    PlayerView* m_mpv;
+    PlayerView *m_builtinPlayer;
+    DLNAPlayerView *m_dlnaPlayer;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);

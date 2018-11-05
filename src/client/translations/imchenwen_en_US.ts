@@ -16,38 +16,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="481"/>
+        <location filename="../browser.cpp" line="485"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="481"/>
+        <location filename="../browser.cpp" line="485"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="492"/>
+        <location filename="../browser.cpp" line="496"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="502"/>
+        <location filename="../browser.cpp" line="506"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="505"/>
+        <location filename="../browser.cpp" line="509"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="508"/>
+        <location filename="../browser.cpp" line="512"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="512"/>
+        <location filename="../browser.cpp" line="516"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -347,6 +347,51 @@ Do you wish to override the security check and continue ?   </source>
     </message>
 </context>
 <context>
+    <name>DLNAPlayerView</name>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="17"/>
+        <location filename="../dlna/dlnaplayerview.cpp" line="113"/>
+        <source>imchenwen DMC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="78"/>
+        <location filename="../dlna/dlnaplayerview.ui" line="218"/>
+        <source>00:00</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="88"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="159"/>
+        <source>Playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="204"/>
+        <source>Resources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="261"/>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="278"/>
+        <source>Maximize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="295"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PasswordDialog</name>
     <message>
         <location filename="../passworddialog.ui" line="14"/>
@@ -565,99 +610,99 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="98"/>
+        <location filename="../mpv/playerview.cpp" line="83"/>
         <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="102"/>
-        <location filename="../mpv/playerview.cpp" line="119"/>
+        <location filename="../mpv/playerview.cpp" line="87"/>
+        <location filename="../mpv/playerview.cpp" line="104"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="104"/>
+        <location filename="../mpv/playerview.cpp" line="89"/>
         <source>Equalizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="106"/>
+        <location filename="../mpv/playerview.cpp" line="91"/>
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="107"/>
+        <location filename="../mpv/playerview.cpp" line="92"/>
         <source>Stereo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="108"/>
+        <location filename="../mpv/playerview.cpp" line="93"/>
         <source>Left channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="109"/>
+        <location filename="../mpv/playerview.cpp" line="94"/>
         <source>Right channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="110"/>
+        <location filename="../mpv/playerview.cpp" line="95"/>
         <source>Swap channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="112"/>
+        <location filename="../mpv/playerview.cpp" line="97"/>
         <source>Select track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="113"/>
+        <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Load from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="114"/>
+        <location filename="../mpv/playerview.cpp" line="99"/>
         <source>Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="116"/>
+        <location filename="../mpv/playerview.cpp" line="101"/>
         <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="117"/>
+        <location filename="../mpv/playerview.cpp" line="102"/>
         <source>Speed up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="118"/>
+        <location filename="../mpv/playerview.cpp" line="103"/>
         <source>Speed down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="558"/>
+        <location filename="../mpv/playerview.cpp" line="543"/>
         <source>Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="180"/>
+        <location filename="../mpv/playerview.cpp" line="165"/>
         <source>imchenwen builtin media player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="127"/>
+        <location filename="../mpv/playerview.cpp" line="112"/>
         <source>Screenshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="543"/>
+        <location filename="../mpv/playerview.cpp" line="528"/>
         <source>Open audio track file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="558"/>
+        <location filename="../mpv/playerview.cpp" line="543"/>
         <source>Audio delay (sec):</source>
         <translation type="unfinished"></translation>
     </message>

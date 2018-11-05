@@ -26,7 +26,8 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/settings.h \
     $$PWD/linkresolverprocess.h \
     $$PWD/popupmenutoolbutton.h \
-    $$PWD/urlrequestinterceptor.h
+    $$PWD/urlrequestinterceptor.h \
+    util.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -46,14 +47,16 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/settings.cpp \
     $$PWD/linkresolverprocess.cpp \
     $$PWD/popupmenutoolbutton.cpp \
-    $$PWD/urlrequestinterceptor.cpp
+    $$PWD/urlrequestinterceptor.cpp \
+    util.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \
     $$PWD/passworddialog.ui \
     $$PWD/playdialog.ui \
     $$PWD/settings.ui \
-    $$PWD/mpv/*.ui
+    $$PWD/mpv/*.ui \
+    $$PWD/dlna/*.ui
 
 RESOURCES += $$PWD/res/imchenwen.qrc $$PWD/res/icons.qrc
 
