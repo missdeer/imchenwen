@@ -347,40 +347,6 @@ Do you wish to override the security check and continue ?   </source>
     </message>
 </context>
 <context>
-    <name>CutterBar</name>
-    <message>
-        <location filename="../mpv/cutterbar.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.ui" line="29"/>
-        <source>Start position:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.ui" line="43"/>
-        <location filename="../mpv/cutterbar.ui" line="71"/>
-        <source>00:00:00</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.ui" line="50"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.ui" line="57"/>
-        <source>End position:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.ui" line="78"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PasswordDialog</name>
     <message>
         <location filename="../passworddialog.ui" line="14"/>
