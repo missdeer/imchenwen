@@ -4,6 +4,8 @@
 #include "config.h"
 #include "util.h"
 #include "browser.h"
+#include "Kast.h"
+#include "DLNARenderer.h"
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QFileDialog>
@@ -18,7 +20,8 @@
 
 DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
     QWidget(parent, Qt::FramelessWindowHint),
-    ui(new Ui::DLNAPlayerView)
+    ui(new Ui::DLNAPlayerView),
+    m_renderer(nullptr)
 {
     // init ui
     ui->setupUi(this);
@@ -89,20 +92,20 @@ DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
 
 DLNAPlayerView::~DLNAPlayerView()
 {
-    Browser::instance().kast().stop(m_renderer);
+    m_renderer->stopPlayback();
     delete ui;
 }
 
 void DLNAPlayerView::playMedias(const QStringList &medias)
 {
-    Browser::instance().kast().stop(m_renderer);
+    m_renderer->stopPlayback();
 
     QUrl u(medias[0]);
-    Browser::instance().kast().setPlaybackUrl(m_renderer, u, QFileInfo(u.path()));
+    m_renderer->setPlaybackUrl(u, QFileInfo(u.path()));
     for (int i = 1; i < medias.length(); i++)
     {
         QUrl u(medias[i]);
-        Browser::instance().kast().setNextPlaybackUrl(m_renderer, u);
+        m_renderer->setNextPlaybackUrl(u);
     }
 }
 
@@ -111,6 +114,7 @@ void DLNAPlayerView::title(const QString &title)
     if (!title.isEmpty())
     {
         setWindowTitle(title + " - " + tr("imchenwen DMC"));
+        ui->titleLabel->setText(title);
     }
 }
 
@@ -146,7 +150,7 @@ void DLNAPlayerView::closeEvent(QCloseEvent *e)
 {
     m_noPlayNext = true;
 
-    Browser::instance().kast().stop(m_renderer);
+    m_renderer->stopPlayback();
 
     e->accept();
     Q_EMIT finished(0, QProcess::NormalExit);
@@ -299,14 +303,14 @@ void DLNAPlayerView::onTimeSliderValueChanged(int time)
     if (ui->timeSlider->isSliderDown()) // move by mouse
         ui->timeLabel->setText(secToTime(time));
     else // move by keyboard
-        Browser::instance().kast().seekPlayback(m_renderer, QTime::fromString(secToTime(time), "h:m:s"));
+        m_renderer->seekPlayback(QTime::fromString(secToTime(time), "h:m:s"));
 }
 
 void DLNAPlayerView::onTimeSliderReleased()
 {
     if (m_paused)
         return;
-    Browser::instance().kast().seekPlayback(m_renderer, QTime::fromString(secToTime(ui->timeSlider->value()), "h:m:s"));
+    m_renderer->seekPlayback(QTime::fromString(secToTime(ui->timeSlider->value()), "h:m:s"));
 }
 
 // show volume slider
@@ -320,25 +324,27 @@ void DLNAPlayerView::showVolumeSlider()
 
 void DLNAPlayerView::onPlay()
 {
-    Browser::instance().kast().play(m_renderer);
+    m_renderer->playPlayback();
     m_paused = false;
 }
 
 void DLNAPlayerView::onPause()
 {
-    Browser::instance().kast().pause(m_renderer);
+    m_renderer->pausePlayback();
     m_paused = true;
 }
 
 void DLNAPlayerView::onResume()
 {
-    Browser::instance().kast().resume(m_renderer);
+    m_renderer->playPlayback();
     m_paused = false;
 }
 
 void DLNAPlayerView::setRenderer(const QString &renderer)
 {
-    m_renderer = renderer;
+    Kast &kast = Browser::instance().kast();
+
+    m_renderer = kast.renderer(renderer);
 }
 
 void DLNAPlayerView::saveVolume(int vol)

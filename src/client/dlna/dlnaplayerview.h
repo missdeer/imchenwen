@@ -16,6 +16,7 @@ namespace Ui {
 class DLNAPlayerView;
 }
 class Border;
+class DLNARenderer;
 
 class DLNAPlayerView : public QWidget
 {
@@ -75,7 +76,7 @@ private:
     bool m_noPlayNext;
     bool m_ctrlPressed;
     bool m_paused;
-    QString m_renderer;
+    DLNARenderer* m_renderer;
 };
 
 #endif // PLAYERVIEW_H

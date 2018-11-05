@@ -15,56 +15,6 @@ Kast::Kast(QObject *parent) : QObject(parent)
     discovery->run();
 }
 
-void Kast::addItemToQueue(const QString &itemUrl)
-{
-    m_queue.append(itemUrl);
-}
-
-void Kast::play(const QString & renderer)
-{
-    auto it = m_renderers.find(renderer);
-    if (m_renderers.end() != it)
-    {
-        (*it)->playPlayback();
-    }
-}
-
-void Kast::pause(const QString & renderer)
-{
-    auto it = m_renderers.find(renderer);
-    if (m_renderers.end() != it)
-    {
-        (*it)->pausePlayback();
-    }
-}
-
-void Kast::stop(const QString & renderer)
-{
-    auto it = m_renderers.find(renderer);
-    if (m_renderers.end() != it)
-    {
-        (*it)->stopPlayback();
-    }
-}
-
-void Kast::resume(const QString &renderer)
-{
-    auto it = m_renderers.find(renderer);
-    if (m_renderers.end() != it)
-    {
-        (*it)->playPlayback();
-    }
-}
-
-void Kast::seekPlayback(const QString &renderer, QTime time)
-{
-    auto it = m_renderers.find(renderer);
-    if (m_renderers.end() != it)
-    {
-        (*it)->seekPlayback(time);
-    }
-}
-
 void Kast::onFoundRenderer(DLNARenderer *renderer)
 {
     qDebug() << "Renderer found: " + renderer->getName();
@@ -92,22 +42,14 @@ QStringList Kast::getRenderers()
     return m_renderers.keys();
 }
 
-void Kast::setPlaybackUrl(const QString &renderer, const QUrl &url, const QFileInfo &fileInfo)
+DLNARenderer *Kast::renderer(const QString &name)
 {
-    auto it = m_renderers.find(renderer);
+    auto it = m_renderers.find(name);
     if (m_renderers.end() != it)
     {
-        (*it)->setPlaybackUrl(url, fileInfo);
+        return *it;
     }
-}
-
-void Kast::setNextPlaybackUrl(const QString & renderer, const QUrl &url)
-{
-    auto it = m_renderers.find(renderer);
-    if (m_renderers.end() != it)
-    {
-        (*it)->setNextPlaybackUrl(url);
-    }
+    return nullptr;
 }
 
 void Kast::onHttpResponse(const QString responseType, const QString data)

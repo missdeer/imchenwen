@@ -352,7 +352,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>DLNAPlayerView</name>
     <message>
         <location filename="../dlna/dlnaplayerview.ui" line="17"/>
-        <location filename="../dlna/dlnaplayerview.cpp" line="113"/>
+        <location filename="../dlna/dlnaplayerview.cpp" line="116"/>
         <source>imchenwen DMC</source>
         <translation>某橙DMC</translation>
     </message>
@@ -391,6 +391,11 @@ Do you wish to override the security check and continue ?   </source>
         <location filename="../dlna/dlnaplayerview.ui" line="295"/>
         <source>Close</source>
         <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../dlna/dlnaplayerview.ui" line="318"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;Playing...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
