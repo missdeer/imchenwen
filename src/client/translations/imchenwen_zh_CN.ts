@@ -691,7 +691,7 @@ MPV错误：</translation>
         <translation>减速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="543"/>
+        <location filename="../mpv/playerview.cpp" line="550"/>
         <source>Input</source>
         <translation>输入</translation>
     </message>
@@ -707,12 +707,12 @@ MPV错误：</translation>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="528"/>
+        <location filename="../mpv/playerview.cpp" line="535"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="543"/>
+        <location filename="../mpv/playerview.cpp" line="550"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>

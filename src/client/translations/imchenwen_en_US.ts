@@ -686,7 +686,7 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="543"/>
+        <location filename="../mpv/playerview.cpp" line="550"/>
         <source>Input</source>
         <translation type="unfinished"></translation>
     </message>
@@ -702,12 +702,12 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="528"/>
+        <location filename="../mpv/playerview.cpp" line="535"/>
         <source>Open audio track file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="543"/>
+        <location filename="../mpv/playerview.cpp" line="550"/>
         <source>Audio delay (sec):</source>
         <translation type="unfinished"></translation>
     </message>

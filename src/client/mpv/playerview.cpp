@@ -171,7 +171,14 @@ void PlayerView::title(const QString &title)
 void PlayerView::referrer(const QString &referrer)
 {
     if (!referrer.isEmpty())
+    {
         m_playerCore->setProperty("referrer", referrer);
+        m_playerCore->setOption("http-header-fields",
+                                QString("Origin: %1://%2,Referer: %3")
+                                .arg(QUrl(referrer).scheme())
+                                .arg(QUrl(referrer).host())
+                                .arg(referrer));
+    }
 }
 
 void PlayerView::userAgent(const QString &userAgent)
