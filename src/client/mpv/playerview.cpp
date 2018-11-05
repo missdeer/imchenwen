@@ -1,8 +1,8 @@
 #include "playerview.h"
 #include "ui_playerview.h"
-#include "cutterbar.h"
 #include "playercore.h"
 #include "skin.h"
+#include "config.h"
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QFileDialog>
@@ -14,6 +14,22 @@
 #include <QMimeData>
 #include <QResizeEvent>
 #include <QTimer>
+
+QString secToTime(int second, bool useFormat = false)
+{
+    static QString format = "<span style=\" font-size:14pt; font-weight:600;color:#00ff00;\">%1:%2:%3</span>";
+    QString  hour = QString::number(second / 3600);
+    QString min = QString::number((second % 3600) / 60);
+    QString sec = QString::number(second % 60);
+    if (min.length() == 1)
+        min.prepend('0');
+    if (sec.length() == 1)
+        sec.prepend('0');
+    if (useFormat)
+        return format.arg(hour, min, sec);
+    else
+        return QString("%1:%2:%3").arg(hour, min, sec);
+}
 
 PlayerView::PlayerView(QWidget *parent) :
     QWidget(parent, Qt::FramelessWindowHint),
@@ -109,13 +125,8 @@ PlayerView::PlayerView(QWidget *parent) :
 
     m_menu->addSeparator();
     m_menu->addAction(tr("Screenshot") + "\tS", m_playerCore, SLOT(screenShot()));
-    m_menu->addAction(tr("Cut video") + "\tC", this, SLOT(showCutterBar()));
 
     m_menu->addSeparator();
-
-    // create cutterbar
-    m_cutterBar = new CutterBar(this);
-    m_cutterBar->setWindowFlags(m_cutterBar->windowFlags() | Qt::Popup);
 
     // create timer
     m_hideTimer = new QTimer(this);
@@ -133,7 +144,6 @@ PlayerView::PlayerView(QWidget *parent) :
     connect(m_hideTimer, &QTimer::timeout, this, &PlayerView::hideElements);
     connect(m_volumeSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setVolume);
     connect(m_volumeSlider, &QSlider::valueChanged, this, &PlayerView::saveVolume);
-    connect(m_cutterBar, &CutterBar::newFrame, m_playerCore, &PlayerCore::jumpTo);
     connect(ui->stopButton, &QPushButton::clicked, this, &PlayerView::onStopButton);
     connect(ui->maxButton, &QPushButton::clicked, this, &PlayerView::onMaxButton);
     connect(ui->playButton, &QPushButton::clicked, m_playerCore, &PlayerCore::changeState);
@@ -149,7 +159,8 @@ PlayerView::PlayerView(QWidget *parent) :
     connect(ui->gammaSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setGamma);
     connect(ui->hueSlider, &QSlider::valueChanged, m_playerCore, &PlayerCore::setHue);
 
-    m_volumeSlider->setValue(50);
+    Config cfg;
+    m_volumeSlider->setValue(cfg.read<int>("volumn", 50));
 }
 
 PlayerView::~PlayerView()
@@ -287,9 +298,6 @@ void PlayerView::keyPressEvent(QKeyEvent *e)
         break;
     case Qt::Key_S:
         m_playerCore->screenShot();
-        break;
-    case Qt::Key_C:
-        showCutterBar();
         break;
     case Qt::Key_O:
         if (m_ctrlPressed)
@@ -475,25 +483,6 @@ void PlayerView::onSizeChanged(const QSize &sz)
     }
 }
 
-// show cutterbar
-void PlayerView::showCutterBar()
-{
-    if (m_playerCore->state == PlayerCore::STOPPING || m_playerCore->state == PlayerCore::TV_PLAYING || m_cutterBar->isVisible())
-        return;
-    QString filename = m_playerCore->currentFile();
-    if (!QFile::exists(filename))
-    {
-        QMessageBox::warning(this, tr("Error"), tr("Only support cutting local videos!"), QMessageBox::Ok);
-        return;
-    }
-    if (m_playerCore->state == PlayerCore::VIDEO_PLAYING) //pause
-        m_playerCore->changeState();
-    m_cutterBar->init(filename, m_playerCore->getLength(), m_playerCore->getTime());
-    m_cutterBar->move(mapToGlobal(QPoint(50, 50)));
-    m_cutterBar->show();
-}
-
-
 // show volume slider
 void PlayerView::showVolumeSlider()
 {
@@ -505,7 +494,8 @@ void PlayerView::showVolumeSlider()
 
 void PlayerView::saveVolume(int vol)
 {
-    //
+    Config cfg;
+    cfg.write("volume", vol);
 }
 
 // show or exit fullscreen
@@ -565,7 +555,7 @@ void PlayerView::selectAudioTrack()
 void PlayerView::setAudioDelay()
 {
     bool ok = false;
-    double delay = QInputDialog::getDouble(this, "Input", tr("Audio delay (sec):"), m_playerCore->getAudioDelay(), -100, 100, 1, &ok);
+    double delay = QInputDialog::getDouble(this, tr("Input"), tr("Audio delay (sec):"), m_playerCore->getAudioDelay(), -100, 100, 1, &ok);
     if (ok)
         m_playerCore->setAudioDelay(delay);
 }

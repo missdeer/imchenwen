@@ -70,7 +70,7 @@ PlayerCore::PlayerCore(QWidget *parent) :
     mpv::qt::set_option_variant(m_mpv, "merge-files", "yes");
     mpv::qt::set_option_variant(m_mpv, "screenshot-directory", QDir::toNativeSeparators( QDir::homePath()));
     mpv::qt::set_option_variant(m_mpv, "reset-on-next-file", "speed,video-aspect,af,sub-delay,sub-visibility,audio-delay");
-    mpv_request_log_messages(m_mpv, "warn");
+    mpv_request_log_messages(m_mpv, "info");
 
     // set hardware decoding
 #if defined(Q_OS_LINUX)

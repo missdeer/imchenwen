@@ -351,37 +351,6 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>CutterBar</name>
     <message>
-        <location filename="../mpv/cutterbar.cpp" line="96"/>
-        <source>FFMPEG is not installed. Please download it from</source>
-        <translation>FFMPEG尚未安装。请从以下地址下载</translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.cpp" line="96"/>
-        <location filename="../mpv/cutterbar.cpp" line="104"/>
-        <source>Error</source>
-        <translation>错误</translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.cpp" line="98"/>
-        <source>and place file &quot;ffmpeg&quot; into ~/.moonplayer/ or /usr/share/moonplayer/</source>
-        <translation>并将文件“ffmpeg”放置到目录“~/.moonplayer/ or /usr/share/moonplayer/”</translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.cpp" line="104"/>
-        <source>Time position is not valid.</source>
-        <translation>时间位置无效</translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.cpp" line="120"/>
-        <source>FFMPEG ERROR</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../mpv/cutterbar.cpp" line="123"/>
-        <source>Finished</source>
-        <translation>完成</translation>
-    </message>
-    <message>
         <location filename="../mpv/cutterbar.ui" line="14"/>
         <source>Form</source>
         <translation>始于</translation>
@@ -635,109 +604,99 @@ MPV错误：</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="82"/>
+        <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Video</source>
         <translation>视频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="86"/>
-        <location filename="../mpv/playerview.cpp" line="103"/>
+        <location filename="../mpv/playerview.cpp" line="102"/>
+        <location filename="../mpv/playerview.cpp" line="119"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="88"/>
+        <location filename="../mpv/playerview.cpp" line="104"/>
         <source>Equalizer</source>
         <translation>均衡器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="90"/>
+        <location filename="../mpv/playerview.cpp" line="106"/>
         <source>Audio</source>
         <translation>音频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="91"/>
+        <location filename="../mpv/playerview.cpp" line="107"/>
         <source>Stereo</source>
         <translation>立体声</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="92"/>
+        <location filename="../mpv/playerview.cpp" line="108"/>
         <source>Left channel</source>
         <translation>左声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="93"/>
+        <location filename="../mpv/playerview.cpp" line="109"/>
         <source>Right channel</source>
         <translation>右声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="94"/>
+        <location filename="../mpv/playerview.cpp" line="110"/>
         <source>Swap channel</source>
         <translation>交换声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="96"/>
+        <location filename="../mpv/playerview.cpp" line="112"/>
         <source>Select track</source>
         <translation>选择音轨</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="97"/>
+        <location filename="../mpv/playerview.cpp" line="113"/>
         <source>Load from file</source>
         <translation>载入文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="98"/>
+        <location filename="../mpv/playerview.cpp" line="114"/>
         <source>Delay</source>
         <translation>延迟</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="100"/>
+        <location filename="../mpv/playerview.cpp" line="116"/>
         <source>Speed</source>
         <translation>速度</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="101"/>
+        <location filename="../mpv/playerview.cpp" line="117"/>
         <source>Speed up</source>
         <translation>加速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="102"/>
+        <location filename="../mpv/playerview.cpp" line="118"/>
         <source>Speed down</source>
         <translation>减速</translation>
     </message>
     <message>
+        <location filename="../mpv/playerview.cpp" line="558"/>
+        <source>Input</source>
+        <translation>输入</translation>
+    </message>
+    <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="169"/>
+        <location filename="../mpv/playerview.cpp" line="180"/>
         <source>imchenwen builtin media player</source>
         <translation>某橙内置媒体播放器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="486"/>
-        <source>Error</source>
-        <translation>错误</translation>
-    </message>
-    <message>
-        <location filename="../mpv/playerview.cpp" line="111"/>
+        <location filename="../mpv/playerview.cpp" line="127"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="112"/>
-        <source>Cut video</source>
-        <translation>剪切视频</translation>
-    </message>
-    <message>
-        <location filename="../mpv/playerview.cpp" line="486"/>
-        <source>Only support cutting local videos!</source>
-        <translation>只支持剪切本地视频！</translation>
-    </message>
-    <message>
-        <location filename="../mpv/playerview.cpp" line="553"/>
+        <location filename="../mpv/playerview.cpp" line="543"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="568"/>
+        <location filename="../mpv/playerview.cpp" line="558"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>

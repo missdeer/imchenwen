@@ -15,7 +15,6 @@ namespace Ui {
 class PlayerView;
 }
 class Border;
-class CutterBar;
 class PlayerCore;
 
 class PlayerView : public QWidget
@@ -63,7 +62,6 @@ private slots:
     void setAudioDelay(void);
     void saveVolume(int vol);
     void setFullScreen(void);
-    void showCutterBar(void);
     void showVolumeSlider(void);
     void hideElements(void);
 
@@ -74,7 +72,6 @@ private:
     Border *m_bottomBorder;
     Border *m_bottomLeftBorder;
     Border *m_bottomRightBorder;
-    CutterBar *m_cutterBar;
     PlayerCore *m_playerCore;
     QMenu *m_menu;
     QSlider *m_volumeSlider;
