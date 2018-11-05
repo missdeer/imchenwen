@@ -12,6 +12,9 @@ UrlRequestInterceptor::UrlRequestInterceptor(QObject *parent)
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
 {
     //qDebug() << "1st" <<request.resourceType() << request.requestUrl();
+    if (!request.requestUrl().url().startsWith("http"))
+        return;
+
     switch (request.resourceType()) {
     case QWebEngineUrlRequestInfo::ResourceTypeMainFrame:
     case QWebEngineUrlRequestInfo::ResourceTypeSubFrame:
