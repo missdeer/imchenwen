@@ -153,9 +153,9 @@ PlayerView::~PlayerView()
     delete ui;
 }
 
-void PlayerView::playMedias(const QStringList &medias)
+void PlayerView::playMedia(const QString &media)
 {
-    m_playerCore->openMedias(medias);
+    m_playerCore->openMedia(media);
 }
 
 void PlayerView::title(const QString &title)

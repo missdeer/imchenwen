@@ -430,9 +430,9 @@ void PlayerCore::openFile(const QString &file, const QString &audioTrack)
     handleMpvError(mpv_command_async(m_mpv, 2, args));
 }
 
-void PlayerCore::openMedias(const QStringList &medias)
+void PlayerCore::openMedia(const QString &url)
 {
-    if (medias.isEmpty())
+    if (url.isEmpty())
         return;
     if (state != STOPPING)
     {
@@ -441,10 +441,7 @@ void PlayerCore::openMedias(const QStringList &medias)
 
     m_playSpeed = 1.0;
 
-    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << medias[0] << "replace");
-    for (int i = 1; i < medias.length(); ++i) {
-        mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << medias[i] << "append");
-    }
+    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << url << "replace");
 }
 
 // switch between play and pause

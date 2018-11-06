@@ -49,7 +49,7 @@ public slots:
     void setProgress(int pos);
     void setVolume(int volume);
     void openFile(const QString &m_mediaFile, const QString &m_audioTrack = QString());
-    void openMedias(const QStringList& files);
+    void openMedia(const QString &file);
     void openAudioTrack(const QString &audioFile);
     void screenShot(void);
     void speedUp(void);

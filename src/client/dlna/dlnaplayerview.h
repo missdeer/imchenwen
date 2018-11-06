@@ -26,7 +26,7 @@ public:
     explicit DLNAPlayerView(QWidget *parent = nullptr);
     ~DLNAPlayerView();
 
-    void playMedias(const QStringList& medias);
+    void playMedia(const QString &url);
     void title(const QString& title);
     void referrer(const QString& referrer);
     void userAgent(const QString& userAgent);

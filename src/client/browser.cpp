@@ -172,43 +172,36 @@ void Browser::doPlay(Tuple2& player, QStringList& urls, const QString& title, co
     if (!m_httpServer.isListening())
     {
         m_httpServer.listen(QHostAddress::Any, 51290);
-        m_fsHandler.setDocumentRoot(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
-        m_httpServer.setHandler(&m_fsHandler);
+        m_httpServer.setHandler(&m_httpHandler);
     }
 
-    QStringList medias = urls;
+    QString media = urls[0];
 
-    if (urls.length() > 1)
+    if (urls.length() > 1 || !QUrl(media).path().endsWith("m3u8"))
     {
         // make a m3u8
-        QString id = QUuid::createUuid().toString(QUuid::WithoutBraces);
-        QString p = QString("%1/%2.m3u8").arg(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).arg(id);
-        QFile f(p);
-        if (f.open(QIODevice::WriteOnly))
+        QByteArray m3u8;
+        m3u8.append("#EXTM3U\n#EXT-X-TARGETDURATION:8\n");
+        for (const auto & u : urls)
         {
-            f.write("#EXTM3U\n#EXT-X-TARGETDURATION:8\n");
-            for (const auto & u : urls)
-            {
-                f.write("#EXTINF:5,\n" + u.toUtf8() + "\n");
-            }
-            f.write("#EXT-X-ENDLIST\n");
-            f.close();
-            medias.clear();
-            medias.append(QString("http://%1:51290/%2.m3u8").arg(Util::getLocalAddress().toString()).arg(id));
+            m3u8.append("#EXTINF:5,\n" + u.toUtf8() + "\n");
         }
+        m3u8.append("#EXT-X-ENDLIST\n");
+        m_httpHandler.setM3U8(m3u8);
+        media = QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString());
     }
 
     if (std::get<0>(player) == tr("Built-in player"))
     {
-        playByBuiltinPlayer(medias, title, referrer);
+        playByBuiltinPlayer(media, title, referrer);
     }
     else if (std::get<0>(player).startsWith(tr("DLNA:")))
     {
-        playByDLNARenderer(player, medias, title, referrer);
+        playByDLNARenderer(player, media, title, referrer);
     }
     else
     {
-        playByExternalPlayer(player, medias, title, referrer);
+        playByExternalPlayer(player, media, title, referrer);
     }
     minimizeWindows();
 }
@@ -236,7 +229,7 @@ void Browser::play(MediaInfoPtr mi)
     }
 }
 
-void Browser::playByBuiltinPlayer(const QStringList& urls, const QString& title, const QString& referrer)
+void Browser::playByBuiltinPlayer(const QString &url, const QString& title, const QString& referrer)
 {
     if (!m_builtinPlayer)
     {
@@ -255,7 +248,7 @@ void Browser::playByBuiltinPlayer(const QStringList& urls, const QString& title,
         {
             hwdec = "dxva2-copy";
         }
-        if (QUrl(urls[0]).path().endsWith(".265ts", Qt::CaseInsensitive))
+        if (QUrl(url[0]).path().endsWith(".265ts", Qt::CaseInsensitive))
             hwdec = "no";
 #endif
         m_builtinPlayer = new PlayerView(hwdec);
@@ -267,10 +260,10 @@ void Browser::playByBuiltinPlayer(const QStringList& urls, const QString& title,
     m_builtinPlayer->title(title);
     m_builtinPlayer->referrer(referrer);
     m_builtinPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
-    m_builtinPlayer->playMedias(urls);
+    m_builtinPlayer->playMedia(url);
 }
 
-void Browser::playByExternalPlayer(Tuple2& player, const QStringList &urls, const QString &title, const QString &referrer)
+void Browser::playByExternalPlayer(Tuple2& player, const QString &url, const QString &title, const QString &referrer)
 {
     QStringList args;
 #if defined(Q_OS_MAC)
@@ -293,8 +286,7 @@ void Browser::playByExternalPlayer(Tuple2& player, const QStringList &urls, cons
         a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
     }
 
-    args << urls;
-    //TODO: too many urls cause large arguments, process may fail to start, generate a m3u8 instead
+    args << url;
     m_playerProcess.setArguments(args);
 
 #if defined(Q_OS_MAC)
@@ -308,9 +300,9 @@ void Browser::playByExternalPlayer(Tuple2& player, const QStringList &urls, cons
     m_playerProcess.start();
 }
 
-void Browser::playByDLNARenderer(Tuple2 &player, const QStringList &urls, const QString &title, const QString &referrer)
+void Browser::playByDLNARenderer(Tuple2 &player, const QString &url, const QString &title, const QString &referrer)
 {
-    if (urls.isEmpty())
+    if (url.isEmpty())
         return;
 
     if (!m_dlnaPlayer)
@@ -324,7 +316,7 @@ void Browser::playByDLNARenderer(Tuple2 &player, const QStringList &urls, const 
     m_dlnaPlayer->referrer(referrer);
     m_dlnaPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
     m_dlnaPlayer->setRenderer(renderer);
-    m_dlnaPlayer->playMedias(urls);
+    m_dlnaPlayer->playMedia(url);
     m_dlnaPlayer->show();
 }
 

@@ -5,13 +5,13 @@
 #include <QVector>
 #include <QProcess>
 #include <qhttpengine/server.h>
-#include <qhttpengine/filesystemhandler.h>
 #include "linkresolver.h"
 #include "websites.h"
 #include "urlrequestinterceptor.h"
 #include "Kast.h"
 #include "playerview.h"
 #include "dlnaplayerview.h"
+#include "inmemoryhandler.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -67,15 +67,15 @@ private:
     PlayerView *m_builtinPlayer;
     DLNAPlayerView *m_dlnaPlayer;
     QHttpEngine::Server m_httpServer;
-    QHttpEngine::FilesystemHandler m_fsHandler;
+    InMemoryHandler m_httpHandler;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
     void play(MediaInfoPtr mi);
     void doPlay(Tuple2& player, QStringList& urls, const QString& title, const QString& referrer);
-    void playByBuiltinPlayer(const QStringList &urls, const QString& title, const QString &referrer);
-    void playByExternalPlayer(Tuple2 &player, const QStringList &urls, const QString& title, const QString &referrer);
-    void playByDLNARenderer(Tuple2 &player, const QStringList &urls, const QString& title, const QString &referrer);
+    void playByBuiltinPlayer(const QString &url, const QString& title, const QString &referrer);
+    void playByExternalPlayer(Tuple2 &player, const QString &url, const QString& title, const QString &referrer);
+    void playByDLNARenderer(Tuple2 &player, const QString &url, const QString& title, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);
     void clearAtExit();

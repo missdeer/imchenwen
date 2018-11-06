@@ -28,7 +28,8 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/linkresolverprocess.h \
     $$PWD/popupmenutoolbutton.h \
     $$PWD/urlrequestinterceptor.h \
-    $$PWD/util.h
+    $$PWD/util.h \
+    inmemoryhandler.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -49,7 +50,8 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/linkresolverprocess.cpp \
     $$PWD/popupmenutoolbutton.cpp \
     $$PWD/urlrequestinterceptor.cpp \
-    $$PWD/util.cpp
+    $$PWD/util.cpp \
+    inmemoryhandler.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \

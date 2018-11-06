@@ -101,17 +101,12 @@ DLNAPlayerView::~DLNAPlayerView()
     delete ui;
 }
 
-void DLNAPlayerView::playMedias(const QStringList &medias)
+void DLNAPlayerView::playMedia(const QString &url)
 {
     m_renderer->stopPlayback();
 
-    QUrl u(medias[0]);
+    QUrl u(url);
     m_renderer->setPlaybackUrl(u, QFileInfo(u.path()));
-    for (int i = 1; i < medias.length(); i++)
-    {
-        QUrl u(medias[i]);
-        m_renderer->setNextPlaybackUrl(u);
-    }
     m_getPositionInfoTimer->start(1000);
 }
 
