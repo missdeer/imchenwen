@@ -17,20 +17,9 @@ QT_END_NAMESPACE
 class PlayerCore : public QOpenGLWidget
 {
     Q_OBJECT
-
-signals:
-    void cutVideo(void);
-    void played(void);
-    void paused(void);
-    void stopped(void);
-    void fullScreen(void);
-    void timeChanged(int pos);
-    void lengthChanged(int len);
-    void sizeChanged(const QSize &size);
-
 public:
     typedef enum {STOPPING, VIDEO_PLAYING, VIDEO_PAUSING, TV_PLAYING} State;
-    explicit PlayerCore(QWidget *parent = nullptr);
+    explicit PlayerCore(const QString& hwdec, QWidget *parent = nullptr);
     virtual ~PlayerCore();
     State state;
     inline QString currentFile() { return m_mediaFile; }
@@ -42,6 +31,17 @@ public:
     void command(const QVariant& params);
     void setOption(const QString& name, const QVariant& value);
     void setProperty(const QString& name, const QVariant& value);
+
+signals:
+    void cutVideo(void);
+    void played(void);
+    void paused(void);
+    void stopped(void);
+    void fullScreen(void);
+    void timeChanged(int pos);
+    void lengthChanged(int len);
+    void sizeChanged(const QSize &size);
+
 public slots:
     void stop(void);
     void changeState(void);
@@ -75,6 +75,10 @@ public slots:
     void setGamma(int64_t v);
     void setHue(int64_t v);
 
+
+private slots:
+    void swapped(void);
+    void maybeUpdate();
 protected:
     void initializeGL();
     void paintGL();
@@ -101,10 +105,6 @@ private:
 
     void handleMpvError(int code);
     static void on_update(void *ctx);
-
-private slots:
-    void swapped(void);
-    void maybeUpdate();
 };
 
 extern PlayerCore *g_playerCore;

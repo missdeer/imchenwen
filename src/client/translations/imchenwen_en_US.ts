@@ -16,38 +16,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="486"/>
+        <location filename="../browser.cpp" line="522"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="486"/>
+        <location filename="../browser.cpp" line="522"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="497"/>
+        <location filename="../browser.cpp" line="533"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="507"/>
+        <location filename="../browser.cpp" line="543"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="510"/>
+        <location filename="../browser.cpp" line="546"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="513"/>
+        <location filename="../browser.cpp" line="549"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="517"/>
+        <location filename="../browser.cpp" line="553"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -507,34 +507,34 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="272"/>
+        <location filename="../mpv/playercore.cpp" line="259"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="273"/>
+        <location filename="../mpv/playercore.cpp" line="260"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="274"/>
+        <location filename="../mpv/playercore.cpp" line="261"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="271"/>
-        <location filename="../mpv/playercore.cpp" line="695"/>
+        <location filename="../mpv/playercore.cpp" line="258"/>
+        <location filename="../mpv/playercore.cpp" line="682"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="696"/>
+        <location filename="../mpv/playercore.cpp" line="683"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="696"/>
+        <location filename="../mpv/playercore.cpp" line="683"/>
         <source>
 
 MPV Error: </source>

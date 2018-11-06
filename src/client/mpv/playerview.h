@@ -22,7 +22,7 @@ class PlayerView : public QWidget
     Q_OBJECT
 
 public:
-    explicit PlayerView(QWidget *parent = nullptr);
+    explicit PlayerView(const QString& hwdec, QWidget *parent = nullptr);
     ~PlayerView();
 
     void playMedias(const QStringList& medias);
