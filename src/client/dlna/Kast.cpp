@@ -20,19 +20,6 @@ void Kast::onFoundRenderer(DLNARenderer *renderer)
     m_renderers[renderer->getName()] = renderer;
 }
 
-QHostAddress Kast::getLocalAddress()
-{
-    // see http://stackoverflow.com/questions/13835989/get-local-ip-address-in-qt
-    for(auto && address : QNetworkInterface::allAddresses())
-    {
-        if (address.protocol() == QAbstractSocket::IPv4Protocol
-                && address != QHostAddress(QHostAddress::LocalHost) // Check if it is local adress
-                && address.toString().section( ".",-1,-1 ) != "1") // Check if it is virtual machine
-             return address;
-    }
-    return QHostAddress();
-}
-
 QStringList Kast::getRenderers()
 {
     return m_renderers.keys();

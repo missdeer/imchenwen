@@ -283,7 +283,7 @@ void DLNAPlayerView::onLengthChanged(int len)
     {
         ui->timeSlider->setEnabled(true);
         ui->timeSlider->setMaximum(len);
-        ui->durationLabel->setText(secToTime(len));
+        ui->durationLabel->setText(Util::secToTime(len));
     }
     activateWindow();
     raise();
@@ -291,7 +291,7 @@ void DLNAPlayerView::onLengthChanged(int len)
 
 void DLNAPlayerView::onTimeChanged(int time)
 {
-    ui->timeLabel->setText(secToTime(time));
+    ui->timeLabel->setText(Util::secToTime(time));
     if (!ui->timeSlider->isSliderDown() && time % 4 == 0) // Make slider easier to drag
         ui->timeSlider->setValue(time);
 }
@@ -300,7 +300,7 @@ void DLNAPlayerView::onTimeSliderPressed()
 {
     if (m_paused)
         return;
-    QString time = secToTime(ui->timeSlider->value());
+    QString time = Util::secToTime(ui->timeSlider->value());
     ui->timeLabel->setText(time);
 }
 
@@ -309,16 +309,16 @@ void DLNAPlayerView::onTimeSliderValueChanged(int time)
     if (m_paused)
         return;
     if (ui->timeSlider->isSliderDown()) // move by mouse
-        ui->timeLabel->setText(secToTime(time));
+        ui->timeLabel->setText(Util::secToTime(time));
     else // move by keyboard
-        m_renderer->seekPlayback(QTime::fromString(secToTime(time), "h:m:s"));
+        m_renderer->seekPlayback(QTime::fromString(Util::secToTime(time), "h:m:s"));
 }
 
 void DLNAPlayerView::onTimeSliderReleased()
 {
     if (m_paused)
         return;
-    m_renderer->seekPlayback(QTime::fromString(secToTime(ui->timeSlider->value()), "h:m:s"));
+    m_renderer->seekPlayback(QTime::fromString(Util::secToTime(ui->timeSlider->value()), "h:m:s"));
 }
 
 // show volume slider

@@ -5,6 +5,7 @@
 #include "waitingspinnerwidget.h"
 #include "playdialog.h"
 #include "playerview.h"
+#include "util.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
@@ -168,18 +169,46 @@ void Browser::doPlay(Tuple2& player, QStringList& urls, const QString& title, co
 {
     m_playerProcess.kill();
     waiting(false);
+    if (!m_httpServer.isListening())
+    {
+        m_httpServer.listen(QHostAddress::Any, 51290);
+        m_fsHandler.setDocumentRoot(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+        m_httpServer.setHandler(&m_fsHandler);
+    }
+
+    QStringList medias = urls;
+
+    if (urls.length() > 1)
+    {
+        // make a m3u8
+        QString id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        QString p = QString("%1/%2.m3u8").arg(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).arg(id);
+        QFile f(p);
+        if (f.open(QIODevice::WriteOnly))
+        {
+            f.write("#EXTM3U\n#EXT-X-TARGETDURATION:8\n");
+            for (const auto & u : urls)
+            {
+                f.write("#EXTINF:5,\n" + u.toUtf8() + "\n");
+            }
+            f.write("#EXT-X-ENDLIST\n");
+            f.close();
+            medias.clear();
+            medias.append(QString("http://%1:51290/%2.m3u8").arg(Util::getLocalAddress().toString()).arg(id));
+        }
+    }
 
     if (std::get<0>(player) == tr("Built-in player"))
     {
-        playByBuiltinPlayer(urls, title, referrer);
+        playByBuiltinPlayer(medias, title, referrer);
     }
     else if (std::get<0>(player).startsWith(tr("DLNA:")))
     {
-        playByDLNARenderer(player, urls, title, referrer);
+        playByDLNARenderer(player, medias, title, referrer);
     }
     else
     {
-        playByExternalPlayer(player, urls, title, referrer);
+        playByExternalPlayer(player, medias, title, referrer);
     }
     minimizeWindows();
 }

@@ -4,8 +4,6 @@
 #include "DLNARenderer.h"
 #include "DLNAPlaybackInfo.h"
 
-#include <QtNetwork>
-
 
 class Kast : public QObject
 {
@@ -22,6 +20,5 @@ private slots:
     void onHttpResponse(const QString, const QString);
 private:
     QMap<QString, DLNARenderer *> m_renderers;
-    QHostAddress getLocalAddress();
 };
 #endif // KAST_H

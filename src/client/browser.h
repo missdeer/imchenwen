@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QVector>
 #include <QProcess>
+#include <qhttpengine/server.h>
+#include <qhttpengine/filesystemhandler.h>
 #include "linkresolver.h"
 #include "websites.h"
 #include "urlrequestinterceptor.h"
@@ -64,6 +66,8 @@ private:
     Kast m_kast;
     PlayerView *m_builtinPlayer;
     DLNAPlayerView *m_dlnaPlayer;
+    QHttpEngine::Server m_httpServer;
+    QHttpEngine::FilesystemHandler m_fsHandler;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);

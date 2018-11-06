@@ -423,7 +423,7 @@ void PlayerView::onLengthChanged(int len)
     {
         ui->timeSlider->setEnabled(true);
         ui->timeSlider->setMaximum(len);
-        ui->durationLabel->setText(secToTime(len));
+        ui->durationLabel->setText(Util::secToTime(len));
     }
     activateWindow();
     raise();
@@ -431,7 +431,7 @@ void PlayerView::onLengthChanged(int len)
 
 void PlayerView::onTimeChanged(int time)
 {
-    ui->timeLabel->setText(secToTime(time));
+    ui->timeLabel->setText(Util::secToTime(time));
     if (!ui->timeSlider->isSliderDown() && time % 4 == 0) // Make slider easier to drag
         ui->timeSlider->setValue(time);
 }
@@ -440,7 +440,7 @@ void PlayerView::onTimeSliderPressed()
 {
     if (m_playerCore->state == PlayerCore::STOPPING)
         return;
-    QString time = secToTime(ui->timeSlider->value());
+    QString time = Util::secToTime(ui->timeSlider->value());
     ui->timeLabel->setText(time);
 }
 
@@ -449,7 +449,7 @@ void PlayerView::onTimeSliderValueChanged(int time)
     if (m_playerCore->state == PlayerCore::STOPPING)
         return;
     if (ui->timeSlider->isSliderDown()) // move by mouse
-        ui->timeLabel->setText(secToTime(time));
+        ui->timeLabel->setText(Util::secToTime(time));
     else // move by keyboard
         m_playerCore->setProgress(time);
 }

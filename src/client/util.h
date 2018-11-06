@@ -2,8 +2,12 @@
 #define UTIL_H
 
 #include <QString>
+#include <QHostAddress>
 
-QString secToTime(int second, bool useFormat = false);
+namespace Util {
+    QString secToTime(int second, bool useFormat = false);
 
+    QHostAddress getLocalAddress();
+}
 
 #endif // UTIL_H
