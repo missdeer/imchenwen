@@ -291,6 +291,9 @@ void Browser::playByDLNARenderer(Tuple2 &player, const QStringList &urls, const 
     }
 
     auto renderer = std::get<1>(player);
+    m_dlnaPlayer->title(title);
+    m_dlnaPlayer->referrer(referrer);
+    m_dlnaPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
     m_dlnaPlayer->setRenderer(renderer);
     m_dlnaPlayer->playMedias(urls);
 }

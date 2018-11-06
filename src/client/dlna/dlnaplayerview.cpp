@@ -126,10 +126,12 @@ void DLNAPlayerView::title(const QString &title)
 
 void DLNAPlayerView::referrer(const QString &referrer)
 {
+    m_referrer = referrer;
 }
 
 void DLNAPlayerView::userAgent(const QString &userAgent)
 {
+    m_userAgent = userAgent;
 }
 
 void DLNAPlayerView::onStopButton()

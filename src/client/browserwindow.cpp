@@ -595,7 +595,7 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
     deleteLater();
 }
 
-void BrowserWindow::runScriptOnOpenViews(const QString& source)
+void BrowserWindow::runScriptOnOpenViews(const QString& /*source*/)
 {
 
 }

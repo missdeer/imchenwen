@@ -78,6 +78,8 @@ private:
     bool m_ctrlPressed;
     bool m_paused;
     DLNARenderer* m_renderer;
+    QString m_referrer;
+    QString m_userAgent;
 };
 
 #endif // PLAYERVIEW_H
