@@ -12,6 +12,7 @@
 #include "playerview.h"
 #include "dlnaplayerview.h"
 #include "inmemoryhandler.h"
+#include "player.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -72,10 +73,10 @@ private:
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
     void play(MediaInfoPtr mi);
-    void doPlay(Tuple2& player, QStringList& urls, const QString& title, const QString& referrer);
+    void doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer);
     void playByBuiltinPlayer(const QString &url, const QString& title, const QString &referrer);
-    void playByExternalPlayer(Tuple2 &player, const QString &url, const QString& title, const QString &referrer);
-    void playByDLNARenderer(Tuple2 &player, const QString &url, const QString& title, const QString &referrer);
+    void playByExternalPlayer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);
+    void playByDLNARenderer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);
     void clearAtExit();

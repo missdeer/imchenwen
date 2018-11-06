@@ -4,49 +4,39 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="196"/>
-        <source>Built-in player</source>
-        <translation>内置播放器</translation>
-    </message>
-    <message>
-        <location filename="../browser.cpp" line="200"/>
-        <source>DLNA:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="438"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="438"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="450"/>
+        <location filename="../browser.cpp" line="449"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="460"/>
+        <location filename="../browser.cpp" line="459"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="463"/>
+        <location filename="../browser.cpp" line="462"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="466"/>
+        <location filename="../browser.cpp" line="465"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="470"/>
+        <location filename="../browser.cpp" line="469"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -482,24 +472,23 @@ Do you wish to override the security check and continue ?   </source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="95"/>
-        <location filename="../playdialog.cpp" line="120"/>
-        <source>DLNA:</source>
-        <translation></translation>
+        <location filename="../playdialog.cpp" line="107"/>
+        <source>DLNA: </source>
+        <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="114"/>
-        <location filename="../playdialog.cpp" line="123"/>
+        <location filename="../playdialog.cpp" line="127"/>
+        <location filename="../playdialog.cpp" line="137"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="127"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="123"/>
+        <location filename="../playdialog.cpp" line="138"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
@@ -720,17 +709,17 @@ MPV错误：</translation>
     <message>
         <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="124"/>
         <source>Unable to open source device for reading</source>
-        <translation type="unfinished"></translation>
+        <translation>无法打开源设备读</translation>
     </message>
     <message>
         <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="132"/>
         <source>Unable to open destination device for writing</source>
-        <translation type="unfinished"></translation>
+        <translation>无法打开目的设备写</translation>
     </message>
     <message>
         <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="141"/>
         <source>Unable to seek source device for specified range</source>
-        <translation type="unfinished"></translation>
+        <translation>无法定位源设备到指定区间</translation>
     </message>
 </context>
 <context>
@@ -1149,16 +1138,16 @@ MPV错误：</translation>
     <message>
         <location filename="../settings.cpp" line="119"/>
         <location filename="../settings.cpp" line="121"/>
-        <location filename="../settings.cpp" line="478"/>
-        <location filename="../settings.cpp" line="755"/>
-        <location filename="../settings.cpp" line="785"/>
+        <location filename="../settings.cpp" line="481"/>
+        <location filename="../settings.cpp" line="758"/>
+        <location filename="../settings.cpp" line="788"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
         <location filename="../settings.cpp" line="123"/>
-        <location filename="../settings.cpp" line="590"/>
-        <location filename="../settings.cpp" line="601"/>
+        <location filename="../settings.cpp" line="593"/>
+        <location filename="../settings.cpp" line="604"/>
         <source>New category...</source>
         <translation>新分类…</translation>
     </message>
@@ -1169,9 +1158,9 @@ MPV错误：</translation>
     </message>
     <message>
         <location filename="../settings.cpp" line="342"/>
-        <location filename="../settings.cpp" line="363"/>
-        <location filename="../settings.cpp" line="466"/>
-        <location filename="../settings.cpp" line="625"/>
+        <location filename="../settings.cpp" line="365"/>
+        <location filename="../settings.cpp" line="469"/>
+        <location filename="../settings.cpp" line="628"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1182,8 +1171,8 @@ MPV错误：</translation>
     </message>
     <message>
         <location filename="../settings.cpp" line="349"/>
-        <location filename="../settings.cpp" line="475"/>
-        <location filename="../settings.cpp" line="632"/>
+        <location filename="../settings.cpp" line="478"/>
+        <location filename="../settings.cpp" line="635"/>
         <source>Duplicated</source>
         <translation>重复</translation>
     </message>
@@ -1193,176 +1182,176 @@ MPV错误：</translation>
         <translation>此配置项已存在。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="363"/>
+        <location filename="../settings.cpp" line="365"/>
         <source>Please select an item in list to be removed.</source>
         <translation>请在列表中选中一项进行删除。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="397"/>
+        <location filename="../settings.cpp" line="400"/>
         <source>Select you-get executable</source>
         <translation>选择you-get可执行文件路径</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="400"/>
+        <location filename="../settings.cpp" line="403"/>
         <source>you-get executable (you-get.exe)</source>
         <translation>you-get可执行文件 (you-get.exe)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="402"/>
+        <location filename="../settings.cpp" line="405"/>
         <source>you-get executable (you-get)</source>
         <translation>you-get可执行文件 (you-get)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="414"/>
+        <location filename="../settings.cpp" line="417"/>
         <source>Select ykdl executable</source>
         <translation>选择ykdl可执行文件</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="417"/>
+        <location filename="../settings.cpp" line="420"/>
         <source>ykdl executable (ykdl.exe)</source>
         <translation>ykdl可执行文件 (ykdl.exe)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="419"/>
+        <location filename="../settings.cpp" line="422"/>
         <source>ykdl executable (ykdl)</source>
         <translation>ykdl可执行文件 (ykdl)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="431"/>
+        <location filename="../settings.cpp" line="434"/>
         <source>Select youtube-dl executable</source>
         <translation>选择youtube-dl可执行文件</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="434"/>
+        <location filename="../settings.cpp" line="437"/>
         <source>youtube-dl executable (youtube-dl.exe)</source>
         <translation>youtube-dl可执行文件 (youtube-dl.exe)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="436"/>
+        <location filename="../settings.cpp" line="439"/>
         <source>youtube-dl executable (youtube-dl)</source>
         <translation>youtube-dl可执行文件 (youtube-dl)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="448"/>
+        <location filename="../settings.cpp" line="451"/>
         <source>Select annie executable</source>
         <translation>选择annie可执行文件</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="451"/>
+        <location filename="../settings.cpp" line="454"/>
         <source>annie executable (annie.exe)</source>
         <translation>annie可执行文件 (annie.exe)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="453"/>
+        <location filename="../settings.cpp" line="456"/>
         <source>annie executable (annie)</source>
         <translation>annie可执行文件 (annie)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="466"/>
+        <location filename="../settings.cpp" line="469"/>
         <source>Please input Live TV name and URL.</source>
         <translation>请输入电视直播名称和URL。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="475"/>
+        <location filename="../settings.cpp" line="478"/>
         <source>This Live TV item exists already.</source>
         <translation>此电视直播项已存在。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="527"/>
+        <location filename="../settings.cpp" line="530"/>
         <source>Select Live TV list to import</source>
         <translation>选择电视直播列表导入</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="529"/>
-        <location filename="../settings.cpp" line="678"/>
+        <location filename="../settings.cpp" line="532"/>
+        <location filename="../settings.cpp" line="681"/>
         <source>Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)</source>
         <translation>所有支持格式 (*.json *.txt);;JSON格式 (*.json);;纯文本格式 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="555"/>
+        <location filename="../settings.cpp" line="558"/>
         <source>Export Live TV list to</source>
         <translation>导出电视直播列表到</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="557"/>
-        <location filename="../settings.cpp" line="706"/>
+        <location filename="../settings.cpp" line="560"/>
+        <location filename="../settings.cpp" line="709"/>
         <source>JSON format (*.json);;Plain text format (*.txt)</source>
         <translation>JSON格式 (*.json);;纯文本格式 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="594"/>
+        <location filename="../settings.cpp" line="597"/>
         <source>New category</source>
         <translation>新分类</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="595"/>
+        <location filename="../settings.cpp" line="598"/>
         <source>Please input new category name:</source>
         <translation>请输入新分类名称：</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="603"/>
+        <location filename="../settings.cpp" line="606"/>
         <source>Reserved name</source>
         <translation>保留名称</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="603"/>
+        <location filename="../settings.cpp" line="606"/>
         <source>This name is reserved, please choose another one.</source>
         <translation>此名称为保留名称，请另选一个。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="609"/>
+        <location filename="../settings.cpp" line="612"/>
         <source>Existing name</source>
         <translation>已存在的名称</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="609"/>
+        <location filename="../settings.cpp" line="612"/>
         <source>This name exists, please choose another one.</source>
         <translation>此名称已存在，请另选一个。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="625"/>
+        <location filename="../settings.cpp" line="628"/>
         <source>Please input VIP video name and URL.</source>
         <translation>请输入VIP视频名称和URL。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="632"/>
+        <location filename="../settings.cpp" line="635"/>
         <source>This VIP video item exists already.</source>
         <translation>此VIP视频项已存在。</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="676"/>
+        <location filename="../settings.cpp" line="679"/>
         <source>Select VIP video list to import</source>
         <translation>选择VIP视频列表导入</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="704"/>
+        <location filename="../settings.cpp" line="707"/>
         <source>Export VIP video list to</source>
         <translation>导出VIP视频列表到</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="940"/>
-        <location filename="../settings.cpp" line="947"/>
+        <location filename="../settings.cpp" line="943"/>
+        <location filename="../settings.cpp" line="950"/>
         <source>URL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="742"/>
+        <location filename="../settings.cpp" line="745"/>
         <source>Error on importing live TV list as JSON</source>
         <translation>将电视直播列表以JSON格式导入错误</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="845"/>
+        <location filename="../settings.cpp" line="848"/>
         <source>Error on importing VIP video list as JSON</source>
         <translation>将VIP视频列表以JSON格式导入错误</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="940"/>
-        <location filename="../settings.cpp" line="947"/>
+        <location filename="../settings.cpp" line="943"/>
+        <location filename="../settings.cpp" line="950"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="940"/>
+        <location filename="../settings.cpp" line="943"/>
         <source>Category</source>
         <translation>分类</translation>
     </message>

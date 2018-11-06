@@ -4,48 +4,38 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="196"/>
-        <source>Built-in player</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../browser.cpp" line="200"/>
-        <source>DLNA:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="438"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="439"/>
+        <location filename="../browser.cpp" line="438"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="450"/>
+        <location filename="../browser.cpp" line="449"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="460"/>
+        <location filename="../browser.cpp" line="459"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="463"/>
+        <location filename="../browser.cpp" line="462"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="466"/>
+        <location filename="../browser.cpp" line="465"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="470"/>
+        <location filename="../browser.cpp" line="469"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,24 +470,23 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="95"/>
-        <location filename="../playdialog.cpp" line="120"/>
-        <source>DLNA:</source>
+        <location filename="../playdialog.cpp" line="107"/>
+        <source>DLNA: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="114"/>
-        <location filename="../playdialog.cpp" line="123"/>
+        <location filename="../playdialog.cpp" line="127"/>
+        <location filename="../playdialog.cpp" line="137"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="114"/>
+        <location filename="../playdialog.cpp" line="127"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../playdialog.cpp" line="123"/>
+        <location filename="../playdialog.cpp" line="138"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1144,16 +1133,16 @@ MPV Error: </source>
     <message>
         <location filename="../settings.cpp" line="119"/>
         <location filename="../settings.cpp" line="121"/>
-        <location filename="../settings.cpp" line="478"/>
-        <location filename="../settings.cpp" line="755"/>
-        <location filename="../settings.cpp" line="785"/>
+        <location filename="../settings.cpp" line="481"/>
+        <location filename="../settings.cpp" line="758"/>
+        <location filename="../settings.cpp" line="788"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings.cpp" line="123"/>
-        <location filename="../settings.cpp" line="590"/>
-        <location filename="../settings.cpp" line="601"/>
+        <location filename="../settings.cpp" line="593"/>
+        <location filename="../settings.cpp" line="604"/>
         <source>New category...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1164,9 +1153,9 @@ MPV Error: </source>
     </message>
     <message>
         <location filename="../settings.cpp" line="342"/>
-        <location filename="../settings.cpp" line="363"/>
-        <location filename="../settings.cpp" line="466"/>
-        <location filename="../settings.cpp" line="625"/>
+        <location filename="../settings.cpp" line="365"/>
+        <location filename="../settings.cpp" line="469"/>
+        <location filename="../settings.cpp" line="628"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1177,8 +1166,8 @@ MPV Error: </source>
     </message>
     <message>
         <location filename="../settings.cpp" line="349"/>
-        <location filename="../settings.cpp" line="475"/>
-        <location filename="../settings.cpp" line="632"/>
+        <location filename="../settings.cpp" line="478"/>
+        <location filename="../settings.cpp" line="635"/>
         <source>Duplicated</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1188,176 +1177,176 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="363"/>
+        <location filename="../settings.cpp" line="365"/>
         <source>Please select an item in list to be removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="397"/>
+        <location filename="../settings.cpp" line="400"/>
         <source>Select you-get executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="400"/>
+        <location filename="../settings.cpp" line="403"/>
         <source>you-get executable (you-get.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="402"/>
+        <location filename="../settings.cpp" line="405"/>
         <source>you-get executable (you-get)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="414"/>
+        <location filename="../settings.cpp" line="417"/>
         <source>Select ykdl executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="417"/>
+        <location filename="../settings.cpp" line="420"/>
         <source>ykdl executable (ykdl.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="419"/>
+        <location filename="../settings.cpp" line="422"/>
         <source>ykdl executable (ykdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="431"/>
+        <location filename="../settings.cpp" line="434"/>
         <source>Select youtube-dl executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="434"/>
+        <location filename="../settings.cpp" line="437"/>
         <source>youtube-dl executable (youtube-dl.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="436"/>
+        <location filename="../settings.cpp" line="439"/>
         <source>youtube-dl executable (youtube-dl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="448"/>
+        <location filename="../settings.cpp" line="451"/>
         <source>Select annie executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="451"/>
+        <location filename="../settings.cpp" line="454"/>
         <source>annie executable (annie.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="453"/>
+        <location filename="../settings.cpp" line="456"/>
         <source>annie executable (annie)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="466"/>
+        <location filename="../settings.cpp" line="469"/>
         <source>Please input Live TV name and URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="475"/>
+        <location filename="../settings.cpp" line="478"/>
         <source>This Live TV item exists already.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="527"/>
+        <location filename="../settings.cpp" line="530"/>
         <source>Select Live TV list to import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="529"/>
-        <location filename="../settings.cpp" line="678"/>
+        <location filename="../settings.cpp" line="532"/>
+        <location filename="../settings.cpp" line="681"/>
         <source>Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="555"/>
+        <location filename="../settings.cpp" line="558"/>
         <source>Export Live TV list to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="557"/>
-        <location filename="../settings.cpp" line="706"/>
+        <location filename="../settings.cpp" line="560"/>
+        <location filename="../settings.cpp" line="709"/>
         <source>JSON format (*.json);;Plain text format (*.txt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="594"/>
+        <location filename="../settings.cpp" line="597"/>
         <source>New category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="595"/>
+        <location filename="../settings.cpp" line="598"/>
         <source>Please input new category name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="603"/>
+        <location filename="../settings.cpp" line="606"/>
         <source>Reserved name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="603"/>
+        <location filename="../settings.cpp" line="606"/>
         <source>This name is reserved, please choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="609"/>
+        <location filename="../settings.cpp" line="612"/>
         <source>Existing name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="609"/>
+        <location filename="../settings.cpp" line="612"/>
         <source>This name exists, please choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="625"/>
+        <location filename="../settings.cpp" line="628"/>
         <source>Please input VIP video name and URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="632"/>
+        <location filename="../settings.cpp" line="635"/>
         <source>This VIP video item exists already.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="676"/>
+        <location filename="../settings.cpp" line="679"/>
         <source>Select VIP video list to import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="704"/>
+        <location filename="../settings.cpp" line="707"/>
         <source>Export VIP video list to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="742"/>
+        <location filename="../settings.cpp" line="745"/>
         <source>Error on importing live TV list as JSON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="845"/>
+        <location filename="../settings.cpp" line="848"/>
         <source>Error on importing VIP video list as JSON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="940"/>
-        <location filename="../settings.cpp" line="947"/>
+        <location filename="../settings.cpp" line="943"/>
+        <location filename="../settings.cpp" line="950"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="940"/>
-        <location filename="../settings.cpp" line="947"/>
+        <location filename="../settings.cpp" line="943"/>
+        <location filename="../settings.cpp" line="950"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="940"/>
+        <location filename="../settings.cpp" line="943"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>

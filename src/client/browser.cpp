@@ -167,7 +167,7 @@ void Browser::resolveAndPlayByMediaPlayer(const QString &u)
     resolveLink(u);
 }
 
-void Browser::doPlay(Tuple2& player, QStringList& urls, const QString& title, const QString& referrer)
+void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer)
 {
     m_playerProcess.kill();
     waiting(false);
@@ -193,17 +193,17 @@ void Browser::doPlay(Tuple2& player, QStringList& urls, const QString& title, co
         media = QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString());
     }
 
-    if (std::get<0>(player) == tr("Built-in player"))
+    switch (player->type())
     {
+    case Player::PT_BUILTIN:
         playByBuiltinPlayer(media, title, referrer);
-    }
-    else if (std::get<0>(player).startsWith(tr("DLNA:")))
-    {
+        break;
+    case Player::PT_DLNA:
         playByDLNARenderer(player, media, title, referrer);
-    }
-    else
-    {
+        break;
+    case Player::PT_EXTERNAL:
         playByExternalPlayer(player, media, title, referrer);
+        break;
     }
     minimizeWindows();
 }
@@ -214,7 +214,7 @@ void Browser::play(const QString &u, const QString &title)
     dlg.setMediaInfo(title, u);
     if (dlg.exec())
     {
-        Tuple2 player = dlg.player();
+        PlayerPtr player = dlg.player();
         doPlay(player, QStringList() << u, title, "");
     }
 }
@@ -225,7 +225,7 @@ void Browser::play(MediaInfoPtr mi)
     dlg.setMediaInfo(mi);
     if (dlg.exec())
     {
-        Tuple2 player = dlg.player();
+        PlayerPtr player = dlg.player();
         StreamInfoPtr stream = dlg.media();
         doPlay(player, stream->urls, mi->title, mi->url);
     }
@@ -247,7 +247,7 @@ void Browser::playByBuiltinPlayer(const QString &url, const QString& title, cons
     m_builtinPlayer->playMedia(url);
 }
 
-void Browser::playByExternalPlayer(Tuple2& player, const QString &url, const QString &title, const QString &referrer)
+void Browser::playByExternalPlayer(PlayerPtr player, const QString &url, const QString &title, const QString &referrer)
 {
     QStringList args;
 #if defined(Q_OS_MAC)
@@ -258,7 +258,7 @@ void Browser::playByExternalPlayer(Tuple2& player, const QString &url, const QSt
         args << std::get<0>(player) << "--args";
     }
 #endif
-    QString arg = std::get<1>(player);
+    QString arg = player->arguments();
     if (!arg.isEmpty())
         args << arg.split(" ");
 
@@ -280,11 +280,11 @@ void Browser::playByExternalPlayer(Tuple2& player, const QString &url, const QSt
         return;
     }
 #endif
-    m_playerProcess.setProgram(std::get<0>(player));
+    m_playerProcess.setProgram(player->name());
     m_playerProcess.start();
 }
 
-void Browser::playByDLNARenderer(Tuple2 &player, const QString &url, const QString &title, const QString &referrer)
+void Browser::playByDLNARenderer(PlayerPtr player, const QString &url, const QString &title, const QString &referrer)
 {
     if (url.isEmpty())
         return;
@@ -295,11 +295,10 @@ void Browser::playByDLNARenderer(Tuple2 &player, const QString &url, const QStri
         connect(m_dlnaPlayer, &DLNAPlayerView::finished, this, &Browser::onPlayerFinished);
     }
 
-    auto renderer = std::get<1>(player);
     m_dlnaPlayer->title(title);
     m_dlnaPlayer->referrer(referrer);
     m_dlnaPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
-    m_dlnaPlayer->setRenderer(renderer);
+    m_dlnaPlayer->setRenderer(player->name());
     m_dlnaPlayer->playMedia(url);
     m_dlnaPlayer->show();
 }

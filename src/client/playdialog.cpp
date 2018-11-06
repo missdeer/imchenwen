@@ -86,17 +86,30 @@ void PlayDialog::on_btnCancel_clicked()
 void PlayDialog::createExternalPlayerList()
 {
     m_players.clear();
-    m_players.push_back(std::make_tuple(tr("Built-in player"), ""));
+    PlayerPtr builtinPlayer(new Player(Player::PT_BUILTIN, tr("Built-in player")));
+    m_players.push_back(builtinPlayer);
     Config cfg;
     cfg.read("externalPlayers", m_players);
     auto dlnaRenderers = Browser::instance().kast().getRenderers();
     for (auto& r : dlnaRenderers)
     {
-        m_players.push_back(std::make_tuple(tr("DLNA:"), r));
+        PlayerPtr p(new Player(Player::PT_DLNA, r));
+        m_players.push_back(p);
     }
     for (auto& p : m_players)
     {
-        ui->cbPlayers->addItem(std::get<0>(p) + " " + std::get<1>(p));
+        switch (p->type())
+        {
+        case Player::PT_BUILTIN:
+            ui->cbPlayers->addItem(p->name());
+            break;
+        case Player::PT_DLNA:
+            ui->cbPlayers->addItem(tr("DLNA: ") + p->name());
+            break;
+        case Player::PT_EXTERNAL:
+            ui->cbPlayers->addItem(p->name() + " " + p->arguments());
+            break;
+        }
     }
     ui->cbPlayers->setCurrentIndex(0);
 }
@@ -117,10 +130,13 @@ void PlayDialog::doOk()
         int currentRow = ui->listMedia->currentRow();
         m_selectedMedia = m_streams[currentRow];
     }
-    if (QFile::exists(std::get<0>(m_selectedPlayer)) || std::get<0>(m_selectedPlayer) == tr("DLNA:")|| currentIndex == 0)
+    if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->name())) || m_selectedPlayer->type() != Player::PT_EXTERNAL)
         accept();
     else
-        QMessageBox::warning(this, tr("Error"), tr("Cannot find player at '%1', please reconfiguration it.").arg(std::get<0>(m_selectedPlayer)), QMessageBox::Ok);
+        QMessageBox::warning(this,
+                             tr("Error"),
+                             tr("Cannot find player at '%1', please reconfiguration it.").arg(m_selectedPlayer->name()),
+                             QMessageBox::Ok);
 }
 
 QListWidgetItem * PlayDialog::addItem(const QIcon& icon, const QString& text, const QColor &backgroundColor)

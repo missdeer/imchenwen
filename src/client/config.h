@@ -7,6 +7,7 @@
 #include <QSharedPointer>
 #include <QSettings>
 #include <QStandardPaths>
+#include "player.h"
 
 typedef std::tuple<QString, QString> Tuple2;
 typedef QSharedPointer<Tuple2> Tuple2Ptr;
@@ -49,11 +50,13 @@ public:
     void read(const QString& key, Tuple3List& array);
     void read(const QString& key, Tuple4List& array);
     void read(const QString& key, Tuple5List& array);
+    void read(const QString& key, PlayerList& players);
     void write(const QString& key, const QStringList& array);
     void write(const QString& key, const Tuple2List& array);
     void write(const QString& key, const Tuple3List& array);
     void write(const QString& key, const Tuple4List& array);
     void write(const QString& key, const Tuple5List& array);
+    void write(const QString& key, const PlayerList& players);
 
     void beginGroup(const QString& group);
     void endGroup();

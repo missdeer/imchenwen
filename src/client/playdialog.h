@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "config.h"
 #include "linkresolver.h"
+#include "player.h"
 
 QT_BEGIN_NAMESPACE
 class QListWidgetItem;
@@ -18,11 +19,11 @@ class PlayDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PlayDialog(QWidget *parent = 0);
+    explicit PlayDialog(QWidget *parent = nullptr);
     ~PlayDialog();
     void setMediaInfo(MediaInfoPtr mi);
     void setMediaInfo(const QString& title, const QString& url);
-    Tuple2 player() { return m_selectedPlayer; }
+    PlayerPtr player() { return m_selectedPlayer; }
     StreamInfoPtr media() { return m_selectedMedia; }
 private slots:
     void on_btnExternalPlayerConfiguration_clicked();
@@ -35,8 +36,8 @@ private slots:
 
 private:
     Ui::PlayDialog *ui;
-    Tuple2List m_players;
-    Tuple2 m_selectedPlayer;
+    PlayerList m_players;
+    PlayerPtr m_selectedPlayer;
     StreamInfoPtr m_selectedMedia;
     MediaInfoPtr m_mediaInfo;
     Streams m_streams;

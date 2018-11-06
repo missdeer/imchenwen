@@ -4,6 +4,7 @@
 #include <QtWidgets/QDialog>
 #include "ui_settings.h"
 #include "config.h"
+#include "player.h"
 
 class SettingsDialog : public QDialog, public Ui_Settings
 {
@@ -47,7 +48,7 @@ private slots:
 private:
     QFont standardFont;
     QFont fixedFont;
-    Tuple2List m_players;
+    PlayerList m_players;
     Tuple3List m_liveTV;
     Tuple2List m_vipVideo;
     bool importLiveTVAsJSON(const QString& path);

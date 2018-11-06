@@ -142,7 +142,7 @@ void SettingsDialog::fillExternalPlayerTable()
 {
     for (const auto& p : m_players)
     {
-        listPlayer->addItem(std::get<0>(p) + "\n" + std::get<1>(p));
+        listPlayer->addItem(p->name() + "\n" + p->arguments());
     }
 }
 
@@ -343,13 +343,15 @@ void SettingsDialog::onAddExternalPlayer()
         return;
     }
     auto it = std::find_if(m_players.begin(), m_players.end(),
-                           [this](const Tuple2& t) { return std::get<0>(t) == edtPlayerPath->text() && std::get<1>(t) == edtPlayerArguments->text();});
+                           [this](PlayerPtr t) { return t->name() == edtPlayerPath->text() && t->arguments() == edtPlayerArguments->text();});
     if (m_players.end() != it)
     {
         QMessageBox::warning(this, tr("Duplicated"), tr("This configuration item exists already."), QMessageBox::Ok);
         return;
     }
-    m_players.push_back(std::make_tuple(edtPlayerPath->text(), edtPlayerArguments->text()));
+    PlayerPtr p(new Player(Player::PT_EXTERNAL, edtPlayerPath->text()));
+    p->setArguments(edtPlayerArguments->text());
+    m_players.push_back(p);
     listPlayer->addItem(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
     edtPlayerPath->setText("");
     edtPlayerArguments->setText("");
@@ -377,7 +379,8 @@ void SettingsDialog::onModifyExternalPlayer()
         return;
     }
     int currentRow = listPlayer->currentRow();
-    m_players[currentRow] = std::make_tuple(edtPlayerPath->text(), edtPlayerArguments->text());
+    m_players[currentRow]->setName(edtPlayerPath->text());
+    m_players[currentRow]->setArguments(edtPlayerArguments->text());
     currentItem->setText(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
 }
 
@@ -386,9 +389,9 @@ void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
     if (currentRow < 0 && currentRow >= m_players.size())
         return;
 
-    const Tuple2& p = m_players.at(currentRow);
-    edtPlayerPath->setText(std::get<0>(p));
-    edtPlayerArguments->setText(std::get<1>(p));
+    PlayerPtr p = m_players.at(currentRow);
+    edtPlayerPath->setText(p->name());
+    edtPlayerArguments->setText(p->arguments());
 }
 
 void SettingsDialog::onBrowseYouGetPath()

@@ -79,6 +79,19 @@ void Config::read(const QString &key, Tuple5List &res)
     settings().endArray();
 }
 
+void Config::read(const QString &key, PlayerList &players)
+{
+    int size = settings().beginReadArray(key);
+    for (int i = 0; i < size; ++i)
+    {
+        settings().setArrayIndex(i);
+        PlayerPtr p(new Player(Player::PT_EXTERNAL, settings().value("e1").toString()));
+        p->setArguments(settings().value("e2").toString());
+        players.append(p);
+    }
+    settings().endArray();
+}
+
 void Config::write(const QString& key, const QStringList& array)
 {
     settings().remove(key);
@@ -151,7 +164,22 @@ void Config::write(const QString &key, const Tuple5List &array)
         settings().setValue("e5", std::get<4>(array.at(i)));
     }
     settings().endArray();
-    settings().sync();}
+    settings().sync();
+}
+
+void Config::write(const QString &key, const PlayerList &players)
+{
+    settings().remove(key);
+    settings().beginWriteArray(key);
+    for (int i = 0; i < players.size(); ++i)
+    {
+        settings().setArrayIndex(i);
+        settings().setValue("e1", players[i]->name());
+        settings().setValue("e2", players[i]->arguments());
+    }
+    settings().endArray();
+    settings().sync();
+}
 
 void Config::beginGroup(const QString& group)
 {

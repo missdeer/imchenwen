@@ -29,7 +29,8 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/popupmenutoolbutton.h \
     $$PWD/urlrequestinterceptor.h \
     $$PWD/util.h \
-    inmemoryhandler.h
+    inmemoryhandler.h \
+    player.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -51,7 +52,8 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/popupmenutoolbutton.cpp \
     $$PWD/urlrequestinterceptor.cpp \
     $$PWD/util.cpp \
-    inmemoryhandler.cpp
+    inmemoryhandler.cpp \
+    player.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \
