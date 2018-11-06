@@ -14,38 +14,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="433"/>
+        <location filename="../browser.cpp" line="434"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="433"/>
+        <location filename="../browser.cpp" line="434"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="444"/>
+        <location filename="../browser.cpp" line="445"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="454"/>
+        <location filename="../browser.cpp" line="455"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="457"/>
+        <location filename="../browser.cpp" line="458"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="460"/>
+        <location filename="../browser.cpp" line="461"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="464"/>
+        <location filename="../browser.cpp" line="465"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -707,6 +707,24 @@ MPV Error: </source>
     <message>
         <location filename="../mpv/playerview.cpp" line="550"/>
         <source>Audio delay (sec):</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QHttpEngine::QIODeviceCopier</name>
+    <message>
+        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="124"/>
+        <source>Unable to open source device for reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="132"/>
+        <source>Unable to open destination device for writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="141"/>
+        <source>Unable to seek source device for specified range</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

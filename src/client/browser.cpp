@@ -296,6 +296,7 @@ void Browser::playByDLNARenderer(Tuple2 &player, const QStringList &urls, const 
     m_dlnaPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
     m_dlnaPlayer->setRenderer(renderer);
     m_dlnaPlayer->playMedias(urls);
+    m_dlnaPlayer->show();
 }
 
 void Browser::onClipboardChanged()

@@ -4,6 +4,7 @@ QT += webengine webenginecore webenginewidgets xml concurrent
 CONFIG += c++14
 
 include(Boost.pri)
+include($$PWD/../3rdparty/qhttpengine/qhttpengine.pri)
 
 INCLUDEPATH += $$PWD \
     $$PWD/dlna \
@@ -27,7 +28,7 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/linkresolverprocess.h \
     $$PWD/popupmenutoolbutton.h \
     $$PWD/urlrequestinterceptor.h \
-    util.h
+    $$PWD/util.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -48,7 +49,7 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/linkresolverprocess.cpp \
     $$PWD/popupmenutoolbutton.cpp \
     $$PWD/urlrequestinterceptor.cpp \
-    util.cpp
+    $$PWD/util.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \
