@@ -5,10 +5,6 @@
 
 Kast::Kast(QObject *parent) : QObject(parent)
 {
-    qDebug() << "Starting server...";
-
-    m_fileServer = new HttpFileServer();
-    m_fileServer->startServer();
     SSDPdiscovery *discovery = new SSDPdiscovery(this);
     connect(discovery, SIGNAL(foundRenderer(DLNARenderer*)), this, SLOT(onFoundRenderer(DLNARenderer*)));
     // Start SSDP discovery

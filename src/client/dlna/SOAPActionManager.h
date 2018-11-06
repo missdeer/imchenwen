@@ -1,5 +1,6 @@
 #ifndef SOAPACTIONMANAGER_H
 #define SOAPACTIONMANAGER_H
+
 #include "DLNAPlaybackInfo.h"
 #include <QObject>
 #include <QtNetwork>

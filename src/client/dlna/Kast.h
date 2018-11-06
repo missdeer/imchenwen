@@ -2,7 +2,6 @@
 #define KAST_H
 
 #include "DLNARenderer.h"
-#include "HTTPFileServer.h"
 #include "DLNAPlaybackInfo.h"
 
 #include <QtNetwork>
@@ -22,7 +21,6 @@ private slots:
     void onFoundRenderer(DLNARenderer*);
     void onHttpResponse(const QString, const QString);
 private:
-    HttpFileServer *m_fileServer;
     QMap<QString, DLNARenderer *> m_renderers;
     QHostAddress getLocalAddress();
 };
