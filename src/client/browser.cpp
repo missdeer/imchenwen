@@ -79,6 +79,8 @@ void Browser::clearAtExit()
 {
     stopWaiting();
     m_playerProcess.kill();
+    if (m_httpServer.isListening())
+        m_httpServer.close();
 }
 
 Browser::~Browser()
@@ -233,25 +235,7 @@ void Browser::playByBuiltinPlayer(const QString &url, const QString& title, cons
 {
     if (!m_builtinPlayer)
     {
-        QString hwdec = "auto";
-#if defined(Q_OS_MAC)
-        hwdec = "videotoolbox-co";
-#elif defined(Q_OS_WIN)
-        QString v = QSysInfo::productVersion();
-        QStringList vv  = v.split(' ');
-        int n = vv[0].toInt();
-        if (n >= 8)
-        {
-            hwdec = "d3d11va-copy";
-        }
-        else
-        {
-            hwdec = "dxva2-copy";
-        }
-        if (QUrl(url[0]).path().endsWith(".265ts", Qt::CaseInsensitive))
-            hwdec = "no";
-#endif
-        m_builtinPlayer = new PlayerView(hwdec);
+        m_builtinPlayer = new PlayerView();
         connect(m_builtinPlayer, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
     // ffmpeg.exe -y -protocol_whitelist "file,http,https,tcp,tls"  -i test.m3u8 -c:v libx265 -an -x265-params crf=25 -f mpegts udp://127.0.0.1:12345

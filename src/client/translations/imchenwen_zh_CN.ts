@@ -4,49 +4,49 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="194"/>
+        <location filename="../browser.cpp" line="196"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="198"/>
+        <location filename="../browser.cpp" line="200"/>
         <source>DLNA:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="455"/>
+        <location filename="../browser.cpp" line="439"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="455"/>
+        <location filename="../browser.cpp" line="439"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="466"/>
+        <location filename="../browser.cpp" line="450"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="476"/>
+        <location filename="../browser.cpp" line="460"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="479"/>
+        <location filename="../browser.cpp" line="463"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="482"/>
+        <location filename="../browser.cpp" line="466"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="486"/>
+        <location filename="../browser.cpp" line="470"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -507,35 +507,35 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="259"/>
+        <location filename="../mpv/playercore.cpp" line="273"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="260"/>
+        <location filename="../mpv/playercore.cpp" line="274"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="261"/>
+        <location filename="../mpv/playercore.cpp" line="275"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="258"/>
-        <location filename="../mpv/playercore.cpp" line="679"/>
+        <location filename="../mpv/playercore.cpp" line="272"/>
+        <location filename="../mpv/playercore.cpp" line="693"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="680"/>
+        <location filename="../mpv/playercore.cpp" line="694"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="680"/>
+        <location filename="../mpv/playercore.cpp" line="694"/>
         <source>
 
 MPV Error: </source>

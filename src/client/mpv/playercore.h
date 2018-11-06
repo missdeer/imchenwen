@@ -19,7 +19,7 @@ class PlayerCore : public QOpenGLWidget
     Q_OBJECT
 public:
     typedef enum {STOPPING, VIDEO_PLAYING, VIDEO_PAUSING, TV_PLAYING} State;
-    explicit PlayerCore(const QString& hwdec, QWidget *parent = nullptr);
+    explicit PlayerCore(QWidget *parent = nullptr);
     virtual ~PlayerCore();
     State state;
     inline QString currentFile() { return m_mediaFile; }

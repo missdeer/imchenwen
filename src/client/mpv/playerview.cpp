@@ -16,7 +16,7 @@
 #include <QResizeEvent>
 #include <QTimer>
 
-PlayerView::PlayerView(const QString &hwdec, QWidget *parent) :
+PlayerView::PlayerView(QWidget *parent) :
     QWidget(parent, Qt::FramelessWindowHint),
     ui(new Ui::PlayerView)
 {
@@ -66,7 +66,7 @@ PlayerView::PlayerView(const QString &hwdec, QWidget *parent) :
     m_ctrlPressed = false;
 
     // create player core
-    m_playerCore = new PlayerCore(hwdec, this);
+    m_playerCore = new PlayerCore(this);
     m_playerCore->move(0, 0);
     m_playerCore->setAttribute(Qt::WA_TransparentForMouseEvents);
 

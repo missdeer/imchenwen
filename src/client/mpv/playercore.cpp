@@ -46,7 +46,7 @@ static void *get_proc_address(void *, const char *name)
     return (void*) glctx->getProcAddress(name);
 }
 
-PlayerCore::PlayerCore(const QString& hwdec, QWidget *parent) :
+PlayerCore::PlayerCore(QWidget *parent) :
     QOpenGLWidget(parent)
 {
     qDebug("Initialize mpv backend...\n");
@@ -87,8 +87,22 @@ PlayerCore::PlayerCore(const QString& hwdec, QWidget *parent) :
     {
         mpv::qt::set_option_variant(m_mpv, "hwdec-preload", "vdpau-glx");
     }
+    mpv::qt::set_option_variant(m_mpv, "hwdec", "auto");
+#elif defined(Q_OS_MAC)
+    mpv::qt::set_option_variant(m_mpv, "hwdec", "videotoolbox-co");
+#elif defined(Q_OS_WIN)
+    QString v = QSysInfo::productVersion();
+    QStringList vv  = v.split(' ');
+    int n = vv[0].toInt();
+    if (n >= 8)
+    {
+        mpv::qt::set_option_variant(m_mpv, "hwdec", "d3d11va-copy");
+    }
+    else
+    {
+        mpv::qt::set_option_variant(m_mpv, "hwdec", "dxva2-copy");
+    }
 #endif
-    mpv::qt::set_option_variant(m_mpv, "hwdec", hwdec);
     mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
     mpv::qt::set_option_variant(m_mpv, "hwdec-codecs", "all");
 
