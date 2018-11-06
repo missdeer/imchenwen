@@ -4,7 +4,8 @@
 
 struct DLNAPlaybackInfo
 {
-    QTime relTime, trackDuration;
+    QTime relTime;
+    QTime trackDuration;
 };
 
 #endif // DLNAPLAYBACKINFO_H

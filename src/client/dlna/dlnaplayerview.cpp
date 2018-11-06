@@ -84,7 +84,6 @@ DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
     connect(ui->pauseButton, &QPushButton::clicked, this, &DLNAPlayerView::onPause);
     connect(ui->volumeButton, &QPushButton::clicked, this, &DLNAPlayerView::showVolumeSlider);
     connect(ui->timeSlider, &QSlider::sliderPressed, this, &DLNAPlayerView::onTimeSliderPressed);
-    connect(ui->timeSlider, &QSlider::valueChanged, this, &DLNAPlayerView::onTimeSliderValueChanged);
     connect(ui->timeSlider, &QSlider::sliderReleased, this, &DLNAPlayerView::onTimeSliderReleased);
     connect(m_getPositionInfoTimer, &QTimer::timeout, [this](){
         if (m_renderer)
@@ -349,7 +348,15 @@ void DLNAPlayerView::onResume()
 
 void DLNAPlayerView::onReceivePlaybackInfo(DLNAPlaybackInfo *info)
 {
-    qDebug() << __FUNCTION__ << info->relTime << info->trackDuration;
+    qDebug() << __FUNCTION__
+             << info->relTime
+             << info->trackDuration
+             << info->relTime.hour() * 3600 + info->relTime.minute() * 60 + info->relTime.second()
+             << info->trackDuration.hour() * 3600 + info->trackDuration.minute() * 60 + info->trackDuration.second();
+    disconnect(ui->timeSlider, &QSlider::valueChanged, this, &DLNAPlayerView::onTimeSliderValueChanged);
+    ui->timeSlider->setMaximum(info->trackDuration.hour() * 3600 + info->trackDuration.minute() * 60 + info->trackDuration.second());
+    ui->timeSlider->setValue(info->relTime.hour() * 3600 + info->relTime.minute() * 60 + info->relTime.second());
+    connect(ui->timeSlider, &QSlider::valueChanged, this, &DLNAPlayerView::onTimeSliderValueChanged);
 }
 
 void DLNAPlayerView::setRenderer(const QString &renderer)

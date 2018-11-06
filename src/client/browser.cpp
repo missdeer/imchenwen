@@ -179,7 +179,7 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
 
     QString media = urls[0];
 
-    if (urls.length() > 1 || !QUrl(media).path().endsWith("m3u8"))
+    if (urls.length() > 1 /*|| !QUrl(media).path().endsWith("m3u8")*/)
     {
         // make a m3u8
         QString localAddress = Util::getLocalAddress().toString();
@@ -507,6 +507,11 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
     {
         m_builtinPlayer->deleteLater();
         m_builtinPlayer = nullptr;
+    }
+    if (m_dlnaPlayer)
+    {
+        m_dlnaPlayer->deleteLater();
+        m_dlnaPlayer = nullptr;
     }
 }
 
