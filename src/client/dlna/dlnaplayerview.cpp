@@ -28,13 +28,13 @@ DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
     ui->setupUi(this);
     ui->pauseButton->hide();
     QPushButton *buttons[] = {ui->playButton, ui->pauseButton, ui->stopButton};
-    for (int i = 0; i < 3; i++)
+    for (size_t i = 0; i < sizeof(buttons)/sizeof(buttons[0]); i++)
     {
         buttons[i]->setIconSize(QSize(16, 16));
         buttons[i]->setFixedSize(QSize(32, 32));
     }
     QPushButton *buttons2[] = {ui->playlistButton, ui->searchButton, ui->volumeButton, ui->settingsButton};
-    for (int i = 0; i < 5; i++)
+    for (size_t i = 0; i < sizeof(buttons2)/sizeof(buttons2[0]); i++)
     {
         buttons2[i]->setIconSize(QSize(16, 16));
         buttons2[i]->setFixedSize(QSize(24, 20));
@@ -98,6 +98,7 @@ DLNAPlayerView::DLNAPlayerView(QWidget *parent) :
 DLNAPlayerView::~DLNAPlayerView()
 {
     m_renderer->stopPlayback();
+    m_getPositionInfoTimer->stop();
     delete ui;
 }
 

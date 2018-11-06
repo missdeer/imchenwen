@@ -265,11 +265,11 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &url, const Q
 {
     QStringList args;
 #if defined(Q_OS_MAC)
-    QFileInfo fi(std::get<0>(player));
+    QFileInfo fi(player->name());
     if (fi.suffix() == "app")
     {
         m_playerProcess.setProgram("/usr/bin/open");
-        args << std::get<0>(player) << "--args";
+        args << player->name() << "--args";
     }
 #endif
     QString arg = player->arguments();
