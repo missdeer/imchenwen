@@ -41,7 +41,7 @@ public:
 
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString& u);
-    void doPlayByMediaPlayer(const QString& u, const QString& title);
+    void play(const QString& u, const QString& title);
     Websites &websites();
 signals:
 
@@ -67,13 +67,11 @@ private:
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
-    void doPlayByMediaPlayer(MediaInfoPtr mi);
+    void play(MediaInfoPtr mi);
+    void doPlay(Tuple2& player, QStringList& urls, const QString& title, const QString& referrer);
     void playByBuiltinPlayer(const QStringList &urls, const QString& title, const QString &referrer);
-    void playByBuiltinPlayer(const QString& url, const QString& title, const QString &referrer);
     void playByExternalPlayer(Tuple2 &player, const QStringList &urls, const QString& title, const QString &referrer);
-    void playByExternalPlayer(Tuple2 &player, const QString& url, const QString& title, const QString &referrer);
     void playByDLNARenderer(Tuple2 &player, const QStringList &urls, const QString& title, const QString &referrer);
-    void playByDLNARenderer(Tuple2 &player, const QString& url, const QString& title, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);
     void clearAtExit();

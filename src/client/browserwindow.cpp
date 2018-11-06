@@ -537,7 +537,7 @@ void BrowserWindow::onLiveTV()
     QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
-    Browser::instance().doPlayByMediaPlayer(url, "Live TV - " + action->text());
+    Browser::instance().play(url, "Live TV - " + action->text());
 }
 
 void BrowserWindow::onOptions()
