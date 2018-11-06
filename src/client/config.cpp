@@ -205,6 +205,12 @@ QString Config::read<QString>(const QString& key)
 }
 
 template<>
+QByteArray Config::read<QByteArray>(const QString& key)
+{
+    return settings().value(key).toByteArray();
+}
+
+template<>
 bool Config::read<bool>(const QString &key)
 {
     return settings().value(key, QVariant(false)).toBool();

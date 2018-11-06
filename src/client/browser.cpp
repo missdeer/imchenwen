@@ -182,15 +182,29 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
     if (urls.length() > 1 || !QUrl(media).path().endsWith("m3u8"))
     {
         // make a m3u8
+        QString localAddress = Util::getLocalAddress().toString();
         QByteArray m3u8;
         m3u8.append("#EXTM3U\n#EXT-X-TARGETDURATION:8\n");
         for (const auto & u : urls)
         {
-            m3u8.append("#EXTINF:5,\n" + u.toUtf8() + "\n");
+            QString url = u;
+            if (player->type() == Player::PT_DLNA)
+            {
+                if (url.startsWith("http://"))
+                    url = url.insert(7, localAddress + ":51290/");
+                else if (url.startsWith("https://"))
+                    url = url.insert(8, localAddress + ":51290/s/");
+            }
+            m3u8.append("#EXTINF:5,\n" + url.toUtf8() + "\n");
         }
         m3u8.append("#EXT-X-ENDLIST\n");
         m_httpHandler.setM3U8(m3u8);
-        media = QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString());
+        if (!referrer.isEmpty())
+        {
+            m_httpHandler.setReferrer(referrer.toUtf8());
+            m_httpHandler.setUserAgent(Config().read<QByteArray>(QLatin1String("httpUserAgent")));
+        }
+        media = QString("http://%1:51290/media.m3u8").arg(localAddress);
     }
 
     switch (player->type())
