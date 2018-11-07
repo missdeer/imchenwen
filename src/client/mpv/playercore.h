@@ -22,11 +22,11 @@ public:
     explicit PlayerCore(QWidget *parent = nullptr);
     virtual ~PlayerCore();
     State state;
-    inline QString currentFile() { return m_mediaFile; }
-    inline int getTime() { return m_time; }
-    inline int getLength() { return m_length; }
-    inline double getAudioDelay() { return m_audioDelay; }
-    inline const QStringList &getAudioTracksList() { return m_audioTracksList; }
+    QString currentFile() { return m_mediaFile; }
+    int64_t getTime() { return m_time; }
+    int64_t getLength() { return m_length; }
+    double getAudioDelay() { return m_audioDelay; }
+    const QStringList &getAudioTracksList() { return m_audioTracksList; }
 
     void command(const QVariant& params);
     void setOption(const QString& name, const QVariant& value);
