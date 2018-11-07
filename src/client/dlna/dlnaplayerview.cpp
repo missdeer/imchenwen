@@ -106,8 +106,15 @@ void DLNAPlayerView::playMedia(const QString &url)
 {
     m_renderer->stopPlayback();
 
-    QUrl u(url);
+    QStringList urls = url.split('\n');
+    QUrl u(url[0]);
     m_renderer->setPlaybackUrl(u, QFileInfo(u.path()));
+    if (urls.length() > 1)
+    {
+        for (int i = 1; i < urls.length(); i++)
+            m_renderer->setNextPlaybackUrl(QUrl(urls[i]));
+    }
+    m_renderer->playPlayback();
     m_getPositionInfoTimer->start(1000);
 }
 

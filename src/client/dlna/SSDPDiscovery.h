@@ -11,6 +11,7 @@ class SSDPdiscovery : public QObject
     Q_OBJECT
 public:
     explicit SSDPdiscovery(QObject *parent = nullptr);
+    ~SSDPdiscovery() override;
     void findRendererFromUrl(const QUrl & url);
     void run();
     QList<DLNARenderer *> &renderers();

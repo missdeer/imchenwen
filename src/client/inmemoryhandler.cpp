@@ -78,24 +78,28 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
 
 void InMemoryHandler::process(Socket *socket, const QString &path)
 {
-    m_socket = socket;
-    if (m_m3u8.isEmpty())
-    {
-        socket->writeError(Socket::NotFound);
-        return;
-    }
-
+    qDebug() << __FUNCTION__ << path;
     if (path == "media.m3u8")
     {
+        if (m_m3u8.isEmpty())
+        {
+            socket->writeError(Socket::NotFound);
+            return;
+        }
         returnMediaM3U8(socket);
         return;
     }
 
     auto it = m_urlMap.find(path);
     if (m_urlMap.end() != it)
+    {
+        qDebug() << __FUNCTION__ << it.key() << it.value();
         relayMedia(socket, it.value());
-    else
-        socket->writeError(Socket::NotFound);
+        return;
+    }
+
+    socket->writeError(Socket::NotFound);
+    qDebug() << __FUNCTION__ << it.key() << "not found";
 }
 
 void InMemoryHandler::onNetworkError(QNetworkReply::NetworkError code)

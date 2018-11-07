@@ -6,6 +6,7 @@
 #include <QtCore/QSettings>
 #include <QtWidgets/QtWidgets>
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
+#include <QNetworkInterface>
 
 SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
@@ -13,6 +14,16 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     setupUi(this);
     setupLiveTVTable();
     setupVIPVideoTable();
+
+    for(auto && address : QNetworkInterface::allAddresses())
+    {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol
+                && address != QHostAddress(QHostAddress::LocalHost) // Check if it is local adress
+                && address.toString().section( ".",-1,-1 ) != "1") // Check if it is virtual machine
+        {
+            cbDLNAUseIP->addItem(address.toString());
+        }
+    }
 
     connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::onSetHomeToCurrentPage);
     connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::onChooseFont);
@@ -149,6 +160,9 @@ void SettingsDialog::fillExternalPlayerTable()
 void SettingsDialog::loadFromSettings()
 {
     Config cfg;
+
+    cbDLNAUseIP->setCurrentText(cfg.read<QString>("dlnaUseIP"));
+
     homeLineEdit->setText(cfg.read<QString>("defaultHome"));
 
     int historyExpire = cfg.read<int>("historyExpire");
@@ -223,6 +237,8 @@ void SettingsDialog::loadFromSettings()
 void SettingsDialog::saveToSettings()
 {
     Config cfg;
+    cfg.write(QLatin1String("dlnaUseIP"), cbDLNAUseIP->currentText());
+
     cfg.write(QLatin1String("defaultHome"), homeLineEdit->text());
 
     cfg.write(QLatin1String("openLinksIn"), openLinksIn->currentIndex());

@@ -1,4 +1,5 @@
 #include "SSDPDiscovery.h"
+#include "config.h"
 
 // DLNA renderers discovery class
 SSDPdiscovery::SSDPdiscovery(QObject *parent)
@@ -8,6 +9,12 @@ SSDPdiscovery::SSDPdiscovery(QObject *parent)
     connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
 }
 
+SSDPdiscovery::~SSDPdiscovery()
+{
+    m_multicastUdpSocket->close();
+    delete m_multicastUdpSocket;
+}
+
 // Starts SSDP discovery. Dont call it, when you have IP adress specified, just procced to ->findRendererFromUrl
 void SSDPdiscovery::run()
 {
@@ -15,7 +22,9 @@ void SSDPdiscovery::run()
     QHostAddress groupAddress = QHostAddress("239.255.255.250");
 
     m_multicastUdpSocket = new QUdpSocket(this);
-    m_multicastUdpSocket->bind(QHostAddress::AnyIPv4, 1901, QUdpSocket::ShareAddress);
+    Config cfg;
+    QString ip = cfg.read<QString>("dlnaUseIP");
+    m_multicastUdpSocket->bind((ip.isEmpty() ? QHostAddress::AnyIPv4 : QHostAddress(ip)), 1901, QUdpSocket::ShareAddress);
     m_multicastUdpSocket->joinMulticastGroup(groupAddress);
 
     connect(m_multicastUdpSocket, SIGNAL(readyRead()),

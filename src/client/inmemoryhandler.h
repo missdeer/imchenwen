@@ -33,7 +33,6 @@ private:
     QByteArray m_userAgent;
     QString m_localAddress;
     QNetworkAccessManager m_nam;
-    QHttpEngine::Socket *m_socket;
     QMap<QNetworkReply*, QHttpEngine::Socket *> m_replySocketMap;
     QSet<QNetworkReply*> m_headerWritten;
     QMap<QString, QString> m_urlMap;

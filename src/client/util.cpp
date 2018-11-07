@@ -1,4 +1,5 @@
 #include "util.h"
+#include "config.h"
 #include <QNetworkInterface>
 
 namespace Util {
@@ -22,6 +23,17 @@ namespace Util {
 
     QHostAddress getLocalAddress()
     {
+        Config cfg;
+        QString ip = cfg.read<QString>("dlnaUseIP");
+        if (!ip.isEmpty())
+        {
+            for(auto && address : QNetworkInterface::allAddresses())
+            {
+                if (address == QHostAddress(ip))
+                    return QHostAddress(ip);
+            }
+        }
+
         // see http://stackoverflow.com/questions/13835989/get-local-ip-address-in-qt
         for(auto && address : QNetworkInterface::allAddresses())
         {
