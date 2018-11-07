@@ -1,16 +1,19 @@
 #include "inmemoryhandler.h"
+#include "util.h"
 #include <qhttpengine/socket.h>
 #include <qhttpengine/qiodevicecopier.h>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QUrlQuery>
+#include <QFileInfo>
+#include <QUuid>
 
 using namespace QHttpEngine;
 
 InMemoryHandler::InMemoryHandler(QObject *parent)
     : Handler(parent)
 {
-    m_nam.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+    m_localAddress = Util::getLocalAddress().toString();
 }
 
 void InMemoryHandler::setM3U8(const QByteArray &m3u8)
@@ -26,6 +29,26 @@ void InMemoryHandler::setReferrer(const QByteArray &referrer)
 void InMemoryHandler::setUserAgent(const QByteArray &userAgent)
 {
     m_userAgent = userAgent;
+}
+
+QString InMemoryHandler::mapUrl(const QString &url)
+{
+    QUrl u(url);
+    QFileInfo fi(u.path());
+    QString ext = fi.suffix();
+
+    QString path = QString("%1.%2").arg(QUuid::createUuid().toString(QUuid::WithoutBraces)).arg(ext);
+    m_urlMap.insert(path, url);
+
+    return QString("http://%1:51290/%2").arg(m_localAddress).arg(path);
+}
+
+void InMemoryHandler::clear()
+{
+    m_m3u8.clear();
+    m_referrer.clear();
+    m_userAgent.clear();
+    m_urlMap.clear();
 }
 
 void InMemoryHandler::returnMediaM3U8(Socket *socket)
@@ -68,17 +91,11 @@ void InMemoryHandler::process(Socket *socket, const QString &path)
         return;
     }
 
-    QString rawPath = socket->rawPath();
-    if (rawPath.startsWith("/s/"))
-    {
-        QString url = "https://" + rawPath.mid(3);
-        relayMedia(socket, url);
-    }
+    auto it = m_urlMap.find(path);
+    if (m_urlMap.end() != it)
+        relayMedia(socket, it.value());
     else
-    {
-        QString url = "http:/" + rawPath;
-        relayMedia(socket, url);
-    }
+        socket->writeError(Socket::NotFound);
 }
 
 void InMemoryHandler::onNetworkError(QNetworkReply::NetworkError code)
@@ -124,11 +141,11 @@ void InMemoryHandler::onReadyRead()
 void InMemoryHandler::onReadFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    reply->deleteLater();
 
     Socket* socket = m_replySocketMap[reply];
     socket->write(reply->readAll());
     socket->close();
     m_replySocketMap.remove(reply);
     m_headerWritten.remove(reply);
+    reply->deleteLater();
 }

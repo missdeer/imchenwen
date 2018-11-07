@@ -14,6 +14,8 @@ public:
     void setM3U8(const QByteArray& m3u8);
     void setReferrer(const QByteArray& referrer);
     void setUserAgent(const QByteArray& userAgent);
+    QString mapUrl(const QString& url);
+    void clear();
 protected:
 
     /**
@@ -29,10 +31,12 @@ private:
     QByteArray m_m3u8;
     QByteArray m_referrer;
     QByteArray m_userAgent;
+    QString m_localAddress;
     QNetworkAccessManager m_nam;
     QHttpEngine::Socket *m_socket;
     QMap<QNetworkReply*, QHttpEngine::Socket *> m_replySocketMap;
     QSet<QNetworkReply*> m_headerWritten;
+    QMap<QString, QString> m_urlMap;
     void returnMediaM3U8(QHttpEngine::Socket *socket);
     void relayMedia(QHttpEngine::Socket *socket, const QString& url);
 };
