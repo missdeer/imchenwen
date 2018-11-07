@@ -107,14 +107,15 @@ void DLNAPlayerView::playMedia(const QString &url)
     m_renderer->stopPlayback();
 
     QStringList urls = url.split('\n');
-    QUrl u(url[0]);
+
+    QUrl u(urls[0]);
     m_renderer->setPlaybackUrl(u, QFileInfo(u.path()));
     if (urls.length() > 1)
     {
         for (int i = 1; i < urls.length(); i++)
             m_renderer->setNextPlaybackUrl(QUrl(urls[i]));
     }
-    m_renderer->playPlayback();
+    //m_renderer->playPlayback();
     m_getPositionInfoTimer->start(1000);
 }
 
@@ -282,20 +283,20 @@ void DLNAPlayerView::onLengthChanged(int len)
 {
     if (len == 0) //playing TV
         ui->timeSlider->setEnabled(false);
-    else //playing video
+    else if(len != ui->timeSlider->maximum())//playing video
     {
         ui->timeSlider->setEnabled(true);
         ui->timeSlider->setMaximum(len);
         ui->durationLabel->setText(Util::secToTime(len));
+        activateWindow();
+        raise();
     }
-    activateWindow();
-    raise();
 }
 
 void DLNAPlayerView::onTimeChanged(int time)
 {
     ui->timeLabel->setText(Util::secToTime(time));
-    if (!ui->timeSlider->isSliderDown() && time % 4 == 0) // Make slider easier to drag
+    //if (ui->timeSlider->isSliderDown() && time % 4 == 0) // Make slider easier to drag
         ui->timeSlider->setValue(time);
 }
 
@@ -312,9 +313,11 @@ void DLNAPlayerView::onTimeSliderValueChanged(int time)
     if (m_paused)
         return;
     if (ui->timeSlider->isSliderDown()) // move by mouse
+    {
         ui->timeLabel->setText(Util::secToTime(time));
-    else // move by keyboard
-        m_renderer->seekPlayback(QTime::fromString(Util::secToTime(time), "h:m:s"));
+
+        //m_renderer->seekPlayback(QTime::fromString(Util::secToTime(time), "h:m:s"));
+    }
 }
 
 void DLNAPlayerView::onTimeSliderReleased()
@@ -356,8 +359,12 @@ void DLNAPlayerView::onResume()
 
 void DLNAPlayerView::onReceivePlaybackInfo(DLNAPlaybackInfo *info)
 {
-    int relTime = info->relTime.hour() * 3600 + info->relTime.minute() * 60 + info->relTime.second();
-    int trackDuration = info->trackDuration.hour() * 3600 + info->trackDuration.minute() * 60 + info->trackDuration.second();
+    int relTime = 0;
+    if (info->relTime.isValid())
+        relTime = info->relTime.hour() * 3600 + info->relTime.minute() * 60 + info->relTime.second();
+    int trackDuration = 0;
+    if (info->trackDuration.isValid())
+        trackDuration = info->trackDuration.hour() * 3600 + info->trackDuration.minute() * 60 + info->trackDuration.second();
     qDebug() << __FUNCTION__
              << info->relTime
              << info->trackDuration

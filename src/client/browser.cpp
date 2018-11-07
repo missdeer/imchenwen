@@ -200,7 +200,9 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
         media = QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString());
     }
 
-    if (player->type() == Player::PT_DLNA && !QUrl(media).path().endsWith("m3u8", Qt::CaseInsensitive))
+    if (player->type() == Player::PT_DLNA
+            && !QUrl(media).path().endsWith("m3u8", Qt::CaseInsensitive)
+            && QUrl(media).hasQuery())
     {
         // DLNA not support m3u8?
         m_httpHandler.clear();

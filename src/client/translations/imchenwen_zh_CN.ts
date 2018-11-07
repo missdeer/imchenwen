@@ -4,39 +4,39 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="462"/>
+        <location filename="../browser.cpp" line="464"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="462"/>
+        <location filename="../browser.cpp" line="464"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="473"/>
+        <location filename="../browser.cpp" line="475"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="483"/>
+        <location filename="../browser.cpp" line="485"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="486"/>
+        <location filename="../browser.cpp" line="488"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="489"/>
+        <location filename="../browser.cpp" line="491"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="493"/>
+        <location filename="../browser.cpp" line="495"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -340,7 +340,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>DLNAPlayerView</name>
     <message>
         <location filename="../dlna/dlnaplayerview.ui" line="17"/>
-        <location filename="../dlna/dlnaplayerview.cpp" line="125"/>
+        <location filename="../dlna/dlnaplayerview.cpp" line="126"/>
         <source>imchenwen DMC</source>
         <translation>某橙DMC</translation>
     </message>
