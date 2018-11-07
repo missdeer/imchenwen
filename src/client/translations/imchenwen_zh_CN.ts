@@ -835,7 +835,7 @@ MPV错误：</translation>
     <message>
         <location filename="../settings.ui" line="221"/>
         <source>DLNA use IP:</source>
-        <translation type="unfinished"></translation>
+        <translation>DLNA投屏使用IP：</translation>
     </message>
     <message>
         <location filename="../settings.ui" line="235"/>
