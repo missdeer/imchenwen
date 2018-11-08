@@ -11,6 +11,7 @@
 #include <QSysInfo>
 #include <QtCore>
 
+namespace {
 // wayland fix
 #ifdef Q_OS_LINUX
 #include <QGuiApplication>
@@ -26,7 +27,7 @@ static void *GLAPIENTRY glMPGetNativeDisplay(const char *name)
 }
 #endif
 
-static void postEvent(void *ptr)
+static void wakeup(void *ptr)
 {
     PlayerCore *core = (PlayerCore*) ptr;
     QCoreApplication::postEvent(core, new QEvent(QEvent::User));
@@ -43,13 +44,15 @@ static void *get_proc_address(void *, const char *name)
     QOpenGLContext *glctx = QOpenGLContext::currentContext();
     if (!glctx)
         return nullptr;
-    return (void*) glctx->getProcAddress(name);
+
+    return reinterpret_cast<void *>(glctx->getProcAddress(QByteArray(name)));
+}
 }
 
-PlayerCore::PlayerCore(QWidget *parent) :
-    QOpenGLWidget(parent)
+PlayerCore::PlayerCore(QWidget *parent)
+    : QOpenGLWidget(parent)
+    , m_mpvGL(nullptr)
 {
-    qDebug("Initialize mpv backend...\n");
     setFocusPolicy(Qt::StrongFocus);
 
     // create mpv instance
@@ -57,7 +60,6 @@ PlayerCore::PlayerCore(QWidget *parent) :
     if (!m_mpv)
     {
         qDebug("Cannot create mpv instance.");
-        exit(-1);
     }
 
     // set mpv options
@@ -115,7 +117,7 @@ PlayerCore::PlayerCore(QWidget *parent) :
     mpv_observe_property(m_mpv, 0, "core-idle",        MPV_FORMAT_FLAG);
     mpv_observe_property(m_mpv, 0, "track-list",       MPV_FORMAT_NODE);
     mpv_observe_property(m_mpv, 0, "sid",              MPV_FORMAT_INT64);
-    mpv_set_wakeup_callback(m_mpv, postEvent, this);
+    mpv_set_wakeup_callback(m_mpv, wakeup, this);
 
     // initialize mpv
     if (mpv_initialize(m_mpv) < 0)
@@ -124,15 +126,30 @@ PlayerCore::PlayerCore(QWidget *parent) :
         exit(EXIT_FAILURE);
     }
 
+#ifdef USE_OPENGL_CB
     // initialize opengl
     m_mpvGL = (mpv_opengl_cb_context*) mpv_get_sub_api(m_mpv, MPV_SUB_API_OPENGL_CB);
     if (!m_mpvGL)
     {
         qDebug("OpenGL not compiled in");
-        exit(EXIT_FAILURE);
     }
     mpv_opengl_cb_set_update_callback(m_mpvGL, PlayerCore::on_update, (void*) this);
     connect(this, &PlayerCore::frameSwapped, this, &PlayerCore::swapped);
+#else
+    if (!m_mpvGL)
+    {
+        mpv_opengl_init_params gl_init_params{get_proc_address, nullptr, nullptr};
+        mpv_render_param params[]{
+            {MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_OPENGL)},
+            {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
+            {MPV_RENDER_PARAM_INVALID, nullptr}
+        };
+
+        if (mpv_render_context_create(&m_mpvGL, m_mpv, params) < 0)
+            qDebug("failed to initialize mpv GL context");
+        mpv_render_context_set_update_callback(m_mpvGL, PlayerCore::on_update, (void*) this);
+    }
+#endif
 
     // set state
     state = STOPPING;
@@ -147,6 +164,8 @@ PlayerCore::PlayerCore(QWidget *parent) :
 void PlayerCore::initializeGL()
 {
     qDebug() << "OpenGL Version: " << context()->format().majorVersion() << "." << context()->format().minorVersion();
+
+#ifdef USE_OPENGL_CB
 #ifdef Q_OS_LINUX
     int r = mpv_opengl_cb_init_gl(m_mpvGL, "GL_MP_MPGetNativeDisplay", get_proc_address, nullptr);
 #else
@@ -155,18 +174,44 @@ void PlayerCore::initializeGL()
     if (r < 0)
     {
         qDebug("Cannot initialize OpenGL.");
-        exit(EXIT_FAILURE);
     }
+#endif
 }
 
 void PlayerCore::paintGL()
 {
+#ifdef USE_OPENGL_CB
     mpv_opengl_cb_draw(m_mpvGL, defaultFramebufferObject(), width() * devicePixelRatioF(), -height() * devicePixelRatioF());
+#else
+    mpv_opengl_fbo mpfbo = {
+        static_cast<int>(defaultFramebufferObject()),
+                width() * devicePixelRatioF(),
+                height() * devicePixelRatioF(),
+                0
+    };
+    int flip_y = 1;
+
+    mpv_render_param params[] = {
+        // Specify the default framebuffer (0) as target. This will
+        // render onto the entire screen. If you want to show the video
+        // in a smaller rectangle or apply fancy transformations, you'll
+        // need to render into a separate FBO and draw it manually.
+        {MPV_RENDER_PARAM_OPENGL_FBO, &mpfbo},
+        // Flip rendering (needed due to flipped GL coordinate system).
+        {MPV_RENDER_PARAM_FLIP_Y, &flip_y},
+        {MPV_RENDER_PARAM_INVALID, nullptr}
+    };
+    // See render_gl.h on what OpenGL environment mpv expects, and
+    // other API details.
+    mpv_render_context_render(m_mpvGL, params);
+#endif
 }
 
 void PlayerCore::swapped()
 {
+#ifdef USE_OPENGL_CB
     mpv_opengl_cb_report_flip(m_mpvGL, 0);
+#endif
 }
 
 void PlayerCore::maybeUpdate()
@@ -201,9 +246,14 @@ void PlayerCore::unpauseRendering()
 PlayerCore::~PlayerCore()
 {
     makeCurrent();
-    if (m_mpvGL)
-        mpv_opengl_cb_set_update_callback(m_mpvGL, nullptr, nullptr);
+
+#ifdef USE_OPENGL_CB
+    mpv_opengl_cb_set_update_callback(m_mpvGL, nullptr, nullptr);
     mpv_opengl_cb_uninit_gl(m_mpvGL);
+#else
+    mpv_render_context_set_update_callback(m_mpvGL, nullptr, nullptr);
+    mpv_render_context_free(m_mpvGL);
+#endif
     m_mpvGL = nullptr;
 }
 

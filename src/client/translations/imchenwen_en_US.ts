@@ -494,34 +494,34 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="273"/>
+        <location filename="../mpv/playercore.cpp" line="323"/>
         <source>Fails to load: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="274"/>
+        <location filename="../mpv/playercore.cpp" line="324"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="275"/>
+        <location filename="../mpv/playercore.cpp" line="325"/>
         <source>Try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="272"/>
-        <location filename="../mpv/playercore.cpp" line="693"/>
+        <location filename="../mpv/playercore.cpp" line="322"/>
+        <location filename="../mpv/playercore.cpp" line="743"/>
         <source>MPV Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="694"/>
+        <location filename="../mpv/playercore.cpp" line="744"/>
         <source>Error while playing file:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="694"/>
+        <location filename="../mpv/playercore.cpp" line="744"/>
         <source>
 
 MPV Error: </source>

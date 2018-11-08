@@ -14,6 +14,18 @@ class QResizeEvent;
 class QLabel;
 QT_END_NAMESPACE
 
+#if MPV_CLIENT_API_VERSION < MPV_MAKE_VERSION(1, 28)
+#define USE_OPENGL_CB
+#endif
+
+#ifdef USE_OPENGL_CB
+#include <mpv/opengl_cb.h>
+typedef mpv_opengl_cb_context mpv_context;
+#else
+#include <mpv/render_gl.h>
+typedef mpv_render_context mpv_context;
+#endif
+
 class PlayerCore : public QOpenGLWidget
 {
     Q_OBJECT
@@ -86,7 +98,7 @@ protected:
 
 private:
     mpv::qt::Handle m_mpv;
-    mpv_opengl_cb_context *m_mpvGL;
+    mpv_context  *m_mpvGL;
     QString m_mediaFile;
     QString m_audioTrack;
     QStringList m_audioTracksList;
