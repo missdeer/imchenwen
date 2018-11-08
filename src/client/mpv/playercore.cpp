@@ -123,7 +123,6 @@ PlayerCore::PlayerCore(QWidget *parent)
     if (mpv_initialize(m_mpv) < 0)
     {
         qDebug("Cannot initialize mpv.");
-        exit(EXIT_FAILURE);
     }
 
 #ifdef USE_OPENGL_CB
