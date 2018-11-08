@@ -41,7 +41,7 @@ private:
     QString m_serverName;
 signals:
     void receivePlaybackInfo(DLNAPlaybackInfo*);
-    void receivedResponse(const QString, const QString);
+    void receivedResponse(const QString&, const QString&);
 
 };
 

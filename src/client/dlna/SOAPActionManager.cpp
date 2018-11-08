@@ -53,9 +53,9 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     // If you want to add new action, which needs data processing, do it here.
 
     if (action == "GetPositionInfo")
-        connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
+        connect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processPlaybackInfo);
     else
-        connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
+        connect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processData);
 
     m_nam->post(request, data.toUtf8());
 }
@@ -69,7 +69,7 @@ void SOAPActionManager::processData(QNetworkReply *reply)
     // We want to be able to connect it to few slots, so lets disconnect it for now
     disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
 
-    qDebug() << "SOAPActionManager: Got xml response " + data;
+    qDebug() << "Got XML response:" << data;
     // Initial value, used if response type is not detected
     QString responseType = "UNDEFINED";
 
@@ -92,7 +92,7 @@ void SOAPActionManager::processPlaybackInfo(QNetworkReply *reply)
     reply->deleteLater();
 
     // We want to be able to connect it to few slots, so lets disconnect it for now
-    disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processPlaybackInfo(QNetworkReply*)));
+    disconnect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processPlaybackInfo);
 
     DLNAPlaybackInfo playbackInfo;
     // Parse return url

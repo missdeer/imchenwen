@@ -6,7 +6,7 @@ SSDPdiscovery::SSDPdiscovery(QObject *parent)
     : QObject(parent)
     , m_nam(new QNetworkAccessManager(this))
 {
-    connect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
+    connect(m_nam, &QNetworkAccessManager::finished, this, &SSDPdiscovery::processData);
 }
 
 SSDPdiscovery::~SSDPdiscovery()

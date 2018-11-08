@@ -8,9 +8,8 @@ DLNARenderer::DLNARenderer(QUrl url, QObject *parent)
     , m_sam(new SOAPActionManager())
     , m_serverUrl(url)
 {
-    // Pass SOAPActionManager's signals to parent class
-    connect(m_sam, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)), this, SIGNAL(receivePlaybackInfo(DLNAPlaybackInfo*)));
-    connect(m_sam, SIGNAL(receivedResponse(const QString,const QString)), this, SIGNAL(receivedResponse(const QString, const QString)));
+    connect(m_sam, &SOAPActionManager::receivePlaybackInfo, this, &DLNARenderer::receivePlaybackInfo);
+    connect(m_sam, &SOAPActionManager::receivedResponse, this, &DLNARenderer::receivedResponse);
 }
 
 QString DLNARenderer::getName()
@@ -50,7 +49,7 @@ void DLNARenderer::setPlaybackUrl(const QUrl & url, const QFileInfo &fileInfo)
 void DLNARenderer::setNextPlaybackUrl(const QUrl & url)
 {
     QMap<QString, QString> dataMap;
-    // Add URI to request, URL-encode it
+
     QString urlString = url.toString().replace(url.fileName(), QString(QUrl::toPercentEncoding(url.fileName())));
     dataMap.insert("NextURI", urlString);
     dataMap.insert("NextURIMetaData", "");
@@ -76,7 +75,8 @@ void DLNARenderer::pausePlayback()
 
 void DLNARenderer::resumePlayback()
 {
-    m_sam->doAction("Resume", QMap<QString, QString>(), m_fullcontrolUrl);
+    m_sam->doAction("Play", QMap<QString, QString>(), m_fullcontrolUrl);
+    // then seek?
 }
 
 void DLNARenderer::stopPlayback()

@@ -35,7 +35,7 @@ DLNARenderer *Kast::renderer(const QString &name)
     return nullptr;
 }
 
-void Kast::onHttpResponse(const QString responseType, const QString data)
+void Kast::onHttpResponse(const QString& responseType, const QString& data)
 {
     Q_UNUSED(data); //May be needed in the future
     // Get renderer object
@@ -43,14 +43,22 @@ void Kast::onHttpResponse(const QString responseType, const QString data)
     qDebug() << "^Detected response type: "+responseType;
 
     // Handle responses
-    if(responseType == "StopResponse")
-    {
-
-    }
-    else if(responseType == "SetAVTransportURIResponse")
+    if (responseType == "SetAVTransportURIResponse")
     {
         // Just play the playback url
         renderer->playPlayback();
+    }
+    else if (responseType == "StopResponse")
+    {
+
+    }
+    else if (responseType == "PlayResponse")
+    {
+
+    }
+    else if (responseType == "SeekResponse")
+    {
+
     }
 }
 

@@ -17,7 +17,7 @@ signals:
 
 private slots:
     void onFoundRenderer(DLNARenderer*);
-    void onHttpResponse(const QString, const QString);
+    void onHttpResponse(const QString &, const QString &);
 private:
     QMap<QString, DLNARenderer *> m_renderers;
 };
