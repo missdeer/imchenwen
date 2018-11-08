@@ -29,7 +29,7 @@ static void *GLAPIENTRY glMPGetNativeDisplay(const char *name)
 
 static void wakeup(void *ptr)
 {
-    PlayerCore *core = (PlayerCore*) ptr;
+    PlayerCore *core = static_cast<PlayerCore*>(ptr);
     QCoreApplication::postEvent(core, new QEvent(QEvent::User));
 }
 
@@ -146,7 +146,7 @@ PlayerCore::PlayerCore(QWidget *parent)
 
         if (mpv_render_context_create(&m_mpvGL, m_mpv, params) < 0)
             qDebug("failed to initialize mpv GL context");
-        mpv_render_context_set_update_callback(m_mpvGL, PlayerCore::on_update, (void*) this);
+        mpv_render_context_set_update_callback(m_mpvGL, PlayerCore::on_update, static_cast<void *>(this));
     }
 #endif
 
@@ -182,10 +182,10 @@ void PlayerCore::paintGL()
 #ifdef USE_OPENGL_CB
     mpv_opengl_cb_draw(m_mpvGL, defaultFramebufferObject(), width() * devicePixelRatioF(), -height() * devicePixelRatioF());
 #else
-    mpv_opengl_fbo mpfbo = {
+    mpv_opengl_fbo mpfbo {
         static_cast<int>(defaultFramebufferObject()),
-                width() * devicePixelRatioF(),
-                height() * devicePixelRatioF(),
+                width() * devicePixelRatio(),
+                height() * devicePixelRatio(),
                 0
     };
     int flip_y = 1;
@@ -229,7 +229,7 @@ void PlayerCore::maybeUpdate()
 
 void PlayerCore::on_update(void *ctx)
 {
-    QMetaObject::invokeMethod((PlayerCore*) ctx, "maybeUpdate", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(static_cast<PlayerCore*>(ctx), "maybeUpdate", Qt::QueuedConnection);
 }
 
 void PlayerCore::pauseRendering()
@@ -318,10 +318,11 @@ bool PlayerCore::event(QEvent *e)
             mpv_event_end_file *ef = static_cast<mpv_event_end_file*>(event->data);
             if (ef->error == MPV_ERROR_LOADING_FAILED)
             {
-                m_reloadWhenIdle = (bool) QMessageBox::question(this, tr("MPV Error"),
-                                      tr("Fails to load: ") + m_mediaFile,
-                                      tr("Skip"),
-                                      tr("Try again"));
+                m_reloadWhenIdle =  (QMessageBox::question(this,
+                                                           tr("MPV Error"),
+                                                           tr("Fails to load: ") + m_mediaFile,
+                                                           tr("Skip"),
+                                                           tr("Try again")) == 1);
                 if (m_reloadWhenIdle)
                 {
                     state = STOPPING;
@@ -360,7 +361,7 @@ bool PlayerCore::event(QEvent *e)
         }
         case MPV_EVENT_PROPERTY_CHANGE:
         {
-            mpv_event_property *prop = (mpv_event_property*) event->data;
+            mpv_event_property *prop = static_cast<mpv_event_property*>(event->data);
             if (prop->data == nullptr)
                 break;
             QByteArray propName = prop->name;
