@@ -206,12 +206,21 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
     {
         // DLNA not support m3u8?
         m_httpHandler.clear();
-        QStringList medias;
-        for (const auto & u : urls)
+        if ((QUrl(media).path().endsWith(".ts", Qt::CaseInsensitive)
+             || QUrl(media).path().endsWith(".265ts", Qt::CaseInsensitive))
+                && urls.length() > 50)
         {
-            medias.append(m_httpHandler.mapUrl(u));
+            media = m_httpHandler.mapUrl(urls);
         }
-        media = medias.join('\n');
+        else
+        {
+            QStringList medias;
+            for (const auto & u : urls)
+            {
+                medias.append(m_httpHandler.mapUrl(u));
+            }
+            media = medias.join('\n');
+        }
         if (!referrer.isEmpty())
         {
             m_httpHandler.setReferrer(referrer.toUtf8());
