@@ -2,6 +2,7 @@
 #include "DLNAPlaybackInfo.h"
 #include "MimeGuesser.h"
 #include <QDebug>
+#include <QDomDocument>
 
 // Xml request's body
 const QString SOAPXmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
@@ -67,7 +68,7 @@ void SOAPActionManager::processData(QNetworkReply *reply)
     reply->deleteLater();
 
     // We want to be able to connect it to few slots, so lets disconnect it for now
-    disconnect(m_nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(processData(QNetworkReply*)));
+    disconnect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processData);
 
     qDebug() << "Got XML response:" << data;
     // Initial value, used if response type is not detected
@@ -87,7 +88,7 @@ void SOAPActionManager::processData(QNetworkReply *reply)
 void SOAPActionManager::processPlaybackInfo(QNetworkReply *reply)
 {
     // Construct xml parser, from reply's data, close socket
-    QXmlStreamReader xml(reply->readAll());
+    QByteArray data = reply->readAll();
     reply->close();
     reply->deleteLater();
 
@@ -95,17 +96,28 @@ void SOAPActionManager::processPlaybackInfo(QNetworkReply *reply)
     disconnect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processPlaybackInfo);
 
     DLNAPlaybackInfo playbackInfo;
-    // Parse return url
-    while(!xml.hasError() && !xml.atEnd())
-    {
-        xml.readNextStartElement();
-        if(xml.name() == "RelTime")
-            playbackInfo.relTime = QTime::fromString(xml.readElementText(), "hh:mm:ss");
-        else if(xml.name() == "TrackDuration")
-            playbackInfo.trackDuration = QTime::fromString(xml.readElementText(), "hh:mm:ss");
-    }
+    QDomDocument doc;
+    doc.setContent(data);
+    QDomElement docElem = doc.documentElement();
+    if (docElem.isNull())
+        return;
+    QDomElement bodyElem = docElem.firstChildElement("s:Body");
+    if (bodyElem.isNull())
+        return;
+    QDomElement responseElem = bodyElem.firstChildElement("u:GetPositionInfoResponse");
+    if (responseElem.isNull())
+        return;
+    QDomElement relTimeElem = responseElem.firstChildElement("RelTime");
+    if (relTimeElem.isNull())
+        return;
+    playbackInfo.relTime = QTime::fromString(relTimeElem.text(), "hh:mm:ss");
+    QDomElement trackDurationElem = responseElem.firstChildElement("TrackDuration");
+    if (trackDurationElem.isNull())
+        return;
+    playbackInfo.trackDuration = QTime::fromString(trackDurationElem.text(), "hh:mm:ss");
 
-    emit receivePlaybackInfo(&playbackInfo);
+    if (playbackInfo.relTime.isValid() && playbackInfo.trackDuration.isValid())
+        emit receivePlaybackInfo(&playbackInfo);
 }
 
 // Generates DIDL-Lite metadata

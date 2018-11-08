@@ -340,7 +340,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>DLNAPlayerView</name>
     <message>
         <location filename="../dlna/dlnaplayerview.ui" line="17"/>
-        <location filename="../dlna/dlnaplayerview.cpp" line="126"/>
+        <location filename="../dlna/dlnaplayerview.cpp" line="125"/>
         <source>imchenwen DMC</source>
         <translation>某橙DMC</translation>
     </message>

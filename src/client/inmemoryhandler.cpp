@@ -104,6 +104,7 @@ void InMemoryHandler::relayMedia(Socket *socket, const QStringList &urls, int in
     QNetworkRequest req;
     req.setAttribute(QNetworkRequest::User, index);
     req.setAttribute((QNetworkRequest::Attribute)(QNetworkRequest::User + 1), QVariant::fromValue(&urls));
+    qDebug() << __FUNCTION__ << index << urls[index];
     QUrl u(urls[index]);
     req.setUrl(u);
     if (!m_userAgent.isEmpty())
@@ -111,7 +112,6 @@ void InMemoryHandler::relayMedia(Socket *socket, const QStringList &urls, int in
     if (!m_referrer.isEmpty())
         req.setRawHeader("Referer", m_referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-
     QNetworkReply* reply = m_nam.get(req);
     m_replySocketMap.insert(reply, socket);
     if (index > 0)
@@ -147,7 +147,7 @@ void InMemoryHandler::process(Socket *socket, const QString &path)
     auto it1toN = m_1toNUrlMap.find(path);
     if (m_1toNUrlMap.end() != it1toN)
     {
-        qDebug() << __FUNCTION__ << it1to1.key() << it1toN.value().length() << "urls";
+        qDebug() << __FUNCTION__ << it1toN.key() << it1toN.value().length() << "urls";
         relayMedia(socket, it1toN.value(), 0);
         return;
     }
@@ -221,6 +221,7 @@ void InMemoryHandler::onMultiMediaReadFinished()
     m_headerWritten.remove(reply);
     reply->deleteLater();
 
+    qDebug() << __FUNCTION__ << index << urls->length();
     if (index >= urls->length())
         socket->close();
     else
