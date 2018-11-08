@@ -28,6 +28,7 @@ public:
     void playPlayback();
     void stopPlayback();
     void pausePlayback();
+    void resumePlayback();
     void seekPlayback(QTime time);
 
     void nextItem();

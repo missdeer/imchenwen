@@ -341,6 +341,8 @@ void DLNAPlayerView::onPlay()
     m_renderer->playPlayback();
     m_getPositionInfoTimer->start(1000);
     m_paused = false;
+    ui->playButton->hide();
+    ui->pauseButton->show();
 }
 
 void DLNAPlayerView::onPause()
@@ -348,13 +350,17 @@ void DLNAPlayerView::onPause()
     m_renderer->pausePlayback();
     m_getPositionInfoTimer->stop();
     m_paused = true;
+    ui->playButton->show();
+    ui->pauseButton->hide();
 }
 
 void DLNAPlayerView::onResume()
 {
-    m_renderer->playPlayback();
+    m_renderer->resumePlayback();
     m_getPositionInfoTimer->start(1000);
     m_paused = false;
+    ui->playButton->hide();
+    ui->pauseButton->show();
 }
 
 void DLNAPlayerView::onReceivePlaybackInfo(DLNAPlaybackInfo *info)
