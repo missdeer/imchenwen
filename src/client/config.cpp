@@ -16,13 +16,7 @@ void Config::read(const QString& key, QString& value)
 
 void Config::read(const QString& key, QStringList& res)
 {
-    int size = settings().beginReadArray(key);
-    for (int i = 0; i < size; ++i)
-    {
-        settings().setArrayIndex(i);
-        res.push_back(settings().value("value").toString());;
-    }
-    settings().endArray();
+    res = settings().value(key).toStringList();
 }
 
 void Config::read(const QString& key, Tuple2List& res)
@@ -94,14 +88,7 @@ void Config::read(const QString &key, PlayerList &players)
 
 void Config::write(const QString& key, const QStringList& array)
 {
-    settings().remove(key);
-    settings().beginWriteArray(key);
-    for (int i = 0; i < array.size(); ++i)
-    {
-        settings().setArrayIndex(i);
-        settings().setValue("value", array.at(i));
-    }
-    settings().endArray();
+    settings().setValue(key, array);
     settings().sync();
 }
 
@@ -262,4 +249,10 @@ QVariant Config::read<QVariant>(const QString& key)
 QVariant Config::read(const QString& key, const QVariant& defaultValue)
 {
     return settings().value(key, defaultValue);
+}
+
+template<>
+QStringList Config::read<QStringList>(const QString &key)
+{
+    return settings().value(key).toStringList();
 }

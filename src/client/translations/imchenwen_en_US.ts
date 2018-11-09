@@ -995,10 +995,11 @@ MPV Error: </source>
     </message>
     <message>
         <location filename="../settings.ui" line="697"/>
-        <location filename="../settings.ui" line="772"/>
-        <location filename="../settings.ui" line="793"/>
-        <location filename="../settings.ui" line="814"/>
-        <location filename="../settings.ui" line="835"/>
+        <location filename="../settings.ui" line="760"/>
+        <location filename="../settings.ui" line="781"/>
+        <location filename="../settings.ui" line="802"/>
+        <location filename="../settings.ui" line="823"/>
+        <location filename="../settings.ui" line="844"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1009,8 +1010,10 @@ MPV Error: </source>
     </message>
     <message>
         <location filename="../settings.ui" line="718"/>
-        <location filename="../settings.ui" line="931"/>
-        <location filename="../settings.ui" line="1039"/>
+        <location filename="../settings.ui" line="903"/>
+        <location filename="../settings.ui" line="965"/>
+        <location filename="../settings.ui" line="1042"/>
+        <location filename="../settings.ui" line="1101"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1021,8 +1024,8 @@ MPV Error: </source>
     </message>
     <message>
         <location filename="../settings.ui" line="732"/>
-        <location filename="../settings.ui" line="955"/>
-        <location filename="../settings.ui" line="1063"/>
+        <location filename="../settings.ui" line="989"/>
+        <location filename="../settings.ui" line="1125"/>
         <source>Modify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1032,103 +1035,119 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="760"/>
+        <location filename="../settings.ui" line="748"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;you-get: &lt;a href=&quot;https://you-get.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://you-get.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="781"/>
+        <location filename="../settings.ui" line="769"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ykdl: &lt;a href=&quot;https://github.com/zhangn1985/ykdl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/zhangn1985/ykdl&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="802"/>
+        <location filename="../settings.ui" line="790"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;youtube-dl: &lt;a href=&quot;https://rg3.github.io/youtube-dl/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://rg3.github.io/youtube-dl/index.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="823"/>
+        <location filename="../settings.ui" line="811"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;annie: &lt;a href=&quot;https://github.com/iawia002/annie&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iawia002/annie&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="858"/>
+        <location filename="../settings.ui" line="832"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FFmpeg: &lt;a href=&quot;https://www.ffmpeg.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://www.ffmpeg.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="867"/>
         <source>Live TV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="888"/>
-        <location filename="../settings.ui" line="1015"/>
-        <source>Name</source>
+        <location filename="../settings.ui" line="885"/>
+        <source>Live TV subscription:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="898"/>
-        <location filename="../settings.ui" line="1025"/>
-        <source>URL</source>
+        <location filename="../settings.ui" line="900"/>
+        <source>Add live TV subscription</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="908"/>
-        <source>Category</source>
+        <location filename="../settings.ui" line="910"/>
+        <source>Remove selected live TV subscription</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="915"/>
-        <location filename="../settings.ui" line="919"/>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.ui" line="938"/>
-        <source>Import Live TV items from file</source>
+        <location filename="../settings.ui" line="922"/>
+        <source>Custom Live TV items:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings.ui" line="941"/>
-        <location filename="../settings.ui" line="1049"/>
-        <source>Import...</source>
+        <location filename="../settings.ui" line="1077"/>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="948"/>
-        <location filename="../settings.ui" line="1056"/>
-        <source>-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.ui" line="962"/>
-        <source>Export Live TV item to file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.ui" line="965"/>
-        <location filename="../settings.ui" line="1073"/>
-        <source>Export...</source>
+        <location filename="../settings.ui" line="951"/>
+        <location filename="../settings.ui" line="1087"/>
+        <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings.ui" line="972"/>
-        <source>Check Live TV item availability</source>
+        <source>Import Live TV items from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings.ui" line="975"/>
-        <source>Check</source>
+        <location filename="../settings.ui" line="1111"/>
+        <source>Import...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="985"/>
+        <location filename="../settings.ui" line="913"/>
+        <location filename="../settings.ui" line="982"/>
+        <location filename="../settings.ui" line="1049"/>
+        <location filename="../settings.ui" line="1118"/>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="996"/>
+        <source>Export Live TV item to file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="999"/>
+        <location filename="../settings.ui" line="1135"/>
+        <source>Export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="1009"/>
         <source>VIP Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="1046"/>
+        <location filename="../settings.ui" line="1027"/>
+        <source>VIP video resolver subscription:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="1058"/>
+        <source>Custom VIP video resolvers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="1108"/>
         <source>Import VIP video items from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="1070"/>
+        <location filename="../settings.ui" line="1132"/>
         <source>Export VIP video items to file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1136,223 +1155,219 @@ MPV Error: </source>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../settings.cpp" line="130"/>
-        <location filename="../settings.cpp" line="132"/>
-        <location filename="../settings.cpp" line="497"/>
-        <location filename="../settings.cpp" line="774"/>
-        <location filename="../settings.cpp" line="804"/>
+        <location filename="../settings.cpp" line="858"/>
+        <location filename="../settings.cpp" line="965"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="134"/>
-        <location filename="../settings.cpp" line="609"/>
-        <location filename="../settings.cpp" line="620"/>
-        <source>New category...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.cpp" line="346"/>
+        <location filename="../settings.cpp" line="382"/>
         <source>Select media player executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="358"/>
-        <location filename="../settings.cpp" line="381"/>
-        <location filename="../settings.cpp" line="485"/>
-        <location filename="../settings.cpp" line="644"/>
+        <location filename="../settings.cpp" line="394"/>
+        <location filename="../settings.cpp" line="417"/>
+        <location filename="../settings.cpp" line="538"/>
+        <location filename="../settings.cpp" line="578"/>
+        <location filename="../settings.cpp" line="693"/>
+        <location filename="../settings.cpp" line="733"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="358"/>
+        <location filename="../settings.cpp" line="394"/>
         <source>Please input player path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="365"/>
-        <location filename="../settings.cpp" line="494"/>
-        <location filename="../settings.cpp" line="651"/>
+        <location filename="../settings.cpp" line="401"/>
+        <location filename="../settings.cpp" line="543"/>
+        <location filename="../settings.cpp" line="587"/>
+        <location filename="../settings.cpp" line="698"/>
+        <location filename="../settings.cpp" line="740"/>
         <source>Duplicated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="365"/>
+        <location filename="../settings.cpp" line="401"/>
         <source>This configuration item exists already.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="381"/>
+        <location filename="../settings.cpp" line="417"/>
         <source>Please select an item in list to be removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="416"/>
+        <location filename="../settings.cpp" line="452"/>
         <source>Select you-get executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="419"/>
+        <location filename="../settings.cpp" line="455"/>
         <source>you-get executable (you-get.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="421"/>
+        <location filename="../settings.cpp" line="457"/>
         <source>you-get executable (you-get)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="433"/>
+        <location filename="../settings.cpp" line="469"/>
         <source>Select ykdl executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="436"/>
+        <location filename="../settings.cpp" line="472"/>
         <source>ykdl executable (ykdl.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="438"/>
+        <location filename="../settings.cpp" line="474"/>
         <source>ykdl executable (ykdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="450"/>
+        <location filename="../settings.cpp" line="486"/>
         <source>Select youtube-dl executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="453"/>
+        <location filename="../settings.cpp" line="489"/>
         <source>youtube-dl executable (youtube-dl.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="455"/>
+        <location filename="../settings.cpp" line="491"/>
         <source>youtube-dl executable (youtube-dl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="467"/>
+        <location filename="../settings.cpp" line="503"/>
         <source>Select annie executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="470"/>
+        <location filename="../settings.cpp" line="506"/>
         <source>annie executable (annie.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="472"/>
+        <location filename="../settings.cpp" line="508"/>
         <source>annie executable (annie)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="485"/>
+        <location filename="../settings.cpp" line="520"/>
+        <source>Select FFmpeg executable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.cpp" line="523"/>
+        <source>FFmpeg executable (ffmpeg.exe)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.cpp" line="525"/>
+        <source>FFmpeg executable (ffmpeg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.cpp" line="538"/>
+        <source>Please input live TV subscription URL.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.cpp" line="543"/>
+        <source>This live TV subscription exists already.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings.cpp" line="578"/>
         <source>Please input Live TV name and URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="494"/>
+        <location filename="../settings.cpp" line="587"/>
         <source>This Live TV item exists already.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="546"/>
+        <location filename="../settings.cpp" line="634"/>
         <source>Select Live TV list to import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="548"/>
-        <location filename="../settings.cpp" line="697"/>
+        <location filename="../settings.cpp" line="636"/>
+        <location filename="../settings.cpp" line="786"/>
         <source>Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="574"/>
+        <location filename="../settings.cpp" line="662"/>
         <source>Export Live TV list to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="576"/>
-        <location filename="../settings.cpp" line="725"/>
+        <location filename="../settings.cpp" line="664"/>
+        <location filename="../settings.cpp" line="814"/>
         <source>JSON format (*.json);;Plain text format (*.txt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="613"/>
-        <source>New category</source>
+        <location filename="../settings.cpp" line="693"/>
+        <source>Please input VIP video subscription URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="614"/>
-        <source>Please input new category name:</source>
+        <location filename="../settings.cpp" line="698"/>
+        <source>This VIP video subscription exists already.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="622"/>
-        <source>Reserved name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.cpp" line="622"/>
-        <source>This name is reserved, please choose another one.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.cpp" line="628"/>
-        <source>Existing name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.cpp" line="628"/>
-        <source>This name exists, please choose another one.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.cpp" line="644"/>
+        <location filename="../settings.cpp" line="733"/>
         <source>Please input VIP video name and URL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="651"/>
+        <location filename="../settings.cpp" line="740"/>
         <source>This VIP video item exists already.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="695"/>
+        <location filename="../settings.cpp" line="784"/>
         <source>Select VIP video list to import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="723"/>
+        <location filename="../settings.cpp" line="812"/>
         <source>Export VIP video list to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="761"/>
+        <location filename="../settings.cpp" line="850"/>
         <source>Error on importing live TV list as JSON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="864"/>
+        <location filename="../settings.cpp" line="957"/>
         <source>Error on importing VIP video list as JSON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="959"/>
-        <location filename="../settings.cpp" line="966"/>
+        <location filename="../settings.cpp" line="1061"/>
+        <location filename="../settings.cpp" line="1072"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="959"/>
-        <location filename="../settings.cpp" line="966"/>
+        <location filename="../settings.cpp" line="1061"/>
+        <location filename="../settings.cpp" line="1065"/>
+        <location filename="../settings.cpp" line="1072"/>
+        <location filename="../settings.cpp" line="1076"/>
         <source>URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings.cpp" line="959"/>
-        <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

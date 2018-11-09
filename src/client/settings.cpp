@@ -40,9 +40,11 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnModifyLiveTVItem, &QPushButton::clicked, this, &SettingsDialog::onModifyLiveTVItem);
     connect(btnImportLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onImportLiveTVItems);
     connect(btnExportLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onExportLiveTVItems);
-    connect(btnCheckLiveTVItems, &QPushButton::clicked, this, &SettingsDialog::onCheckLiveTVItems);
     connect(tblLiveTV, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onLiveTVTableItemSelectionChanged);
-    connect(cbLiveTVCategory, &QComboBox::currentTextChanged, this, &SettingsDialog::onLiveTVCategoryCurrentTextChanged);
+
+    connect(btnAddLiveTVSubscription, &QPushButton::clicked, this, &SettingsDialog::onAddLiveTVSubscription);
+    connect(btnRemoveLiveTVSubscription, &QPushButton::clicked, this, &SettingsDialog::onRemoveLiveTVSubscription);
+    connect(tblLiveTVSubscription, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onLiveTVSubscriptionTableItemSelectionChanged);
 
     connect(btnAddVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onAddVIPVideo);
     connect(btnRemoveVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onRemoveVIPVideo);
@@ -51,10 +53,15 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnExportVIPVideo, &QPushButton::clicked, this, &SettingsDialog::onExportVIPVideo);
     connect(tblVIPVideo, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onVIPVideoTableItemSelectionChanged);
 
+    connect(btnAddVIPVideoSubscription, &QPushButton::clicked, this, &SettingsDialog::onAddVIPVideoSubscription);
+    connect(btnRemoveVIPVideoSubscription, &QPushButton::clicked, this, &SettingsDialog::onRemoveVIPVideoSubscription);
+    connect(tblVIPVideoSubscription, &QTableWidget::itemSelectionChanged, this, &SettingsDialog::onVIPVideoSubscriptionTableItemSelectionChanged);
+
     connect(btnBrowseYouGetPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYouGetPath);
     connect(btnBrowseYKDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYKDLPath);
     connect(btnBrowseYoutubeDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYoutubeDLPath);
     connect(btnBrowseAnniePath, &QPushButton::clicked, this, &SettingsDialog::onBrowseAnniePath);
+    connect(btnBrowseFFmpegPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseFFmpegPath);
     loadDefaults();
     loadFromSettings();
 }
@@ -109,7 +116,6 @@ void SettingsDialog::loadDefaults()
 
 void SettingsDialog::fillLiveTVTable()
 {
-    QMap<QString, bool> c;
     for (const auto & tv : m_liveTV)
     {
         int index = tblLiveTV->rowCount();
@@ -120,18 +126,19 @@ void SettingsDialog::fillLiveTVTable()
         QTableWidgetItem *url = new QTableWidgetItem(std::get<1>(tv));
         tblLiveTV->setItem(index, 1, url);
         emit tblLiveTV->itemChanged(url);
-        QTableWidgetItem *category = new QTableWidgetItem(tr(qPrintable(std::get<2>(tv))));
-        tblLiveTV->setItem(index, 2, category);
-        emit tblLiveTV->itemChanged(category);
-        c[category->text()] = true;
     }
+}
 
-    auto categories = c.keys();
-    categories.removeAll(tr("unknown"));
-    cbLiveTVCategory->clear();
-    cbLiveTVCategory->addItem(tr("unknown"));
-    cbLiveTVCategory->addItems(categories);
-    cbLiveTVCategory->addItem(tr("New category..."));
+void SettingsDialog::fillLiveTVSubscriptionTable()
+{
+    for (const auto & tv : m_liveTVSubscription)
+    {
+        int index = tblLiveTVSubscription->rowCount();
+        tblLiveTVSubscription->insertRow(index);
+        QTableWidgetItem *url = new QTableWidgetItem(tv);
+        tblLiveTVSubscription->setItem(index, 0, url);
+        emit tblLiveTVSubscription->itemChanged(url);
+    }
 }
 
 void SettingsDialog::fillVIPVideoTable()
@@ -146,6 +153,18 @@ void SettingsDialog::fillVIPVideoTable()
         QTableWidgetItem *url = new QTableWidgetItem(std::get<1>(vv));
         tblVIPVideo->setItem(index, 1, url);
         emit tblVIPVideo->itemChanged(url);
+    }
+}
+
+void SettingsDialog::fillVIPVideoSubscriptionTable()
+{
+    for (const auto & vv : m_vipVideoSubscription)
+    {
+        int index = tblVIPVideoSubscription->rowCount();
+        tblVIPVideoSubscription->insertRow(index);
+        QTableWidgetItem *name = new QTableWidgetItem(vv);
+        tblVIPVideoSubscription->setItem(index, 0, name);
+        emit tblVIPVideoSubscription->itemChanged(name);
     }
 }
 
@@ -223,15 +242,25 @@ void SettingsDialog::loadFromSettings()
     cfg.read("liveTV", m_liveTV);
     fillLiveTVTable();
 
+    // Live TV subscription
+    cfg.read("liveTVSubscription", m_liveTVSubscription);
+    fillLiveTVSubscriptionTable();
+
     // VIP video
     cfg.read("vipVideo", m_vipVideo);
     fillVIPVideoTable();
+
+    // VIP video subscription
+    cfg.read("vipVideoSubscription", m_vipVideoSubscription);
+    fillVIPVideoSubscriptionTable();
+
 
     // resolver
     edtYouGetPath->setText(cfg.read<QString>(QLatin1String("you-get")));
     edtYKDLPath->setText(cfg.read<QString>(QLatin1String("ykdl")));
     edtYoutubeDLPath->setText(cfg.read<QString>(QLatin1String("youtube-dl")));
     edtAnniePath->setText(cfg.read<QString>(QLatin1String("annie")));
+    edtFFmpegPath->setText(cfg.read<QString>(QLatin1String("ffmpeg")));
 }
 
 void SettingsDialog::saveToSettings()
@@ -288,6 +317,7 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("ykdl"), edtYKDLPath->text());
     cfg.write(QLatin1String("youtube-dl"), edtYoutubeDLPath->text());
     cfg.write(QLatin1String("annie"), edtAnniePath->text());
+    cfg.write(QLatin1String("ffmpeg"), edtFFmpegPath->text());
 
     // external players
     cfg.write("externalPlayers", m_players);
@@ -295,8 +325,14 @@ void SettingsDialog::saveToSettings()
     // live TV
     cfg.write("liveTV", m_liveTV);
 
+    // live TV subscription
+    cfg.write("liveTVSubscription", m_liveTVSubscription);
+
     // VIP video
     cfg.write("vipVideo", m_vipVideo);
+
+    // VIP video subscription
+    cfg.write("vipVideoSubscription", m_vipVideoSubscription);
 
     Browser::instance().loadSettings();
 }
@@ -478,6 +514,63 @@ void SettingsDialog::onBrowseAnniePath()
     }
 }
 
+void SettingsDialog::onBrowseFFmpegPath()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                 tr("Select FFmpeg executable"),
+                                                QString(),
+                                            #if defined(Q_OS_WIN)
+                                                tr("FFmpeg executable (ffmpeg.exe)")
+                                            #else
+                                                tr("FFmpeg executable (ffmpeg)")
+                                            #endif
+                                                );
+    if (!path.isEmpty())
+    {
+        edtFFmpegPath->setText(path);
+    }
+}
+
+void SettingsDialog::onAddLiveTVSubscription()
+{
+    if (edtLiveTVSubscription->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please input live TV subscription URL."), QMessageBox::Ok);
+        return;
+    }
+    if (m_liveTVSubscription.contains(edtLiveTVSubscription->text(), Qt::CaseInsensitive))
+    {
+        QMessageBox::warning(this, tr("Duplicated"), tr("This live TV subscription exists already."), QMessageBox::Ok);
+        return;
+    }
+    m_liveTVSubscription.push_back(edtLiveTVSubscription->text());
+    int rowIndex = tblLiveTVSubscription->rowCount();
+    tblLiveTVSubscription->insertRow(rowIndex);
+    QTableWidgetItem *url = new QTableWidgetItem(edtLiveTVSubscription->text());
+    tblLiveTVSubscription->setItem(rowIndex, 0, url);
+    emit tblLiveTVSubscription->itemChanged(url);
+    edtLiveTVSubscription->setText("");
+}
+
+void SettingsDialog::onRemoveLiveTVSubscription()
+{
+    auto ranges = tblLiveTVSubscription->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    m_liveTVSubscription.removeAt(currentRow);
+    tblLiveTVSubscription->removeRow(currentRow);
+}
+
+void SettingsDialog::onLiveTVSubscriptionTableItemSelectionChanged()
+{
+    edtLiveTVSubscription->setText("");
+    auto items = tblLiveTVSubscription->selectedItems();
+    if (items.isEmpty())
+        return;
+    edtLiveTVSubscription->setText(items[0]->text());
+}
+
 void SettingsDialog::onAddLiveTVItem()
 {
     if (edtLiveTVName->text().isEmpty() || edtLiveTVURL->text().isEmpty())
@@ -486,15 +579,15 @@ void SettingsDialog::onAddLiveTVItem()
         return;
     }
     auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(),
-                           [this](const Tuple3& t) {
-        return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text() && tr(qPrintable(std::get<2>(t)))  == cbLiveTVCategory->currentText();
+                           [this](const Tuple2& t) {
+        return std::get<0>(t) == edtLiveTVName->text() && std::get<1>(t) == edtLiveTVURL->text() ;
     });
     if (m_liveTV.end() != it)
     {
         QMessageBox::warning(this, tr("Duplicated"), tr("This Live TV item exists already."), QMessageBox::Ok);
         return;
     }
-    m_liveTV.push_back(std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), tr("unknown")));
+    m_liveTV.push_back(std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text()));
 
     int rowIndex = tblLiveTV->rowCount();
     tblLiveTV->insertRow(rowIndex);
@@ -504,12 +597,9 @@ void SettingsDialog::onAddLiveTVItem()
     QTableWidgetItem *url = new QTableWidgetItem(edtLiveTVURL->text());
     tblLiveTV->setItem(rowIndex, 1, url);
     emit tblLiveTV->itemChanged(url);
-    QTableWidgetItem *category = new QTableWidgetItem(cbLiveTVCategory->currentText());
-    tblLiveTV->setItem(rowIndex, 2, category);
-    emit tblLiveTV->itemChanged(category);
+
     edtLiveTVName->setText("");
     edtLiveTVURL->setText("");
-    cbLiveTVCategory->setCurrentIndex(0);
 }
 
 void SettingsDialog::onRemoveLiveTVItem()
@@ -529,15 +619,13 @@ void SettingsDialog::onModifyLiveTVItem()
     if (ranges.isEmpty())
         return;
     int currentRow = ranges.begin()->topRow();
-    m_liveTV[currentRow] = std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text(), cbLiveTVCategory->currentText());
+    m_liveTV[currentRow] = std::make_tuple(edtLiveTVName->text(), edtLiveTVURL->text());
 
     auto items = tblLiveTV->selectedItems();
     items[0]->setText(edtLiveTVName->text());
     emit tblLiveTV->itemChanged(items[0]);
     items[1]->setText(edtLiveTVURL->text());
     emit tblLiveTV->itemChanged(items[1]);
-    items[2]->setText(cbLiveTVCategory->currentText());
-    emit tblLiveTV->itemChanged(items[2]);
 }
 
 void SettingsDialog::onImportLiveTVItems()
@@ -586,55 +674,56 @@ void SettingsDialog::onExportLiveTVItems()
     }
 }
 
-void SettingsDialog::onCheckLiveTVItems()
-{
-
-}
-
 void SettingsDialog::onLiveTVTableItemSelectionChanged()
 {
     edtLiveTVName->setText("");
     edtLiveTVURL->setText("");
-    cbLiveTVCategory->setCurrentIndex(0);
+
     auto items = tblLiveTV->selectedItems();
     if (items.isEmpty())
         return;
     edtLiveTVName->setText(items[0]->text());
     edtLiveTVURL->setText(items[1]->text());
-    cbLiveTVCategory->setCurrentText(items[2]->text());
 }
 
-void SettingsDialog::onLiveTVCategoryCurrentTextChanged(const QString &text)
+void SettingsDialog::onAddVIPVideoSubscription()
 {
-    if (text == tr("New category..."))
+    if (edtVIPVideoSubscription->text().isEmpty())
     {
-        bool ok = false;
-        QString category = QInputDialog::getText(this,
-                                                 tr("New category"),
-                                                 tr("Please input new category name:"),
-                                                 QLineEdit::Normal,
-                                                 QString(),
-                                                 &ok);
-        if (ok && !category.isEmpty())
-        {
-            if (category == tr("New category..."))
-            {
-                QMessageBox::warning(this, tr("Reserved name"), tr("This name is reserved, please choose another one."), QMessageBox::Ok);
-                return;
-            }
-
-            if (cbLiveTVCategory->findText(category) >= 0)
-            {
-                QMessageBox::warning(this, tr("Existing name"), tr("This name exists, please choose another one."), QMessageBox::Ok);
-                return;
-            }
-
-            cbLiveTVCategory->insertItem(cbLiveTVCategory->count()-1, category);
-            cbLiveTVCategory->setCurrentText(category);
-        } else {
-            cbLiveTVCategory->setCurrentIndex(0);
-        }
+        QMessageBox::warning(this, tr("Error"), tr("Please input VIP video subscription URL."), QMessageBox::Ok);
+        return;
     }
+    if (m_vipVideoSubscription.contains(edtVIPVideoSubscription->text(), Qt::CaseInsensitive))
+    {
+        QMessageBox::warning(this, tr("Duplicated"), tr("This VIP video subscription exists already."), QMessageBox::Ok);
+        return;
+    }
+    m_vipVideoSubscription.push_back(edtVIPVideoSubscription->text());
+    int rowIndex = tblVIPVideoSubscription->rowCount();
+    tblVIPVideoSubscription->insertRow(rowIndex);
+    QTableWidgetItem *url = new QTableWidgetItem(edtVIPVideoSubscription->text());
+    tblVIPVideoSubscription->setItem(rowIndex, 0, url);
+    emit tblVIPVideoSubscription->itemChanged(url);
+    edtVIPVideoSubscription->setText("");
+}
+
+void SettingsDialog::onRemoveVIPVideoSubscription()
+{
+    auto ranges = tblVIPVideoSubscription->selectedRanges();
+    if (ranges.isEmpty())
+        return;
+    int currentRow = ranges.begin()->topRow();
+    m_vipVideoSubscription.removeAt(currentRow);
+    tblVIPVideoSubscription->removeRow(currentRow);
+}
+
+void SettingsDialog::onVIPVideoSubscriptionTableItemSelectionChanged()
+{
+    edtVIPVideoSubscription->setText("");
+    auto items = tblVIPVideoSubscription->selectedItems();
+    if (items.isEmpty())
+        return;
+    edtVIPVideoSubscription->setText(items[0]->text());
 }
 
 void SettingsDialog::onAddVIPVideo()
@@ -761,9 +850,18 @@ bool SettingsDialog::importLiveTVAsJSON(const QString &path)
             QMessageBox::warning(this, tr("Error on importing live TV list as JSON"), error.errorString(), QMessageBox::Ok);
             return false;
         }
-        if (doc.isArray())
+        if (doc.isObject())
         {
-            auto arr = doc.array();
+            auto rootObj = doc.object();
+            auto titleObj = rootObj["title"];
+
+            QString title = tr("unknown");
+            if (!titleObj.isString())
+                title = titleObj.toString();
+            auto channels = rootObj["channels"];
+            if (!channels.isArray())
+                return false;
+            auto arr = channels.toArray();
             for (auto a : arr)
             {
                 if (!a.isObject())
@@ -771,12 +869,10 @@ bool SettingsDialog::importLiveTVAsJSON(const QString &path)
                 auto o = a.toObject();
                 if (!o["name"].isString() || o["name"].toString().isEmpty() || !o["url"].isString() || o["url"].toString().isEmpty())
                     continue;
-                QString category = tr("unknown");
-                if (o["category"].isString() && !o["category"].toString().isEmpty())
-                    category = o["category"].toString();
-                auto vv = std::make_tuple(o["name"].toString(), o["url"].toString(), category);
-                auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple3& v){
-                    return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv) && std::get<2>(v) == std::get<2>(vv);
+                QString category = title;
+                auto vv = std::make_tuple(o["name"].toString(), o["url"].toString());
+                auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple2& v){
+                    return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv);
                 });
                 if (m_liveTV.end() == it)
                     m_liveTV.push_back(vv);
@@ -801,12 +897,9 @@ bool SettingsDialog::importLiveTVAsPlainText(const QString &path)
             if (ele.length() <2 )
             continue;
 
-            QString category = tr("unknown");
-            if (ele.length() > 2)
-                category = QString(ele[2]);
-            auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]), category);
-            auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple3& v){
-                return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv) && std::get<2>(v) == std::get<2>(vv);
+            auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]));
+            auto it = std::find_if(m_liveTV.begin(), m_liveTV.end(), [&vv](const Tuple2& v){
+                return std::get<0>(v) == std::get<0>(vv) && std::get<1>(v) == std::get<1>(vv) ;
             });
             if (m_liveTV.end() == it)
                 m_liveTV.push_back(vv);
@@ -817,15 +910,15 @@ bool SettingsDialog::importLiveTVAsPlainText(const QString &path)
 
 void SettingsDialog::exportLiveTVAsJSON(const QString &path)
 {
-    QJsonDocument doc = QJsonDocument::fromJson("[]");
-    QJsonArray a = doc.array();
+    QJsonDocument doc = QJsonDocument::fromJson("{\"title\": \"imchenwen exported custom live TV list\", \"channels\":[]}");
+    auto a = doc.object();
+    auto channels = a["channels"].toArray();
     for (const auto& vv : m_liveTV)
     {
         QJsonObject o;
         o.insert("name", std::get<0>(vv));
         o.insert("url", std::get<1>(vv));
-        o.insert("category", std::get<2>(vv));
-        a.append(o);
+        channels.append(o);
     }
     auto d = doc.toJson(QJsonDocument::Indented);
     QFile f(path);
@@ -843,7 +936,7 @@ void SettingsDialog::exportLiveTVAsPlainText(const QString &path)
     {
         for (const auto& tv : m_liveTV)
         {
-            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8() + " " + std::get<2>(tv).toUtf8() + "\n");
+            f.write(std::get<0>(tv).toUtf8() + " " + std::get<1>(tv).toUtf8() + "\n");
         }
         f.close();
     }
@@ -864,9 +957,18 @@ bool SettingsDialog::importVIPVideoAsJSON(const QString &path)
             QMessageBox::warning(this, tr("Error on importing VIP video list as JSON"), error.errorString(), QMessageBox::Ok);
             return false;
         }
-        if (doc.isArray())
+        if (doc.isObject())
         {
-            auto arr = doc.array();
+            auto rootObj = doc.object();
+            auto titleObj = rootObj["title"];
+
+            QString title = tr("unknown");
+            if (!titleObj.isString())
+                title = titleObj.toString();
+            auto channels = rootObj["channels"];
+            if (!channels.isArray())
+                return false;
+            auto arr = channels.toArray();
             for (auto a : arr)
             {
                 if (!a.isObject())
@@ -955,9 +1057,13 @@ void SettingsDialog::onSetHomeToCurrentPage()
 
 void SettingsDialog::setupLiveTVTable()
 {
-    tblLiveTV->setColumnCount(3);
-    tblLiveTV->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL") << tr("Category"));
+    tblLiveTV->setColumnCount(2);
+    tblLiveTV->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
     tblLiveTV->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    tblLiveTVSubscription->setColumnCount(1);
+    tblLiveTVSubscription->setHorizontalHeaderLabels(QStringList() << tr("URL"));
+    tblLiveTVSubscription->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
 void SettingsDialog::setupVIPVideoTable()
@@ -965,4 +1071,8 @@ void SettingsDialog::setupVIPVideoTable()
     tblVIPVideo->setColumnCount(2);
     tblVIPVideo->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("URL"));
     tblVIPVideo->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    tblVIPVideoSubscription->setColumnCount(1);
+    tblVIPVideoSubscription->setHorizontalHeaderLabels(QStringList() << tr("URL"));
+    tblVIPVideoSubscription->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }

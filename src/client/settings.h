@@ -29,15 +29,22 @@ private slots:
     void onBrowseYKDLPath();
     void onBrowseYoutubeDLPath();
     void onBrowseAnniePath();
+    void onBrowseFFmpegPath();
+
+    void onAddLiveTVSubscription();
+    void onRemoveLiveTVSubscription();
+    void onLiveTVSubscriptionTableItemSelectionChanged();
 
     void onAddLiveTVItem();
     void onRemoveLiveTVItem();
     void onModifyLiveTVItem();
     void onImportLiveTVItems();
     void onExportLiveTVItems();
-    void onCheckLiveTVItems();
     void onLiveTVTableItemSelectionChanged();
-    void onLiveTVCategoryCurrentTextChanged(const QString& text);
+
+    void onAddVIPVideoSubscription();
+    void onRemoveVIPVideoSubscription();
+    void onVIPVideoSubscriptionTableItemSelectionChanged();
 
     void onAddVIPVideo();
     void onRemoveVIPVideo();
@@ -49,8 +56,10 @@ private:
     QFont standardFont;
     QFont fixedFont;
     PlayerList m_players;
-    Tuple3List m_liveTV;
+    Tuple2List m_liveTV;
+    QStringList m_liveTVSubscription;
     Tuple2List m_vipVideo;
+    QStringList m_vipVideoSubscription;
     bool importLiveTVAsJSON(const QString& path);
     bool importLiveTVAsPlainText(const QString& path);
     void exportLiveTVAsJSON(const QString& path);
@@ -60,7 +69,9 @@ private:
     void exportVIPVideoAsJSON(const QString& path);
     void exportVIPVideoAsPlainText(const QString& path);
     void fillLiveTVTable();
+    void fillLiveTVSubscriptionTable();
     void fillVIPVideoTable();
+    void fillVIPVideoSubscriptionTable();
     void fillExternalPlayerTable();
 
     void loadDefaults();

@@ -65,6 +65,7 @@ private:
 };
 
 template<> QString Config::read<QString>(const QString& key);
+template<> QStringList Config::read<QStringList>(const QString& key);
 template<> QByteArray Config::read<QByteArray>(const QString& key);
 template<> QVariant Config::read<QVariant>(const QString& key);
 template<> bool Config::read<bool>(const QString& key);
