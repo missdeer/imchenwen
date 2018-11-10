@@ -34,7 +34,7 @@ void SubscriptionHelper::requestSubscription(QStringList *subscriptItems, int in
 {
     QNetworkRequest req;
     req.setAttribute(QNetworkRequest::User, index);
-    req.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), QVariant::fromValue((void *)subscriptItems));
+    req.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), QVariant::fromValue(subscriptItems));
     QUrl u(subscriptItems->at(index));
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
@@ -174,7 +174,7 @@ void SubscriptionHelper::onReadFinished()
     m_data.clear();
 
     int index = reply->request().attribute(QNetworkRequest::User).toInt() + 1;
-    QStringList* urls = reply->request().attribute((QNetworkRequest::Attribute)(QNetworkRequest::User + 1)).value<QStringList*>();
+    QStringList* urls = reply->request().attribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1)).value<QStringList*>();
 
     if (index >= urls->length())
     {
