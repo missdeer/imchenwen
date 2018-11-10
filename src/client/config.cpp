@@ -16,7 +16,7 @@ void Config::read(const QString& key, QString& value)
 
 void Config::read(const QString& key, QStringList& res)
 {
-    res = settings().value(key).toStringList();
+    res.append( settings().value(key).toStringList());
 }
 
 void Config::read(const QString& key, Tuple2List& res)
