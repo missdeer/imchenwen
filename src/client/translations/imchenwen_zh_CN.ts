@@ -1379,15 +1379,15 @@ MPV错误：</translation>
 <context>
     <name>SubscriptionHelper</name>
     <message>
-        <location filename="../subscriptionhelper.cpp" line="55"/>
+        <location filename="../subscriptionhelper.cpp" line="57"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义</translation>
     </message>
     <message>
-        <location filename="../subscriptionhelper.cpp" line="86"/>
-        <location filename="../subscriptionhelper.cpp" line="113"/>
+        <location filename="../subscriptionhelper.cpp" line="87"/>
+        <location filename="../subscriptionhelper.cpp" line="144"/>
         <source>unknown</source>
-        <translation type="unfinished">未知</translation>
+        <translation>未知</translation>
     </message>
 </context>
 <context>

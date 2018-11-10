@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QFileInfo>
 
 Q_DECLARE_METATYPE(QStringList *);
 
@@ -47,6 +48,7 @@ void SubscriptionHelper::requestSubscription(QStringList *subscriptItems, int in
 
 void SubscriptionHelper::update()
 {
+    m_content.clear();
     Config cfg;
     // read custom items
     SubscriptionListPtr customList(new SubscriptionList);
@@ -81,10 +83,11 @@ bool SubscriptionHelper::parseAsJSON(const QByteArray& data)
         return false;
     }
     auto rootObj = doc.object();
-    auto titleObj = rootObj["title"];
 
     QString title = tr("unknown");
-    if (!titleObj.isString())
+
+    auto titleObj = rootObj["title"];
+    if (titleObj.isString())
         title = titleObj.toString();
     auto channels = rootObj["channels"];
     if (!channels.isArray())
@@ -98,8 +101,7 @@ bool SubscriptionHelper::parseAsJSON(const QByteArray& data)
         auto o = a.toObject();
         if (!o["name"].isString() || o["name"].toString().isEmpty() || !o["url"].isString() || o["url"].toString().isEmpty())
             continue;
-        QUrl u(o["url"].toString());
-        if (!u.isValid())
+        if (!QUrl(o["url"].toString()).isValid())
             continue;
         sl->append(std::make_tuple(o["name"].toString(), o["url"].toString()));
     }
@@ -108,9 +110,8 @@ bool SubscriptionHelper::parseAsJSON(const QByteArray& data)
     return true;
 }
 
-bool SubscriptionHelper::parseAsPlainText(const QByteArray &data)
+bool SubscriptionHelper::parseAsPlainText(const QByteArray &data, const QString &title)
 {
-    QString title = tr("unknown");
     auto lines = data.split('\n');
     SubscriptionListPtr sl(new SubscriptionList);
     for (const auto& line : lines)
@@ -118,7 +119,7 @@ bool SubscriptionHelper::parseAsPlainText(const QByteArray &data)
         auto ele = line.trimmed().split(' ');
         if (ele.length() <2 )
         {
-            ele = line.trimmed().split(';');
+            ele = line.trimmed().split(',');
             if (ele.length() <2 )
             {
                 QUrl url(line.trimmed());
@@ -134,12 +135,13 @@ bool SubscriptionHelper::parseAsPlainText(const QByteArray &data)
         if (!QUrl(QString(ele[1])).isValid())
             continue;
 
-        auto vv = std::make_tuple(QString(ele[0]), QString(ele[1]));
+        auto vv = std::make_tuple(QString(ele[0].trimmed()), QString(ele[1].trimmed()));
         sl->append(vv);
     }
     if (sl->isEmpty())
         return false;
-    m_content.insert(title, sl);
+
+    m_content.insert(title.isEmpty()?tr("unknown"):title, sl);
     return true;
 }
 
@@ -168,7 +170,8 @@ void SubscriptionHelper::onReadFinished()
     if (!parseAsJSON(m_data))
     {
         // parse as plain text
-        parseAsPlainText(m_data);
+        QFileInfo fi(reply->url().path());
+        parseAsPlainText(m_data, fi.fileName());
     }
 
     m_data.clear();

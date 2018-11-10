@@ -26,7 +26,7 @@ public:
     SubscriptionContentMap& content() { return  m_content; }
 
     bool parseAsJSON(const QByteArray &data);
-    bool parseAsPlainText(const QByteArray &data);
+    bool parseAsPlainText(const QByteArray &data, const QString& title);
 signals:
     void ready();
 private slots:

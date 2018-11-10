@@ -1374,13 +1374,13 @@ MPV Error: </source>
 <context>
     <name>SubscriptionHelper</name>
     <message>
-        <location filename="../subscriptionhelper.cpp" line="55"/>
+        <location filename="../subscriptionhelper.cpp" line="57"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../subscriptionhelper.cpp" line="86"/>
-        <location filename="../subscriptionhelper.cpp" line="113"/>
+        <location filename="../subscriptionhelper.cpp" line="87"/>
+        <location filename="../subscriptionhelper.cpp" line="144"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
