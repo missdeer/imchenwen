@@ -30,7 +30,8 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/urlrequestinterceptor.h \
     $$PWD/util.h \
     inmemoryhandler.h \
-    player.h
+    player.h \
+    subscriptionhelper.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -53,7 +54,8 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/urlrequestinterceptor.cpp \
     $$PWD/util.cpp \
     inmemoryhandler.cpp \
-    player.cpp
+    player.cpp \
+    subscriptionhelper.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \

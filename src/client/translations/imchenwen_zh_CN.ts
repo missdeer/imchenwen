@@ -44,269 +44,269 @@
 <context>
     <name>BrowserWindow</name>
     <message>
-        <location filename="../browserwindow.cpp" line="78"/>
-        <location filename="../browserwindow.cpp" line="291"/>
-        <location filename="../browserwindow.cpp" line="561"/>
+        <location filename="../browserwindow.cpp" line="85"/>
+        <location filename="../browserwindow.cpp" line="298"/>
+        <location filename="../browserwindow.cpp" line="586"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="95"/>
+        <location filename="../browserwindow.cpp" line="102"/>
         <source>&amp;File</source>
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="96"/>
+        <location filename="../browserwindow.cpp" line="103"/>
         <source>&amp;New Window</source>
         <translation>新建窗口(&amp;N)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="98"/>
+        <location filename="../browserwindow.cpp" line="105"/>
         <source>New &amp;Tab</source>
         <translation>新建标签页(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="104"/>
+        <location filename="../browserwindow.cpp" line="111"/>
         <source>Play Url...</source>
         <translation>播放URL…</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="108"/>
+        <location filename="../browserwindow.cpp" line="115"/>
         <source>Play Url</source>
         <translation>播放URL</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="108"/>
+        <location filename="../browserwindow.cpp" line="115"/>
         <source>Please input URL to play:</source>
         <translation>请输入要播放的URL：</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="117"/>
+        <location filename="../browserwindow.cpp" line="124"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="117"/>
+        <location filename="../browserwindow.cpp" line="124"/>
         <source>Invalid URL input.</source>
         <translation>输入的URL无效。</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="122"/>
+        <location filename="../browserwindow.cpp" line="129"/>
         <source>Options...</source>
         <translation>选项…</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="128"/>
+        <location filename="../browserwindow.cpp" line="135"/>
         <source>&amp;Close Tab</source>
         <translation>关闭标签页(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="135"/>
         <location filename="../browserwindow.cpp" line="142"/>
+        <location filename="../browserwindow.cpp" line="149"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="144"/>
+        <location filename="../browserwindow.cpp" line="151"/>
         <source>&amp;Close Window</source>
         <translation>关闭窗口(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="151"/>
+        <location filename="../browserwindow.cpp" line="158"/>
         <source>&amp;View</source>
         <translation>视图(&amp;V)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="152"/>
+        <location filename="../browserwindow.cpp" line="159"/>
         <source>&amp;Stop</source>
         <translation>停止(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="161"/>
+        <location filename="../browserwindow.cpp" line="168"/>
         <source>Reload Page</source>
         <translation>重新载入页面</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="167"/>
+        <location filename="../browserwindow.cpp" line="174"/>
         <source>Zoom &amp;In</source>
         <translation>放大(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="174"/>
+        <location filename="../browserwindow.cpp" line="181"/>
         <source>Zoom &amp;Out</source>
         <translation>缩小(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="181"/>
+        <location filename="../browserwindow.cpp" line="188"/>
         <source>Reset &amp;Zoom</source>
         <translation>恢复默认大小(&amp;Z)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="190"/>
         <location filename="../browserwindow.cpp" line="197"/>
+        <location filename="../browserwindow.cpp" line="204"/>
         <source>Hide Toolbar</source>
         <translation>隐藏工具栏</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="191"/>
+        <location filename="../browserwindow.cpp" line="198"/>
         <source>Ctrl+|</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="194"/>
+        <location filename="../browserwindow.cpp" line="201"/>
         <source>Show Toolbar</source>
         <translation>显示工具栏</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="203"/>
         <location filename="../browserwindow.cpp" line="210"/>
+        <location filename="../browserwindow.cpp" line="217"/>
         <source>Hide Status Bar</source>
         <translation>引擎状态栏</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="204"/>
+        <location filename="../browserwindow.cpp" line="211"/>
         <source>Ctrl+/</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="207"/>
+        <location filename="../browserwindow.cpp" line="214"/>
         <source>Show Status Bar</source>
         <translation>显示状态栏</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="220"/>
+        <location filename="../browserwindow.cpp" line="227"/>
         <source>&amp;Window</source>
         <translation>窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="222"/>
+        <location filename="../browserwindow.cpp" line="229"/>
         <source>Show Next Tab</source>
         <translation>显示下一页</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="231"/>
+        <location filename="../browserwindow.cpp" line="238"/>
         <source>Show Previous Tab</source>
         <translation>显示上一页</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="261"/>
+        <location filename="../browserwindow.cpp" line="268"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="281"/>
+        <location filename="../browserwindow.cpp" line="288"/>
         <source>About...</source>
         <translation>关于…</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="285"/>
+        <location filename="../browserwindow.cpp" line="292"/>
         <source>About imchenwen</source>
         <translation>关于某橙</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="286"/>
+        <location filename="../browserwindow.cpp" line="293"/>
         <source>Parse video URLs and invoke external player to play the videos, so that you don&apos;t need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs.</source>
         <translation>解析视频URL并调用外部播放器播放视频，因此你就不再需要诸如IE、Chrome、Firefox、Opera、Safari等等网页浏览器了。这是为性能较低的机器/操作系统而设计的。</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="289"/>
+        <location filename="../browserwindow.cpp" line="296"/>
         <source>About Qt...</source>
         <translation>关于Qt…</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="262"/>
+        <location filename="../browserwindow.cpp" line="269"/>
         <source>Install Flash</source>
         <translation>安装Flash</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="265"/>
+        <location filename="../browserwindow.cpp" line="272"/>
         <source>Install MPV</source>
         <translation>安装MPV</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="268"/>
+        <location filename="../browserwindow.cpp" line="275"/>
         <source>Install MPlayer</source>
         <translation>安装MPlayer</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="271"/>
+        <location filename="../browserwindow.cpp" line="278"/>
         <source>Install VLC</source>
         <translation>安装VLC</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="275"/>
+        <location filename="../browserwindow.cpp" line="282"/>
         <source>Install MPC-HC</source>
         <translation>安装MPC-HC</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="298"/>
+        <location filename="../browserwindow.cpp" line="305"/>
         <source>&amp;Shortcut</source>
         <translation>快捷方式(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="299"/>
+        <location filename="../browserwindow.cpp" line="306"/>
         <source>In China</source>
         <translation>中国的</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="300"/>
+        <location filename="../browserwindow.cpp" line="307"/>
         <source>Out of China</source>
         <translation>外国的</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="351"/>
+        <location filename="../browserwindow.cpp" line="368"/>
         <source>Watch as VIP video</source>
         <translation>当作VIP视频观看</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="384"/>
+        <location filename="../browserwindow.cpp" line="410"/>
         <source>Watch Live TV</source>
         <translation>观看在线电视直播</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="408"/>
+        <location filename="../browserwindow.cpp" line="433"/>
         <source>Navigation</source>
         <translation>导航</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="456"/>
+        <location filename="../browserwindow.cpp" line="481"/>
         <source>Play by Media Player</source>
         <translation>使用媒体播放器播放</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="563"/>
+        <location filename="../browserwindow.cpp" line="588"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="575"/>
+        <location filename="../browserwindow.cpp" line="600"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="576"/>
+        <location filename="../browserwindow.cpp" line="601"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="585"/>
+        <location filename="../browserwindow.cpp" line="610"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="586"/>
+        <location filename="../browserwindow.cpp" line="611"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="697"/>
+        <location filename="../browserwindow.cpp" line="722"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../browserwindow.cpp" line="701"/>
+        <location filename="../browserwindow.cpp" line="726"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
@@ -1374,6 +1374,20 @@ MPV错误：</translation>
         <location filename="../settings.cpp" line="1072"/>
         <source>Name</source>
         <translation>名称</translation>
+    </message>
+</context>
+<context>
+    <name>SubscriptionHelper</name>
+    <message>
+        <location filename="../subscriptionhelper.cpp" line="55"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../subscriptionhelper.cpp" line="86"/>
+        <location filename="../subscriptionhelper.cpp" line="113"/>
+        <source>unknown</source>
+        <translation type="unfinished">未知</translation>
     </message>
 </context>
 <context>

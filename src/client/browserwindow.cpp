@@ -5,6 +5,7 @@
 #include "webview.h"
 #include "settings.h"
 #include "websites.h"
+#include "subscriptionhelper.h"
 #include "config.h"
 #include "popupmenutoolbutton.h"
 #include <QApplication>
@@ -68,9 +69,15 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     connect(m_tabWidget, &TabWidget::urlChanged, this, &BrowserWindow::onWebViewUrlChanged);
     connect(m_tabWidget, &TabWidget::iconChanged, this, &BrowserWindow::onWebViewIconChanged);
     connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::onWebActionEnabledChanged);
-    connect(m_urlLineEdit, &QLineEdit::returnPressed, this, [this]() {
+    connect(m_urlLineEdit, &QLineEdit::returnPressed, [this]() {
         m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
         loadPage(m_urlLineEdit->url());
+    });
+    connect(&Browser::instance().m_liveTVHelper, &SubscriptionHelper::ready, [this](){
+        createLiveTVToolButton(m_toolbar);
+    });
+    connect(&Browser::instance().m_vipVideoHelper, &SubscriptionHelper::ready, [this](){
+        createVIPVideoToolButton(m_toolbar);
     });
 
     m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
@@ -299,7 +306,7 @@ QMenu *BrowserWindow::createShortcutMenu()
     QMenu *chinaMenu = new QMenu(tr("In China"));
     QMenu *abroadMenu = new QMenu(tr("Out of China"));
 
-    auto&& websitesInChina = Browser::instance().websites().inChina();
+    auto&& websitesInChina = Browser::instance().m_websites.inChina();
     for (auto w : websitesInChina)
     {
         QAction *action = chinaMenu->addAction(w->name);
@@ -309,7 +316,7 @@ QMenu *BrowserWindow::createShortcutMenu()
             shortcutMenu->addAction(action);
     }
 
-    auto&& websitesAbroad = Browser::instance().websites().abroad();
+    auto&& websitesAbroad = Browser::instance().m_websites.abroad();
     for (auto w : websitesAbroad)
     {
         QAction *action = abroadMenu->addAction(w->name);
@@ -327,68 +334,86 @@ QMenu *BrowserWindow::createShortcutMenu()
 
 void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)
 {
-    Config cfg;
-    Tuple2List vipVideos;
-    cfg.read("vipVideo", vipVideos);
-    if (!vipVideos.isEmpty())
+    auto content = Browser::instance().m_vipVideoHelper.content();
+    if (content.isEmpty())
+        return;
+    auto titles = content.keys();
+    QMenu *popupMenu = new QMenu();
+    for (const auto & title : titles)
     {
-        QMenu *popupMenu = new QMenu();
-
-        for (const auto& vv : vipVideos)
+        auto subscriptions = content.values(title);
+        if (!subscriptions.isEmpty())
         {
-            QAction *action  = new QAction(std::get<0>(vv), popupMenu);
-            action->setData(std::get<1>(vv));
-            action->setToolTip(std::get<1>(vv));
-            action->setStatusTip(std::get<1>(vv));
-            connect(action, &QAction::triggered, this, &BrowserWindow::onVIPVideo);
-            popupMenu->addAction(action);
+            QMenu *subMenu = new QMenu(title, popupMenu);
+            popupMenu->addMenu(subMenu);
+            for (const auto & subscription : subscriptions)
+            {
+                for (auto it = subscription->begin(); subscription->end() != it; ++it)
+                {
+                    QAction *action  = new QAction(std::get<0>(*it), subMenu);
+                    action->setData(std::get<1>(*it));
+                    action->setToolTip(std::get<1>(*it));
+                    action->setStatusTip(std::get<1>(*it));
+                    connect(action, &QAction::triggered, this, &BrowserWindow::onVIPVideo);
+                    subMenu->addAction(action);
+                }
+            }
         }
-
-        if (!m_vipVideoAction)
-        {
-            m_vipVideoAction = new PopupMenuToolButton(this);
-            m_vipVideoAction->setIcon(QIcon(QStringLiteral(":playvip.png")));
-            m_vipVideoAction->setText(tr("Watch as VIP video"));
-            navigationBar->addWidget(m_vipVideoAction);
-        } else {
-            QMenu *p = m_vipVideoAction->menu();
-            p->deleteLater();
-        }
-        m_vipVideoAction->setMenu(popupMenu);
     }
+
+    if (!m_vipVideoAction)
+    {
+        m_vipVideoAction = new PopupMenuToolButton(this);
+        m_vipVideoAction->setIcon(QIcon(QStringLiteral(":playvip.png")));
+        m_vipVideoAction->setText(tr("Watch as VIP video"));
+        navigationBar->addWidget(m_vipVideoAction);
+    } else {
+        QMenu *p = m_vipVideoAction->menu();
+        p->deleteLater();
+    }
+    m_vipVideoAction->setMenu(popupMenu);
 }
 
 void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
 {
-    Config cfg;
-    Tuple3List liveTVs;
-    cfg.read("liveTV", liveTVs);
-    if (!liveTVs.isEmpty())
+    auto content = Browser::instance().m_liveTVHelper.content();
+    if (content.isEmpty())
+        return;
+    auto titles = content.keys();
+    QMenu *popupMenu = new QMenu();
+    for (const auto & title : titles)
     {
-        QMenu *popupMenu = new QMenu(this);
-
-        for (const auto& tv : liveTVs)
+        auto subscriptions = content.values(title);
+        if (!subscriptions.isEmpty())
         {
-            QAction *action  = new QAction(std::get<0>(tv), this);
-            action->setData(std::get<1>(tv));
-            action->setToolTip(std::get<1>(tv));
-            action->setStatusTip(std::get<1>(tv));
-            connect(action, &QAction::triggered, this, &BrowserWindow::onLiveTV);
-            popupMenu->addAction(action);
+            QMenu *subMenu = new QMenu(title, popupMenu);
+            popupMenu->addMenu(subMenu);
+            for (const auto & subscription : subscriptions)
+            {
+                for (auto it = subscription->begin(); subscription->end() != it; ++it)
+                {
+                    QAction *action  = new QAction(std::get<0>(*it), subMenu);
+                    action->setData(std::get<1>(*it));
+                    action->setToolTip(std::get<1>(*it));
+                    action->setStatusTip(std::get<1>(*it));
+                    connect(action, &QAction::triggered, this, &BrowserWindow::onLiveTV);
+                    subMenu->addAction(action);
+                }
+            }
         }
-
-        if (!m_liveTVAction)
-        {
-            m_liveTVAction = new PopupMenuToolButton(this);
-            m_liveTVAction->setIcon(QIcon(QStringLiteral(":playtv.png")));
-            m_liveTVAction->setText(tr("Watch Live TV"));
-            navigationBar->addWidget(m_liveTVAction);
-        } else {
-            QMenu *p = m_liveTVAction->menu();
-            p->deleteLater();
-        }
-        m_liveTVAction->setMenu(popupMenu);
     }
+
+    if (!m_liveTVAction)
+    {
+        m_liveTVAction = new PopupMenuToolButton(this);
+        m_liveTVAction->setIcon(QIcon(QStringLiteral(":playtv.png")));
+        m_liveTVAction->setText(tr("Watch Live TV"));
+        navigationBar->addWidget(m_liveTVAction);
+    } else {
+        QMenu *p = m_liveTVAction->menu();
+        p->deleteLater();
+    }
+    m_liveTVAction->setMenu(popupMenu);
 }
 
 const QString &BrowserWindow::maybeVIPVideoTitle() const
@@ -545,8 +570,8 @@ void BrowserWindow::onOptions()
     SettingsDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
-        createVIPVideoToolButton(m_toolbar);
-        createLiveTVToolButton(m_toolbar);
+        Browser::instance().m_liveTVHelper.update();
+        Browser::instance().m_vipVideoHelper.update();
     }
 }
 

@@ -103,7 +103,7 @@ void InMemoryHandler::relayMedia(Socket *socket, const QStringList &urls, int in
 {
     QNetworkRequest req;
     req.setAttribute(QNetworkRequest::User, index);
-    req.setAttribute((QNetworkRequest::Attribute)(QNetworkRequest::User + 1), QVariant::fromValue(&urls));
+    req.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), QVariant::fromValue(&urls));
     qDebug() << __FUNCTION__ << index << urls[index];
     QUrl u(urls[index]);
     req.setUrl(u);

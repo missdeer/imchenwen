@@ -5,6 +5,7 @@
 #include "waitingspinnerwidget.h"
 #include "playdialog.h"
 #include "playerview.h"
+#include "dlnaplayerview.h"
 #include "util.h"
 #include <QAuthenticator>
 #include <QMessageBox>
@@ -66,6 +67,8 @@ Browser::Browser(QObject *parent)
     , m_linkResolver(this)
     , m_nam(nullptr)
     , m_builtinPlayer(nullptr)
+    , m_liveTVHelper("liveTV", "liveTVSubscription")
+    , m_vipVideoHelper("vipVideo", "vipVideoSubscription")
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
@@ -73,6 +76,8 @@ Browser::Browser(QObject *parent)
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     connect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
     //connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
+    m_liveTVHelper.update();
+    m_vipVideoHelper.update();
 }
 
 void Browser::clearAtExit()
@@ -407,11 +412,6 @@ void Browser::waiting(bool disableParent /*= true*/)
         m_waitingSpinner->stop();
 
     m_waitingSpinner->start();
-}
-
-Websites &Browser::websites()
-{
-    return m_websites;
 }
 
 void Browser::resolveLink(const QString &u)

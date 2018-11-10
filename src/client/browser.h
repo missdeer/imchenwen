@@ -9,10 +9,9 @@
 #include "websites.h"
 #include "urlrequestinterceptor.h"
 #include "Kast.h"
-#include "playerview.h"
-#include "dlnaplayerview.h"
 #include "inmemoryhandler.h"
 #include "player.h"
+#include "subscriptionhelper.h"
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
@@ -20,6 +19,8 @@ QT_END_NAMESPACE
 
 class BrowserWindow;
 class WaitingSpinnerWidget;
+class PlayerView;
+class DLNAPlayerView;
 
 class Browser : public QObject
 {
@@ -30,6 +31,7 @@ class Browser : public QObject
         isNormal,
         isHidden,
     };
+    friend class BrowserWindow;
 
     Q_OBJECT
 public:
@@ -45,7 +47,6 @@ public:
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString& u);
     void play(const QString& u, const QString& title);
-    Websites &websites();
 signals:
 
 private slots:
@@ -69,6 +70,8 @@ private:
     DLNAPlayerView *m_dlnaPlayer;
     QHttpEngine::Server m_httpServer;
     InMemoryHandler m_httpHandler;
+    SubscriptionHelper m_liveTVHelper;
+    SubscriptionHelper m_vipVideoHelper;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
