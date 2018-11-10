@@ -216,7 +216,8 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
     } else {
         // If range is invalid or if it is not a partial content request,
         // send full file
-        //socket->setHeader("Content-Length", QByteArray::number(fileSize));
+        // fake length, large enough for the most times
+        socket->setHeader("Content-Length", QByteArray::number(4 * 1024 * 1024 * 1024));
     }
 
     // Set the mimetype and content length
@@ -228,4 +229,6 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
 
     // Start the copy
     copier->start();
+
+    qDebug() << __FUNCTION__ << absolutePath;
 }
