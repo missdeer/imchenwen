@@ -61,6 +61,7 @@ private:
     QMap<BrowserWindow*, WindowState> m_windowsState;
     WaitingSpinnerWidget *m_waitingSpinner;
     QProcess m_playerProcess;
+    QProcess m_ffmpegProcess;
     LinkResolver m_linkResolver;
     Websites m_websites;
     UrlRequestInterceptor m_urlRequestInterceptor;

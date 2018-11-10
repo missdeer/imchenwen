@@ -4,6 +4,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QSslError>
+#include <QUdpSocket>
+#include <QQueue>
 #include <qhttpengine/handler.h>
 
 class InMemoryHandler : public QHttpEngine::Handler
@@ -15,7 +17,6 @@ public:
     void setReferrer(const QByteArray& referrer);
     void setUserAgent(const QByteArray& userAgent);
     QString mapUrl(const QString& url);
-    QString mapUrl(const QStringList& urls);
     void clear();
 protected:
 
@@ -28,7 +29,8 @@ private slots:
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
     void onUniqueMediaReadFinished();
-    void onMultiMediaReadFinished();
+
+    void onReadPendingDatagrams();
 private:
     QByteArray m_m3u8;
     QByteArray m_referrer;
@@ -38,11 +40,9 @@ private:
     QMap<QNetworkReply*, QHttpEngine::Socket *> m_replySocketMap;
     QSet<QNetworkReply*> m_headerWritten;
     QMap<QString, QString> m_1to1UrlMap;
-    QMap<QString, QStringList> m_1toNUrlMap;
     void returnMediaM3U8(QHttpEngine::Socket *socket);
     void relayMedia(QHttpEngine::Socket *socket, const QString& url);
-    void relayMedia(QHttpEngine::Socket *socket, const QStringList& urls, int index);
-    void requestRelayMedia(QHttpEngine::Socket *socket, const QString& url);
+    void serveFileSystemFile(QHttpEngine::Socket* socket, const QString &absolutePath);
 };
 
 #endif // INMEMORYHANDLER_H

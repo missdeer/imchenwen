@@ -2,11 +2,13 @@
 #include "util.h"
 #include <qhttpengine/socket.h>
 #include <qhttpengine/qiodevicecopier.h>
+#include <qhttpengine/range.h>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QUrlQuery>
 #include <QFileInfo>
 #include <QUuid>
+#include <QStandardPaths>
 
 using namespace QHttpEngine;
 
@@ -45,21 +47,6 @@ QString InMemoryHandler::mapUrl(const QString &url)
     return QString("http://%1:51290/%2").arg(m_localAddress).arg(path);
 }
 
-QString InMemoryHandler::mapUrl(const QStringList &urls)
-{
-    if (urls.isEmpty())
-        return QString();
-
-    QUrl u(urls[0]);
-    QFileInfo fi(u.path());
-    QString ext = fi.suffix();
-
-    QString path = QString("%1.%2").arg(QUuid::createUuid().toString(QUuid::WithoutBraces)).arg(ext);
-    m_1toNUrlMap.insert(path, urls);
-
-    return QString("http://%1:51290/%2").arg(m_localAddress).arg(path);
-}
-
 void InMemoryHandler::clear()
 {
     auto replys = m_replySocketMap.keys();
@@ -69,7 +56,6 @@ void InMemoryHandler::clear()
     m_referrer.clear();
     m_userAgent.clear();
     m_1to1UrlMap.clear();
-    m_1toNUrlMap.clear();
 }
 
 void InMemoryHandler::returnMediaM3U8(Socket *socket)
@@ -99,29 +85,6 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
     connect(reply, &QNetworkReply::sslErrors, this, &InMemoryHandler::onNetworkSSLErrors);
 }
 
-void InMemoryHandler::relayMedia(Socket *socket, const QStringList &urls, int index)
-{
-    QNetworkRequest req;
-    req.setAttribute(QNetworkRequest::User, index);
-    req.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), QVariant::fromValue(&urls));
-    qDebug() << __FUNCTION__ << index << urls[index];
-    QUrl u(urls[index]);
-    req.setUrl(u);
-    if (!m_userAgent.isEmpty())
-        req.setRawHeader("User-Agent", m_userAgent);
-    if (!m_referrer.isEmpty())
-        req.setRawHeader("Referer", m_referrer);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    QNetworkReply* reply = m_nam.get(req);
-    m_replySocketMap.insert(reply, socket);
-    if (index > 0)
-        m_headerWritten.insert(reply);
-    connect(reply, &QIODevice::readyRead, this, &InMemoryHandler::onReadyRead);
-    connect(reply, &QNetworkReply::finished, this, &InMemoryHandler::onMultiMediaReadFinished);
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &InMemoryHandler::onNetworkError);
-    connect(reply, &QNetworkReply::sslErrors, this, &InMemoryHandler::onNetworkSSLErrors);
-}
-
 void InMemoryHandler::process(Socket *socket, const QString &path)
 {
     qDebug() << __FUNCTION__ << path;
@@ -144,11 +107,10 @@ void InMemoryHandler::process(Socket *socket, const QString &path)
         return;
     }
 
-    auto it1toN = m_1toNUrlMap.find(path);
-    if (m_1toNUrlMap.end() != it1toN)
+    QString fullPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/" + path;
+    if (QFile::exists(fullPath))
     {
-        qDebug() << __FUNCTION__ << it1toN.key() << it1toN.value().length() << "urls";
-        relayMedia(socket, it1toN.value(), 0);
+        serveFileSystemFile(socket, fullPath);
         return;
     }
 
@@ -208,22 +170,62 @@ void InMemoryHandler::onUniqueMediaReadFinished()
     reply->deleteLater();
 }
 
-void InMemoryHandler::onMultiMediaReadFinished()
+void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolutePath)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    // Attempt to open the file for reading
+    QFile *file = new QFile(absolutePath);
+    if (!file->open(QIODevice::ReadOnly)) {
+        delete file;
 
-    int index = reply->request().attribute(QNetworkRequest::User).toInt() + 1;
-    const QStringList* urls = reply->request().attribute((QNetworkRequest::Attribute)(QNetworkRequest::User + 1)).value<const QStringList*>();
-    Socket* socket = m_replySocketMap[reply];
-    socket->write(reply->readAll());
+        socket->writeError(Socket::Forbidden);
+        return;
+    }
 
-    m_replySocketMap.remove(reply);
-    m_headerWritten.remove(reply);
-    reply->deleteLater();
-
-    qDebug() << __FUNCTION__ << index << urls->length();
-    if (index >= urls->length())
+    // Create a QIODeviceCopier to copy the file contents to the socket
+    QIODeviceCopier *copier = new QIODeviceCopier(file, socket);
+    connect(copier, &QIODeviceCopier::finished, copier, &QIODeviceCopier::deleteLater);
+    connect(copier, &QIODeviceCopier::finished, file, &QFile::deleteLater);
+    connect(copier, &QIODeviceCopier::finished, [socket]() {
         socket->close();
-    else
-        relayMedia(socket, *urls, index);
+    });
+
+    // Stop the copier if the socket is disconnected
+    connect(socket, &Socket::disconnected, copier, &QIODeviceCopier::stop);
+
+    qint64 fileSize = file->size();
+
+    // Checking for partial content request
+    QByteArray rangeHeader = socket->headers().value("Range");
+    Range range;
+
+    if (!rangeHeader.isEmpty() && rangeHeader.startsWith("bytes=")) {
+        // Skiping 'bytes=' - first 6 chars and spliting ranges by comma
+        QList<QByteArray> rangeList = rangeHeader.mid(6).split(',');
+
+        // Taking only first range, as multiple ranges require multipart
+        // reply support
+        range = Range(QString(rangeList.at(0)), fileSize);
+    }
+
+    // If range is valid, send partial content
+    if (range.isValid()) {
+        socket->setStatusCode(Socket::PartialContent);
+        socket->setHeader("Content-Length", QByteArray::number(range.length()));
+        socket->setHeader("Content-Range", QByteArray("bytes ") + range.contentRange().toLatin1());
+        copier->setRange(range.from(), range.to());
+    } else {
+        // If range is invalid or if it is not a partial content request,
+        // send full file
+        //socket->setHeader("Content-Length", QByteArray::number(fileSize));
+    }
+
+    // Set the mimetype and content length
+    if (QFileInfo(absolutePath).suffix().compare("ts", Qt::CaseInsensitive))
+        socket->setHeader("Content-Type", "video/MP2T");
+    else if (QFileInfo(absolutePath).suffix().compare("flv", Qt::CaseInsensitive))
+        socket->setHeader("Content-Type", "video/x-flv");
+    socket->writeHeaders();
+
+    // Start the copy
+    copier->start();
 }

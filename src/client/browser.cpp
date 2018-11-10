@@ -183,8 +183,8 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
     }
 
     QString media = urls[0];
-
-    if (urls.length() > 1 && player->type() != Player::PT_DLNA)
+    QString ext = QFileInfo(QUrl(media).path()).suffix();
+    if (urls.length() > 1)
     {
         // make a m3u8
         m_httpHandler.clear();
@@ -205,32 +205,42 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
         media = QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString());
     }
 
+    qDebug() << media;
     if (player->type() == Player::PT_DLNA
-            && !QUrl(media).path().endsWith("m3u8", Qt::CaseInsensitive)
-            && QUrl(media).hasQuery())
+            && QUrl(media).path().endsWith("media.m3u8", Qt::CaseInsensitive))
     {
-        // DLNA not support m3u8?
-        m_httpHandler.clear();
-        if ((QUrl(media).path().endsWith(".ts", Qt::CaseInsensitive)
-             || QUrl(media).path().endsWith(".265ts", Qt::CaseInsensitive))
-                && urls.length() > 50)
-        {
-            media = m_httpHandler.mapUrl(urls);
-        }
+        // DLNA not support m3u8, use ffmpeg to transcode to a single stream
+        // ffmpeg.exe -y -protocol_whitelist "file,http,https,tcp,tls"  -i test.m3u8 -c:v libx265 -an -x265-params crf=25 -f mpegts udp://127.0.0.1:12345
+        m_ffmpegProcess.kill();
+
+        m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
+        if (ext.compare("265ts", Qt::CaseInsensitive) == 0)
+            m_ffmpegProcess.setArguments(QStringList() << "-y"
+                                         << "-protocol_whitelist"
+                                         << "file,http,https,tcp,tls"
+                                         << "-i"
+                                         << media
+                                         << "-c:v"
+                                         << "libx265"
+                                         << "-c:a"
+                                         << "aac"
+                                         << "-copyts"
+                                         << QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts"));
         else
-        {
-            QStringList medias;
-            for (const auto & u : urls)
-            {
-                medias.append(m_httpHandler.mapUrl(u));
-            }
-            media = medias.join('\n');
-        }
-        if (!referrer.isEmpty())
-        {
-            m_httpHandler.setReferrer(referrer.toUtf8());
-            m_httpHandler.setUserAgent(Config().read<QByteArray>(QLatin1String("httpUserAgent")));
-        }
+            m_ffmpegProcess.setArguments(QStringList() << "-y"
+                                         << "-protocol_whitelist"
+                                         << "file,http,https,tcp,tls"
+                                         << "-i"
+                                         << media
+                                         << "-c"
+                                         << "copy"
+                                         //<< "-bsf:a"
+                                         //<< "aac_adtstoasc"
+                                         << QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts"));
+        qDebug() << m_ffmpegProcess.program() << m_ffmpegProcess.arguments();
+        m_ffmpegProcess.start();
+        // serve http://...:51290/media.ext
+        media = QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
     }
 
     switch (player->type())
@@ -278,7 +288,6 @@ void Browser::playByBuiltinPlayer(const QString &url, const QString& title, cons
         m_builtinPlayer = new PlayerView();
         connect(m_builtinPlayer, &PlayerView::finished, this, &Browser::onPlayerFinished);
     }
-    // ffmpeg.exe -y -protocol_whitelist "file,http,https,tcp,tls"  -i test.m3u8 -c:v libx265 -an -x265-params crf=25 -f mpegts udp://127.0.0.1:12345
 
     m_builtinPlayer->show();
     m_builtinPlayer->title(title);
@@ -507,6 +516,7 @@ void Browser::onProcessError(QProcess::ProcessError error)
 void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     stopWaiting();
+    m_ffmpegProcess.kill();
     auto mw = const_cast<BrowserWindow*>(mainWindow());
     mw->currentVIPVideoGoBack();
     for (auto w : m_windows)
