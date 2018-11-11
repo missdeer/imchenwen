@@ -1,7 +1,6 @@
 #ifndef INMEMORYHANDLER_H
 #define INMEMORYHANDLER_H
 
-#include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QSslError>
 #include <QUdpSocket>
@@ -28,13 +27,12 @@ private slots:
     void onNetworkError(QNetworkReply::NetworkError code);
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
-    void onUniqueMediaReadFinished();
+    void onMediaReadFinished();
 private:
     QByteArray m_m3u8;
     QByteArray m_referrer;
     QByteArray m_userAgent;
     QString m_localAddress;
-    QNetworkAccessManager m_nam;
     QMap<QNetworkReply*, QHttpEngine::Socket *> m_replySocketMap;
     QSet<QNetworkReply*> m_headerWritten;
     QMap<QString, QString> m_1to1UrlMap;

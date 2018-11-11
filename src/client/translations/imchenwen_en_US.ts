@@ -4,38 +4,38 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="511"/>
+        <location filename="../browser.cpp" line="461"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="511"/>
+        <location filename="../browser.cpp" line="461"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="522"/>
+        <location filename="../browser.cpp" line="472"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="532"/>
+        <location filename="../browser.cpp" line="482"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="535"/>
+        <location filename="../browser.cpp" line="485"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="538"/>
+        <location filename="../browser.cpp" line="488"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="542"/>
+        <location filename="../browser.cpp" line="492"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1374,13 +1374,13 @@ MPV Error: </source>
 <context>
     <name>SubscriptionHelper</name>
     <message>
-        <location filename="../subscriptionhelper.cpp" line="57"/>
+        <location filename="../subscriptionhelper.cpp" line="62"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../subscriptionhelper.cpp" line="87"/>
-        <location filename="../subscriptionhelper.cpp" line="144"/>
+        <location filename="../subscriptionhelper.cpp" line="92"/>
+        <location filename="../subscriptionhelper.cpp" line="149"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>

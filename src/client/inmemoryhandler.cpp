@@ -1,4 +1,5 @@
 #include "inmemoryhandler.h"
+#include "browser.h"
 #include "util.h"
 #include <qhttpengine/socket.h>
 #include <qhttpengine/qiodevicecopier.h>
@@ -78,10 +79,11 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
         req.setRawHeader("Referer", m_referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
-    QNetworkReply* reply = m_nam.get(req);
+    QNetworkAccessManager &nam = Browser::instance().nam();
+    QNetworkReply *reply = nam.get(req);
     m_replySocketMap.insert(reply, socket);
     connect(reply, &QIODevice::readyRead, this, &InMemoryHandler::onReadyRead);
-    connect(reply, &QNetworkReply::finished, this, &InMemoryHandler::onUniqueMediaReadFinished);
+    connect(reply, &QNetworkReply::finished, this, &InMemoryHandler::onMediaReadFinished);
     connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &InMemoryHandler::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &InMemoryHandler::onNetworkSSLErrors);
 }
@@ -159,7 +161,7 @@ void InMemoryHandler::onReadyRead()
     }
 }
 
-void InMemoryHandler::onUniqueMediaReadFinished()
+void InMemoryHandler::onMediaReadFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 

@@ -77,6 +77,7 @@ int main(int argc, char **argv)
 
     Browser& browser = Browser::instance();
     browser.loadSettings();
+    browser.init();
     BrowserWindow *window = browser.mainWindow();
 
     const QString url = getCommandLineUrlArgument();

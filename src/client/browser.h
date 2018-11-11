@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QProcess>
+#include <QNetworkAccessManager>
 #include <qhttpengine/server.h>
 #include "linkresolver.h"
 #include "websites.h"
@@ -12,10 +13,7 @@
 #include "inmemoryhandler.h"
 #include "player.h"
 #include "subscriptionhelper.h"
-
-QT_BEGIN_NAMESPACE
-class QNetworkAccessManager;
-QT_END_NAMESPACE
+#include "mediarelay.h"
 
 class BrowserWindow;
 class WaitingSpinnerWidget;
@@ -32,7 +30,7 @@ class Browser : public QObject
         isHidden,
     };
     friend class BrowserWindow;
-
+    friend class MediaRelay;
     Q_OBJECT
 public:
     static Browser &instance();
@@ -43,10 +41,12 @@ public:
     BrowserWindow *mainWindow();
     BrowserWindow *newMainWindow();
     Kast &kast();
+    QNetworkAccessManager &nam();
 
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString& u);
     void play(const QString& u, const QString& title);
+    void init();
 signals:
 
 private slots:
@@ -56,23 +56,24 @@ private slots:
     void onProcessError(QProcess::ProcessError error);
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onSniffedMediaUrl(const QString& u);
+    void onNewM3U8Ready();
 private:
+    QNetworkAccessManager m_nam;
+    Kast m_kast;
     QVector<BrowserWindow*> m_windows;
     QMap<BrowserWindow*, WindowState> m_windowsState;
     WaitingSpinnerWidget *m_waitingSpinner;
     QProcess m_playerProcess;
-    QProcess m_ffmpegProcess;
     LinkResolver m_linkResolver;
     Websites m_websites;
     UrlRequestInterceptor m_urlRequestInterceptor;
-    QNetworkAccessManager *m_nam;
-    Kast m_kast;
     PlayerView *m_builtinPlayer;
     DLNAPlayerView *m_dlnaPlayer;
     QHttpEngine::Server m_httpServer;
     InMemoryHandler m_httpHandler;
     SubscriptionHelper m_liveTVHelper;
     SubscriptionHelper m_vipVideoHelper;
+    MediaRelay m_mediaRelay;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);

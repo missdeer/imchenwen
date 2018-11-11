@@ -31,7 +31,8 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/util.h \
     inmemoryhandler.h \
     player.h \
-    subscriptionhelper.h
+    subscriptionhelper.h \
+    mediarelay.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -55,7 +56,8 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/util.cpp \
     inmemoryhandler.cpp \
     player.cpp \
-    subscriptionhelper.cpp
+    subscriptionhelper.cpp \
+    mediarelay.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \

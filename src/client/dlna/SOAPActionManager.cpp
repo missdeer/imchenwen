@@ -1,8 +1,10 @@
 #include "SOAPActionManager.h"
 #include "DLNAPlaybackInfo.h"
 #include "MimeGuesser.h"
+#include "browser.h"
 #include <QDebug>
 #include <QDomDocument>
+#include <QNetworkAccessManager>
 
 // Xml request's body
 const QString SOAPXmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>"
@@ -24,7 +26,6 @@ const QString SOAPXmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\" standalo
 
 SOAPActionManager::SOAPActionManager(QObject *parent)
     : QObject(parent)
-    , m_nam(new QNetworkAccessManager(this))
 {
 }
 
@@ -53,22 +54,21 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     // To do not duplicate code, just check, is this action with needed data processing, or not.
     // If you want to add new action, which needs data processing, do it here.
 
-    if (action == "GetPositionInfo")
-        connect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processPlaybackInfo);
-    else
-        connect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processData);
+    QNetworkAccessManager& nam = Browser::instance().nam();
 
-    m_nam->post(request, data.toUtf8());
+    QNetworkReply* reply = nam.post(request, data.toUtf8());
+    if (action == "GetPositionInfo")
+        connect(reply, &QNetworkReply::finished, this, &SOAPActionManager::processPlaybackInfo);
+    else
+        connect(reply, &QNetworkReply::finished, this, &SOAPActionManager::processData);
 }
 
-void SOAPActionManager::processData(QNetworkReply *reply)
+void SOAPActionManager::processData()
 {
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     QString data = reply->readAll();
     reply->close();
     reply->deleteLater();
-
-    // We want to be able to connect it to few slots, so lets disconnect it for now
-    disconnect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processData);
 
     qDebug() << "Got XML response:" << data;
     // Initial value, used if response type is not detected
@@ -85,15 +85,13 @@ void SOAPActionManager::processData(QNetworkReply *reply)
 
 }
 
-void SOAPActionManager::processPlaybackInfo(QNetworkReply *reply)
+void SOAPActionManager::processPlaybackInfo()
 {
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     // Construct xml parser, from reply's data, close socket
     QByteArray data = reply->readAll();
     reply->close();
     reply->deleteLater();
-
-    // We want to be able to connect it to few slots, so lets disconnect it for now
-    disconnect(m_nam, &QNetworkAccessManager::finished, this, &SOAPActionManager::processPlaybackInfo);
 
     DLNAPlaybackInfo playbackInfo;
     QDomDocument doc;

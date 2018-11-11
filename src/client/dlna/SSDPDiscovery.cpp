@@ -1,12 +1,12 @@
 #include "SSDPDiscovery.h"
 #include "config.h"
+#include "browser.h"
+#include <QNetworkAccessManager>
 
 // DLNA renderers discovery class
 SSDPdiscovery::SSDPdiscovery(QObject *parent)
     : QObject(parent)
-    , m_nam(new QNetworkAccessManager(this))
 {
-    connect(m_nam, &QNetworkAccessManager::finished, this, &SSDPdiscovery::processData);
 }
 
 SSDPdiscovery::~SSDPdiscovery()
@@ -63,12 +63,15 @@ void SSDPdiscovery::processPendingDatagrams()
 void SSDPdiscovery::findRendererFromUrl(const QUrl & url)
 {
     // Query renderer info
-    m_nam->get(QNetworkRequest(url));
+    QNetworkAccessManager &nam = Browser::instance().nam();
+    QNetworkReply *reply = nam.get(QNetworkRequest(url));
+    connect(reply, &QNetworkReply::finished, this, &SSDPdiscovery::processData);
 }
 
 // This function process request data, into DLNA Renderer
-void SSDPdiscovery::processData(QNetworkReply *reply)
+void SSDPdiscovery::processData()
 {
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     QXmlStreamReader xml(reply->readAll());
     if(!m_knownURLs.contains(reply->url().toString()))
     {

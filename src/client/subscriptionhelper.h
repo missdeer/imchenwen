@@ -5,8 +5,6 @@
 #include <QSharedPointer>
 #include <QStringList>
 #include <QMultiMap>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
 #include <QNetworkReply>
 #include "config.h"
 
@@ -36,7 +34,6 @@ private slots:
     void onReadFinished();
 
 private:
-    QNetworkAccessManager m_nam;
     QString m_customKey;
     QString m_subscriptionKey;
     SubscriptionContentMap m_content;

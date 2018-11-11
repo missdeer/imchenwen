@@ -1,9 +1,12 @@
 #include "subscriptionhelper.h"
 #include "config.h"
+#include "browser.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFileInfo>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
 
 Q_DECLARE_METATYPE(QStringList *);
 
@@ -39,7 +42,9 @@ void SubscriptionHelper::requestSubscription(QStringList *subscriptItems, int in
     QUrl u(subscriptItems->at(index));
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    QNetworkReply* reply = m_nam.get(req);
+
+    QNetworkAccessManager &nam = Browser::instance().nam();
+    QNetworkReply *reply = nam.get(req);
     connect(reply, &QIODevice::readyRead, this, &SubscriptionHelper::onReadyRead);
     connect(reply, &QNetworkReply::finished, this, &SubscriptionHelper::onReadFinished);
     connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &SubscriptionHelper::onNetworkError);

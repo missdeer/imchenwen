@@ -9,8 +9,6 @@
 #include <QJsonParseError>
 #include <QTextStream>
 
-static QNetworkAccessManager nam;
-
 LinkResolver::LinkResolver(QObject *parent)
     : QObject(parent)
     , m_mediaInfo(new MediaInfo)

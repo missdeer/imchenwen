@@ -16,10 +16,9 @@ public:
     void run();
     QList<DLNARenderer *> &renderers();
 private slots:
-    void processData(QNetworkReply*);
+    void processData();
     void processPendingDatagrams();
 private:
-    QNetworkAccessManager *m_nam;
     QUdpSocket *m_multicastUdpSocket;
     QSet<QString> m_knownURLs;
     QList<DLNARenderer*> m_knownRenderers;
