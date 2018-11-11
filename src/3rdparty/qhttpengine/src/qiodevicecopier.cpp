@@ -94,7 +94,7 @@ void QIODeviceCopierPrivate::nextBlock()
     if (q->m_inputEnd && ( src->atEnd() || (rangeTo != -1 && src->pos() > rangeTo))) {
         Q_EMIT q->finished();
     } else {
-        QTimer::singleShot(0, this, &QIODeviceCopierPrivate::nextBlock);
+        QTimer::singleShot(500, this, &QIODeviceCopierPrivate::nextBlock);
     }
 }
 
