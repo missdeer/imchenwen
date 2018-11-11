@@ -254,7 +254,7 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
             m_ffmpegProcess.setArguments(QStringList() << "-y"
                                          << "-protocol_whitelist" << "file,http,https,tcp,tls"
                                          << "-i" << media
-                                         << "-c:v" << "libx264"
+                                         << "-c:v" << "copy"
                                          << "-c:a" << "aac"
                                          << "-copyts"
                                          //<< "-bsf:a" << "aac_adtstoasc" // need for flv output
@@ -541,6 +541,7 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
 {
     stopWaiting();
     m_ffmpegProcess.kill();
+    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts");
     auto mw = const_cast<BrowserWindow*>(mainWindow());
     mw->currentVIPVideoGoBack();
     for (auto w : m_windows)

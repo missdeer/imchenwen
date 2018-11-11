@@ -9,6 +9,7 @@
 #include <QFileInfo>
 #include <QUuid>
 #include <QStandardPaths>
+#include <QTimer>
 
 using namespace QHttpEngine;
 
@@ -176,7 +177,7 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
     QFile *file = new QFile(absolutePath);
     if (!file->open(QIODevice::ReadOnly)) {
         delete file;
-
+        qDebug() << __FUNCTION__ << "can't open file for reading:" << absolutePath;
         socket->writeError(Socket::Forbidden);
         return;
     }
@@ -193,41 +194,9 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
     // Stop the copier if the socket is disconnected
     connect(socket, &Socket::disconnected, copier, &QIODeviceCopier::stop);
 
-    qint64 fileSize = file->size();
-
-    // Checking for partial content request
-    QByteArray rangeHeader = socket->headers().value("Range");
-    Range range;
-
-    if (!rangeHeader.isEmpty() && rangeHeader.startsWith("bytes=")) {
-        // Skiping 'bytes=' - first 6 chars and spliting ranges by comma
-        QList<QByteArray> rangeList = rangeHeader.mid(6).split(',');
-
-        // Taking only first range, as multiple ranges require multipart
-        // reply support
-        range = Range(QString(rangeList.at(0)), fileSize);
-    }
-
-    // If range is valid, send partial content
-    if (range.isValid()) {
-        socket->setStatusCode(Socket::PartialContent);
-        socket->setHeader("Content-Length", QByteArray::number(range.length()));
-        socket->setHeader("Content-Range", QByteArray("bytes ") + range.contentRange().toLatin1());
-        copier->setRange(range.from(), range.to());
-    } else {
-        // If range is invalid or if it is not a partial content request,
-        // send full file
-        // fake length, large enough for the most times
-        //socket->setHeader("Content-Length", QByteArray::number(4 * 1024 * 1024 * 1024));
-    }
-
-    // Set the mimetype and content length
-    if (QFileInfo(absolutePath).suffix().compare("ts", Qt::CaseInsensitive))
-        socket->setHeader("Content-Type", "video/MP2T");
-    else if (QFileInfo(absolutePath).suffix().compare("flv", Qt::CaseInsensitive))
-        socket->setHeader("Content-Type", "video/x-flv");
-    else if (QFileInfo(absolutePath).suffix().compare("mkv", Qt::CaseInsensitive))
-        socket->setHeader("Content-Type", "video/webm");
+    // range is not supported
+    // don't set Content-Length, it's a stream, length is unknown
+    // special Content-Type for DMR
     socket->setHeader("Content-Type", "application/octet-stream");
     socket->writeHeaders();
 
