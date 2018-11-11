@@ -232,6 +232,10 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
             && QUrl(media).path().endsWith("media.m3u8", Qt::CaseInsensitive))
     {
         // DLNA not support m3u8, use ffmpeg to transcode to a single stream
+        if (QUrl(media).hasQuery())
+        {
+            // download the m3u8, extract the real stream urls, then regenerate m3u8 and invoke ffmpeg
+        }
 
         // ffmpeg.exe -y -protocol_whitelist "file,http,https,tcp,tls"  -i test.m3u8 -c:v libx265 -an -x265-params crf=25 -f mpegts udp://127.0.0.1:12345
         m_ffmpegProcess.kill();
@@ -263,6 +267,11 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
             // serve http://...:51290/media.ext
             media = QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
         }
+
+        // touch the file, so that DMR won't exit if file system handler doesn't find the file at the beginning
+        QFile f(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts");
+        if (f.open(QIODevice::WriteOnly))
+            f.close();
         m_ffmpegProcess.start();
     }
 
