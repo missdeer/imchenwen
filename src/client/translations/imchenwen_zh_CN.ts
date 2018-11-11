@@ -4,39 +4,39 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="482"/>
+        <location filename="../browser.cpp" line="506"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="482"/>
+        <location filename="../browser.cpp" line="506"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="493"/>
+        <location filename="../browser.cpp" line="517"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="503"/>
+        <location filename="../browser.cpp" line="527"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="506"/>
+        <location filename="../browser.cpp" line="530"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="509"/>
+        <location filename="../browser.cpp" line="533"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="513"/>
+        <location filename="../browser.cpp" line="537"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -707,17 +707,17 @@ MPV错误：</translation>
 <context>
     <name>QHttpEngine::QIODeviceCopier</name>
     <message>
-        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="124"/>
+        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="125"/>
         <source>Unable to open source device for reading</source>
         <translation>无法打开源设备读</translation>
     </message>
     <message>
-        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="132"/>
+        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="133"/>
         <source>Unable to open destination device for writing</source>
         <translation>无法打开目的设备写</translation>
     </message>
     <message>
-        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="141"/>
+        <location filename="../../3rdparty/qhttpengine/src/qiodevicecopier.cpp" line="142"/>
         <source>Unable to seek source device for specified range</source>
         <translation>无法定位源设备到指定区间</translation>
     </message>

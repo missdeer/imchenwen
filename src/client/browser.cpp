@@ -74,6 +74,12 @@ Browser::Browser(QObject *parent)
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
     connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
+    connect(&m_ffmpegProcess, &QProcess::errorOccurred, [this](){
+        emit m_httpHandler.inputEnd();
+    });
+    connect(&m_ffmpegProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [this](){
+        emit m_httpHandler.inputEnd();
+    });
     connect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
     //connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
     m_liveTVHelper.update();
@@ -191,9 +197,25 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
         int duration = 1500 / urls.length();
         QByteArray m3u8;
         m3u8.append(QString("#EXTM3U\n#EXT-X-TARGETDURATION:%1\n").arg(duration > 8 ? duration + 3 : 8).toUtf8());
-        for (const auto & u : urls)
+        if (player->type() == Player::PT_DLNA)
         {
-            m3u8.append(QString("#EXTINF:%1,\n%2\n").arg(duration > 5 ? duration : 5).arg(u).toUtf8());
+            for (const auto & u : urls)
+            {
+                m3u8.append(QString("#EXTINF:%1,\n%2\n")
+                            .arg(duration > 5 ? duration : 5)
+                            .arg(m_httpHandler.mapUrl(u))
+                            .toUtf8());
+            }
+        }
+        else
+        {
+            for (const auto & u : urls)
+            {
+                m3u8.append(QString("#EXTINF:%1,\n%2\n")
+                            .arg(duration > 5 ? duration : 5)
+                            .arg(u)
+                            .toUtf8());
+            }
         }
         m3u8.append("#EXT-X-ENDLIST\n");
         m_httpHandler.setM3U8(m3u8);
@@ -210,39 +232,41 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
             && QUrl(media).path().endsWith("media.m3u8", Qt::CaseInsensitive))
     {
         // DLNA not support m3u8, use ffmpeg to transcode to a single stream
+
         // ffmpeg.exe -y -protocol_whitelist "file,http,https,tcp,tls"  -i test.m3u8 -c:v libx265 -an -x265-params crf=25 -f mpegts udp://127.0.0.1:12345
         m_ffmpegProcess.kill();
 
         m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
         if (ext.compare("265ts", Qt::CaseInsensitive) == 0)
+        {
             m_ffmpegProcess.setArguments(QStringList() << "-y"
-                                         << "-protocol_whitelist"
-                                         << "file,http,https,tcp,tls"
-                                         << "-i"
-                                         << media
-                                         << "-c:v"
-                                         << "libx265"
-                                         << "-c:a"
-                                         << "aac"
+                                         << "-protocol_whitelist" << "file,http,https,tcp,tls"
+                                         << "-i" << media
+                                         << "-c:v" << "libx265"
+                                         << "-c:a" << "aac"
                                          << "-copyts"
                                          << QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts"));
+            // serve http://...:51290/media.ext
+            media = QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
+        }
         else
+        {
             m_ffmpegProcess.setArguments(QStringList() << "-y"
-                                         << "-protocol_whitelist"
-                                         << "file,http,https,tcp,tls"
-                                         << "-i"
-                                         << media
-                                         << "-c"
-                                         << "copy"
-                                         //<< "-bsf:a"
-                                         //<< "aac_adtstoasc"
+                                         << "-protocol_whitelist" << "file,http,https,tcp,tls"
+                                         << "-i" << media
+                                         << "-c:v" << "libx264"
+                                         << "-c:a" << "aac"
+                                         << "-copyts"
+                                         //<< "-bsf:a" << "aac_adtstoasc" // need for flv output
                                          << QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts"));
-        qDebug() << m_ffmpegProcess.program() << m_ffmpegProcess.arguments();
+
+            // serve http://...:51290/media.ext
+            media = QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
+        }
         m_ffmpegProcess.start();
-        // serve http://...:51290/media.ext
-        media = QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
     }
 
+    qDebug() << "playing" << media ;
     switch (player->type())
     {
     case Player::PT_BUILTIN:

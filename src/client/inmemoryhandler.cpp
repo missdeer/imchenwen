@@ -183,6 +183,7 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
 
     // Create a QIODeviceCopier to copy the file contents to the socket
     QIODeviceCopier *copier = new QIODeviceCopier(file, socket);
+    connect(this, &InMemoryHandler::inputEnd, copier, &QIODeviceCopier::inputEnd);
     connect(copier, &QIODeviceCopier::finished, copier, &QIODeviceCopier::deleteLater);
     connect(copier, &QIODeviceCopier::finished, file, &QFile::deleteLater);
     connect(copier, &QIODeviceCopier::finished, [socket]() {
@@ -217,7 +218,7 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
         // If range is invalid or if it is not a partial content request,
         // send full file
         // fake length, large enough for the most times
-        socket->setHeader("Content-Length", QByteArray::number(4 * 1024 * 1024 * 1024));
+        //socket->setHeader("Content-Length", QByteArray::number(4 * 1024 * 1024 * 1024));
     }
 
     // Set the mimetype and content length
@@ -225,6 +226,9 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
         socket->setHeader("Content-Type", "video/MP2T");
     else if (QFileInfo(absolutePath).suffix().compare("flv", Qt::CaseInsensitive))
         socket->setHeader("Content-Type", "video/x-flv");
+    else if (QFileInfo(absolutePath).suffix().compare("mkv", Qt::CaseInsensitive))
+        socket->setHeader("Content-Type", "video/webm");
+    socket->setHeader("Content-Type", "application/octet-stream");
     socket->writeHeaders();
 
     // Start the copy

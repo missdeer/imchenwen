@@ -124,8 +124,12 @@ public Q_SLOTS:
      */
     void stop();
 
+    void inputEnd()
+    {
+        m_inputEnd = true;
+    }
 private:
-
+    bool m_inputEnd;
     QIODeviceCopierPrivate *const d;
     friend class QIODeviceCopierPrivate;
 };

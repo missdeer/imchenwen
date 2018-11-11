@@ -91,7 +91,7 @@ void QIODeviceCopierPrivate::nextBlock()
     // Check if the end of the device has been reached or if the end of
     // the requested range is reached - if so, emit the finished signal and
     // if not, continue to read data at the next iteration of the event loop
-    if (src->atEnd() || (rangeTo != -1 && src->pos() > rangeTo)) {
+    if (q->m_inputEnd && ( src->atEnd() || (rangeTo != -1 && src->pos() > rangeTo))) {
         Q_EMIT q->finished();
     } else {
         QTimer::singleShot(0, this, &QIODeviceCopierPrivate::nextBlock);
@@ -99,8 +99,9 @@ void QIODeviceCopierPrivate::nextBlock()
 }
 
 QIODeviceCopier::QIODeviceCopier(QIODevice *src, QIODevice *dest, QObject *parent)
-    : QObject(parent),
-      d(new QIODeviceCopierPrivate(this, src, dest))
+    : QObject(parent)
+    , d(new QIODeviceCopierPrivate(this, src, dest))
+    , m_inputEnd(false)
 {
     connect(src, &QIODevice::destroyed, this, &QIODeviceCopier::stop);
     connect(dest, &QIODevice::destroyed, this, &QIODeviceCopier::stop);

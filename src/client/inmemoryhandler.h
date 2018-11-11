@@ -10,6 +10,7 @@
 
 class InMemoryHandler : public QHttpEngine::Handler
 {
+    Q_OBJECT
 public:
     explicit InMemoryHandler(QObject *parent = nullptr);
 
@@ -18,19 +19,16 @@ public:
     void setUserAgent(const QByteArray& userAgent);
     QString mapUrl(const QString& url);
     void clear();
-protected:
-
-    /**
-     * @brief Reimplementation of [Handler::process()](QHttpEngine::Handler::process)
-     */
     virtual void process(QHttpEngine::Socket *socket, const QString &path);
+
+signals:
+    void inputEnd();
+
 private slots:
     void onNetworkError(QNetworkReply::NetworkError code);
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
     void onUniqueMediaReadFinished();
-
-    void onReadPendingDatagrams();
 private:
     QByteArray m_m3u8;
     QByteArray m_referrer;
