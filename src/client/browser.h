@@ -41,7 +41,7 @@ public:
     BrowserWindow *mainWindow();
     BrowserWindow *newMainWindow();
     Kast &kast();
-    QNetworkAccessManager &nam();
+    QNetworkAccessManager &networkAccessManager();
 
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString& u);

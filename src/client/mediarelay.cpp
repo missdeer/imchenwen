@@ -100,7 +100,7 @@ void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, 
     req.setRawHeader("Referer", referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
-    QNetworkAccessManager &nam = Browser::instance().nam();
+    QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
     connect(reply, &QIODevice::readyRead, this, &MediaRelay::onReadyRead);
     connect(reply, &QNetworkReply::finished, this, &MediaRelay::onMediaReadFinished);

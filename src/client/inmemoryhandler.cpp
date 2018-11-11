@@ -79,7 +79,7 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
         req.setRawHeader("Referer", m_referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
-    QNetworkAccessManager &nam = Browser::instance().nam();
+    QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
     m_replySocketMap.insert(reply, socket);
     connect(reply, &QIODevice::readyRead, this, &InMemoryHandler::onReadyRead);

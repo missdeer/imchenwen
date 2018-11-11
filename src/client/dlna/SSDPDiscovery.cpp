@@ -63,7 +63,7 @@ void SSDPdiscovery::processPendingDatagrams()
 void SSDPdiscovery::findRendererFromUrl(const QUrl & url)
 {
     // Query renderer info
-    QNetworkAccessManager &nam = Browser::instance().nam();
+    QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(QNetworkRequest(url));
     connect(reply, &QNetworkReply::finished, this, &SSDPdiscovery::processData);
 }

@@ -54,7 +54,7 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     // To do not duplicate code, just check, is this action with needed data processing, or not.
     // If you want to add new action, which needs data processing, do it here.
 
-    QNetworkAccessManager& nam = Browser::instance().nam();
+    QNetworkAccessManager& nam = Browser::instance().networkAccessManager();
 
     QNetworkReply* reply = nam.post(request, data.toUtf8());
     if (action == "GetPositionInfo")

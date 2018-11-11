@@ -375,7 +375,7 @@ Kast &Browser::kast()
     return m_kast;
 }
 
-QNetworkAccessManager &Browser::nam()
+QNetworkAccessManager &Browser::networkAccessManager()
 {
     return m_nam;
 }
