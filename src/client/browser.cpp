@@ -182,7 +182,6 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
     }
 
     QString media = urls[0];
-    QString ext = QFileInfo(QUrl(media).path()).suffix();
     if (urls.length() > 1)
     {
         if (!referrer.isEmpty())

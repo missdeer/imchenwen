@@ -53,7 +53,9 @@ QString MediaRelay::makeM3U8(PlayerPtr player, QStringList &urls)
 
 QString MediaRelay::transcoding(const QString& media)
 {
-    m_pipeData.clear();
+    InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
+
+    httpHandler.clear();
     m_ffmpegProcess.kill();
     m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
     m_ffmpegProcess.setArguments(QStringList() << "-y"
@@ -68,18 +70,12 @@ QString MediaRelay::transcoding(const QString& media)
     m_ffmpegProcess.setProcessChannelMode(QProcess::SeparateChannels);
     m_ffmpegProcess.start();
     // serve http://...:51290/media.ts
-    QString newMediaUrl = QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
-
-    // touch the file, so that DMR won't exit if file system handler doesn't find the file at the beginning
-//    QFile f(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts");
-//    if (f.open(QIODevice::WriteOnly))
-//        f.close();
-    return newMediaUrl;
+    return QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
 }
 
 void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, const QByteArray& referrer)
 {
-    m_data.clear();
+    m_socketData.clear();
     QNetworkRequest req;
     QUrl u(media);
     req.setUrl(u);
@@ -97,10 +93,12 @@ void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, 
 
 void MediaRelay::stop()
 {
+    InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
+
+    httpHandler.clear();
     m_ffmpegProcess.kill();
-    //QFile::remove(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts");
+
     m_socketData.clear();
-    m_pipeData.clear();
 }
 
 void MediaRelay::onNetworkError(QNetworkReply::NetworkError code)

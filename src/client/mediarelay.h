@@ -37,7 +37,6 @@ private:
     QString m_title;
     QProcess m_ffmpegProcess;
     QByteArray m_socketData;
-    QByteArray m_pipeData;
 };
 
 #endif // MEDIARELAY_H
