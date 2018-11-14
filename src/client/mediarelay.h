@@ -14,14 +14,11 @@ public:
     explicit MediaRelay(QObject *parent = nullptr);
 
     QString makeM3U8(PlayerPtr player, QStringList& urls);
-    QString transcoding(const QString& ext, const QString &media);
+    QString transcoding(const QString &media);
     void processM3U8(const QString& media, const QByteArray &userAgent, const QByteArray &referrer);
     void stop();
     PlayerPtr player() const;
     void setPlayer(const PlayerPtr &player);
-
-    const QString &ext() const;
-    void setExt(const QString &ext);
 
     const QString &title() const;
     void setTitle(const QString &title);
@@ -34,12 +31,13 @@ private slots:
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
     void onMediaReadFinished();
+    void onReadStandardOutput();
 private:
     PlayerPtr m_player;
-    QString m_ext;
     QString m_title;
     QProcess m_ffmpegProcess;
-    QByteArray m_data;
+    QByteArray m_socketData;
+    QByteArray m_pipeData;
 };
 
 #endif // MEDIARELAY_H

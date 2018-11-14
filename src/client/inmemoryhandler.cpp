@@ -18,6 +18,7 @@ Q_DECLARE_METATYPE(const QStringList *);
 
 InMemoryHandler::InMemoryHandler(QObject *parent)
     : Handler(parent)
+    , m_mediaSocket(nullptr)
 {
     m_localAddress = Util::getLocalAddress().toString();
 }
@@ -55,6 +56,7 @@ void InMemoryHandler::clear()
     for (auto r : replys)
         r->abort();
     m_m3u8.clear();
+    m_mediaData.clear();
     m_referrer.clear();
     m_userAgent.clear();
     m_1to1UrlMap.clear();
@@ -66,6 +68,18 @@ void InMemoryHandler::returnMediaM3U8(Socket *socket)
     socket->setHeader("Content-Type", "application/vnd.apple.mpegurl");
     socket->writeHeaders();
     socket->write(m_m3u8);
+}
+
+void InMemoryHandler::returnMediaData(Socket *socket)
+{
+    m_mediaSocket = socket;
+    socket->setHeader("Content-Type", "application/octet-stream");
+    socket->writeHeaders();
+    if (!m_mediaData.isEmpty())
+    {
+        socket->write(m_mediaData);
+        m_mediaData.clear();
+    }
 }
 
 void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
@@ -102,6 +116,12 @@ void InMemoryHandler::process(Socket *socket, const QString &path)
         return;
     }
 
+    if (path == "media.ts")
+    {
+        returnMediaData(socket);
+        return;
+    }
+
     auto it1to1 = m_1to1UrlMap.find(path);
     if (m_1to1UrlMap.end() != it1to1)
     {
@@ -119,6 +139,20 @@ void InMemoryHandler::process(Socket *socket, const QString &path)
 
     socket->writeError(Socket::NotFound);
     qDebug() << __FUNCTION__ << path << "not found";
+}
+
+void InMemoryHandler::newMediaData(const QByteArray &data)
+{
+    if (m_mediaSocket)
+        m_mediaSocket->write(data);
+    else
+        m_mediaData.append(data);
+}
+
+void InMemoryHandler::inputEnd()
+{
+    m_mediaSocket->close();
+    m_mediaSocket = nullptr;
 }
 
 void InMemoryHandler::onNetworkError(QNetworkReply::NetworkError code)
@@ -186,7 +220,6 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
 
     // Create a QIODeviceCopier to copy the file contents to the socket
     QIODeviceCopier *copier = new QIODeviceCopier(file, socket);
-    connect(this, &InMemoryHandler::inputEnd, copier, &QIODeviceCopier::inputEnd);
     connect(copier, &QIODeviceCopier::finished, copier, &QIODeviceCopier::deleteLater);
     connect(copier, &QIODeviceCopier::finished, file, &QFile::deleteLater);
     connect(copier, &QIODeviceCopier::finished, [socket]() {
