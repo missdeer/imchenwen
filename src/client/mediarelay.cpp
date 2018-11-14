@@ -93,6 +93,7 @@ QString MediaRelay::transcoding(const QString& ext, const QString& media)
 
 void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, const QByteArray& referrer)
 {
+    m_data.clear();
     QNetworkRequest req;
     QUrl u(media);
     req.setUrl(u);
@@ -146,9 +147,28 @@ void MediaRelay::onMediaReadFinished()
     {
         if (!line.startsWith('#'))
         {
-            // absolute path or relative path
-            QString u = httpHandler.mapUrl(QString(line));
-            m3u8 = m3u8.replace(line, u.toUtf8());
+            QString u = QString(line);
+            if (!line.startsWith("http://") && !line.startsWith("https://"))
+            {
+                // relative path
+                QString originUrl = reply->request().url().url();
+                int index = originUrl.lastIndexOf('/');
+                u = originUrl.left(index + 1) + u;
+            }
+            // u is an absolute path
+            if (u.endsWith("m3u8", Qt::CaseInsensitive))
+            {
+                QByteArray userAgent = reply->request().rawHeader("User-Agent");
+                QByteArray referrer = reply->request().rawHeader("Referer");
+                processM3U8(u, userAgent, referrer);
+                // suppose there is only one m3u8 link
+                return;
+            }
+            else
+            {
+                u = httpHandler.mapUrl(u);
+                m3u8 = m3u8.replace(line, u.toUtf8());
+            }
         }
     }
     httpHandler.setM3U8(m3u8);
