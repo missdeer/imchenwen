@@ -29,10 +29,10 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/popupmenutoolbutton.h \
     $$PWD/urlrequestinterceptor.h \
     $$PWD/util.h \
-    inmemoryhandler.h \
-    player.h \
-    subscriptionhelper.h \
-    mediarelay.h
+    $$PWD/inmemoryhandler.h \
+    $$PWD/player.h \
+    $$PWD/subscriptionhelper.h \
+    $$PWD/mediarelay.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
@@ -54,10 +54,10 @@ SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/popupmenutoolbutton.cpp \
     $$PWD/urlrequestinterceptor.cpp \
     $$PWD/util.cpp \
-    inmemoryhandler.cpp \
-    player.cpp \
-    subscriptionhelper.cpp \
-    mediarelay.cpp
+    $$PWD/inmemoryhandler.cpp \
+    $$PWD/player.cpp \
+    $$PWD/subscriptionhelper.cpp \
+    $$PWD/mediarelay.cpp
 
 FORMS += \
     $$PWD/certificateerrordialog.ui \
