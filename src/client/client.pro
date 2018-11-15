@@ -8,62 +8,38 @@ include($$PWD/../3rdparty/qhttpengine/qhttpengine.pri)
 
 INCLUDEPATH += $$PWD \
     $$PWD/dlna \
-    $$PWD/mpv
+    $$PWD/mpv \
+    $$PWD/webengine \
+    $$PWD/config \
+    $$PWD/ui
 
 HEADERS += $$PWD/dlna/*.h \
     $$PWD/mpv/*.h \
+    $$PWD/webengine/*.h \
     $$PWD/browser.h \
-    $$PWD/browserwindow.h \
-    $$PWD/tabwidget.h \
-    $$PWD/urllineedit.h \
-    $$PWD/webview.h \
-    $$PWD/webpage.h \
-    $$PWD/webpopupwindow.h \
-    $$PWD/config.h \
-    $$PWD/waitingspinnerwidget.h \
+    $$PWD/ui/*.h \
+    $$PWD/config/*.h \
     $$PWD/linkresolver.h \
-    $$PWD/websites.h \
-    $$PWD/playdialog.h \
-    $$PWD/settings.h \
     $$PWD/linkresolverprocess.h \
-    $$PWD/popupmenutoolbutton.h \
-    $$PWD/urlrequestinterceptor.h \
     $$PWD/util.h \
     $$PWD/inmemoryhandler.h \
-    $$PWD/player.h \
-    $$PWD/subscriptionhelper.h \
     $$PWD/mediarelay.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
+    $$PWD/webengine/*.cpp \
+    $$PWD/ui/*.cpp \
+    $$PWD/config/*.cpp \
     $$PWD/browser.cpp \
-    $$PWD/browserwindow.cpp \
     $$PWD/main.cpp \
-    $$PWD/tabwidget.cpp \
-    $$PWD/urllineedit.cpp \
-    $$PWD/webview.cpp \
-    $$PWD/webpage.cpp \
-    $$PWD/webpopupwindow.cpp \
-    $$PWD/config.cpp \
-    $$PWD/waitingspinnerwidget.cpp \
     $$PWD/linkresolver.cpp \
-    $$PWD/websites.cpp \
-    $$PWD/playdialog.cpp \
-    $$PWD/settings.cpp \
     $$PWD/linkresolverprocess.cpp \
-    $$PWD/popupmenutoolbutton.cpp \
-    $$PWD/urlrequestinterceptor.cpp \
     $$PWD/util.cpp \
     $$PWD/inmemoryhandler.cpp \
-    $$PWD/player.cpp \
-    $$PWD/subscriptionhelper.cpp \
     $$PWD/mediarelay.cpp
 
 FORMS += \
-    $$PWD/certificateerrordialog.ui \
-    $$PWD/passworddialog.ui \
-    $$PWD/playdialog.ui \
-    $$PWD/settings.ui \
+    $$PWD/ui/*.ui \
     $$PWD/mpv/*.ui \
     $$PWD/dlna/*.ui
 

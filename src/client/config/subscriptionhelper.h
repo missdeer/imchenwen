@@ -16,7 +16,6 @@ class SubscriptionHelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit SubscriptionHelper(QObject *parent = nullptr);
     SubscriptionHelper(const QString& customKey, const QString& subscriptionKey, QObject *parent = nullptr);
     void setCustomKey(const QString& key);
     void setSubscriptionKey(const QString& key);

@@ -10,12 +10,6 @@
 
 Q_DECLARE_METATYPE(QStringList *);
 
-SubscriptionHelper::SubscriptionHelper(QObject *parent)
-    : QObject(parent)
-{
-
-}
-
 SubscriptionHelper::SubscriptionHelper(const QString& customKey, const QString& subscriptionKey, QObject *parent )
     : QObject (parent)
     , m_customKey(customKey)
