@@ -22,7 +22,6 @@ QString MediaRelay::makeM3U8(PlayerPtr player, QStringList &urls)
 {
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
 
-    httpHandler.clear();
     int duration = 1500 / urls.length();
     QByteArray m3u8;
     m3u8.append(QString("#EXTM3U\n#EXT-X-TARGETDURATION:%1\n").arg(duration > 8 ? duration + 3 : 8).toUtf8());
@@ -53,9 +52,6 @@ QString MediaRelay::makeM3U8(PlayerPtr player, QStringList &urls)
 
 QString MediaRelay::transcoding(const QString& media)
 {
-    InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
-
-    httpHandler.clear();
     m_ffmpegProcess.kill();
     m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
     m_ffmpegProcess.setArguments(QStringList() << "-y"
@@ -93,12 +89,7 @@ void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, 
 
 void MediaRelay::stop()
 {
-    InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
-
-    httpHandler.clear();
     m_ffmpegProcess.kill();
-
-    m_socketData.clear();
 }
 
 void MediaRelay::onNetworkError(QNetworkReply::NetworkError code)

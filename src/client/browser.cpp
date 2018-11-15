@@ -175,12 +175,12 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
 {
     m_playerProcess.kill();
     waiting(false);
+    m_httpHandler.clear();
     if (!m_httpServer.isListening())
     {
         m_httpServer.listen(QHostAddress::Any, 51290);
         m_httpServer.setHandler(&m_httpHandler);
     }
-
     QString media = urls[0];
     if (urls.length() > 1)
     {
@@ -493,9 +493,10 @@ void Browser::onProcessError(QProcess::ProcessError error)
 void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     stopWaiting();
+    m_httpHandler.clear();
     m_mediaRelay.stop();
     auto mw = const_cast<BrowserWindow*>(mainWindow());
-    mw->currentVIPVideoGoBack();
+    mw->resetCurrentView();
     for (auto w : m_windows)
     {
         switch (m_windowsState[w])
