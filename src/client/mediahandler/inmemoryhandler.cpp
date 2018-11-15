@@ -3,7 +3,6 @@
 #include "util.h"
 #include <qhttpengine/socket.h>
 #include <qhttpengine/qiodevicecopier.h>
-#include <qhttpengine/range.h>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QUrlQuery>
@@ -151,8 +150,11 @@ void InMemoryHandler::newMediaData(const QByteArray &data)
 
 void InMemoryHandler::inputEnd()
 {
-    m_mediaSocket->close();
-    m_mediaSocket = nullptr;
+    if (m_mediaSocket)
+    {
+        m_mediaSocket->close();
+        m_mediaSocket = nullptr;
+    }
 }
 
 void InMemoryHandler::onNetworkError(QNetworkReply::NetworkError code)

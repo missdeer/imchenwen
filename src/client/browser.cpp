@@ -194,7 +194,7 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
 
     qDebug() << __FUNCTION__ << media;
     if (player->type() == Player::PT_DLNA
-            && QUrl(media).path().endsWith("media.m3u8", Qt::CaseInsensitive))
+            && QUrl(media).path().endsWith("m3u8", Qt::CaseInsensitive))
     {
         // DLNA not support m3u8, use ffmpeg to transcode to a single stream
         if (QUrl(media).hasQuery())
@@ -535,7 +535,7 @@ void Browser::onSniffedMediaUrl(const QString &u)
 
 void Browser::onNewM3U8Ready()
 {
-    QString media = m_mediaRelay.transcoding(media);
+    QString media = m_mediaRelay.transcoding(QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString()));
     qDebug() << __FUNCTION__ << "playing" << media ;
     playByDLNARenderer(m_mediaRelay.player(), media, m_mediaRelay.title(), "");
 }

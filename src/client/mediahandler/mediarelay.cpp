@@ -71,6 +71,7 @@ QString MediaRelay::transcoding(const QString& media)
 
 void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, const QByteArray& referrer)
 {
+    qDebug() << __FUNCTION__ << media;
     m_socketData.clear();
     QNetworkRequest req;
     QUrl u(media);
@@ -114,8 +115,8 @@ void MediaRelay::onMediaReadFinished()
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     m_socketData.append(reply->readAll());
-    reply->deleteLater();
 
+    qDebug() << __FUNCTION__ << QString(m_socketData);
     // parse the m3u8
     QByteArray m3u8 = m_socketData;
     auto lines = m_socketData.split('\n');
@@ -149,6 +150,7 @@ void MediaRelay::onMediaReadFinished()
     }
     httpHandler.setM3U8(m3u8);
 
+    reply->deleteLater();
     emit newM3U8Ready();
 }
 

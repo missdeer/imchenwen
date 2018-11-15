@@ -24,7 +24,7 @@ void SSDPdiscovery::run()
     m_multicastUdpSocket = new QUdpSocket(this);
     Config cfg;
     QString ip = cfg.read<QString>("dlnaUseIP");
-    m_multicastUdpSocket->bind((ip.isEmpty() ? QHostAddress::AnyIPv4 : QHostAddress(ip)), 1901, QUdpSocket::ShareAddress);
+    m_multicastUdpSocket->bind(/*(ip.isEmpty() ? QHostAddress::AnyIPv4 : QHostAddress(ip)), */QHostAddress::AnyIPv4,1901, QUdpSocket::ShareAddress);
     m_multicastUdpSocket->joinMulticastGroup(groupAddress);
 
     connect(m_multicastUdpSocket, SIGNAL(readyRead()),
