@@ -11,7 +11,8 @@ INCLUDEPATH += $$PWD \
     $$PWD/mpv \
     $$PWD/webengine \
     $$PWD/config \
-    $$PWD/ui
+    $$PWD/ui \
+    $$PWD/mediahandler
 
 HEADERS += $$PWD/dlna/*.h \
     $$PWD/mpv/*.h \
@@ -19,24 +20,18 @@ HEADERS += $$PWD/dlna/*.h \
     $$PWD/browser.h \
     $$PWD/ui/*.h \
     $$PWD/config/*.h \
-    $$PWD/linkresolver.h \
-    $$PWD/linkresolverprocess.h \
-    $$PWD/util.h \
-    $$PWD/inmemoryhandler.h \
-    $$PWD/mediarelay.h
+    $$PWD/mediahandler/*.h \
+    $$PWD/util.h
 
 SOURCES += $$PWD/dlna/*.cpp \
     $$PWD/mpv/*.cpp \
     $$PWD/webengine/*.cpp \
     $$PWD/ui/*.cpp \
     $$PWD/config/*.cpp \
+    $$PWD/mediahandler/*.cpp \
     $$PWD/browser.cpp \
     $$PWD/main.cpp \
-    $$PWD/linkresolver.cpp \
-    $$PWD/linkresolverprocess.cpp \
-    $$PWD/util.cpp \
-    $$PWD/inmemoryhandler.cpp \
-    $$PWD/mediarelay.cpp
+    $$PWD/util.cpp
 
 FORMS += \
     $$PWD/ui/*.ui \
