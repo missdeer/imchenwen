@@ -12,7 +12,6 @@ class UrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 public:
     explicit UrlRequestInterceptor(QObject *parent = nullptr);
     void interceptRequest(QWebEngineUrlRequestInfo &request) override;
-    void updateVIPVideos();
 signals:
     void maybeMediaUrl(const QString&);
 

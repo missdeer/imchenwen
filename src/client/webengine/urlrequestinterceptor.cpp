@@ -1,12 +1,11 @@
 #include <QtCore>
 #include <QUrl>
+#include "browser.h"
 #include "urlrequestinterceptor.h"
 
 UrlRequestInterceptor::UrlRequestInterceptor(QObject *parent)
     : QWebEngineUrlRequestInterceptor(parent)
 {
-    Config cfg;
-    cfg.read("vipVideo", m_vipVideos);
 }
 
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
@@ -50,24 +49,15 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
         return;
     }
 
-    auto it = std::find_if(m_vipVideos.begin(), m_vipVideos.end(), [&u](const Tuple2& vv){
-        return u.startsWith(std::get<1>(vv));
-    });
-    if(m_vipVideos.end() == it)
+    Websites& shortcuts = Browser::instance().shortcuts();
+    if (shortcuts.isInChina(url))
     {
-        // it's not a vip video
         if (path.endsWith(".f4v") || path.endsWith(".mp4") || path.endsWith(".swf") || path.endsWith(".flv"))
         {
             request.block(true);
             return;
         }
     }
-    qDebug() << "maybe not:" << request.resourceType() << request.requestUrl();
-}
 
-void UrlRequestInterceptor::updateVIPVideos()
-{
-    m_vipVideos.clear();
-    Config cfg;
-    cfg.read("vipVideo", m_vipVideos);
+    qDebug() << "maybe not:" << request.resourceType() << request.requestUrl();
 }

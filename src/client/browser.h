@@ -41,6 +41,7 @@ public:
     BrowserWindow *mainWindow();
     BrowserWindow *newMainWindow();
     Kast &kast();
+    Websites &shortcuts();
     QNetworkAccessManager &networkAccessManager();
 
     void loadSettings();

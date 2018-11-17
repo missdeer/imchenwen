@@ -149,7 +149,6 @@ void Browser::loadSettings()
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
 
-    m_urlRequestInterceptor.updateVIPVideos();
     defaultProfile->setRequestInterceptor(&m_urlRequestInterceptor);
 
     QNetworkProxy proxy;
@@ -371,6 +370,11 @@ BrowserWindow *Browser::newMainWindow()
 Kast &Browser::kast()
 {
     return m_kast;
+}
+
+Websites &Browser::shortcuts()
+{
+    return m_websites;
 }
 
 QNetworkAccessManager &Browser::networkAccessManager()
