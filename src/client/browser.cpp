@@ -192,19 +192,27 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
     }
 
     qDebug() << __FUNCTION__ << media;
-    if (player->type() == Player::PT_DLNA
-            && QUrl(media).path().endsWith("m3u8", Qt::CaseInsensitive))
+    if (player->type() == Player::PT_DLNA)
     {
-        // DLNA not support m3u8, use ffmpeg to transcode to a single stream
-        if (QUrl(media).hasQuery())
+        if (QUrl(media).path().endsWith("m3u8", Qt::CaseInsensitive))
         {
-            m_mediaRelay.setPlayer(player);
-            m_mediaRelay.setTitle(title);
-            // download the m3u8, extract the real stream urls, then regenerate m3u8 and invoke ffmpeg
-            m_mediaRelay.processM3U8(media,referrer.toUtf8(),Config().read<QByteArray>(QLatin1String("httpUserAgent")));
-            return;
+            // DLNA not support m3u8, use ffmpeg to transcode to a single stream
+            if (QUrl(media).hasQuery())
+            {
+                m_mediaRelay.setPlayer(player);
+                m_mediaRelay.setTitle(title);
+                // download the m3u8, extract the real stream urls, then regenerate m3u8 and invoke ffmpeg
+                m_mediaRelay.processM3U8(media,referrer.toUtf8(),Config().read<QByteArray>(QLatin1String("httpUserAgent")));
+                return;
+            }
+            media = m_mediaRelay.transcoding(media);
         }
-        media = m_mediaRelay.transcoding(media);
+        else if (QUrl(media).hasQuery())
+        {
+            // DLNA not support complex query string
+            media = m_httpHandler.mapUrl(media);
+        }
+
     }
 
     qDebug() << __FUNCTION__ << "playing" << media ;
