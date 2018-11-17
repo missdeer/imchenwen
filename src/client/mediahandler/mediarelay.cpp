@@ -116,13 +116,13 @@ void MediaRelay::onMediaReadFinished()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     m_socketData.append(reply->readAll());
 
-    qDebug() << __FUNCTION__ << QString(m_socketData);
+    reply->deleteLater();
     // parse the m3u8
     QByteArray m3u8 = m_socketData;
     auto lines = m_socketData.split('\n');
     for (auto & line : lines)
     {
-        if (!line.startsWith('#'))
+        if (!line.isEmpty() && !line.startsWith('#'))
         {
             QString u = QString(line);
             if (!line.startsWith("http://") && !line.startsWith("https://"))
@@ -133,7 +133,7 @@ void MediaRelay::onMediaReadFinished()
                 u = originUrl.left(index + 1) + u;
             }
             // u is an absolute path
-            if (u.endsWith("m3u8", Qt::CaseInsensitive))
+            if (QUrl(u).path().endsWith("m3u8", Qt::CaseInsensitive))
             {
                 QByteArray userAgent = reply->request().rawHeader("User-Agent");
                 QByteArray referrer = reply->request().rawHeader("Referer");
@@ -150,7 +150,6 @@ void MediaRelay::onMediaReadFinished()
     }
     httpHandler.setM3U8(m3u8);
 
-    reply->deleteLater();
     emit newM3U8Ready();
 }
 
