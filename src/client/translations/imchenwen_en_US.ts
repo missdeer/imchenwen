@@ -43,268 +43,253 @@
 <context>
     <name>BrowserWindow</name>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="85"/>
-        <location filename="../ui/browserwindow.cpp" line="298"/>
-        <location filename="../ui/browserwindow.cpp" line="586"/>
+        <location filename="../ui/browserwindow.cpp" line="86"/>
+        <location filename="../ui/browserwindow.cpp" line="285"/>
+        <location filename="../ui/browserwindow.cpp" line="573"/>
         <source>imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="102"/>
+        <location filename="../ui/browserwindow.cpp" line="103"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="103"/>
+        <location filename="../ui/browserwindow.cpp" line="104"/>
         <source>&amp;New Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="105"/>
+        <location filename="../ui/browserwindow.cpp" line="106"/>
         <source>New &amp;Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="111"/>
+        <location filename="../ui/browserwindow.cpp" line="112"/>
         <source>Play Url...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="115"/>
-        <source>Play Url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="115"/>
-        <source>Please input URL to play:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="124"/>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="124"/>
-        <source>Invalid URL input.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="129"/>
+        <location filename="../ui/browserwindow.cpp" line="116"/>
         <source>Options...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="135"/>
+        <location filename="../ui/browserwindow.cpp" line="122"/>
         <source>&amp;Close Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="142"/>
-        <location filename="../ui/browserwindow.cpp" line="149"/>
+        <location filename="../ui/browserwindow.cpp" line="129"/>
+        <location filename="../ui/browserwindow.cpp" line="136"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="151"/>
+        <location filename="../ui/browserwindow.cpp" line="138"/>
         <source>&amp;Close Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="158"/>
+        <location filename="../ui/browserwindow.cpp" line="145"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="159"/>
+        <location filename="../ui/browserwindow.cpp" line="146"/>
         <source>&amp;Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="168"/>
+        <location filename="../ui/browserwindow.cpp" line="155"/>
         <source>Reload Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="174"/>
+        <location filename="../ui/browserwindow.cpp" line="161"/>
         <source>Zoom &amp;In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="181"/>
+        <location filename="../ui/browserwindow.cpp" line="168"/>
         <source>Zoom &amp;Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="188"/>
+        <location filename="../ui/browserwindow.cpp" line="175"/>
         <source>Reset &amp;Zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="184"/>
+        <location filename="../ui/browserwindow.cpp" line="191"/>
+        <source>Hide Toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="185"/>
+        <source>Ctrl+|</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="188"/>
+        <source>Show Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="197"/>
         <location filename="../ui/browserwindow.cpp" line="204"/>
-        <source>Hide Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="198"/>
-        <source>Ctrl+|</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="201"/>
-        <source>Show Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="210"/>
-        <location filename="../ui/browserwindow.cpp" line="217"/>
         <source>Hide Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="211"/>
+        <location filename="../ui/browserwindow.cpp" line="198"/>
         <source>Ctrl+/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="214"/>
+        <location filename="../ui/browserwindow.cpp" line="201"/>
         <source>Show Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="227"/>
+        <location filename="../ui/browserwindow.cpp" line="214"/>
         <source>&amp;Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="229"/>
+        <location filename="../ui/browserwindow.cpp" line="216"/>
         <source>Show Next Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="238"/>
+        <location filename="../ui/browserwindow.cpp" line="225"/>
         <source>Show Previous Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="268"/>
+        <location filename="../ui/browserwindow.cpp" line="255"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="288"/>
+        <location filename="../ui/browserwindow.cpp" line="275"/>
         <source>About...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="292"/>
+        <location filename="../ui/browserwindow.cpp" line="279"/>
         <source>About imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="293"/>
+        <location filename="../ui/browserwindow.cpp" line="280"/>
         <source>Parse video URLs and invoke external player to play the videos, so that you don&apos;t need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="296"/>
+        <location filename="../ui/browserwindow.cpp" line="283"/>
         <source>About Qt...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="269"/>
+        <location filename="../ui/browserwindow.cpp" line="256"/>
         <source>Install Flash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="272"/>
+        <location filename="../ui/browserwindow.cpp" line="259"/>
         <source>Install MPV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="275"/>
+        <location filename="../ui/browserwindow.cpp" line="262"/>
         <source>Install MPlayer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="278"/>
+        <location filename="../ui/browserwindow.cpp" line="265"/>
         <source>Install VLC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="282"/>
+        <location filename="../ui/browserwindow.cpp" line="269"/>
         <source>Install MPC-HC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="305"/>
+        <location filename="../ui/browserwindow.cpp" line="292"/>
         <source>&amp;Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="306"/>
+        <location filename="../ui/browserwindow.cpp" line="293"/>
         <source>In China</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="307"/>
+        <location filename="../ui/browserwindow.cpp" line="294"/>
         <source>Out of China</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="368"/>
+        <location filename="../ui/browserwindow.cpp" line="355"/>
         <source>Watch as VIP video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="410"/>
+        <location filename="../ui/browserwindow.cpp" line="397"/>
         <source>Watch Live TV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="433"/>
+        <location filename="../ui/browserwindow.cpp" line="420"/>
         <source>Navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="481"/>
+        <location filename="../ui/browserwindow.cpp" line="468"/>
         <source>Play by Media Player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="588"/>
+        <location filename="../ui/browserwindow.cpp" line="575"/>
         <source>%1 - imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="600"/>
+        <location filename="../ui/browserwindow.cpp" line="587"/>
         <source>Open Web Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="601"/>
+        <location filename="../ui/browserwindow.cpp" line="588"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="610"/>
+        <location filename="../ui/browserwindow.cpp" line="605"/>
+        <source>Play URL directly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="613"/>
         <source>Confirm close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="611"/>
+        <location filename="../ui/browserwindow.cpp" line="614"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="722"/>
+        <location filename="../ui/browserwindow.cpp" line="725"/>
         <source>Stop loading the current page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="726"/>
+        <location filename="../ui/browserwindow.cpp" line="729"/>
         <source>Reload the current page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -381,6 +366,29 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../dlna/dlnaplayerview.ui" line="318"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;Playing...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>InputUrlDialog</name>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="14"/>
+        <source>Input URL to play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="20"/>
+        <source>Please input URL to play:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="32"/>
+        <source>Resolve then play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="42"/>
+        <source>Play directly</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

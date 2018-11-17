@@ -8,6 +8,7 @@
 #include "subscriptionhelper.h"
 #include "config.h"
 #include "popupmenutoolbutton.h"
+#include "inputurldialog.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -110,21 +111,7 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
 
     QAction *playUrlAction = fileMenu->addAction(tr("Play Url..."));
     playUrlAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(playUrlAction, &QAction::triggered, [this](){
-        bool ok;
-        QString u = QInputDialog::getText(this, tr("Play Url"), tr("Please input URL to play:"), QLineEdit::EchoMode::Normal, "", &ok);
-        if (ok)
-        {
-            if (u.startsWith("http://") || u.startsWith("https://"))
-            {
-                Browser::instance().resolveAndPlayByMediaPlayer(u);
-            }
-            else
-            {
-                QMessageBox::warning(this, tr("Warning"), tr("Invalid URL input."), QMessageBox::Ok);
-            }
-        }
-    });
+    connect(playUrlAction, &QAction::triggered, this, &BrowserWindow::onPlayURL);
 
     QAction *optionsAction = fileMenu->addAction(tr("Options..."));
     optionsAction->setMenuRole(QAction::PreferencesRole);
@@ -602,6 +589,22 @@ void BrowserWindow::onFileOpen()
     if (file.isEmpty())
         return;
     loadPage(file);
+}
+
+void BrowserWindow::onPlayURL()
+{
+    InputUrlDialog dlg(this);
+    if (dlg.exec())
+    {
+        if (dlg.resolveThenPlay())
+        {
+            Browser::instance().resolveAndPlayByMediaPlayer(dlg.url());
+        }
+        else
+        {
+            Browser::instance().play(dlg.url(), tr("Play URL directly"));
+        }
+    }
 }
 
 void BrowserWindow::closeEvent(QCloseEvent *event)

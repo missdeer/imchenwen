@@ -41,6 +41,7 @@ public slots:
 private slots:
     void onNewWindow();
     void onFileOpen();
+    void onPlayURL();
     void onShowWindow();
     void onWebViewLoadProgress(int);
     void onWebViewTitleChanged(const QString &title);
