@@ -129,8 +129,15 @@ void MediaRelay::onMediaReadFinished()
             {
                 // relative path
                 QString originUrl = reply->request().url().url();
-                int index = originUrl.lastIndexOf('/');
-                u = originUrl.left(index + 1) + u;
+                if (line.startsWith('/'))
+                {
+                    u = originUrl.replace(reply->request().url().path(), u);
+                }
+                else
+                {
+                    int index = originUrl.lastIndexOf('/');
+                    u = originUrl.left(index + 1) + u;
+                }
             }
             // u is an absolute path
             if (QUrl(u).path().endsWith("m3u8", Qt::CaseInsensitive))
