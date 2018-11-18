@@ -17,9 +17,13 @@ Q_DECLARE_METATYPE(const QStringList *);
 
 InMemoryHandler::InMemoryHandler(QObject *parent)
     : Handler(parent)
+    , m_inputEnd(false)
+    , m_mediaOutputTimer(new QTimer())
     , m_mediaSocket(nullptr)
 {
     m_localAddress = Util::getLocalAddress().toString();
+    connect(m_mediaOutputTimer, &QTimer::timeout, this, &InMemoryHandler::onMediaOutputTimer);
+    m_mediaOutputTimer->setInterval(10);
 }
 
 void InMemoryHandler::setM3U8(const QByteArray &m3u8)
@@ -76,9 +80,11 @@ void InMemoryHandler::returnMediaData(Socket *socket)
     socket->writeHeaders();
     if (!m_mediaData.isEmpty())
     {
-        socket->write(m_mediaData);
-        m_mediaData.clear();
+        qint64 writtenBytes = socket->write(m_mediaData);
+        m_mediaData.remove(0, static_cast<int>(writtenBytes));
     }
+    m_inputEnd = false;
+    m_mediaOutputTimer->start();
 }
 
 void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
@@ -142,19 +148,13 @@ void InMemoryHandler::process(Socket *socket, const QString &path)
 
 void InMemoryHandler::newMediaData(const QByteArray &data)
 {
-    if (m_mediaSocket)
-        m_mediaSocket->write(data);
-    else
-        m_mediaData.append(data);
+    m_inputEnd = false;
+    m_mediaData.append(data);
 }
 
 void InMemoryHandler::inputEnd()
 {
-    if (m_mediaSocket)
-    {
-        m_mediaSocket->close();
-        m_mediaSocket = nullptr;
-    }
+    m_inputEnd = true;
 }
 
 void InMemoryHandler::onNetworkError(QNetworkReply::NetworkError code)
@@ -207,6 +207,24 @@ void InMemoryHandler::onMediaReadFinished()
     m_replySocketMap.remove(reply);
     m_headerWritten.remove(reply);
     reply->deleteLater();
+}
+
+void InMemoryHandler::onMediaOutputTimer()
+{
+    if (!m_mediaData.isEmpty() && m_mediaSocket)
+    {
+        qint64 writtenBytes = m_mediaSocket->write(m_mediaData);
+        m_mediaData.remove(0, static_cast<int>(writtenBytes));
+    }
+    if (m_mediaData.isEmpty() && m_inputEnd)
+    {
+        if (m_mediaSocket)
+        {
+            m_mediaSocket->close();
+            m_mediaSocket = nullptr;
+            m_mediaOutputTimer->stop();
+        }
+    }
 }
 
 void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolutePath)
