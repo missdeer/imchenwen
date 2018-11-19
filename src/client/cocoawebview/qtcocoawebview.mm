@@ -56,6 +56,16 @@ void QtCocoaWebView::loadRequest(const QString& loadUrl)
     }
 }
 
+void QtCocoaWebView::titleChanged(const QString &strTitle)
+{
+    emit signalTitleChanged(strTitle);
+}
+
+void QtCocoaWebView::iconChanged(const QIcon &icon)
+{
+    emit signalIconChanged(icon);
+}
+
 void QtCocoaWebView::loadFinish(const QString &strUrl, const QString &strHtml)
 {
     emit signalLoadFinish(strUrl, strHtml);

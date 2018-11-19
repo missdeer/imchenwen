@@ -66,6 +66,7 @@ QMAKE_EXTRA_TARGETS += lupdate lrelease translate
 POST_TARGETDEPS += translate
 
 macx: {
+    QT += macextras
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
     LIBS += -framework Cocoa -framework WebKit
