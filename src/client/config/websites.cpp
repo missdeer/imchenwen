@@ -58,6 +58,29 @@ Websites::Websites()
     doParse();
 }
 
+bool Websites::isIn(const QUrl &url)
+{
+    QString host = url.host();
+    int pos = host.lastIndexOf(QChar('.'));
+    pos = host.lastIndexOf(QChar('.'), pos-host.length()-1);
+    host = host.mid(pos+1, -1);
+    auto it = std::find_if(m_websites.begin(), m_websites.end(),
+                           [&host](WebsitePtr w) { return w->url.contains(host); });
+
+    if (m_websites.end() != it)
+        return true;
+
+    pos = host.lastIndexOf(QChar('.'));
+    host = host.left(pos);
+    it = std::find_if(m_websites.begin(), m_websites.end(),
+                           [&host](WebsitePtr w) { return w->url.contains(host); });
+
+    if (m_websites.end() != it)
+        return true;
+
+    return false;
+}
+
 void Websites::parseWebsiteNode(QDomElement website, bool inChina)
 {
     while(!website.isNull())

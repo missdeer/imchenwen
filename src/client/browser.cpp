@@ -76,7 +76,7 @@ Browser::Browser(QObject *parent)
     connect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::inputEnd);
     connect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
     connect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
-    //connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
 void Browser::clearAtExit()
@@ -336,7 +336,7 @@ void Browser::onClipboardChanged()
     QClipboard *clipboard = QApplication::clipboard();
     QString originalText = clipboard->text();
 
-    if (originalText.startsWith("http://") || originalText.startsWith("https://"))
+    if (m_websites.isIn(QUrl(originalText)))
     {
         m_linkResolver.resolve(originalText);
     }

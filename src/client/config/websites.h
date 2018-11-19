@@ -22,6 +22,7 @@ class Websites
 public:
     Websites();
 
+    bool isIn(const QUrl &url);
     bool isInChina(const QUrl &url);
     const QString& findURL(const QString& name);
     WebsiteList favourites();
