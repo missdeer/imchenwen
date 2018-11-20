@@ -19,7 +19,7 @@ public:
     ~TabWidget();
 
     WebView *currentWebView() const;
-    WebView *navigateInNewTab(const QUrl &url, bool makeCurrent = true);
+    WebView *navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent = true);
 signals:
     // current tab/page signals
     void linkHovered(const QString &link);

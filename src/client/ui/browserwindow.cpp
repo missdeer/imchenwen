@@ -518,7 +518,7 @@ void BrowserWindow::onShortcut()
         if (m_tabWidget->currentWebView()->url().url().isEmpty())
             loadPage(url);
         else
-            m_tabWidget->navigateInNewTab(url);
+            m_tabWidget->navigateInNewWebEngineTab(url);
     }
 }
 

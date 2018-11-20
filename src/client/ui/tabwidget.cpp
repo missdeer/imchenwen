@@ -99,7 +99,7 @@ WebView *TabWidget::currentWebView() const
     return webView(currentIndex());
 }
 
-WebView *TabWidget::navigateInNewTab(const QUrl &url, bool makeCurrent)
+WebView *TabWidget::navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent)
 {
     auto v = onCreateTab(makeCurrent);
     v->setUrl(url);
