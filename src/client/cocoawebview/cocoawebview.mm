@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <QtMac>
 
-@interface CocoaWebView()<WebFrameLoadDelegate, WebResourceLoadDelegate>
+@interface CocoaWebView()<WebFrameLoadDelegate, WebResourceLoadDelegate, WebUIDelegate>
 @end
 
 @implementation CocoaWebView
@@ -35,7 +35,7 @@
     Q_UNUSED(dataSource);
     if(pTarget)
     {
-       pTarget->loadError();
+       pTarget->onLoadError();
     }
 }
 
@@ -55,7 +55,7 @@
 
         if(pTarget)
         {
-            pTarget->loadFinish(strUrl, strHtml);
+            pTarget->onLoadFinish(strUrl, strHtml);
         }
     }
 }
@@ -70,7 +70,7 @@
 
         if(pTarget)
         {
-            pTarget->urlChanged(str);
+            pTarget->onUrlChanged(str);
         }
     }
 }
@@ -83,7 +83,7 @@
         if (pTarget)
         {
             QString str = QString::fromNSString(title);
-            pTarget->titleChanged(str);
+            pTarget->onTitleChanged(str);
         }
     }
 }
@@ -98,10 +98,34 @@
             CGImageRef cgImgRef = [image CGImageForProposedRect:nil context:nil hints:nil];
             QPixmap pm = QtMac::fromCGImageRef(cgImgRef);
             QIcon icon(pm);
-            pTarget->iconChanged(icon);
+            pTarget->onIconChanged(icon);
         }
     }
 }
 
+- (WebView *)webView:(WebView *)sender createWebViewWithRequest:(NSURLRequest *)request
+{
+    Q_UNUSED(sender);
+    @autoreleasepool {
+        if (pTarget)
+        {
+            QString strUrl = QString::fromNSString(request.URL.absoluteString);
+            pTarget->onNewWindowsRequest(strUrl);
+        }
+    }
+}
+
+- (void)webView:(WebView *)sender setStatusText:(NSString *)text
+{
+    Q_UNUSED(sender);
+
+    @autoreleasepool {
+        if (pTarget)
+        {
+            QString statusText = QString::fromNSString(text);
+            pTarget->onStatusTextChanged(statusText);
+        }
+    }
+}
 @end
 

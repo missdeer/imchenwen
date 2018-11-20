@@ -56,27 +56,57 @@ void QtCocoaWebView::loadRequest(const QString& loadUrl)
     }
 }
 
-void QtCocoaWebView::titleChanged(const QString &strTitle)
+bool QtCocoaWebView::canGoBack()
 {
-    emit signalTitleChanged(strTitle);
+    return false;
 }
 
-void QtCocoaWebView::iconChanged(const QIcon &icon)
+bool QtCocoaWebView::canGoForward()
 {
-    emit signalIconChanged(icon);
+    return false;
 }
 
-void QtCocoaWebView::loadFinish(const QString &strUrl, const QString &strHtml)
+void QtCocoaWebView::goBack()
 {
-    emit signalLoadFinish(strUrl, strHtml);
+
 }
 
-void QtCocoaWebView::loadError()
+void QtCocoaWebView::goForward()
 {
-    emit signalLoadError();
+
 }
 
-void QtCocoaWebView::urlChanged(const QString &strUrl)
+void QtCocoaWebView::onTitleChanged(const QString &strTitle)
 {
-    emit signalUrlChanged(strUrl);
+    emit titleChanged(strTitle);
+}
+
+void QtCocoaWebView::onIconChanged(const QIcon &icon)
+{
+    emit iconChanged(icon);
+}
+
+void QtCocoaWebView::onNewWindowsRequest(const QString &strUrl)
+{
+    emit newWindowsRequest(strUrl);
+}
+
+void QtCocoaWebView::onStatusTextChanged(const QString &text)
+{
+    emit statusTextChanged(text);
+}
+
+void QtCocoaWebView::onLoadFinish(const QString &strUrl, const QString &strHtml)
+{
+    emit loadFinish(strUrl, strHtml);
+}
+
+void QtCocoaWebView::onLoadError()
+{
+    emit loadError();
+}
+
+void QtCocoaWebView::onUrlChanged(const QString &strUrl)
+{
+    emit urlChanged(strUrl);
 }
