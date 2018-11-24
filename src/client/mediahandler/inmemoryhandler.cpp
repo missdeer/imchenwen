@@ -18,12 +18,9 @@ Q_DECLARE_METATYPE(const QStringList *);
 InMemoryHandler::InMemoryHandler(QObject *parent)
     : Handler(parent)
     , m_inputEnd(false)
-    , m_mediaOutputTimer(new QTimer())
     , m_mediaSocket(nullptr)
 {
     m_localAddress = Util::getLocalAddress().toString();
-    connect(m_mediaOutputTimer, &QTimer::timeout, this, &InMemoryHandler::onMediaOutputTimer);
-    m_mediaOutputTimer->setInterval(10);
 }
 
 void InMemoryHandler::setM3U8(const QByteArray &m3u8)
@@ -75,6 +72,7 @@ void InMemoryHandler::returnMediaM3U8(Socket *socket)
 
 void InMemoryHandler::returnMediaData(Socket *socket)
 {
+    m_inputEnd = false;
     m_mediaSocket = socket;
     socket->setHeader("Content-Type", "application/octet-stream");
     socket->writeHeaders();
@@ -83,8 +81,10 @@ void InMemoryHandler::returnMediaData(Socket *socket)
         qint64 writtenBytes = socket->write(m_mediaData);
         m_mediaData.remove(0, static_cast<int>(writtenBytes));
     }
-    m_inputEnd = false;
-    m_mediaOutputTimer->start();
+    if (m_mediaData.isEmpty())
+        QTimer::singleShot(20, this, &InMemoryHandler::relayMediaData);
+    else
+        QTimer::singleShot(10, this, &InMemoryHandler::relayMediaData);
 }
 
 void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
@@ -209,20 +209,26 @@ void InMemoryHandler::onMediaReadFinished()
     reply->deleteLater();
 }
 
-void InMemoryHandler::onMediaOutputTimer()
+void InMemoryHandler::relayMediaData()
 {
     if (!m_mediaData.isEmpty() && m_mediaSocket)
     {
         qint64 writtenBytes = m_mediaSocket->write(m_mediaData);
         m_mediaData.remove(0, static_cast<int>(writtenBytes));
     }
-    if (m_mediaData.isEmpty() && m_inputEnd)
+    if (!m_inputEnd)
+    {
+        if (m_mediaData.isEmpty())
+            QTimer::singleShot(20, this, &InMemoryHandler::relayMediaData);
+        else
+            QTimer::singleShot(10, this, &InMemoryHandler::relayMediaData);
+    }
+    else if (m_mediaData.isEmpty())
     {
         if (m_mediaSocket)
         {
             m_mediaSocket->close();
             m_mediaSocket = nullptr;
-            m_mediaOutputTimer->stop();
         }
     }
 }

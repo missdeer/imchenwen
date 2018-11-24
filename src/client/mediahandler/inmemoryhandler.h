@@ -7,11 +7,6 @@
 #include <QQueue>
 #include <qhttpengine/handler.h>
 
-
-QT_BEGIN_NAMESPACE
-class QTimer;
-QT_END_NAMESPACE
-
 class InMemoryHandler : public QHttpEngine::Handler
 {
     Q_OBJECT
@@ -34,10 +29,9 @@ private slots:
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
     void onMediaReadFinished();
-    void onMediaOutputTimer();
+    void relayMediaData();
 private:
     bool m_inputEnd;
-    QTimer *m_mediaOutputTimer;
     QByteArray m_m3u8;
     QByteArray m_mediaData;
     QByteArray m_referrer;
