@@ -27,3 +27,8 @@ bool InputUrlDialog::resolveThenPlay()
 {
     return ui->btnResolve->isChecked();
 }
+
+bool InputUrlDialog::sniffThenPlay()
+{
+    return ui->btnSniff->isChecked();
+}

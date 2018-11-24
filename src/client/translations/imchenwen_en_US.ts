@@ -45,7 +45,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="86"/>
         <location filename="../ui/browserwindow.cpp" line="285"/>
-        <location filename="../ui/browserwindow.cpp" line="573"/>
+        <location filename="../ui/browserwindow.cpp" line="575"/>
         <source>imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -243,53 +243,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="420"/>
+        <location filename="../ui/browserwindow.cpp" line="422"/>
         <source>Navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="468"/>
+        <location filename="../ui/browserwindow.cpp" line="470"/>
         <source>Play by Media Player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="575"/>
+        <location filename="../ui/browserwindow.cpp" line="577"/>
         <source>%1 - imchenwen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="587"/>
+        <location filename="../ui/browserwindow.cpp" line="589"/>
         <source>Open Web Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="588"/>
+        <location filename="../ui/browserwindow.cpp" line="590"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="605"/>
+        <location filename="../ui/browserwindow.cpp" line="611"/>
         <source>Play URL directly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="613"/>
+        <location filename="../ui/browserwindow.cpp" line="619"/>
         <source>Confirm close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="614"/>
+        <location filename="../ui/browserwindow.cpp" line="620"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="725"/>
+        <location filename="../ui/browserwindow.cpp" line="732"/>
         <source>Stop loading the current page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="729"/>
+        <location filename="../ui/browserwindow.cpp" line="736"/>
         <source>Reload the current page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -382,12 +382,22 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/inputurldialog.ui" line="32"/>
+        <location filename="../ui/inputurldialog.ui" line="27"/>
+        <source>https://www.iqiyi.com/v_19rrek0xfo.html</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="36"/>
         <source>Resolve then play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/inputurldialog.ui" line="42"/>
+        <location filename="../ui/inputurldialog.ui" line="46"/>
+        <source>Sniff then play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="53"/>
         <source>Play directly</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1426,7 +1436,7 @@ MPV Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="177"/>
+        <location filename="../ui/tabwidget.cpp" line="189"/>
         <source>(Untitled)</source>
         <translation type="unfinished"></translation>
     </message>

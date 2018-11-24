@@ -20,6 +20,7 @@ public:
 
     WebView *currentWebView() const;
     WebView *navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent = true);
+    void closeAllTabs();
 signals:
     // current tab/page signals
     void linkHovered(const QString &link);

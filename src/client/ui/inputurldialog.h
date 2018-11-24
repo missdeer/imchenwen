@@ -18,6 +18,7 @@ public:
     QString url();
     bool playDirectly();
     bool resolveThenPlay();
+    bool sniffThenPlay();
 private:
     Ui::InputUrlDialog *ui;
 };

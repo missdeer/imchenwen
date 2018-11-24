@@ -539,8 +539,8 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
 void Browser::onSniffedMediaUrl(const QString &u)
 {
     auto mw = const_cast<BrowserWindow*>(mainWindow());
-    if (!mw->isCurrentVIPVideo())
-        return;
+//    if (!mw->isCurrentVIPVideo())
+//        return;
     mw->recoverCurrentTabUrl();
     play(u, mw->maybeVIPVideoTitle());
 }

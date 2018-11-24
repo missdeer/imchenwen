@@ -110,6 +110,18 @@ WebView *TabWidget::navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent)
     return v;
 }
 
+void TabWidget::closeAllTabs()
+{
+    while (count() > 0)
+    {
+        WebView *view = webView(0);
+        removeTab(0);
+        delete view;
+    }
+    if (count() == 0)
+        onCreateTab();
+}
+
 WebView *TabWidget::webView(int index) const
 {
     return qobject_cast<WebView*>(widget(index));
@@ -196,7 +208,8 @@ void TabWidget::onCloseOtherTabs(int index)
 
 void TabWidget::onCloseTab(int index)
 {
-    if (WebView *view = webView(index)) {
+    if (WebView *view = webView(index))
+    {
         bool hasFocus = view->hasFocus();
         removeTab(index);
         if (hasFocus && count() > 0)

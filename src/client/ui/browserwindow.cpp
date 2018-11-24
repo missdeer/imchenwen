@@ -403,9 +403,11 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
     m_liveTVAction->setMenu(popupMenu);
 }
 
-const QString &BrowserWindow::maybeVIPVideoTitle() const
+QString BrowserWindow::maybeVIPVideoTitle() const
 {
-    return m_maybeVIPVideoTitle;
+    if (!m_maybeVIPVideoTitle.isEmpty())
+        return m_maybeVIPVideoTitle;
+    return m_tabWidget->currentWebView()->title();
 }
 
 void BrowserWindow::center()
@@ -600,7 +602,11 @@ void BrowserWindow::onPlayURL()
         {
             Browser::instance().resolveAndPlayByMediaPlayer(dlg.url());
         }
-        else
+        else if (dlg.sniffThenPlay())
+        {
+            m_tabWidget->navigateInNewWebEngineTab(dlg.url());
+        }
+        else if (dlg.playDirectly())
         {
             Browser::instance().play(dlg.url(), tr("Play URL directly"));
         }
@@ -620,6 +626,7 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
         }
     }
     event->accept();
+    m_tabWidget->closeAllTabs();
     deleteLater();
 }
 

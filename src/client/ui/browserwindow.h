@@ -31,7 +31,7 @@ public:
     bool isCurrentVIPVideo();
     void recoverCurrentTabUrl();
     void resetCurrentView();
-    const QString& maybeVIPVideoTitle() const;
+    QString maybeVIPVideoTitle() const;
     void center();
 protected:
     void closeEvent(QCloseEvent *event) override;
