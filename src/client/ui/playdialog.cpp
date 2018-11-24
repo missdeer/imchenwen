@@ -55,6 +55,7 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
 
 void PlayDialog::setMediaInfo(const QString &title, const QString &url)
 {
+    ui->listMedia->clear();
     auto item = addItem(QIcon(":/video.png"), title + "\n" + url, Qt::white);
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));

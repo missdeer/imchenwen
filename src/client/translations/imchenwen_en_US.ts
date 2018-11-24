@@ -4,38 +4,38 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="471"/>
+        <location filename="../browser.cpp" line="479"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="471"/>
+        <location filename="../browser.cpp" line="479"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="482"/>
+        <location filename="../browser.cpp" line="490"/>
         <source>Play movie online directly
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="492"/>
+        <location filename="../browser.cpp" line="500"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="495"/>
+        <location filename="../browser.cpp" line="503"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="498"/>
+        <location filename="../browser.cpp" line="506"/>
         <source>An unknown error occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="502"/>
+        <location filename="../browser.cpp" line="510"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation type="unfinished"></translation>
     </message>
@@ -483,28 +483,28 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="89"/>
+        <location filename="../ui/playdialog.cpp" line="90"/>
         <source>Built-in player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="107"/>
+        <location filename="../ui/playdialog.cpp" line="108"/>
         <source>DLNA: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="127"/>
-        <location filename="../ui/playdialog.cpp" line="137"/>
+        <location filename="../ui/playdialog.cpp" line="128"/>
+        <location filename="../ui/playdialog.cpp" line="138"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="127"/>
+        <location filename="../ui/playdialog.cpp" line="128"/>
         <source>Please select a media item in list to be played.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="138"/>
+        <location filename="../ui/playdialog.cpp" line="139"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation type="unfinished"></translation>
     </message>

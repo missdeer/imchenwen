@@ -68,6 +68,7 @@ Browser::Browser(QObject *parent)
     , m_builtinPlayer(nullptr)
     , m_liveTVHelper("liveTV", "liveTVSubscription")
     , m_vipVideoHelper("vipVideo", "vipVideoSubscription")
+    , m_playDialog(nullptr)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
     connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
@@ -233,13 +234,20 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
 
 void Browser::play(const QString &u, const QString &title)
 {
-    PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    dlg.setMediaInfo(title, u);
-    if (dlg.exec())
+    if (m_playDialog)
     {
-        PlayerPtr player = dlg.player();
+        m_playDialog->setMediaInfo(title, u);
+        return;
+    }
+    m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    m_playDialog->setMediaInfo(title, u);
+    if (m_playDialog->exec())
+    {
+        PlayerPtr player = m_playDialog->player();
         doPlay(player, QStringList() << u, title, "");
     }
+    delete m_playDialog;
+    m_playDialog = nullptr;
 }
 
 void Browser::init()
@@ -538,6 +546,7 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
 
 void Browser::onSniffedMediaUrl(const QString &u)
 {
+    qDebug() << __FUNCTION__ << u;
     auto mw = const_cast<BrowserWindow*>(mainWindow());
 //    if (!mw->isCurrentVIPVideo())
 //        return;

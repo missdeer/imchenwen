@@ -19,6 +19,7 @@ class BrowserWindow;
 class WaitingSpinnerWidget;
 class PlayerView;
 class DLNAPlayerView;
+class PlayDialog;
 
 class Browser : public QObject
 {
@@ -75,6 +76,7 @@ private:
     SubscriptionHelper m_liveTVHelper;
     SubscriptionHelper m_vipVideoHelper;
     MediaRelay m_mediaRelay;
+    PlayDialog *m_playDialog;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
