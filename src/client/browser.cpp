@@ -246,6 +246,10 @@ void Browser::play(const QString &u, const QString &title)
         PlayerPtr player = m_playDialog->player();
         doPlay(player, QStringList() << u, title, "");
     }
+    else
+    {
+        playerStopped();
+    }
     delete m_playDialog;
     m_playDialog = nullptr;
 }
@@ -492,7 +496,7 @@ void Browser::onResolvingError(const QString &u)
 
 void Browser::onProcessError(QProcess::ProcessError error)
 {
-    onPlayerFinished(1, QProcess::CrashExit);
+    playerStopped();
     QString msg;
     switch(error)
     {
@@ -510,7 +514,7 @@ void Browser::onProcessError(QProcess::ProcessError error)
                          tr("Launching external player failed, please try built-in player"), msg, QMessageBox::Ok);
 }
 
-void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
+void Browser::playerStopped()
 {
     stopWaiting();
     m_httpHandler.clear();
@@ -544,12 +548,21 @@ void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStat
     }
 }
 
+void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
+{
+    playerStopped();
+}
+
 void Browser::onSniffedMediaUrl(const QString &u)
 {
-    qDebug() << __FUNCTION__ << u;
     auto mw = const_cast<BrowserWindow*>(mainWindow());
-//    if (!mw->isCurrentVIPVideo())
-//        return;
+    auto wv = mw->currentTab();
+    auto url = wv->url();
+    if (m_websites.isIn(url))
+    {
+        qDebug() << __FUNCTION__ << "shortcut url, ignore";
+        return;
+    }
     mw->recoverCurrentTabUrl();
     play(u, mw->maybeVIPVideoTitle());
 }

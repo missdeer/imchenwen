@@ -646,21 +646,6 @@ void BrowserWindow::loadHomePage()
     loadPage(cfg.read<QString>("defaultHome"));
 }
 
-bool BrowserWindow::isCurrentVIPVideo()
-{
-    QString u = currentTab()->url().toString();
-    if (u.indexOf("http://") > 10 || u.indexOf("https://") > 10)
-        return true;
-
-    Config cfg;
-    Tuple2List vipVideos;
-    cfg.read("vipVideo", vipVideos);
-    auto it = std::find_if(vipVideos.begin(), vipVideos.end(), [&u](const Tuple2& vv){
-        return u.startsWith(std::get<1>(vv));
-    });
-    return vipVideos.end() != it;
-}
-
 void BrowserWindow::recoverCurrentTabUrl()
 {
     QFile f(":/vipplaying.html");

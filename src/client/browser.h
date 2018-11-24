@@ -90,5 +90,6 @@ private:
     void clearAtExit();
     void minimizeWindows();
     void stopWaiting();
+    void playerStopped();
 };
 #endif // BROWSER_H

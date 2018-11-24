@@ -28,7 +28,6 @@ public:
     void loadPage(const QString &url);
     void loadPage(const QUrl &url);
     void loadHomePage();
-    bool isCurrentVIPVideo();
     void recoverCurrentTabUrl();
     void resetCurrentView();
     QString maybeVIPVideoTitle() const;
