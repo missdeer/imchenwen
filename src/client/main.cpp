@@ -43,26 +43,32 @@ int main(int argc, char **argv)
     }
 #endif
 
-    bool b = translator.load("imchenwen_" + locale, localeDirPath); // always load simplified chinese translation file
-    if (!b)
+    if (!translator.load("imchenwen_" + locale, localeDirPath))
     {
         qDebug() << "loading " << locale << " from " << localeDirPath << " failed";
     }
     else
     {
         qDebug() << "loading " << locale << " from " << localeDirPath << " success";
-    }
-
-    b = a.installTranslator(&translator);
-    if (!b)
-    {
-        qDebug() << "installing translator failed ";
+        if (!a.installTranslator(&translator))
+        {
+            qDebug() << "installing translator failed ";
+        }
     }
 
     // qt locale
-    qtTranslator.load("qt_" + locale, localeDirPath + "/qt");
-
-    a.installTranslator(&qtTranslator);
+    if (!qtTranslator.load("qt_" + locale, localeDirPath))
+    {
+        qDebug() << "loading " << locale << " from " << localeDirPath << " failed";
+    }
+    else
+    {
+        qDebug() << "loading " << locale << " from " << localeDirPath << " success";
+        if (!a.installTranslator(&qtTranslator))
+        {
+            qDebug() << "installing qt translator failed ";
+        }
+    }
 
     // Qt sets the locale in the QApplication constructor, but libmpv requires
     // the LC_NUMERIC category to be set to "C", so change it back.

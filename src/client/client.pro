@@ -44,7 +44,7 @@ RC_FILE = $$PWD/imchenwen-win.rc
 
 CODECFORTR      = UTF-8
 CODECFORSRC     = UTF-8
-TRANSLATIONS    = $$PWD/translations/imchenwen_en_US.ts \
+TRANSLATIONS    = $$PWD/translations/imchenwen_en.ts \
                   $$PWD/translations/imchenwen_zh_CN.ts
 
 isEmpty(QMAKE_LUPDATE) {

@@ -347,10 +347,12 @@ void Browser::onClipboardChanged()
 {
     QClipboard *clipboard = QApplication::clipboard();
     QString originalText = clipboard->text();
-
-    if (m_websites.isIn(QUrl(originalText)))
+    if (originalText.startsWith("https://") || originalText.startsWith("http://"))
     {
-        m_linkResolver.resolve(originalText);
+        if (m_websites.isIn(QUrl(originalText)))
+        {
+            m_linkResolver.resolve(originalText);
+        }
     }
 }
 
