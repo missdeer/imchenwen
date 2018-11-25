@@ -265,6 +265,7 @@ void SettingsDialog::loadFromSettings()
     // storage
     gbStorageService->setChecked(cfg.read<bool>(QLatin1String("enableStorageService")));
     edtStorageServiceAddress->setText(cfg.read<QString>(QLatin1String("storageServiceAddress")));
+    btnEnableStorageTranscoding->setChecked(cfg.read<bool>(QLatin1String("enableStorageTranscoding")));
 }
 
 void SettingsDialog::saveToSettings()
@@ -341,6 +342,7 @@ void SettingsDialog::saveToSettings()
     // stoarge
     cfg.write("enableStorageService", gbStorageService->isChecked());
     cfg.write("storageServiceAddress", edtStorageServiceAddress->text());
+    cfg.write("enableStorageTranscoding", btnEnableStorageTranscoding->isChecked());
 
     Browser::instance().loadSettings();
 }
