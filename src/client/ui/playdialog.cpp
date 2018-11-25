@@ -71,7 +71,7 @@ bool PlayDialog::uploadToStorageService()
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 {
     SettingsDialog dlg(this);
-    dlg.setCurrentPage(5);
+    dlg.setCurrentPage(6);
     if (dlg.exec())
     {
         ui->cbPlayers->clear();
