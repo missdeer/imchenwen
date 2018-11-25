@@ -61,10 +61,10 @@ QString MediaRelay::transcoding(const QString& media)
                                  << "-copyts"
                                  << "-f" << "mpegts"
                                  << "-"
-                                 //<< QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/media.ts")
                                  );
     m_ffmpegProcess.setProcessChannelMode(QProcess::SeparateChannels);
     m_ffmpegProcess.start();
+
     // serve http://...:51290/media.ts
     return QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
 }

@@ -625,8 +625,8 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
             return;
         }
     }
-    event->accept();
     m_tabWidget->closeAllTabs();
+    event->accept();
     deleteLater();
 }
 

@@ -82,6 +82,14 @@ Browser::Browser(QObject *parent)
 
 void Browser::clearAtExit()
 {
+    disconnect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
+    disconnect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
+    disconnect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
+    disconnect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
+    disconnect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::inputEnd);
+    disconnect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
+    disconnect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
+    disconnect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
     stopWaiting();
     m_playerProcess.kill();
     if (m_httpServer.isListening())
@@ -181,14 +189,14 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
         m_httpServer.listen(QHostAddress::Any, 51290);
         m_httpServer.setHandler(&m_httpHandler);
     }
+    if (!referrer.isEmpty())
+    {
+        m_httpHandler.setReferrer(referrer.toUtf8());
+        m_httpHandler.setUserAgent(Config().read<QByteArray>(QLatin1String("httpUserAgent")));
+    }
     QString media = urls[0];
     if (urls.length() > 1)
     {
-        if (!referrer.isEmpty())
-        {
-            m_httpHandler.setReferrer(referrer.toUtf8());
-            m_httpHandler.setUserAgent(Config().read<QByteArray>(QLatin1String("httpUserAgent")));
-        }
         media = m_mediaRelay.makeM3U8(player, urls);
     }
 
@@ -212,11 +220,6 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
         {
             // DLNA not support complex query string
             media = m_httpHandler.mapUrl(media);
-            if (QUrl(media).path().endsWith(".flv", Qt::CaseInsensitive))
-            {
-                // seemly DLNA not support flv?
-                media = m_mediaRelay.transcoding(media);
-            }
         }
         qDebug() << __FUNCTION__ << "DLNA playing" << media ;
     }

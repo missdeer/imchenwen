@@ -98,6 +98,7 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
         req.setRawHeader("Referer", m_referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
+    qDebug() << __FUNCTION__ << url << QString(m_userAgent) << QString(m_referrer);
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
     m_replySocketMap.insert(reply, socket);
@@ -176,7 +177,6 @@ void InMemoryHandler::onNetworkSSLErrors(const QList<QSslError> &errors)
 void InMemoryHandler::onReadyRead()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-
     Socket* socket = m_replySocketMap[reply];
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -193,16 +193,18 @@ void InMemoryHandler::onReadyRead()
     }
     else if (statusCode >= 400)
     {
+        qDebug() << __FUNCTION__ << statusCode;
         socket->writeError(statusCode);
     }
 }
 
 void InMemoryHandler::onMediaReadFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    qDebug() << __FUNCTION__;
+    onReadyRead();
 
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     Socket* socket = m_replySocketMap[reply];
-    socket->write(reply->readAll());
     socket->close();
     m_replySocketMap.remove(reply);
     m_headerWritten.remove(reply);
