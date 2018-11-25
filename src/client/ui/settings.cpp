@@ -261,6 +261,10 @@ void SettingsDialog::loadFromSettings()
     edtYoutubeDLPath->setText(cfg.read<QString>(QLatin1String("youtube-dl")));
     edtAnniePath->setText(cfg.read<QString>(QLatin1String("annie")));
     edtFFmpegPath->setText(cfg.read<QString>(QLatin1String("ffmpeg")));
+
+    // storage
+    gbStorageService->setChecked(cfg.read<bool>(QLatin1String("enableStorageService")));
+    edtStorageServiceAddress->setText(cfg.read<QString>(QLatin1String("storageServiceAddress")));
 }
 
 void SettingsDialog::saveToSettings()
@@ -333,6 +337,10 @@ void SettingsDialog::saveToSettings()
 
     // VIP video subscription
     cfg.write("vipVideoSubscription", m_vipVideoSubscription);
+
+    // stoarge
+    cfg.write("enableStorageService", gbStorageService->isChecked());
+    cfg.write("storageServiceAddress", edtStorageServiceAddress->text());
 
     Browser::instance().loadSettings();
 }

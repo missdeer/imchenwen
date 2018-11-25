@@ -63,6 +63,11 @@ void PlayDialog::setMediaInfo(const QString &title, const QString &url)
     item->setToolTip(QUrl(url).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
 }
 
+bool PlayDialog::uploadToStorageService()
+{
+    return ui->btnStorage->isChecked();
+}
+
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 {
     SettingsDialog dlg(this);

@@ -25,6 +25,7 @@ public:
     void setMediaInfo(const QString& title, const QString& url);
     PlayerPtr player() { return m_selectedPlayer; }
     StreamInfoPtr media() { return m_selectedMedia; }
+    bool uploadToStorageService();
 private slots:
     void on_btnExternalPlayerConfiguration_clicked();
 

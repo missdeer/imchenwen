@@ -455,12 +455,17 @@ Do you wish to override the security check and continue ?   </source>
         <translation>媒体信息：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="66"/>
+        <location filename="../ui/playdialog.ui" line="61"/>
+        <source>Upload to Storage Service</source>
+        <translation>上传到存储服务</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.ui" line="73"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="76"/>
+        <location filename="../ui/playdialog.ui" line="83"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -485,28 +490,28 @@ Do you wish to override the security check and continue ?   </source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="90"/>
+        <location filename="../ui/playdialog.cpp" line="95"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="108"/>
+        <location filename="../ui/playdialog.cpp" line="113"/>
         <source>DLNA: </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="128"/>
-        <location filename="../ui/playdialog.cpp" line="138"/>
+        <location filename="../ui/playdialog.cpp" line="133"/>
+        <location filename="../ui/playdialog.cpp" line="143"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="128"/>
+        <location filename="../ui/playdialog.cpp" line="133"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="139"/>
+        <location filename="../ui/playdialog.cpp" line="144"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
@@ -1003,174 +1008,194 @@ MPV错误：</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="657"/>
+        <source>Storage</source>
+        <translation>存储</translation>
+    </message>
+    <message>
+        <location filename="../ui/settings.ui" line="675"/>
+        <source>Storage Service Address</source>
+        <translation>存储服务地址</translation>
+    </message>
+    <message>
+        <location filename="../ui/settings.ui" line="682"/>
+        <source>http://192.168.66.110:31783</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/settings.ui" line="663"/>
+        <source>Enable Storage Service</source>
+        <translation>使用存储服务</translation>
+    </message>
+    <message>
+        <location filename="../ui/settings.ui" line="706"/>
         <source>Player</source>
         <translation>播放器</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="675"/>
+        <location filename="../ui/settings.ui" line="724"/>
         <source>Players:</source>
         <translation>播放器：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="685"/>
+        <location filename="../ui/settings.ui" line="734"/>
         <source>External Player Path:</source>
         <translation>外部播放器路径：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="697"/>
-        <location filename="../ui/settings.ui" line="760"/>
-        <location filename="../ui/settings.ui" line="781"/>
-        <location filename="../ui/settings.ui" line="802"/>
-        <location filename="../ui/settings.ui" line="823"/>
-        <location filename="../ui/settings.ui" line="844"/>
+        <location filename="../ui/settings.ui" line="746"/>
+        <location filename="../ui/settings.ui" line="809"/>
+        <location filename="../ui/settings.ui" line="830"/>
+        <location filename="../ui/settings.ui" line="851"/>
+        <location filename="../ui/settings.ui" line="872"/>
+        <location filename="../ui/settings.ui" line="893"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="706"/>
+        <location filename="../ui/settings.ui" line="755"/>
         <source>External Play Arugments:</source>
         <translation>外部播放器参数：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="718"/>
-        <location filename="../ui/settings.ui" line="903"/>
-        <location filename="../ui/settings.ui" line="965"/>
-        <location filename="../ui/settings.ui" line="1042"/>
-        <location filename="../ui/settings.ui" line="1101"/>
+        <location filename="../ui/settings.ui" line="767"/>
+        <location filename="../ui/settings.ui" line="952"/>
+        <location filename="../ui/settings.ui" line="1014"/>
+        <location filename="../ui/settings.ui" line="1091"/>
+        <location filename="../ui/settings.ui" line="1150"/>
         <source>+</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="725"/>
+        <location filename="../ui/settings.ui" line="774"/>
         <source> -</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="732"/>
-        <location filename="../ui/settings.ui" line="989"/>
-        <location filename="../ui/settings.ui" line="1125"/>
+        <location filename="../ui/settings.ui" line="781"/>
+        <location filename="../ui/settings.ui" line="1038"/>
+        <location filename="../ui/settings.ui" line="1174"/>
         <source>Modify</source>
         <translation>修改</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="742"/>
+        <location filename="../ui/settings.ui" line="791"/>
         <source>Resolver</source>
         <translation>解析器</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="748"/>
+        <location filename="../ui/settings.ui" line="797"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;you-get: &lt;a href=&quot;https://you-get.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://you-get.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="769"/>
+        <location filename="../ui/settings.ui" line="818"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ykdl: &lt;a href=&quot;https://github.com/zhangn1985/ykdl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/zhangn1985/ykdl&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="790"/>
+        <location filename="../ui/settings.ui" line="839"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;youtube-dl: &lt;a href=&quot;https://rg3.github.io/youtube-dl/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://rg3.github.io/youtube-dl/index.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="811"/>
+        <location filename="../ui/settings.ui" line="860"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;annie: &lt;a href=&quot;https://github.com/iawia002/annie&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iawia002/annie&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="832"/>
+        <location filename="../ui/settings.ui" line="881"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FFmpeg: &lt;a href=&quot;https://www.ffmpeg.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://www.ffmpeg.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="867"/>
+        <location filename="../ui/settings.ui" line="916"/>
         <source>Live TV</source>
         <translation>电视直播</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="885"/>
+        <location filename="../ui/settings.ui" line="934"/>
         <source>Live TV subscription:</source>
         <translation>电视直播订阅列表：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="900"/>
+        <location filename="../ui/settings.ui" line="949"/>
         <source>Add live TV subscription</source>
         <translation>添加电视直播订阅</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="910"/>
+        <location filename="../ui/settings.ui" line="959"/>
         <source>Remove selected live TV subscription</source>
         <translation>删除选中的电视直播订阅</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="922"/>
+        <location filename="../ui/settings.ui" line="971"/>
         <source>Custom Live TV items:</source>
         <translation>自定义电视直播项目</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="941"/>
-        <location filename="../ui/settings.ui" line="1077"/>
+        <location filename="../ui/settings.ui" line="990"/>
+        <location filename="../ui/settings.ui" line="1126"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="951"/>
-        <location filename="../ui/settings.ui" line="1087"/>
+        <location filename="../ui/settings.ui" line="1000"/>
+        <location filename="../ui/settings.ui" line="1136"/>
         <source>URL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="972"/>
+        <location filename="../ui/settings.ui" line="1021"/>
         <source>Import Live TV items from file</source>
         <translation>从文件导入电视直播列表</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="975"/>
-        <location filename="../ui/settings.ui" line="1111"/>
+        <location filename="../ui/settings.ui" line="1024"/>
+        <location filename="../ui/settings.ui" line="1160"/>
         <source>Import...</source>
         <translation>导入…</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="913"/>
-        <location filename="../ui/settings.ui" line="982"/>
-        <location filename="../ui/settings.ui" line="1049"/>
-        <location filename="../ui/settings.ui" line="1118"/>
+        <location filename="../ui/settings.ui" line="962"/>
+        <location filename="../ui/settings.ui" line="1031"/>
+        <location filename="../ui/settings.ui" line="1098"/>
+        <location filename="../ui/settings.ui" line="1167"/>
         <source>-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="996"/>
+        <location filename="../ui/settings.ui" line="1045"/>
         <source>Export Live TV item to file.</source>
         <translation>将电视直播列表导出到文件。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="999"/>
-        <location filename="../ui/settings.ui" line="1135"/>
+        <location filename="../ui/settings.ui" line="1048"/>
+        <location filename="../ui/settings.ui" line="1184"/>
         <source>Export...</source>
         <translation>导出…</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1009"/>
+        <location filename="../ui/settings.ui" line="1058"/>
         <source>VIP Video</source>
         <translation>VIP视频</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1027"/>
+        <location filename="../ui/settings.ui" line="1076"/>
         <source>VIP video resolver subscription:</source>
         <translation>VIP视频解析订阅列表：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1058"/>
+        <location filename="../ui/settings.ui" line="1107"/>
         <source>Custom VIP video resolvers:</source>
         <translation>自定义VIP视频解析器：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1108"/>
+        <location filename="../ui/settings.ui" line="1157"/>
         <source>Import VIP video items from file</source>
         <translation>从文件导入VIP视频列表</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1132"/>
+        <location filename="../ui/settings.ui" line="1181"/>
         <source>Export VIP video items to file</source>
         <translation>将VIP视频列表导出到文件</translation>
     </message>
@@ -1178,218 +1203,218 @@ MPV错误：</translation>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../ui/settings.cpp" line="858"/>
-        <location filename="../ui/settings.cpp" line="965"/>
+        <location filename="../ui/settings.cpp" line="866"/>
+        <location filename="../ui/settings.cpp" line="973"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="382"/>
+        <location filename="../ui/settings.cpp" line="390"/>
         <source>Select media player executable</source>
         <translation>选择媒体播放器可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="394"/>
-        <location filename="../ui/settings.cpp" line="417"/>
-        <location filename="../ui/settings.cpp" line="538"/>
-        <location filename="../ui/settings.cpp" line="578"/>
-        <location filename="../ui/settings.cpp" line="693"/>
-        <location filename="../ui/settings.cpp" line="733"/>
+        <location filename="../ui/settings.cpp" line="402"/>
+        <location filename="../ui/settings.cpp" line="425"/>
+        <location filename="../ui/settings.cpp" line="546"/>
+        <location filename="../ui/settings.cpp" line="586"/>
+        <location filename="../ui/settings.cpp" line="701"/>
+        <location filename="../ui/settings.cpp" line="741"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="394"/>
+        <location filename="../ui/settings.cpp" line="402"/>
         <source>Please input player path.</source>
         <translation>请输入播放器路径。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="401"/>
-        <location filename="../ui/settings.cpp" line="543"/>
-        <location filename="../ui/settings.cpp" line="587"/>
-        <location filename="../ui/settings.cpp" line="698"/>
-        <location filename="../ui/settings.cpp" line="740"/>
+        <location filename="../ui/settings.cpp" line="409"/>
+        <location filename="../ui/settings.cpp" line="551"/>
+        <location filename="../ui/settings.cpp" line="595"/>
+        <location filename="../ui/settings.cpp" line="706"/>
+        <location filename="../ui/settings.cpp" line="748"/>
         <source>Duplicated</source>
         <translation>重复</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="401"/>
+        <location filename="../ui/settings.cpp" line="409"/>
         <source>This configuration item exists already.</source>
         <translation>此配置项已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="417"/>
+        <location filename="../ui/settings.cpp" line="425"/>
         <source>Please select an item in list to be removed.</source>
         <translation>请在列表中选中一项进行删除。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="452"/>
+        <location filename="../ui/settings.cpp" line="460"/>
         <source>Select you-get executable</source>
         <translation>选择you-get可执行文件路径</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="455"/>
+        <location filename="../ui/settings.cpp" line="463"/>
         <source>you-get executable (you-get.exe)</source>
         <translation>you-get可执行文件 (you-get.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="457"/>
+        <location filename="../ui/settings.cpp" line="465"/>
         <source>you-get executable (you-get)</source>
         <translation>you-get可执行文件 (you-get)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="469"/>
+        <location filename="../ui/settings.cpp" line="477"/>
         <source>Select ykdl executable</source>
         <translation>选择ykdl可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="472"/>
+        <location filename="../ui/settings.cpp" line="480"/>
         <source>ykdl executable (ykdl.exe)</source>
         <translation>ykdl可执行文件 (ykdl.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="474"/>
+        <location filename="../ui/settings.cpp" line="482"/>
         <source>ykdl executable (ykdl)</source>
         <translation>ykdl可执行文件 (ykdl)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="486"/>
+        <location filename="../ui/settings.cpp" line="494"/>
         <source>Select youtube-dl executable</source>
         <translation>选择youtube-dl可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="489"/>
+        <location filename="../ui/settings.cpp" line="497"/>
         <source>youtube-dl executable (youtube-dl.exe)</source>
         <translation>youtube-dl可执行文件 (youtube-dl.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="491"/>
+        <location filename="../ui/settings.cpp" line="499"/>
         <source>youtube-dl executable (youtube-dl)</source>
         <translation>youtube-dl可执行文件 (youtube-dl)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="503"/>
+        <location filename="../ui/settings.cpp" line="511"/>
         <source>Select annie executable</source>
         <translation>选择annie可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="506"/>
+        <location filename="../ui/settings.cpp" line="514"/>
         <source>annie executable (annie.exe)</source>
         <translation>annie可执行文件 (annie.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="508"/>
+        <location filename="../ui/settings.cpp" line="516"/>
         <source>annie executable (annie)</source>
         <translation>annie可执行文件 (annie)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="520"/>
+        <location filename="../ui/settings.cpp" line="528"/>
         <source>Select FFmpeg executable</source>
         <translation>选择FFmpeg可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="523"/>
+        <location filename="../ui/settings.cpp" line="531"/>
         <source>FFmpeg executable (ffmpeg.exe)</source>
         <translation>FFmpeg可执行文件 (ffmpeg.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="525"/>
+        <location filename="../ui/settings.cpp" line="533"/>
         <source>FFmpeg executable (ffmpeg)</source>
         <translation>FFmpeg可执行文件 (ffmpeg)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="538"/>
+        <location filename="../ui/settings.cpp" line="546"/>
         <source>Please input live TV subscription URL.</source>
         <translation>请输入电视直播订阅地址。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="543"/>
+        <location filename="../ui/settings.cpp" line="551"/>
         <source>This live TV subscription exists already.</source>
         <translation>此电视直播订阅项目已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="578"/>
+        <location filename="../ui/settings.cpp" line="586"/>
         <source>Please input Live TV name and URL.</source>
         <translation>请输入电视直播名称和URL。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="587"/>
+        <location filename="../ui/settings.cpp" line="595"/>
         <source>This Live TV item exists already.</source>
         <translation>此电视直播项已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="634"/>
+        <location filename="../ui/settings.cpp" line="642"/>
         <source>Select Live TV list to import</source>
         <translation>选择电视直播列表导入</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="636"/>
-        <location filename="../ui/settings.cpp" line="786"/>
+        <location filename="../ui/settings.cpp" line="644"/>
+        <location filename="../ui/settings.cpp" line="794"/>
         <source>Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)</source>
         <translation>所有支持格式 (*.json *.txt);;JSON格式 (*.json);;纯文本格式 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="662"/>
+        <location filename="../ui/settings.cpp" line="670"/>
         <source>Export Live TV list to</source>
         <translation>导出电视直播列表到</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="664"/>
-        <location filename="../ui/settings.cpp" line="814"/>
+        <location filename="../ui/settings.cpp" line="672"/>
+        <location filename="../ui/settings.cpp" line="822"/>
         <source>JSON format (*.json);;Plain text format (*.txt)</source>
         <translation>JSON格式 (*.json);;纯文本格式 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="693"/>
+        <location filename="../ui/settings.cpp" line="701"/>
         <source>Please input VIP video subscription URL.</source>
         <translation>请输入VIP视频解析订阅地址。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="698"/>
+        <location filename="../ui/settings.cpp" line="706"/>
         <source>This VIP video subscription exists already.</source>
         <translation>此VIP视频解析订阅项目已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="733"/>
+        <location filename="../ui/settings.cpp" line="741"/>
         <source>Please input VIP video name and URL.</source>
         <translation>请输入VIP视频名称和URL。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="740"/>
+        <location filename="../ui/settings.cpp" line="748"/>
         <source>This VIP video item exists already.</source>
         <translation>此VIP视频项已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="784"/>
+        <location filename="../ui/settings.cpp" line="792"/>
         <source>Select VIP video list to import</source>
         <translation>选择VIP视频列表导入</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="812"/>
+        <location filename="../ui/settings.cpp" line="820"/>
         <source>Export VIP video list to</source>
         <translation>导出VIP视频列表到</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="1061"/>
-        <location filename="../ui/settings.cpp" line="1065"/>
-        <location filename="../ui/settings.cpp" line="1072"/>
-        <location filename="../ui/settings.cpp" line="1076"/>
+        <location filename="../ui/settings.cpp" line="1069"/>
+        <location filename="../ui/settings.cpp" line="1073"/>
+        <location filename="../ui/settings.cpp" line="1080"/>
+        <location filename="../ui/settings.cpp" line="1084"/>
         <source>URL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="850"/>
+        <location filename="../ui/settings.cpp" line="858"/>
         <source>Error on importing live TV list as JSON</source>
         <translation>将电视直播列表以JSON格式导入错误</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="957"/>
+        <location filename="../ui/settings.cpp" line="965"/>
         <source>Error on importing VIP video list as JSON</source>
         <translation>将VIP视频列表以JSON格式导入错误</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="1061"/>
-        <location filename="../ui/settings.cpp" line="1072"/>
+        <location filename="../ui/settings.cpp" line="1069"/>
+        <location filename="../ui/settings.cpp" line="1080"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
