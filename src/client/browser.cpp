@@ -212,11 +212,15 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
         {
             // DLNA not support complex query string
             media = m_httpHandler.mapUrl(media);
+            if (QUrl(media).path().endsWith(".flv", Qt::CaseInsensitive))
+            {
+                // seemly DLNA not support flv?
+                media = m_mediaRelay.transcoding(media);
+            }
         }
-
+        qDebug() << __FUNCTION__ << "DLNA playing" << media ;
     }
 
-    qDebug() << __FUNCTION__ << "playing" << media ;
     switch (player->type())
     {
     case Player::PT_BUILTIN:
