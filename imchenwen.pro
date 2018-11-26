@@ -2,7 +2,7 @@ cache()
 
 TEMPLATE = subdirs
 
-CONFIG += ordered
+#CONFIG += ordered
 
-SUBDIRS += src/client/client.pro \
+SUBDIRS += src/client \
     src/sniff
