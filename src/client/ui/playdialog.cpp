@@ -37,6 +37,9 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
     {
         for (auto& stream : s.streams)
         {
+            if (stream->urls.isEmpty())
+                continue;
+
             auto item = addItem(s.icon,
                                 mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
                                 ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));

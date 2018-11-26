@@ -490,28 +490,28 @@ Do you wish to override the security check and continue ?   </source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="95"/>
+        <location filename="../ui/playdialog.cpp" line="98"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="113"/>
+        <location filename="../ui/playdialog.cpp" line="116"/>
         <source>DLNA: </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="133"/>
-        <location filename="../ui/playdialog.cpp" line="143"/>
+        <location filename="../ui/playdialog.cpp" line="136"/>
+        <location filename="../ui/playdialog.cpp" line="146"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="133"/>
+        <location filename="../ui/playdialog.cpp" line="136"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="144"/>
+        <location filename="../ui/playdialog.cpp" line="147"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
