@@ -40,7 +40,6 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
 
     if (path.endsWith("m3u8"))
     {
-        qDebug() << "path:" << path;
         emit maybeMediaUrl(request.requestUrl().url());
         QTextStream ts(stdout);
         ts << request.requestUrl().url();

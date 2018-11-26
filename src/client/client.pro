@@ -2,6 +2,7 @@ TEMPLATE = app
 TARGET = imchenwen
 QT += webengine webenginecore webenginewidgets xml concurrent
 CONFIG += c++14
+DESTDIR = $$PWD/../../bin
 
 include(Boost.pri)
 include($$PWD/../3rdparty/qhttpengine/qhttpengine.pri)
@@ -85,20 +86,20 @@ macx: {
         translate.depends = lrelease
         translate.files = $$system("find $${PWD}/translations -name '*.qm' ")
         translate.path = Contents/Resources/translations/
-        translate.commands = '$(COPY_DIR) $$shell_path($${PWD}/translations) $$shell_path($${OUT_PWD}/$${TARGET}.app/Contents/Resources/)'
+        translate.commands = '$(COPY_DIR) $$shell_path($${PWD}/translations) $$shell_path($${DESTDIR}/$${TARGET}.app/Contents/Resources/)'
         QMAKE_BUNDLE_DATA += translate
 
         deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\"
 
         deploy_webengine.depends += deploy
-        deploy_webengine.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\"
+        deploy_webengine.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\"
 
         APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
         INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
         BUNDLEID = com.dfordsoft.imchenwen
 
         codesign.depends += deploy_webengine
-        codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${OUT_PWD}/$${TARGET}.app\"
+        codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${DESTDIR}/$${TARGET}.app\"
 
         makedmg.depends += codesign
         makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
@@ -113,10 +114,10 @@ win32: {
     INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
     contains(QMAKE_HOST.arch, x86_64): {
         LIBS += -L$$PWD/../3rdparty/libmpv/x86_64
-        copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/x86_64/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
+        copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/x86_64/mpv-1.dll) $$shell_path($$DESTDIR/mpv-1.dll)'
     } else : {
         LIBS += -L$$PWD/../3rdparty/libmpv/i686
-        copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$OUT_PWD/Release/mpv-1.dll)'
+        copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$DESTDIR/mpv-1.dll)'
     }
     LIBS += -lmpv
     QMAKE_EXTRA_TARGETS += copy_mpv_dll
@@ -125,9 +126,9 @@ win32: {
         QMAKE_CXXFLAGS += /Zi
         QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
         WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
-        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/release/translations)'
+        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR/translations)'
     } else: {
-        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD/debug/translations)'
+        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR/translations)'
     }
 } else : {
     INCLUDEPATH += /usr/local/include
@@ -135,5 +136,5 @@ win32: {
 }
 
 unix: !macx {
-    translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$OUT_PWD)'
+    translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR)'
 }
