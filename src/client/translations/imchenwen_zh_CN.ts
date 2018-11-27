@@ -4,45 +4,45 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="537"/>
-        <location filename="../browser.cpp" line="564"/>
+        <location filename="../browser.cpp" line="515"/>
+        <location filename="../browser.cpp" line="542"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="537"/>
+        <location filename="../browser.cpp" line="515"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="548"/>
+        <location filename="../browser.cpp" line="526"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="565"/>
+        <location filename="../browser.cpp" line="543"/>
         <source>Resolving link address as VIP failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>VIP链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="576"/>
+        <location filename="../browser.cpp" line="554"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="579"/>
+        <location filename="../browser.cpp" line="557"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="582"/>
+        <location filename="../browser.cpp" line="560"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="586"/>
+        <location filename="../browser.cpp" line="564"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -262,7 +262,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="442"/>
         <source>Play VIP by Media Player</source>
-        <translation type="unfinished"></translation>
+        <translation>使用媒体播放器播放VIP视频</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="530"/>
@@ -280,29 +280,29 @@
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="564"/>
+        <location filename="../ui/browserwindow.cpp" line="568"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="572"/>
+        <location filename="../ui/browserwindow.cpp" line="576"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="573"/>
+        <location filename="../ui/browserwindow.cpp" line="577"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="670"/>
+        <location filename="../ui/browserwindow.cpp" line="674"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="674"/>
+        <location filename="../ui/browserwindow.cpp" line="678"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
@@ -406,11 +406,16 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../ui/inputurldialog.ui" line="46"/>
+        <source>Resolve as VIP then play</source>
+        <translation>解析VIP地址后播放</translation>
+    </message>
+    <message>
+        <location filename="../ui/inputurldialog.ui" line="53"/>
         <source>Sniff then play</source>
         <translation>嗅探地址后播放</translation>
     </message>
     <message>
-        <location filename="../ui/inputurldialog.ui" line="53"/>
+        <location filename="../ui/inputurldialog.ui" line="60"/>
         <source>Play directly</source>
         <translation>直接播放</translation>
     </message>

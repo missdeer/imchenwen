@@ -249,28 +249,6 @@ void Browser::init()
     m_websites.update();
 }
 
-void Browser::play(const QString &u, const QString &title)
-{
-    if (m_playDialog)
-    {
-        m_playDialog->setMediaInfo(title, QStringList() << u);
-        return;
-    }
-    m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    m_playDialog->setMediaInfo(title, QStringList() << u);
-    if (m_playDialog->exec())
-    {
-        PlayerPtr player = m_playDialog->player();
-        doPlay(player, QStringList() << u, title, "");
-    }
-    else
-    {
-        playerStopped();
-    }
-    delete m_playDialog;
-    m_playDialog = nullptr;
-}
-
 void Browser::play(MediaInfoPtr mi)
 {
     if (m_playDialog)
@@ -545,7 +523,7 @@ void Browser::onNormalLinkResolvingError(const QString &u)
 {
     stopWaiting();
 
-    play(u, tr("Play movie online directly\n%1").arg(u));
+    play(QStringList() << u, tr("Play movie online directly\n%1").arg(u));
 }
 
 void Browser::onVIPLinkResolved(const QStringList &urls)

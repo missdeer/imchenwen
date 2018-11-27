@@ -41,6 +41,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QRadioButton" name="btnResolveAsVIP">
+       <property name="text">
+        <string>Resolve as VIP then play</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QRadioButton" name="btnSniff">
        <property name="text">
         <string>Sniff then play</string>

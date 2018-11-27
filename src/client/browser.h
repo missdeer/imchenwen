@@ -48,7 +48,7 @@ public:
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString &u);
     void resolveVIPAndPlayByMediaPlayer(const QString &u);
-    void play(const QString &u, const QString &title);
+    void play(const QStringList &url, const QString &title);
     void init();
 signals:
 
@@ -83,7 +83,6 @@ private:
     void resolveLink(const QString &u);
     void resolveVIPLink(const QString &u);
     void play(MediaInfoPtr mi);
-    void play(const QStringList &url, const QString &title);
     void doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer);
     void playByBuiltinPlayer(const QString &url, const QString& title, const QString &referrer);
     void playByExternalPlayer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);

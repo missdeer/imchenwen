@@ -19,6 +19,7 @@ public:
     bool playDirectly();
     bool resolveThenPlay();
     bool sniffThenPlay();
+    bool resolveAsVIPThenPlay();
 private:
     Ui::InputUrlDialog *ui;
 };

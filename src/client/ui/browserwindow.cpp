@@ -500,7 +500,7 @@ void BrowserWindow::onLiveTV()
     QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
-    Browser::instance().play(url, "Live TV - " + action->text());
+    Browser::instance().play(QStringList() << url, "Live TV - " + action->text());
 }
 
 void BrowserWindow::onOptions()
@@ -555,13 +555,17 @@ void BrowserWindow::onPlayURL()
         {
             Browser::instance().resolveAndPlayByMediaPlayer(dlg.url());
         }
+        else if (dlg.resolveAsVIPThenPlay())
+        {
+            Browser::instance().resolveVIPAndPlayByMediaPlayer(dlg.url());
+        }
         else if (dlg.sniffThenPlay())
         {
             m_tabWidget->navigateInNewWebEngineTab(dlg.url());
         }
         else if (dlg.playDirectly())
         {
-            Browser::instance().play(dlg.url(), tr("Play URL directly"));
+            Browser::instance().play(QStringList() << dlg.url(), tr("Play URL directly"));
         }
     }
 }

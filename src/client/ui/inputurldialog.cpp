@@ -32,3 +32,8 @@ bool InputUrlDialog::sniffThenPlay()
 {
     return ui->btnSniff->isChecked();
 }
+
+bool InputUrlDialog::resolveAsVIPThenPlay()
+{
+    return ui->btnResolveAsVIP->isChecked();
+}
