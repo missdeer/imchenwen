@@ -33,6 +33,8 @@ HEADERS += \
     $$PWD/mediahandler/linkresolver.h \
     $$PWD/mediahandler/linkresolverprocess.h \
     $$PWD/mediahandler/mediarelay.h \
+    $$PWD/mediahandler/sniffer.h \
+    $$PWD/mediahandler/vipresolver.h \
     $$PWD/mpv/playercore.h \
     $$PWD/mpv/playerview.h \
     $$PWD/mpv/skin.h \
@@ -67,6 +69,8 @@ SOURCES += \
     $$PWD/mediahandler/linkresolver.cpp \
     $$PWD/mediahandler/linkresolverprocess.cpp \
     $$PWD/mediahandler/mediarelay.cpp \
+    $$PWD/mediahandler/sniffer.cpp \
+    $$PWD/mediahandler/vipresolver.cpp \
     $$PWD/mpv/playercore.cpp \
     $$PWD/mpv/playerview.cpp \
     $$PWD/mpv/skin.cpp \
