@@ -2,6 +2,7 @@
 #define SNIFFER_H
 
 #include <QObject>
+#include <QProcess>
 
 class Sniffer : public QObject
 {
@@ -9,9 +10,17 @@ class Sniffer : public QObject
 public:
     explicit Sniffer(QObject *parent = nullptr);
 
+    void sniff(const QString &url);
 signals:
-
+    void done(QString);
+    void error();
 public slots:
+    void onReadStandardOutput();
+    void onFinished(int exitCode, QProcess::ExitStatus);
+
+private:
+    QProcess m_process;
+    QByteArray m_data;
 };
 
 #endif // SNIFFER_H

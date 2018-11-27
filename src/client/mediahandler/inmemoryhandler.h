@@ -23,7 +23,7 @@ public:
 signals:
 
 public slots:
-    void inputEnd();
+    void onInputEnd();
 private slots:
     void onNetworkError(QNetworkReply::NetworkError code);
     void onNetworkSSLErrors(const QList<QSslError> &errors);

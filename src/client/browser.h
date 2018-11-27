@@ -7,6 +7,7 @@
 #include <QNetworkAccessManager>
 #include <qhttpengine/server.h>
 #include "linkresolver.h"
+#include "vipresolver.h"
 #include "websites.h"
 #include "Kast.h"
 #include "inmemoryhandler.h"
@@ -53,11 +54,12 @@ signals:
 
 private slots:
     void onClipboardChanged();
-    void onResolved(MediaInfoPtr mi);
-    void onResolvingError(const QString&);
+    void onNormalLinkResolved(MediaInfoPtr mi);
+    void onNormalLinkResolvingError(const QString&);
+    void onVIPLinkResolved(const QStringList &urls);
+    void onVIPLinkResolvingError();
     void onProcessError(QProcess::ProcessError error);
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void onSniffedMediaUrl(const QString& u);
     void onNewM3U8Ready();
 private:
     QNetworkAccessManager m_nam;
@@ -67,6 +69,7 @@ private:
     WaitingSpinnerWidget *m_waitingSpinner;
     QProcess m_playerProcess;
     LinkResolver m_linkResolver;
+    VIPResolver m_vipResolver;
     Websites m_websites;
     PlayerView *m_builtinPlayer;
     DLNAPlayerView *m_dlnaPlayer;
@@ -78,7 +81,9 @@ private:
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
+    void resolveVIPLink(const QString &u);
     void play(MediaInfoPtr mi);
+    void play(const QStringList &url, const QString &title);
     void doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer);
     void playByBuiltinPlayer(const QString &url, const QString& title, const QString &referrer);
     void playByExternalPlayer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);

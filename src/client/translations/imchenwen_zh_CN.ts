@@ -4,39 +4,45 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="492"/>
+        <location filename="../browser.cpp" line="537"/>
+        <location filename="../browser.cpp" line="564"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="492"/>
+        <location filename="../browser.cpp" line="537"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="503"/>
+        <location filename="../browser.cpp" line="548"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="513"/>
+        <location filename="../browser.cpp" line="565"/>
+        <source>Resolving link address as VIP failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browser.cpp" line="576"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="516"/>
+        <location filename="../browser.cpp" line="579"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="519"/>
+        <location filename="../browser.cpp" line="582"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="523"/>
+        <location filename="../browser.cpp" line="586"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
@@ -495,28 +501,28 @@ Do you wish to override the security check and continue ?   </source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="98"/>
+        <location filename="../ui/playdialog.cpp" line="104"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="116"/>
+        <location filename="../ui/playdialog.cpp" line="122"/>
         <source>DLNA: </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="136"/>
-        <location filename="../ui/playdialog.cpp" line="146"/>
+        <location filename="../ui/playdialog.cpp" line="140"/>
+        <location filename="../ui/playdialog.cpp" line="156"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="136"/>
+        <location filename="../ui/playdialog.cpp" line="140"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="147"/>
+        <location filename="../ui/playdialog.cpp" line="157"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>

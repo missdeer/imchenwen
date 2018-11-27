@@ -153,7 +153,7 @@ void InMemoryHandler::newMediaData(const QByteArray &data)
     m_mediaData.append(data);
 }
 
-void InMemoryHandler::inputEnd()
+void InMemoryHandler::onInputEnd()
 {
     m_inputEnd = true;
 }

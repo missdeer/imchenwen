@@ -55,10 +55,10 @@ class LinkResolver : public QObject
 public:
     explicit LinkResolver(QObject *parent = nullptr);
     ~LinkResolver();
-    void resolve(const QString & url);
+    void resolve(const QString &url);
 signals:
-    void resolvingFinished(MediaInfoPtr);
-    void resolvingError(const QString&);
+    void done(MediaInfoPtr);
+    void error(const QString&);
 public slots:
 
 private slots:

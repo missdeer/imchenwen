@@ -44,7 +44,7 @@ void LinkResolver::resolve(const QString& url)
 {
     if (url == m_lastUrl)
     {
-        emit resolvingFinished(m_mediaInfo);
+        emit done(m_mediaInfo);
     }
     else
     {
@@ -68,16 +68,16 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
 {
     LinkResolverProcess *p = qobject_cast<LinkResolverProcess*>(sender());
 
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    if (error.error == QJsonParseError::IllegalUTF8String)
+    QJsonParseError e;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &e);
+    if (e.error == QJsonParseError::IllegalUTF8String)
     {
         QTextStream in(data);
         auto d = in.readAll();
-        doc = QJsonDocument::fromJson(d.toUtf8(), &error);
+        doc = QJsonDocument::fromJson(d.toUtf8(), &e);
     }
-    if (error.error != QJsonParseError::NoError)
-        qDebug() << __FUNCTION__ << error.errorString() << QString(data);
+    if (e.error != QJsonParseError::NoError)
+        qDebug() << __FUNCTION__ << e.errorString() << QString(data);
 
     if (doc.isObject())
     {
@@ -94,10 +94,10 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
         if (m_mediaInfo->title.isEmpty() && m_mediaInfo->site.isEmpty())
         {
             m_lastUrl.clear();
-            emit resolvingError("Resolving failed.");
+            emit error("Resolving failed.");
         }
         else
-            emit resolvingFinished(m_mediaInfo);
+            emit done(m_mediaInfo);
     }
 }
 

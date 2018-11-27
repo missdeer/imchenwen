@@ -69,22 +69,26 @@ Browser::Browser(QObject *parent)
     , m_liveTVHelper("liveTV", "liveTVSubscription")
     , m_playDialog(nullptr)
 {
-    connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
-    connect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
+    connect(&m_linkResolver, &LinkResolver::done, this, &Browser::onNormalLinkResolved);
+    connect(&m_linkResolver, &LinkResolver::error, this, &Browser::onNormalLinkResolvingError);
+    connect(&m_vipResolver, &VIPResolver::done, this, &Browser::onVIPLinkResolved);
+    connect(&m_vipResolver, &VIPResolver::error, this, &Browser::onVIPLinkResolvingError);
     connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
-    connect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::inputEnd);
+    connect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::onInputEnd);
     connect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
 void Browser::clearAtExit()
 {
-    disconnect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
-    disconnect(&m_linkResolver, &LinkResolver::resolvingError, this, &Browser::onResolvingError);
+    disconnect(&m_linkResolver, &LinkResolver::done, this, &Browser::onNormalLinkResolved);
+    disconnect(&m_linkResolver, &LinkResolver::error, this, &Browser::onNormalLinkResolvingError);
+    disconnect(&m_vipResolver, &VIPResolver::done, this, &Browser::onVIPLinkResolved);
+    disconnect(&m_vipResolver, &VIPResolver::error, this, &Browser::onVIPLinkResolvingError);
     disconnect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     disconnect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
-    disconnect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::inputEnd);
+    disconnect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::onInputEnd);
     disconnect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
     disconnect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
     stopWaiting();
@@ -176,7 +180,7 @@ void Browser::resolveAndPlayByMediaPlayer(const QString &u)
 
 void Browser::resolveVIPAndPlayByMediaPlayer(const QString &u)
 {
-
+    resolveVIPLink(u);
 }
 
 void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer)
@@ -239,15 +243,21 @@ void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, 
     minimizeWindows();
 }
 
+void Browser::init()
+{
+    m_liveTVHelper.update();
+    m_websites.update();
+}
+
 void Browser::play(const QString &u, const QString &title)
 {
     if (m_playDialog)
     {
-        m_playDialog->setMediaInfo(title, u);
+        m_playDialog->setMediaInfo(title, QStringList() << u);
         return;
     }
     m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    m_playDialog->setMediaInfo(title, u);
+    m_playDialog->setMediaInfo(title, QStringList() << u);
     if (m_playDialog->exec())
     {
         PlayerPtr player = m_playDialog->player();
@@ -261,22 +271,50 @@ void Browser::play(const QString &u, const QString &title)
     m_playDialog = nullptr;
 }
 
-void Browser::init()
-{
-    m_liveTVHelper.update();
-    m_websites.update();
-}
-
 void Browser::play(MediaInfoPtr mi)
 {
-    PlayDialog dlg(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    dlg.setMediaInfo(mi);
-    if (dlg.exec())
+    if (m_playDialog)
     {
-        PlayerPtr player = dlg.player();
-        StreamInfoPtr stream = dlg.media();
+        m_playDialog->setMediaInfo(mi);
+        return;
+    }
+    m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    m_playDialog->setMediaInfo(mi);
+    if (m_playDialog->exec())
+    {
+        PlayerPtr player = m_playDialog->player();
+        StreamInfoPtr stream = m_playDialog->media();
         doPlay(player, stream->urls, mi->title, mi->url);
     }
+    else
+    {
+        playerStopped();
+    }
+    delete m_playDialog;
+    m_playDialog = nullptr;
+}
+
+void Browser::play(const QStringList &url, const QString &title)
+{
+    if (m_playDialog)
+    {
+        m_playDialog->setMediaInfo(title, url);
+        return;
+    }
+    m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    m_playDialog->setMediaInfo(title, url);
+    if (m_playDialog->exec())
+    {
+        PlayerPtr player = m_playDialog->player();
+        QString url = m_playDialog->url();
+        doPlay(player, QStringList() << url, title, "");
+    }
+    else
+    {
+        playerStopped();
+    }
+    delete m_playDialog;
+    m_playDialog = nullptr;
 }
 
 void Browser::playByBuiltinPlayer(const QString &url, const QString& title, const QString& referrer)
@@ -440,6 +478,13 @@ void Browser::resolveLink(const QString &u)
     m_linkResolver.resolve(u);
 }
 
+void Browser::resolveVIPLink(const QString &u)
+{
+    waiting();
+
+    m_vipResolver.resolve(u);
+}
+
 void Browser::minimizeWindows()
 {
     for ( auto w : m_windows)
@@ -482,7 +527,7 @@ void Browser::stopWaiting()
     }
 }
 
-void Browser::onResolved(MediaInfoPtr mi)
+void Browser::onNormalLinkResolved(MediaInfoPtr mi)
 {
     stopWaiting();
 
@@ -496,11 +541,29 @@ void Browser::onResolved(MediaInfoPtr mi)
     play(mi);
 }
 
-void Browser::onResolvingError(const QString &u)
+void Browser::onNormalLinkResolvingError(const QString &u)
 {
     stopWaiting();
 
     play(u, tr("Play movie online directly\n%1").arg(u));
+}
+
+void Browser::onVIPLinkResolved(const QStringList &urls)
+{
+    stopWaiting();
+
+    auto mw = const_cast<BrowserWindow*>(mainWindow());
+    play(urls, mw->maybeVIPVideoTitle());
+}
+
+void Browser::onVIPLinkResolvingError()
+{
+    stopWaiting();
+
+    QMessageBox::warning(mainWindow(),
+                         tr("Error"),
+                         tr("Resolving link address as VIP failed!"),
+                         QMessageBox::Ok);
 }
 
 void Browser::onProcessError(QProcess::ProcessError error)
@@ -560,20 +623,6 @@ void Browser::playerStopped()
 void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     playerStopped();
-}
-
-void Browser::onSniffedMediaUrl(const QString &u)
-{
-    auto mw = const_cast<BrowserWindow*>(mainWindow());
-    auto wv = mw->currentTab();
-    auto url = wv->url();
-    if (m_websites.isIn(url))
-    {
-        qDebug() << __FUNCTION__ << "shortcut url, ignore";
-        return;
-    }
-    mw->recoverCurrentTabUrl();
-    play(u, mw->maybeVIPVideoTitle());
 }
 
 void Browser::onNewM3U8Ready()

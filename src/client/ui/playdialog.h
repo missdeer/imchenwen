@@ -22,9 +22,10 @@ public:
     explicit PlayDialog(QWidget *parent = nullptr);
     ~PlayDialog();
     void setMediaInfo(MediaInfoPtr mi);
-    void setMediaInfo(const QString& title, const QString& url);
+    void setMediaInfo(const QString &title, const QStringList &urls);
     PlayerPtr player() { return m_selectedPlayer; }
     StreamInfoPtr media() { return m_selectedMedia; }
+    QString url() { return m_selectedUrl; }
     bool uploadToStorageService();
 private slots:
     void on_btnExternalPlayerConfiguration_clicked();
@@ -42,7 +43,9 @@ private:
     StreamInfoPtr m_selectedMedia;
     MediaInfoPtr m_mediaInfo;
     Streams m_streams;
-    bool m_multiMediaResources;
+    QStringList m_urls;
+    QString m_selectedUrl;
+    bool m_complexUrlResources;
     void createExternalPlayerList();
     void doOk();
     QListWidgetItem *addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);

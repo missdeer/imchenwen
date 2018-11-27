@@ -45,7 +45,6 @@ public:
     void setProperty(const QString& name, const QVariant& value);
 
 signals:
-    void cutVideo(void);
     void played(void);
     void paused(void);
     void stopped(void);

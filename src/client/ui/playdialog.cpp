@@ -9,7 +9,7 @@
 PlayDialog::PlayDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PlayDialog),
-    m_multiMediaResources(false)
+    m_complexUrlResources(false)
 {
     ui->setupUi(this);
 
@@ -53,17 +53,23 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
     m_mediaInfo = mi;
-    m_multiMediaResources = true;
+    m_complexUrlResources = true;
 }
 
-void PlayDialog::setMediaInfo(const QString &title, const QString &url)
+void PlayDialog::setMediaInfo(const QString &title, const QStringList &urls)
 {
     ui->listMedia->clear();
-    auto item = addItem(QIcon(":/video.png"), title + "\n" + url, Qt::white);
+    m_urls = urls;
+    for( const auto& url : urls)
+    {
+        auto item = addItem(QIcon(":/video.png"),
+                            title + "\n" + url,
+                            ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
+        item->setToolTip(QUrl(url).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
+    }
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
-    m_multiMediaResources = false;
-    item->setToolTip(QUrl(url).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
+    m_complexUrlResources = false;
 }
 
 bool PlayDialog::uploadToStorageService()
@@ -128,16 +134,20 @@ void PlayDialog::doOk()
     int currentIndex = ui->cbPlayers->currentIndex();
     m_selectedPlayer = m_players.at(currentIndex);
 
-    if (m_multiMediaResources)
+    QListWidgetItem *currentItem = ui->listMedia->currentItem();
+    if (!currentItem)
     {
-        QListWidgetItem *currentItem = ui->listMedia->currentItem();
-        if (!currentItem)
-        {
-            QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
-            return;
-        }
-        int currentRow = ui->listMedia->currentRow();
+        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
+        return;
+    }
+    int currentRow = ui->listMedia->currentRow();
+    if (m_complexUrlResources)
+    {
         m_selectedMedia = m_streams[currentRow];
+    }
+    else
+    {
+        m_selectedUrl = m_urls[currentRow];
     }
     if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->name())) || m_selectedPlayer->type() != Player::PT_EXTERNAL)
         accept();

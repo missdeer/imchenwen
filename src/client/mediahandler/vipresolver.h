@@ -2,6 +2,7 @@
 #define VIPRESOLVER_H
 
 #include <QObject>
+#include "sniffer.h"
 
 class VIPResolver : public QObject
 {
@@ -9,8 +10,10 @@ class VIPResolver : public QObject
 public:
     explicit VIPResolver(QObject *parent = nullptr);
 
+    void resolve(const QString & url);
 signals:
-
+    void done(const QStringList&);
+    void error();
 public slots:
 };
 
