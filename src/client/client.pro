@@ -15,29 +15,83 @@ INCLUDEPATH += $$PWD \
     $$PWD/ui \
     $$PWD/mediahandler
 
-HEADERS += $$PWD/dlna/*.h \
-    $$PWD/mpv/*.h \
-    $$PWD/webengine/*.h \
-    $$PWD/browser.h \
-    $$PWD/ui/*.h \
-    $$PWD/config/*.h \
-    $$PWD/mediahandler/*.h \
-    $$PWD/util.h
+HEADERS += \
+    $$PWD/util.h \
+    $$PWD/config/config.h \
+    $$PWD/config/player.h \
+    $$PWD/config/subscriptionhelper.h \
+    $$PWD/config/websites.h \
+    $$PWD/dlna/DLNAPlaybackInfo.h \
+    $$PWD/dlna/dlnaplayerview.h \
+    $$PWD/dlna/DLNARenderer.h \
+    $$PWD/dlna/DLNARendererIcon.h \
+    $$PWD/dlna/Kast.h \
+    $$PWD/dlna/MimeGuesser.h \
+    $$PWD/dlna/SOAPActionManager.h \
+    $$PWD/dlna/SSDPDiscovery.h \
+    $$PWD/mediahandler/inmemoryhandler.h \
+    $$PWD/mediahandler/linkresolver.h \
+    $$PWD/mediahandler/linkresolverprocess.h \
+    $$PWD/mediahandler/mediarelay.h \
+    $$PWD/mpv/playercore.h \
+    $$PWD/mpv/playerview.h \
+    $$PWD/mpv/skin.h \
+    $$PWD/ui/browserwindow.h \
+    $$PWD/ui/inputurldialog.h \
+    $$PWD/ui/playdialog.h \
+    $$PWD/ui/popupmenutoolbutton.h \
+    $$PWD/ui/settings.h \
+    $$PWD/ui/tabwidget.h \
+    $$PWD/ui/urllineedit.h \
+    $$PWD/ui/waitingspinnerwidget.h \
+    $$PWD/webengine/urlrequestinterceptor.h \
+    $$PWD/webengine/webpage.h \
+    $$PWD/webengine/webpopupwindow.h \
+    $$PWD/webengine/webview.h \
+    $$PWD/browser.h
 
-SOURCES += $$PWD/dlna/*.cpp \
-    $$PWD/mpv/*.cpp \
-    $$PWD/webengine/*.cpp \
-    $$PWD/ui/*.cpp \
-    $$PWD/config/*.cpp \
-    $$PWD/mediahandler/*.cpp \
+SOURCES += \
     $$PWD/browser.cpp \
     $$PWD/main.cpp \
-    $$PWD/util.cpp
+    $$PWD/util.cpp \
+    $$PWD/config/config.cpp \
+    $$PWD/config/player.cpp \
+    $$PWD/config/subscriptionhelper.cpp \
+    $$PWD/config/websites.cpp \
+    $$PWD/dlna/dlnaplayerview.cpp \
+    $$PWD/dlna/DLNARenderer.cpp \
+    $$PWD/dlna/Kast.cpp \
+    $$PWD/dlna/MimeGuesser.cpp \
+    $$PWD/dlna/SOAPActionManager.cpp \
+    $$PWD/dlna/SSDPDiscovery.cpp \
+    $$PWD/mediahandler/inmemoryhandler.cpp \
+    $$PWD/mediahandler/linkresolver.cpp \
+    $$PWD/mediahandler/linkresolverprocess.cpp \
+    $$PWD/mediahandler/mediarelay.cpp \
+    $$PWD/mpv/playercore.cpp \
+    $$PWD/mpv/playerview.cpp \
+    $$PWD/mpv/skin.cpp \
+    $$PWD/ui/browserwindow.cpp \
+    $$PWD/ui/inputurldialog.cpp \
+    $$PWD/ui/playdialog.cpp \
+    $$PWD/ui/popupmenutoolbutton.cpp \
+    $$PWD/ui/settings.cpp \
+    $$PWD/ui/tabwidget.cpp \
+    $$PWD/ui/urllineedit.cpp \
+    $$PWD/ui/waitingspinnerwidget.cpp \
+    $$PWD/webengine/urlrequestinterceptor.cpp \
+    $$PWD/webengine/webpage.cpp \
+    $$PWD/webengine/webpopupwindow.cpp \
+    $$PWD/webengine/webview.cpp
 
 FORMS += \
-    $$PWD/ui/*.ui \
-    $$PWD/mpv/*.ui \
-    $$PWD/dlna/*.ui
+    $$PWD/dlna/dlnaplayerview.ui \
+    $$PWD/mpv/playerview.ui \
+    $$PWD/ui/certificateerrordialog.ui \
+    $$PWD/ui/inputurldialog.ui \
+    $$PWD/ui/passworddialog.ui \
+    $$PWD/ui/playdialog.ui \
+    $$PWD/ui/settings.ui
 
 RESOURCES += $$PWD/res/imchenwen.qrc $$PWD/res/icons.qrc
 
@@ -72,10 +126,12 @@ macx: {
     icon.files += res/imchenwen128.png
     LIBS += -framework Cocoa -framework WebKit
     HEADERS  += \
-        $$PWD/cocoawebview/*.h
+        $$PWD/cocoawebview/cocoawebview.h \
+        $$PWD/cocoawebview/qtcocoawebview.h
 
     OBJECTIVE_SOURCES += \
-        $$PWD/cocoawebview/*.mm
+        $$PWD/cocoawebview/cocoawebview.mm \
+        $$PWD/cocoawebview/qtcocoawebview.mm
 
     INCLUDEPATH += $$PWD/cocoawebview
 

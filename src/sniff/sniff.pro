@@ -4,14 +4,16 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webenginewidgets
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui webengine webenginecore webenginewidgets widgets
 
 TARGET = sniff
 TEMPLATE = app
-DESTDIR = $$PWD/../../bin
 
+macx: {
+    DESTDIR = $$PWD/../../bin/imchenwen.app/Contents/Tools
+} else {
+    DESTDIR = $$PWD/../../bin
+}
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
