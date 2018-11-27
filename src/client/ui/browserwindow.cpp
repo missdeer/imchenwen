@@ -33,7 +33,6 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     , m_reloadAction(nullptr)
     , m_stopReloadAction(nullptr)
     , m_urlLineEdit(new UrlLineEdit(this))
-    , m_vipVideoAction(nullptr)
     , m_liveTVAction(nullptr)
     , m_shortcutMenu(nullptr)
     , m_chinaMenu(nullptr)
@@ -80,9 +79,6 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     });
     connect(&Browser::instance().m_liveTVHelper, &SubscriptionHelper::ready, [this](){
         createLiveTVToolButton(m_toolbar);
-    });
-    connect(&Browser::instance().m_vipVideoHelper, &SubscriptionHelper::ready, [this](){
-        createVIPVideoToolButton(m_toolbar);
     });
     connect(&Browser::instance().m_websites, &Websites::done, [this](){
         createShortcutMenu();
@@ -332,48 +328,6 @@ QMenu *BrowserWindow::createShortcutMenu()
     return m_shortcutMenu;
 }
 
-void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)
-{
-    auto content = Browser::instance().m_vipVideoHelper.content();
-    if (content.isEmpty())
-        return;
-    auto titles = content.keys();
-    QMenu *popupMenu = new QMenu();
-    for (const auto & title : titles)
-    {
-        auto subscriptions = content.values(title);
-        if (!subscriptions.isEmpty())
-        {
-            QMenu *subMenu = new QMenu(title, popupMenu);
-            popupMenu->addMenu(subMenu);
-            for (const auto & subscription : subscriptions)
-            {
-                for (auto it = subscription->begin(); subscription->end() != it; ++it)
-                {
-                    QAction *action  = new QAction(std::get<0>(*it), subMenu);
-                    action->setData(std::get<1>(*it));
-                    action->setToolTip(std::get<1>(*it));
-                    action->setStatusTip(std::get<1>(*it));
-                    connect(action, &QAction::triggered, this, &BrowserWindow::onVIPVideo);
-                    subMenu->addAction(action);
-                }
-            }
-        }
-    }
-
-    if (!m_vipVideoAction)
-    {
-        m_vipVideoAction = new PopupMenuToolButton(this);
-        m_vipVideoAction->setIcon(QIcon(QStringLiteral(":playvip.png")));
-        m_vipVideoAction->setText(tr("Watch as VIP video"));
-        navigationBar->addWidget(m_vipVideoAction);
-    } else {
-        QMenu *p = m_vipVideoAction->menu();
-        p->deleteLater();
-    }
-    m_vipVideoAction->setMenu(popupMenu);
-}
-
 void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
 {
     auto content = Browser::instance().m_liveTVHelper.content();
@@ -485,7 +439,11 @@ QToolBar *BrowserWindow::createToolBar()
     connect(playByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onPlayByExternalMediaPlayer);
     navigationBar->addAction(playByMediaPlayerAction);
 
-    createVIPVideoToolButton(navigationBar);
+    QAction *playVIPByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play VIP by Media Player"), this);
+    playVIPByMediaPlayerAction->setToolTip(playVIPByMediaPlayerAction->text());
+    connect(playVIPByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onPlayVIPByExternalMediaPlayer);
+    navigationBar->addAction(playVIPByMediaPlayerAction);
+
     createLiveTVToolButton(navigationBar);
 
     return navigationBar;
@@ -537,28 +495,6 @@ void BrowserWindow::onShortcut()
     }
 }
 
-void BrowserWindow::onVIPVideo()
-{
-    m_maybeVIPVideoTitle = currentTab()->title();
-    QString currentUrl = currentTab()->url().url();
-
-    if (!currentUrl.isEmpty())
-    {
-        QAction *action = qobject_cast<QAction*>(sender());
-        Q_ASSERT(action);
-        auto vipResolverUrl = action->data().toString();
-
-        int index = currentUrl.indexOf("http://");
-        if (index > 10)
-            currentUrl = currentUrl.mid(index);
-        index = currentUrl.indexOf("https://");
-        if (index > 10)
-            currentUrl = currentUrl.mid(index);
-
-        loadPage(vipResolverUrl+currentUrl);
-    }
-}
-
 void BrowserWindow::onLiveTV()
 {
     QAction *action = qobject_cast<QAction*>(sender());
@@ -580,6 +516,11 @@ void BrowserWindow::onOptions()
 void BrowserWindow::onPlayByExternalMediaPlayer()
 {
     Browser::instance().resolveAndPlayByMediaPlayer(m_urlLineEdit->text());
+}
+
+void BrowserWindow::onPlayVIPByExternalMediaPlayer()
+{
+
 }
 
 void BrowserWindow::onWebViewTitleChanged(const QString &title)

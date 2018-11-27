@@ -49,10 +49,10 @@ private slots:
     void onWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
 
     void onShortcut();
-    void onVIPVideo();
     void onLiveTV();
     void onOptions();
     void onPlayByExternalMediaPlayer();
+    void onPlayVIPByExternalMediaPlayer();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);
@@ -60,7 +60,6 @@ private:
     QMenu *createHelpMenu();
     QMenu *createShortcutMenu();
     QToolBar *createToolBar();
-    void createVIPVideoToolButton(QToolBar *navigationBar = nullptr);
     void createLiveTVToolButton(QToolBar *navigationBar = nullptr);
 private:
     TabWidget *m_tabWidget;
@@ -71,7 +70,6 @@ private:
     QAction *m_reloadAction;
     QAction *m_stopReloadAction;
     UrlLineEdit *m_urlLineEdit;
-    PopupMenuToolButton *m_vipVideoAction;
     PopupMenuToolButton *m_liveTVAction;
     QToolBar *m_toolbar;
     QMenu *m_shortcutMenu;
