@@ -8,7 +8,6 @@
 #include <qhttpengine/server.h>
 #include "linkresolver.h"
 #include "websites.h"
-#include "urlrequestinterceptor.h"
 #include "Kast.h"
 #include "inmemoryhandler.h"
 #include "player.h"
@@ -46,8 +45,9 @@ public:
     QNetworkAccessManager &networkAccessManager();
 
     void loadSettings();
-    void resolveAndPlayByMediaPlayer(const QString& u);
-    void play(const QString& u, const QString& title);
+    void resolveAndPlayByMediaPlayer(const QString &u);
+    void resolveVIPAndPlayByMediaPlayer(const QString &u);
+    void play(const QString &u, const QString &title);
     void init();
 signals:
 
@@ -68,13 +68,11 @@ private:
     QProcess m_playerProcess;
     LinkResolver m_linkResolver;
     Websites m_websites;
-    UrlRequestInterceptor m_urlRequestInterceptor;
     PlayerView *m_builtinPlayer;
     DLNAPlayerView *m_dlnaPlayer;
     QHttpEngine::Server m_httpServer;
     InMemoryHandler m_httpHandler;
     SubscriptionHelper m_liveTVHelper;
-    SubscriptionHelper m_vipVideoHelper;
     MediaRelay m_mediaRelay;
     PlayDialog *m_playDialog;
 

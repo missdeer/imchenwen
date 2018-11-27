@@ -509,7 +509,6 @@ void BrowserWindow::onOptions()
     if (dlg.exec() == QDialog::Accepted)
     {
         Browser::instance().m_liveTVHelper.update();
-        Browser::instance().m_vipVideoHelper.update();
     }
 }
 
@@ -520,7 +519,7 @@ void BrowserWindow::onPlayByExternalMediaPlayer()
 
 void BrowserWindow::onPlayVIPByExternalMediaPlayer()
 {
-
+    Browser::instance().resolveVIPAndPlayByMediaPlayer(m_urlLineEdit->text());
 }
 
 void BrowserWindow::onWebViewTitleChanged(const QString &title)

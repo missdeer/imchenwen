@@ -44,7 +44,6 @@ HEADERS += \
     $$PWD/ui/tabwidget.h \
     $$PWD/ui/urllineedit.h \
     $$PWD/ui/waitingspinnerwidget.h \
-    $$PWD/webengine/urlrequestinterceptor.h \
     $$PWD/webengine/webpage.h \
     $$PWD/webengine/webpopupwindow.h \
     $$PWD/webengine/webview.h \
@@ -79,7 +78,6 @@ SOURCES += \
     $$PWD/ui/tabwidget.cpp \
     $$PWD/ui/urllineedit.cpp \
     $$PWD/ui/waitingspinnerwidget.cpp \
-    $$PWD/webengine/urlrequestinterceptor.cpp \
     $$PWD/webengine/webpage.cpp \
     $$PWD/webengine/webpopupwindow.cpp \
     $$PWD/webengine/webview.cpp

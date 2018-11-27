@@ -67,7 +67,6 @@ Browser::Browser(QObject *parent)
     , m_linkResolver(this)
     , m_builtinPlayer(nullptr)
     , m_liveTVHelper("liveTV", "liveTVSubscription")
-    , m_vipVideoHelper("vipVideo", "vipVideoSubscription")
     , m_playDialog(nullptr)
 {
     connect(&m_linkResolver, &LinkResolver::resolvingFinished, this, &Browser::onResolved);
@@ -76,7 +75,6 @@ Browser::Browser(QObject *parent)
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     connect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::inputEnd);
     connect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
-    connect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
@@ -88,7 +86,6 @@ void Browser::clearAtExit()
     disconnect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     disconnect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::inputEnd);
     disconnect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
-    disconnect(&m_urlRequestInterceptor, &UrlRequestInterceptor::maybeMediaUrl, this, &Browser::onSniffedMediaUrl);
     disconnect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
     stopWaiting();
     m_playerProcess.kill();
@@ -158,8 +155,6 @@ void Browser::loadSettings()
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
 
-    defaultProfile->setRequestInterceptor(&m_urlRequestInterceptor);
-
     QNetworkProxy proxy;
     if (cfg.read<bool>(QLatin1String("enableProxy"), false)) {
         if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
@@ -177,6 +172,11 @@ void Browser::loadSettings()
 void Browser::resolveAndPlayByMediaPlayer(const QString &u)
 {
     resolveLink(u);
+}
+
+void Browser::resolveVIPAndPlayByMediaPlayer(const QString &u)
+{
+
 }
 
 void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer)
@@ -264,7 +264,6 @@ void Browser::play(const QString &u, const QString &title)
 void Browser::init()
 {
     m_liveTVHelper.update();
-    m_vipVideoHelper.update();
     m_websites.update();
 }
 
