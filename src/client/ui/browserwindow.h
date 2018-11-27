@@ -74,6 +74,10 @@ private:
     PopupMenuToolButton *m_vipVideoAction;
     PopupMenuToolButton *m_liveTVAction;
     QToolBar *m_toolbar;
+    QMenu *m_shortcutMenu;
+    QMenu *m_chinaMenu;
+    QMenu *m_abroadMenu;
+    QMenu *m_onlineFilmMenu;
     QString m_maybeVIPVideoTitle;
 };
 

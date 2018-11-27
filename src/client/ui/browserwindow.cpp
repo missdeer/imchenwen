@@ -35,6 +35,10 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     , m_urlLineEdit(new UrlLineEdit(this))
     , m_vipVideoAction(nullptr)
     , m_liveTVAction(nullptr)
+    , m_shortcutMenu(nullptr)
+    , m_chinaMenu(nullptr)
+    , m_abroadMenu(nullptr)
+    , m_onlineFilmMenu(nullptr)
 {
     setToolButtonStyle(Qt::ToolButtonFollowStyle);
     setAttribute(Qt::WA_DeleteOnClose, true);
@@ -79,6 +83,9 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     });
     connect(&Browser::instance().m_vipVideoHelper, &SubscriptionHelper::ready, [this](){
         createVIPVideoToolButton(m_toolbar);
+    });
+    connect(&Browser::instance().m_websites, &Websites::done, [this](){
+        createShortcutMenu();
     });
 
     m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
@@ -289,34 +296,40 @@ QMenu *BrowserWindow::createHelpMenu()
 
 QMenu *BrowserWindow::createShortcutMenu()
 {
-    QMenu *shortcutMenu = new QMenu(tr("&Shortcut"));
-    QMenu *chinaMenu = new QMenu(tr("In China"));
-    QMenu *abroadMenu = new QMenu(tr("Out of China"));
+    if (!m_shortcutMenu)
+        m_shortcutMenu = new QMenu(tr("&Shortcut"));
 
-    auto&& websitesInChina = Browser::instance().m_websites.inChina();
-    for (auto w : websitesInChina)
+    struct {
+        WebsiteList websites;
+        QMenu*& menu;
+        QString title;
+    } menuTitleMap[] = {
+        { Browser::instance().m_websites.inChina(),    m_chinaMenu,      tr("In China")},
+        { Browser::instance().m_websites.abroad(),     m_abroadMenu,     tr("Out of China")},
+        { Browser::instance().m_websites.onlineFilm(), m_onlineFilmMenu, tr("Online Film")},
+    };
+    for (auto & m : menuTitleMap)
     {
-        QAction *action = chinaMenu->addAction(w->name);
-        action->setData(w->url);
-        connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
-        if (w->favourite)
-            shortcutMenu->addAction(action);
+        if (!m.menu)
+        {
+            m.menu = new QMenu(m.title);
+            m_shortcutMenu->addMenu(m.menu);
+        }
+        QAction *inChinaAction = m_shortcutMenu->actions()[0];
+        for (auto w : m.websites)
+        {
+            QAction *action = m.menu->addAction(w->name);
+            action->setData(w->url);
+            connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
+            if (w->favourite)
+                m_shortcutMenu->insertAction(inChinaAction, action);
+        }
     }
 
-    auto&& websitesAbroad = Browser::instance().m_websites.abroad();
-    for (auto w : websitesAbroad)
-    {
-        QAction *action = abroadMenu->addAction(w->name);
-        action->setData(w->url);
-        connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
-        if (w->favourite)
-            shortcutMenu->addAction(action);
-    }
+    QAction *inChinaAction = m_shortcutMenu->actions()[0];
+    m_shortcutMenu->insertSeparator(inChinaAction);
 
-    shortcutMenu->addSeparator();
-    shortcutMenu->addMenu(chinaMenu);
-    shortcutMenu->addMenu(abroadMenu);
-    return shortcutMenu;
+    return m_shortcutMenu;
 }
 
 void BrowserWindow::createVIPVideoToolButton(QToolBar *navigationBar)

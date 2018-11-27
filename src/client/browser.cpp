@@ -265,6 +265,7 @@ void Browser::init()
 {
     m_liveTVHelper.update();
     m_vipVideoHelper.update();
+    m_websites.update();
 }
 
 void Browser::play(MediaInfoPtr mi)

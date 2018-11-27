@@ -27,7 +27,7 @@ void loadSettings(UrlRequestInterceptor& urlRequestInterceptor)
     defaultSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     defaultSettings->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
 
-    defaultProfile->setHttpUserAgent("Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.11.2 Chrome/65.0.3325.230 Safari/537.36");
+    defaultProfile->setHttpUserAgent("Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.230 Safari/537.36");
     defaultProfile->setHttpAcceptLanguage("en-US");
 
     defaultSettings->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
@@ -52,8 +52,6 @@ int main(int argc, char *argv[])
 
     QWebEngineView view;
     view.setUrl(commandLineUrlArgument());
-//    view.resize(1024, 750);
-//    view.show();
 
     QTimer::singleShot(30 * 1000, [](){
         qApp->exit(1);
