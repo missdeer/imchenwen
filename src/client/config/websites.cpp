@@ -41,7 +41,7 @@ void Websites::parseWebsiteNode(QDomElement website, const QString& category)
     {
         WebsitePtr w(new Website);
         QDomElement nameElem = website.firstChildElement("name");
-        w->name = nameElem.text();
+        w->title = nameElem.text();
         QDomElement urlElem = website.firstChildElement("url");
         w->url = urlElem.text();
         QDomElement favNode = website.firstChildElement("favourite");
@@ -126,7 +126,7 @@ bool Websites::isInChina(const QUrl &url)
 
 const QString &Websites::findURL(const QString &name)
 {
-    auto it = std::find_if(m_websites.begin(), m_websites.end(), [&name](WebsitePtr w) { return w->name == name;});
+    auto it = std::find_if(m_websites.begin(), m_websites.end(), [&name](WebsitePtr w) { return w->title == name;});
     return (*it)->url;
 }
 

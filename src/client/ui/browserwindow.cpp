@@ -301,13 +301,20 @@ QMenu *BrowserWindow::createShortcutMenu()
             m_shortcutMenu->addMenu(m.menu);
         }
         QAction *inChinaAction = m_shortcutMenu->actions()[0];
+        auto actions = m.menu->actions();
         for (auto w : m.websites)
         {
-            QAction *action = m.menu->addAction(w->name);
-            action->setData(w->url);
-            connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
-            if (w->favourite)
-                m_shortcutMenu->insertAction(inChinaAction, action);
+            auto it = std::find_if(actions.begin(), actions.end(), [&](QAction* a){
+                return a->text() == w->title;
+            });
+            if (actions.end() == it)
+            {
+                QAction *action = m.menu->addAction(w->title);
+                action->setData(w->url);
+                connect(action, &QAction::triggered, this, &BrowserWindow::onShortcut);
+                if (w->favourite)
+                    m_shortcutMenu->insertAction(inChinaAction, action);
+            }
         }
     }
 

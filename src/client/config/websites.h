@@ -9,7 +9,7 @@
 
 struct Website
 {
-    QString name;
+    QString title;
     QString url;
     QString category;
     bool favourite;
