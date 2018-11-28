@@ -454,14 +454,15 @@ void Browser::resolveLink(const QString &u)
 {
     waiting();
 
-    m_linkResolver.resolve(u);
+    if (u.startsWith("http://") || u.startsWith("https://"))
+        m_linkResolver.resolve(u);
 }
 
 void Browser::resolveVIPLink(const QString &u)
 {
     waiting();
 
-    if (m_vipResolver.ready())
+    if (m_vipResolver.ready() && (u.startsWith("http://") || u.startsWith("https://")))
         m_vipResolver.resolve(u);
     else
     {
