@@ -461,7 +461,15 @@ void Browser::resolveVIPLink(const QString &u)
 {
     waiting();
 
-    m_vipResolver.resolve(u);
+    if (m_vipResolver.ready())
+        m_vipResolver.resolve(u);
+    else
+    {
+        QMessageBox::warning(mainWindow(),
+                             tr("Error"),
+                             tr("VIP resolver is not ready now, please try again later."),
+                             QMessageBox::Ok);
+    }
 }
 
 void Browser::minimizeWindows()

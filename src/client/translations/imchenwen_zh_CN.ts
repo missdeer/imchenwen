@@ -4,45 +4,51 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="516"/>
-        <location filename="../browser.cpp" line="543"/>
+        <location filename="../browser.cpp" line="469"/>
+        <location filename="../browser.cpp" line="524"/>
+        <location filename="../browser.cpp" line="551"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="516"/>
+        <location filename="../browser.cpp" line="470"/>
+        <source>VIP resolver is not ready now, please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browser.cpp" line="524"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="527"/>
+        <location filename="../browser.cpp" line="535"/>
         <source>Play movie online directly
 %1</source>
         <translation>直接播放在线视频
 %1</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="544"/>
+        <location filename="../browser.cpp" line="552"/>
         <source>Resolving link address as VIP failed!</source>
         <translation>VIP链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="555"/>
+        <location filename="../browser.cpp" line="563"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="558"/>
+        <location filename="../browser.cpp" line="566"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="561"/>
+        <location filename="../browser.cpp" line="569"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="565"/>
+        <location filename="../browser.cpp" line="573"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>

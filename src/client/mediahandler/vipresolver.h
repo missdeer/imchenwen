@@ -17,6 +17,7 @@ public:
     void update();
     void resolve(const QString & url);
     void stop();
+    bool ready() const { return m_ready; }
 signals:
     void done(const QStringList&);
     void error();
@@ -28,13 +29,16 @@ private slots:
     void onSnifferDone(const QString &res);
     void onSnifferError();
 private:
+    bool m_ready;
+    bool m_done;
     int m_resolverIndex;
     QByteArray m_data;
     QStringList m_resolvers;
     QStringList m_results;
     QList<Sniffer*> m_sniffers;
     QString m_lastResolveUrl;
-    bool doSniff(Sniffer *sniffer, const QString &url);
+    bool doSniff(Sniffer *sniffer);
+    void continueSniff(Sniffer *sniffer);
 };
 
 #endif // VIPRESOLVER_H

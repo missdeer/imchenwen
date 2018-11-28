@@ -6,6 +6,7 @@
 
 VIPResolver::VIPResolver(QObject *parent)
     : QObject(parent)
+    , m_ready(false)
 {
     m_sniffers << new Sniffer
                << new Sniffer
@@ -29,7 +30,7 @@ void VIPResolver::update()
 {
     m_data.clear();
     QNetworkRequest req;
-    QUrl u("https://gist.githubusercontent.com/missdeer/1a841346e123a9d21337d0b8d5d546c1/raw/vip.txt");
+    QUrl u("https://gist.githubusercontent.com/missdeer/ce589e84b4101e90293f15d4c7aa2354/raw/vip.txt");
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
@@ -41,11 +42,11 @@ void VIPResolver::update()
     connect(reply, &QNetworkReply::sslErrors, this, &VIPResolver::onNetworkSSLErrors);
 }
 
-bool VIPResolver::doSniff(Sniffer *sniffer, const QString &url)
+bool VIPResolver::doSniff(Sniffer *sniffer)
 {
     if (m_resolverIndex >= m_resolvers.length())
         return false;
-    QString u = m_results.at(m_resolverIndex) + url;
+    QString u = m_resolvers.at(m_resolverIndex) + m_lastResolveUrl;
     sniffer->sniff(u);
     m_resolverIndex++;
     return true;
@@ -54,11 +55,12 @@ bool VIPResolver::doSniff(Sniffer *sniffer, const QString &url)
 void VIPResolver::resolve(const QString &url)
 {
     stop();
+    m_done = false;
     m_resolverIndex = 0;
     m_lastResolveUrl = url;
     for (auto sniffer : m_sniffers)
     {
-        if (!doSniff(sniffer, url))
+        if (!doSniff(sniffer))
             break;
     }
 }
@@ -97,36 +99,40 @@ void VIPResolver::onReadFinished()
     {
         m_resolvers.append(QString(line.trimmed()));
     }
+    m_ready = !m_resolvers.isEmpty();
+}
+
+void VIPResolver::continueSniff(Sniffer *sniffer)
+{
+    if (!doSniff(sniffer))
+    {
+        if (m_results.isEmpty())
+            emit error();
+        else
+            emit done(m_results);
+    }
 }
 
 void VIPResolver::onSnifferDone(const QString &res)
 {
-    Sniffer* sniffer = qobject_cast<Sniffer*>(sender());
+    if (m_done)
+        return;
     if (!m_results.contains(res))
         m_results.append(res);
     if (m_results.length() > 1)
     {
+        m_done = true;
         emit done(m_results);
         return;
     }
-    if (!doSniff(sniffer, m_lastResolveUrl))
-    {
-        if (m_results.isEmpty())
-            emit error();
-        else
-            emit done(m_results);
-    }
+    Sniffer* sniffer = qobject_cast<Sniffer*>(sender());
+    continueSniff(sniffer);
 }
 
 void VIPResolver::onSnifferError()
 {
+    if (m_done)
+        return;
     Sniffer* sniffer = qobject_cast<Sniffer*>(sender());
-
-    if (!doSniff(sniffer, m_lastResolveUrl))
-    {
-        if (m_results.isEmpty())
-            emit error();
-        else
-            emit done(m_results);
-    }
+    continueSniff(sniffer);
 }
