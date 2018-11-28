@@ -27,6 +27,24 @@ int main(int argc, char **argv)
 
     QApplication a(argc, argv);
 
+#if defined(Q_OS_WIN)
+    auto pathEnv = qgetenv("PATH");
+    pathEnv.append(";" % QDir::toNativeSeparators(a.applicationDirPath()));
+    qputenv("PATH", pathEnv); // so that extensions can use main executable's Qt binaries
+    qputenv("QT_PLUGIN_PATH", QDir::toNativeSeparators(a.applicationDirPath()).toUtf8());
+#elif defined(Q_OS_MAC)
+    auto pathEnv = qgetenv("DYLD_LIBRARY_PATH");
+    QDir dir(a.applicationDirPath());
+    dir.cdUp();
+    dir.cd("Libs");
+    pathEnv.append(":" % dir.absolutePath());
+    qputenv("DYLD_LIBRARY_PATH", pathEnv);
+    qputenv("QT_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM", "1");
+#else
+    auto pathEnv = qgetenv("LD_LIBRARY_PATH");
+    pathEnv.append(":" % a.applicationDirPath());
+    qputenv("LD_LIBRARY_PATH", pathEnv);
+#endif
 
     QString locale = QLocale::system().name();
     QTranslator translator;
