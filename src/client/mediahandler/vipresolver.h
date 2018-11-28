@@ -32,6 +32,7 @@ private:
     bool m_ready;
     bool m_done;
     int m_resolverIndex;
+    int m_finishedCount;
     QByteArray m_data;
     QStringList m_resolvers;
     QStringList m_results;
