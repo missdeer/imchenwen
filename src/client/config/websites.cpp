@@ -1,5 +1,6 @@
 #include "websites.h"
 #include "browser.h"
+#include "config.h"
 #include <QtCore>
 #include <QDomDocument>
 #include <QDomNode>
@@ -85,8 +86,10 @@ void Websites::doParse()
 void Websites::update()
 {
     m_data.clear();
+    m_websites.clear();
     QNetworkRequest req;
-    QUrl u("https://gist.githubusercontent.com/missdeer/c4eff3ca10fe180351f0cf5e44762457/raw/websites.xml");
+    Config cfg;
+    QUrl u(cfg.read<QString>(QLatin1String("shortcut")));
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 

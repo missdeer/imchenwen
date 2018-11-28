@@ -213,6 +213,8 @@ void SettingsDialog::loadFromSettings()
     edtYoutubeDLPath->setText(cfg.read<QString>(QLatin1String("youtube-dl")));
     edtAnniePath->setText(cfg.read<QString>(QLatin1String("annie")));
     edtFFmpegPath->setText(cfg.read<QString>(QLatin1String("ffmpeg")));
+    edtVIPResolverSubscription->setText(cfg.read<QString>(QLatin1String("vipResolvers")));
+    edtShortcutSubscription->setText(cfg.read<QString>(QLatin1String("shortcut")));
 
     // storage
     gbStorageService->setChecked(cfg.read<bool>(QLatin1String("enableStorageService")));
@@ -275,6 +277,8 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("youtube-dl"), edtYoutubeDLPath->text());
     cfg.write(QLatin1String("annie"), edtAnniePath->text());
     cfg.write(QLatin1String("ffmpeg"), edtFFmpegPath->text());
+    cfg.write(QLatin1String("vipResolvers"), edtVIPResolverSubscription->text());
+    cfg.write(QLatin1String("shortcut"), edtShortcutSubscription->text());
 
     // external players
     cfg.write("externalPlayers", m_players);

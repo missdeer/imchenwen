@@ -1,6 +1,7 @@
 #include "vipresolver.h"
 #include "browser.h"
 #include "sniffer.h"
+#include "config.h"
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 
@@ -28,9 +29,11 @@ VIPResolver::~VIPResolver()
 
 void VIPResolver::update()
 {
+    m_resolvers.clear();
     m_data.clear();
     QNetworkRequest req;
-    QUrl u("https://gist.githubusercontent.com/missdeer/ce589e84b4101e90293f15d4c7aa2354/raw/vip.txt");
+    Config cfg;
+    QUrl u(cfg.read<QString>(QLatin1String("vipResolvers")));
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 
@@ -59,6 +62,7 @@ void VIPResolver::resolve(const QString &url)
     m_finishedCount = 0;
     m_resolverIndex = 0;
     m_lastResolveUrl = url;
+    m_results.clear();
     for (auto sniffer : m_sniffers)
     {
         if (!doSniff(sniffer))

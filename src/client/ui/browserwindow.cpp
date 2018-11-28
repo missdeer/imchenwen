@@ -509,6 +509,8 @@ void BrowserWindow::onOptions()
     if (dlg.exec() == QDialog::Accepted)
     {
         Browser::instance().m_liveTVHelper.update();
+        Browser::instance().m_websites.update();
+        Browser::instance().m_vipResolver.update();
     }
 }
 
