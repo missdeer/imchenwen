@@ -23,16 +23,16 @@ LinkResolver::LinkResolver(QObject *parent)
     for (auto & r : m_resolvers)
     {
         r.process->setProgram(cfg.read<QString>(r.name));
-        connect(r.process, &LinkResolverProcess::data, this, &LinkResolver::onReadResolverOutput);
+        connect(r.process, &LinkResolverProcess::done, this, &LinkResolver::onReadResolverOutput);
     }
 }
 
 void LinkResolver::terminateResolvers()
 {
-    m_yougetProcess.terminate();
-    m_ykdlProcess.terminate();
-    m_youtubedlProcess.terminate();
-    m_annieProcess.terminate();
+    m_yougetProcess.stop();
+    m_ykdlProcess.stop();
+    m_youtubedlProcess.stop();
+    m_annieProcess.stop();
 }
 
 LinkResolver::~LinkResolver()

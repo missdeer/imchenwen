@@ -30,6 +30,11 @@ void Sniffer::sniff(const QString &url)
     m_process.start();
 }
 
+void Sniffer::stop()
+{
+    m_process.kill();
+}
+
 void Sniffer::onReadStandardOutput()
 {
     m_data.append(m_process.readAll());

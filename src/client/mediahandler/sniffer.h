@@ -11,8 +11,9 @@ public:
     explicit Sniffer(QObject *parent = nullptr);
 
     void sniff(const QString &url);
+    void stop();
 signals:
-    void done(QString);
+    void done(const QString &);
     void error();
 public slots:
     void onReadStandardOutput();
@@ -22,5 +23,6 @@ private:
     QProcess m_process;
     QByteArray m_data;
 };
+
 
 #endif // SNIFFER_H

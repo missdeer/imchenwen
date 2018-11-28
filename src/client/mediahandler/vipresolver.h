@@ -4,16 +4,19 @@
 #include <QObject>
 #include <QNetworkReply>
 #include <QSslError>
-#include "sniffer.h"
+
+class Sniffer;
 
 class VIPResolver : public QObject
 {
     Q_OBJECT
 public:
     explicit VIPResolver(QObject *parent = nullptr);
+    ~VIPResolver();
 
     void update();
     void resolve(const QString & url);
+    void stop();
 signals:
     void done(const QStringList&);
     void error();
@@ -22,10 +25,16 @@ private slots:
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
     void onReadFinished();
-
+    void onSnifferDone(const QString &res);
+    void onSnifferError();
 private:
+    int m_resolverIndex;
     QByteArray m_data;
     QStringList m_resolvers;
+    QStringList m_results;
+    QList<Sniffer*> m_sniffers;
+    QString m_lastResolveUrl;
+    bool doSniff(Sniffer *sniffer, const QString &url);
 };
 
 #endif // VIPRESOLVER_H

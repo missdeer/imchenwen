@@ -17,10 +17,10 @@ void LinkResolverProcess::setArguments(const QStringList &arguments)
     m_process.setArguments(arguments);
 }
 
-void LinkResolverProcess::terminate()
+void LinkResolverProcess::stop()
 {
     if (m_process.state() == QProcess::Running)
-        m_process.terminate();
+        m_process.kill();
 }
 
 void LinkResolverProcess::start()
@@ -36,5 +36,5 @@ void LinkResolverProcess::onReadStandardOutput()
 
 void LinkResolverProcess::onFinished(int , QProcess::ExitStatus )
 {
-    emit data(m_data);
+    emit done(m_data);
 }
