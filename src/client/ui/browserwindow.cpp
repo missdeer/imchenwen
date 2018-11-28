@@ -256,23 +256,12 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
 QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
-    connect(helpMenu->addAction(tr("Install Flash")), &QAction::triggered, []() {
+    connect(helpMenu->addAction(tr("Install Adobe Flash Player")), &QAction::triggered, []() {
        QDesktopServices::openUrl(QUrl("https://get.adobe.com/flashplayer/otherversions"));
     });
-    connect(helpMenu->addAction(tr("Install MPV")), &QAction::triggered, []() {
+    connect(helpMenu->addAction(tr("Install mpv")), &QAction::triggered, []() {
        QDesktopServices::openUrl(QUrl("https://mpv.io"));
     });
-    connect(helpMenu->addAction(tr("Install MPlayer")), &QAction::triggered, []() {
-       QDesktopServices::openUrl(QUrl("http://www.mplayerhq.hu/design7/dload.html#binaries"));
-    });
-    connect(helpMenu->addAction(tr("Install VLC")), &QAction::triggered, []() {
-       QDesktopServices::openUrl(QUrl("http://www.videolan.org/"));
-    });
-#if defined(Q_OS_WIN)
-    connect(helpMenu->addAction(tr("Install MPC-HC")), &QAction::triggered, []() {
-       QDesktopServices::openUrl(QUrl("https://mpc-hc.org/"));
-    });
-#endif
     helpMenu->addSeparator();
 
     QAction *aboutAction = helpMenu->addAction(tr("About..."));
