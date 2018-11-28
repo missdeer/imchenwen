@@ -34,7 +34,7 @@ public:
     WebsiteList abroad();
     WebsiteList onlineFilm();
 signals:
-    void done();
+    void ready();
 private slots:
     void onNetworkError(QNetworkReply::NetworkError code);
     void onNetworkSSLErrors(const QList<QSslError> &errors);

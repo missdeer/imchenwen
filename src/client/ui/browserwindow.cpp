@@ -80,7 +80,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     connect(&Browser::instance().m_liveTVHelper, &SubscriptionHelper::ready, [this](){
         createLiveTVToolButton(m_toolbar);
     });
-    connect(&Browser::instance().m_websites, &Websites::done, [this](){
+    connect(&Browser::instance().m_websites, &Websites::ready, [this](){
         createShortcutMenu();
     });
 

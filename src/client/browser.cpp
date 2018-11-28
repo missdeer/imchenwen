@@ -266,7 +266,7 @@ void Browser::play(MediaInfoPtr mi)
     }
     else
     {
-        playerStopped();
+        stopWaiting();
     }
     delete m_playDialog;
     m_playDialog = nullptr;
@@ -289,7 +289,7 @@ void Browser::play(const QStringList &url, const QString &title)
     }
     else
     {
-        playerStopped();
+        stopWaiting();
     }
     delete m_playDialog;
     m_playDialog = nullptr;

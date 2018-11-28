@@ -79,7 +79,7 @@ void Websites::doParse()
     }
 
     if (!m_websites.isEmpty())
-        emit done();
+        emit ready();
 }
 
 void Websites::update()
