@@ -116,9 +116,9 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     playUrlAction->setShortcut(QKeySequence("Ctrl+P"));
     connect(playUrlAction, &QAction::triggered, this, &BrowserWindow::onPlayURL);
 
-    QAction *optionsAction = fileMenu->addAction(tr("Options..."));
-    optionsAction->setMenuRole(QAction::PreferencesRole);
-    connect(optionsAction, &QAction::triggered, this, &BrowserWindow::onOptions);
+    QAction *settingsAction = fileMenu->addAction(tr("Settings..."));
+    settingsAction->setMenuRole(QAction::PreferencesRole);
+    connect(settingsAction, &QAction::triggered, this, &BrowserWindow::onSettings);
 
     fileMenu->addSeparator();
 
@@ -499,7 +499,7 @@ void BrowserWindow::onLiveTV()
     Browser::instance().play(QStringList() << url, "Live TV - " + action->text());
 }
 
-void BrowserWindow::onOptions()
+void BrowserWindow::onSettings()
 {
     SettingsDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)

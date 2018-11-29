@@ -50,7 +50,7 @@ private slots:
 
     void onShortcut();
     void onLiveTV();
-    void onOptions();
+    void onSettings();
     void onPlayByExternalMediaPlayer();
     void onPlayVIPByExternalMediaPlayer();
 private:

@@ -90,8 +90,8 @@
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="119"/>
-        <source>Options...</source>
-        <translation>选项…</translation>
+        <source>Settings...</source>
+        <translation>设置...</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="125"/>
