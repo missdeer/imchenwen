@@ -33,14 +33,11 @@ int main(int argc, char **argv)
     qputenv("PATH", pathEnv); // so that extensions can use main executable's Qt binaries
     qputenv("QT_PLUGIN_PATH", QDir::toNativeSeparators(a.applicationDirPath()).toUtf8());
 #elif defined(Q_OS_MAC)
-    auto pathEnv = qgetenv("DYLD_LIBRARY_PATH");
     QDir dir(a.applicationDirPath());
     dir.cdUp();
-    dir.cd("Libs");
-    pathEnv.append(":" % dir.absolutePath());
-    qputenv("DYLD_LIBRARY_PATH", pathEnv);
+    dir.cd("Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS");
     qputenv("QT_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM", "1");
-    QString qtWebEngineProcessPath = a.applicationDirPath() + "/../Frameworks/QtWebEngineCore.framework/Versions/5/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess";
+    QString qtWebEngineProcessPath = dir.absolutePath() + "/QtWebEngineProcess";
     if (QFile::exists(qtWebEngineProcessPath))
         qputenv("QTWEBENGINEPROCESS_PATH", qtWebEngineProcessPath.toUtf8());
 #else
