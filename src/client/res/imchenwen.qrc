@@ -29,5 +29,14 @@
         <file>ykdl.png</file>
         <file>you-get.png</file>
         <file>youtube-dl.png</file>
+        <file>preferences/advanced.png</file>
+        <file>preferences/appearance.png</file>
+        <file>preferences/general.png</file>
+        <file>preferences/player.png</file>
+        <file>preferences/privacy.png</file>
+        <file>preferences/proxy.png</file>
+        <file>preferences/resolver.png</file>
+        <file>preferences/storage.png</file>
+        <file>preferences/tv.png</file>
     </qresource>
 </RCC>

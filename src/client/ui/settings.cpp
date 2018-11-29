@@ -12,6 +12,30 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    QToolBar* toolbar = new QToolBar(this);
+    this->layout()->replaceWidget(widgetPlaceholder, toolbar);
+    toolbar->setIconSize(QSize(64, 64));
+    toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    QAction *actionGeneral = toolbar->addAction(QIcon(":/preferences/general.png"), tr("General"));
+    connect(actionGeneral, &QAction::triggered, [&](){tabWidget->setCurrentIndex(0);});
+    QAction *actionAppearance = toolbar->addAction(QIcon(":/preferences/appearance.png"), tr("Appearance"));
+    connect(actionAppearance, &QAction::triggered, [&](){tabWidget->setCurrentIndex(1);});
+    QAction *actionPrivacy = toolbar->addAction(QIcon(":/preferences/privacy.png"), tr("Privacy"));
+    connect(actionPrivacy, &QAction::triggered, [&](){tabWidget->setCurrentIndex(2);});
+    QAction *actionProxy = toolbar->addAction(QIcon(":/preferences/proxy.png"), tr("Proxy"));
+    connect(actionProxy, &QAction::triggered, [&](){tabWidget->setCurrentIndex(3);});
+    QAction *actionAdvanced = toolbar->addAction(QIcon(":/preferences/advanced.png"), tr("Advanced"));
+    connect(actionAdvanced, &QAction::triggered, [&](){tabWidget->setCurrentIndex(4);});
+    QAction *actionStorage = toolbar->addAction(QIcon(":/preferences/storage.png"), tr("Storage"));
+    connect(actionStorage, &QAction::triggered, [&](){tabWidget->setCurrentIndex(5);});
+    QAction *actionPlayer = toolbar->addAction(QIcon(":/preferences/player.png"), tr("Player"));
+    connect(actionPlayer, &QAction::triggered, [&](){tabWidget->setCurrentIndex(6);});
+    QAction *actionResolver = toolbar->addAction(QIcon(":/preferences/resolver.png"), tr("Resolver"));
+    connect(actionResolver, &QAction::triggered, [&](){tabWidget->setCurrentIndex(7);});
+    QAction *actionTV = toolbar->addAction(QIcon(":/preferences/tv.png"), tr("Live TV"));
+    connect(actionTV, &QAction::triggered, [&](){tabWidget->setCurrentIndex(8);});
+    tabWidget->tabBar()->hide();
+
     setupLiveTVTable();
 
     for(auto && address : QNetworkInterface::allAddresses())
