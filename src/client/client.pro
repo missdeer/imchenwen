@@ -119,8 +119,8 @@ lupdates.depends = $$SOURCES $$HEADERS $$FORMS $$TRANSLATIONS
 lrelease.commands = $$QMAKE_LRELEASE $$PWD/client.pro
 lrelease.depends = lupdate
 translate.depends = lrelease
-QMAKE_EXTRA_TARGETS += lupdate lrelease translate
-POST_TARGETDEPS += translate
+QMAKE_EXTRA_TARGETS += lupdate lrelease translate qti18n
+POST_TARGETDEPS += translate qti18n
 
 macx: {
     QT += macextras
@@ -145,7 +145,10 @@ macx: {
         translate.files = $$system("find $${PWD}/translations -name '*.qm' ")
         translate.path = Contents/Resources/translations/
         translate.commands = '$(COPY_DIR) $$shell_path($${PWD}/translations) $$shell_path($${DESTDIR}/$${TARGET}.app/Contents/Resources/)'
-        QMAKE_BUNDLE_DATA += translate
+
+        qti18n.depends = translate
+        qti18n.commands = '$(COPY_FILE) $$shell_path($$[QT_INSTALL_BINS]/../translations/qt_zh_CN.qm) $$shell_path($${DESTDIR}/$${TARGET}.app/Contents/Resources/translations/qt_zh_CN.qm)'
+        QMAKE_BUNDLE_DATA += translate qti18n
 
         deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\"
 
@@ -169,6 +172,13 @@ macx: {
 win32: {
     DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
 
+    CONFIG(release, debug|release) : {
+        QMAKE_CXXFLAGS += /Zi
+        QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
+        WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
+    }
+    translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR/translations)'
+
     INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
     contains(QMAKE_HOST.arch, x86_64): {
         LIBS += -L$$PWD/../3rdparty/libmpv/x86_64
@@ -178,16 +188,12 @@ win32: {
         copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$DESTDIR/mpv-1.dll)'
     }
     LIBS += -lmpv
+
+    qti18n.depends = translate
+    qti18n.commands = '$(COPY_FILE) $$shell_path($$[QT_INSTALL_BINS]/../translations/qt_zh_CN.qm) $$shell_path($${DESTDIR}/translations/qt_zh_CN.qm)'
+
     QMAKE_EXTRA_TARGETS += copy_mpv_dll
     POST_TARGETDEPS += copy_mpv_dll
-    CONFIG(release, debug|release) : {
-        QMAKE_CXXFLAGS += /Zi
-        QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
-        WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
-        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR/translations)'
-    } else: {
-        translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR/translations)'
-    }
 } else : {
     INCLUDEPATH += /usr/local/include
     LIBS += -L/usr/local/lib -lmpv

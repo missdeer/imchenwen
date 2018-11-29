@@ -40,7 +40,9 @@ int main(int argc, char **argv)
     pathEnv.append(":" % dir.absolutePath());
     qputenv("DYLD_LIBRARY_PATH", pathEnv);
     qputenv("QT_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM", "1");
-    qputenv("QTWEBENGINEPROCESS_PATH", a.applicationDirPath() + "/../Helpers/QtWebEngineProcess");
+    QString qtWebEngineProcessPath = a.applicationDirPath() + "/../Frameworks/QtWebEngineCore.framework/Versions/5/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess";
+    if (QFile::exists(qtWebEngineProcessPath))
+        qputenv("QTWEBENGINEPROCESS_PATH", qtWebEngineProcessPath.toUtf8());
 #else
     auto pathEnv = qgetenv("LD_LIBRARY_PATH");
     pathEnv.append(":" % a.applicationDirPath());

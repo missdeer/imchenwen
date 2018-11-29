@@ -113,10 +113,18 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     fileMenu->addAction(newTabAction);
 
     QAction *playUrlAction = fileMenu->addAction(tr("Play Url..."));
-    playUrlAction->setShortcut(QKeySequence("Ctrl+P"));
+    playUrlAction->setShortcut(QKeySequence("Ctrl+Shift+P"));
     connect(playUrlAction, &QAction::triggered, this, &BrowserWindow::onPlayURL);
 
-    QAction *settingsAction = fileMenu->addAction(tr("Settings..."));
+    QAction *resolveThenPlayAction = fileMenu->addAction(tr("Play by Media Player"));
+    resolveThenPlayAction->setShortcut(QKeySequence("Ctrl+P"));
+    connect(resolveThenPlayAction, &QAction::triggered, this, &BrowserWindow::onPlayByExternalMediaPlayer);
+
+    QAction *resolveAsVIPThenPlayAction = fileMenu->addAction(tr("Play VIP by Media Player"));
+    resolveAsVIPThenPlayAction->setShortcut(QKeySequence("Ctrl+Shift+V"));
+    connect(resolveAsVIPThenPlayAction, &QAction::triggered, this, &BrowserWindow::onPlayVIPByExternalMediaPlayer);
+
+    QAction *settingsAction = fileMenu->addAction(tr("Preferences..."));
     settingsAction->setMenuRole(QAction::PreferencesRole);
     connect(settingsAction, &QAction::triggered, this, &BrowserWindow::onSettings);
 
