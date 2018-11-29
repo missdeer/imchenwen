@@ -41,6 +41,8 @@ private slots:
     void onImportLiveTVItems();
     void onExportLiveTVItems();
     void onLiveTVTableItemSelectionChanged();
+
+    void onTabWidgetCurrentChanged(int index);
 private:
     QFont standardFont;
     QFont fixedFont;

@@ -12,10 +12,12 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    connect(tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::onTabWidgetCurrentChanged);
+    onTabWidgetCurrentChanged(0);
     QToolBar* toolbar = new QToolBar(this);
     this->layout()->replaceWidget(widgetPlaceholder, toolbar);
-    toolbar->setIconSize(QSize(64, 64));
-    toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    toolbar->setIconSize(QSize(48, 48));
+    toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     QAction *actionGeneral = toolbar->addAction(QIcon(":/preferences/general.png"), tr("General"));
     connect(actionGeneral, &QAction::triggered, [&](){tabWidget->setCurrentIndex(0);});
     QAction *actionAppearance = toolbar->addAction(QIcon(":/preferences/appearance.png"), tr("Appearance"));
@@ -668,6 +670,25 @@ void SettingsDialog::onLiveTVTableItemSelectionChanged()
         return;
     edtLiveTVName->setText(items[0]->text());
     edtLiveTVURL->setText(items[1]->text());
+}
+
+void SettingsDialog::onTabWidgetCurrentChanged(int index)
+{
+    QStringList titles = {
+        tr("Settings - General"),
+        tr("Settings - Appearance"),
+        tr("Settings - Privacy"),
+        tr("Settings - Proxy"),
+        tr("Settings - Advanced"),
+        tr("Settings - Storage"),
+        tr("Settings - Player"),
+        tr("Settings - Resolver"),
+        tr("Settings - Live TV"),
+    };
+    if (index >= 0 && index < titles.length())
+        setWindowTitle(titles[index]);
+    else
+        setWindowTitle(tr("Settings"));
 }
 
 bool SettingsDialog::importLiveTVAsJSON(const QString &path)
