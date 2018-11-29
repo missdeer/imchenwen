@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QNetworkAccessManager>
 #include <qhttpengine/server.h>
+#include "sniffer.h"
 #include "linkresolver.h"
 #include "vipresolver.h"
 #include "websites.h"
@@ -58,6 +59,8 @@ private slots:
     void onNormalLinkResolvingError(const QString&);
     void onVIPLinkResolved(const QStringList &urls);
     void onVIPLinkResolvingError();
+    void onSnifferDone(const QString& url);
+    void onSnifferError();
     void onProcessError(QProcess::ProcessError error);
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onNewM3U8Ready();
@@ -70,6 +73,7 @@ private:
     QProcess m_playerProcess;
     LinkResolver m_linkResolver;
     VIPResolver m_vipResolver;
+    Sniffer m_sniffer;
     Websites m_websites;
     PlayerView *m_builtinPlayer;
     DLNAPlayerView *m_dlnaPlayer;

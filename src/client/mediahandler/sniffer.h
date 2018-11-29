@@ -15,7 +15,7 @@ public:
 signals:
     void done(const QString &);
     void error();
-public slots:
+private slots:
     void onReadStandardOutput();
     void onFinished(int exitCode, QProcess::ExitStatus);
 

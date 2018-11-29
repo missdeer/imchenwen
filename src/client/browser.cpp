@@ -73,6 +73,8 @@ Browser::Browser(QObject *parent)
     connect(&m_linkResolver, &LinkResolver::error, this, &Browser::onNormalLinkResolvingError);
     connect(&m_vipResolver, &VIPResolver::done, this, &Browser::onVIPLinkResolved);
     connect(&m_vipResolver, &VIPResolver::error, this, &Browser::onVIPLinkResolvingError);
+    connect(&m_sniffer, &Sniffer::done, this, &Browser::onSnifferDone);
+    connect(&m_sniffer, &Sniffer::error, this, &Browser::onSnifferError);
     connect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     connect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::onInputEnd);
@@ -86,6 +88,8 @@ void Browser::clearAtExit()
     disconnect(&m_linkResolver, &LinkResolver::error, this, &Browser::onNormalLinkResolvingError);
     disconnect(&m_vipResolver, &VIPResolver::done, this, &Browser::onVIPLinkResolved);
     disconnect(&m_vipResolver, &VIPResolver::error, this, &Browser::onVIPLinkResolvingError);
+    disconnect(&m_sniffer, &Sniffer::done, this, &Browser::onSnifferDone);
+    disconnect(&m_sniffer, &Sniffer::error, this, &Browser::onSnifferError);
     disconnect(&m_playerProcess, &QProcess::errorOccurred, this, &Browser::onProcessError);
     disconnect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     disconnect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::onInputEnd);
@@ -375,7 +379,10 @@ void Browser::onClipboardChanged()
     {
         if (m_websites.isIn(QUrl(originalText)))
         {
-            m_linkResolver.resolve(originalText);
+            if (m_websites.isIn(QUrl(originalText), "film"))
+                m_sniffer.sniff(originalText);
+            else
+                m_linkResolver.resolve(originalText);
         }
     }
 }
@@ -455,7 +462,12 @@ void Browser::resolveLink(const QString &u)
     waiting();
 
     if (u.startsWith("http://") || u.startsWith("https://"))
-        m_linkResolver.resolve(u);
+    {
+        if (m_websites.isIn(QUrl(u), "china") || m_websites.isIn(QUrl(u), "abroad") )
+            m_linkResolver.resolve(u);
+        else
+            m_sniffer.sniff(u);
+    }
 }
 
 void Browser::resolveVIPLink(const QString &u)
@@ -551,6 +563,24 @@ void Browser::onVIPLinkResolvingError()
     QMessageBox::warning(mainWindow(),
                          tr("Error"),
                          tr("Resolving link address as VIP failed!"),
+                         QMessageBox::Ok);
+}
+
+void Browser::onSnifferDone(const QString &url)
+{
+    stopWaiting();
+
+    auto mw = const_cast<BrowserWindow*>(mainWindow());
+    play(QStringList() << url, mw->maybeVIPVideoTitle());
+}
+
+void Browser::onSnifferError()
+{
+    stopWaiting();
+
+    QMessageBox::warning(mainWindow(),
+                         tr("Error"),
+                         tr("Resolving link address failed!"),
                          QMessageBox::Ok);
 }
 

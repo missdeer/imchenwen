@@ -12,25 +12,14 @@ Websites::Websites(QObject *parent)
 {
 }
 
-bool Websites::isIn(const QUrl &url)
+bool Websites::isIn(const QUrl &url, const QString& category)
 {
     QString host = url.host();
-    int pos = host.lastIndexOf(QChar('.'));
-    pos = host.lastIndexOf(QChar('.'), pos-host.length()-1);
-    host = host.mid(pos+1, -1);
     auto it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [&host](WebsitePtr w) { return w->url.contains(host); });
+                           [&host](WebsitePtr w) { return w->url.contains(host, Qt::CaseInsensitive); });
 
     if (m_websites.end() != it)
-        return true;
-
-    pos = host.lastIndexOf(QChar('.'));
-    host = host.left(pos);
-    it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [&host](WebsitePtr w) { return w->url.contains(host); });
-
-    if (m_websites.end() != it)
-        return true;
+        return category.isEmpty() ? true : (*it)->category == category;
 
     return false;
 }
@@ -99,29 +88,6 @@ void Websites::update()
     connect(reply, &QNetworkReply::finished, this, &Websites::onReadFinished);
     connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &Websites::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &Websites::onNetworkSSLErrors);
-}
-
-bool Websites::isInChina(const QUrl &url)
-{
-    QString host = url.host();
-    int pos = host.lastIndexOf(QChar('.'));
-    pos = host.lastIndexOf(QChar('.'), pos-host.length()-1);
-    host = host.mid(pos+1, -1);
-    auto it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [&host](WebsitePtr w) { return w->url.contains(host); });
-
-    if (m_websites.end() != it)
-        return (*it)->category == "china";
-
-    pos = host.lastIndexOf(QChar('.'));
-    host = host.left(pos);
-    it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [&host](WebsitePtr w) { return w->url.contains(host); });
-
-    if (m_websites.end() != it)
-        return (*it)->category == "china";
-
-    return false;
 }
 
 const QString &Websites::findURL(const QString &name)

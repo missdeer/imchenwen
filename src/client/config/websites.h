@@ -26,8 +26,7 @@ public:
     explicit Websites(QObject *parent = nullptr);
     void update();
 
-    bool isIn(const QUrl &url);
-    bool isInChina(const QUrl &url);
+    bool isIn(const QUrl &url, const QString &category = QString());
     const QString& findURL(const QString& name);
     WebsiteList favourites();
     WebsiteList inChina();
