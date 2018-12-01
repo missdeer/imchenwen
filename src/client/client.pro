@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = imchenwen
 QT += webengine webenginecore webenginewidgets xml concurrent
-CONFIG += c++14
+CONFIG += c++1z
 DESTDIR = $$PWD/../../bin
 
 include(Boost.pri)
