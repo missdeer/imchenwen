@@ -261,7 +261,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="127"/>
         <source>Preferences...</source>
-        <translation type="unfinished"></translation>
+        <translation>偏好设置...</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="536"/>
