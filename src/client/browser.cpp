@@ -330,6 +330,55 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &url, const Q
     if (!arg.isEmpty())
         args << arg.split(" ");
 
+    if (referrer.isEmpty())
+    {
+        int index = args.indexOf("{{referrer}}");
+        args.removeAt(index);
+        if (index > 0)
+            args.removeAt(index -1);
+
+        auto it = std::find_if(args.begin(), args.end(),
+                               [&](const QString& a){ return a.contains("{{referrer}}");});
+        if (args.end() != it)
+            args.erase(it);
+    }
+
+    if (title.isEmpty())
+    {
+        int index = args.indexOf("{{title}}");
+        args.removeAt(index);
+        if (index > 0)
+            args.removeAt(index -1);
+
+        auto it = std::find_if(args.begin(), args.end(),
+                               [&](const QString& a){ return a.contains("{{title}}");});
+        if (args.end() != it)
+            args.erase(it);
+
+        index = args.indexOf("{{site}}");
+        args.removeAt(index);
+        if (index > 0)
+            args.removeAt(index -1);
+
+        it = std::find_if(args.begin(), args.end(),
+                          [&](const QString& a){ return a.contains("{{site}}");});
+        if (args.end() != it)
+            args.erase(it);
+    }
+
+    if (Config().read<QString>(QLatin1String("httpUserAgent")).isEmpty())
+    {
+        int index = args.indexOf("{{user-agent}}");
+        args.removeAt(index);
+        if (index > 0)
+            args.removeAt(index -1);
+
+        auto it = std::find_if(args.begin(), args.end(),
+                               [&](const QString& a){ return a.contains("{{user-agent}}");});
+        if (args.end() != it)
+            args.erase(it);
+    }
+
     for (QString& a : args)
     {
         a = a.replace("{{referrer}}", referrer);
