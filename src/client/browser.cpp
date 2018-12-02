@@ -79,6 +79,7 @@ Browser::Browser(QObject *parent)
     connect(&m_playerProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Browser::onPlayerFinished);
     connect(&m_mediaRelay, &MediaRelay::inputEnd, &m_httpHandler, &InMemoryHandler::onInputEnd);
     connect(&m_mediaRelay, &MediaRelay::newM3U8Ready, this, &Browser::onNewM3U8Ready);
+    connect(&m_mediaRelay, &MediaRelay::transcodingFailed, this, &Browser::onTranscodingFailed);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &Browser::onClipboardChanged);
 }
 
@@ -697,5 +698,13 @@ void Browser::onNewM3U8Ready()
     QString media = m_mediaRelay.transcoding(QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString()));
     qDebug() << __FUNCTION__ << "playing" << media ;
     playByDLNARenderer(m_mediaRelay.player(), media, m_mediaRelay.title(), "");
+}
+
+void Browser::onTranscodingFailed()
+{
+    QMessageBox::warning(mainWindow(),
+                         tr("Error"),
+                         tr("Transcoding failed."),
+                         QMessageBox::Ok);
 }
 

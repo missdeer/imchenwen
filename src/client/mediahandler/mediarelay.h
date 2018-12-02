@@ -24,6 +24,7 @@ public:
     void setTitle(const QString &title);
 
 signals:
+    void transcodingFailed();
     void inputEnd();
     void newM3U8Ready();
 private slots:

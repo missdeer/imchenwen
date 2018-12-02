@@ -64,6 +64,7 @@ private slots:
     void onProcessError(QProcess::ProcessError error);
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onNewM3U8Ready();
+    void onTranscodingFailed();
 private:
     QNetworkAccessManager m_nam;
     Kast m_kast;

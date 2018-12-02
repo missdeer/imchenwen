@@ -10,10 +10,13 @@
 MediaRelay::MediaRelay(QObject *parent) : QObject(parent)
 {
     connect(&m_ffmpegProcess, &QProcess::errorOccurred, [this](){
-        emit inputEnd();
+        emit transcodingFailed();
     });
-    connect(&m_ffmpegProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [this](){
-        emit inputEnd();
+    connect(&m_ffmpegProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [this](int exitCode, QProcess::ExitStatus status){
+        if (exitCode != 0 || status != QProcess::NormalExit )
+            emit transcodingFailed();
+        else
+            emit inputEnd();
     });
     connect(&m_ffmpegProcess, &QProcess::readyReadStandardOutput, this, &MediaRelay::onReadStandardOutput);
 }
