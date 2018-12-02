@@ -71,7 +71,7 @@ QString MediaRelay::transcoding(const QString& media)
 
 void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, const QByteArray& referrer)
 {
-    qDebug() << __FUNCTION__ << media;
+    qDebug() << __FUNCTION__ << media << userAgent << referrer;
     m_socketData.clear();
     QNetworkRequest req;
     QUrl u(media);
@@ -79,6 +79,7 @@ void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, 
     req.setRawHeader("User-Agent", userAgent);
     req.setRawHeader("Referer", referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::UserVerifiedRedirectPolicy);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
@@ -86,6 +87,7 @@ void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, 
     connect(reply, &QNetworkReply::finished, this, &MediaRelay::onMediaReadFinished);
     connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &MediaRelay::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &MediaRelay::onNetworkSSLErrors);
+    connect(reply, &QNetworkReply::redirected, this, &MediaRelay::onRedirected);
 }
 
 void MediaRelay::stop()
@@ -114,9 +116,10 @@ void MediaRelay::onMediaReadFinished()
 {
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    m_socketData.append(reply->readAll());
-
     reply->deleteLater();
+    onReadyRead();
+
+    qDebug() << __FUNCTION__ << QString(m_socketData);
     // parse the m3u8
     QByteArray m3u8 = m_socketData;
     auto lines = m_socketData.split('\n');
@@ -142,7 +145,7 @@ void MediaRelay::onMediaReadFinished()
             if (u.endsWith('?'))
                 u = u.left(u.length() - 1);
             // u is an absolute path
-            if (u.endsWith("m3u8", Qt::CaseInsensitive))
+            if (QUrl(u).path().endsWith("m3u8", Qt::CaseInsensitive))
             {
                 QByteArray userAgent = reply->request().rawHeader("User-Agent");
                 QByteArray referrer = reply->request().rawHeader("Referer");
@@ -158,7 +161,7 @@ void MediaRelay::onMediaReadFinished()
         }
     }
     httpHandler.setM3U8(m3u8);
-
+    qDebug() << __FUNCTION__ << "set m3u8:" << QString(m3u8);
     emit newM3U8Ready();
 }
 
@@ -166,6 +169,13 @@ void MediaRelay::onReadStandardOutput()
 {
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
     httpHandler.newMediaData(m_ffmpegProcess.readAllStandardOutput());
+}
+
+void MediaRelay::onRedirected(const QUrl &url)
+{
+    Q_UNUSED(url);
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    emit reply->redirectAllowed();
 }
 
 const QString &MediaRelay::title() const

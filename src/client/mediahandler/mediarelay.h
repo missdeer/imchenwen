@@ -32,6 +32,7 @@ private slots:
     void onReadyRead();
     void onMediaReadFinished();
     void onReadStandardOutput();
+    void onRedirected(const QUrl &url);
 private:
     PlayerPtr m_player;
     QString m_title;
