@@ -55,7 +55,7 @@ QString MediaRelay::transcoding(const QString& media)
     m_ffmpegProcess.kill();
     m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
     m_ffmpegProcess.setArguments(QStringList() << "-y"
-                                 << "-protocol_whitelist" << "file,http,https,tcp,tls"
+                                 << "-protocol_whitelist" << "file,http,https,tcp,tls,crypto"
                                  << "-i" << media
                                  << "-c" << "copy"
                                  << "-copyts"
@@ -64,7 +64,7 @@ QString MediaRelay::transcoding(const QString& media)
                                  );
     m_ffmpegProcess.setProcessChannelMode(QProcess::SeparateChannels);
     m_ffmpegProcess.start();
-
+    qDebug() << __FUNCTION__ << m_ffmpegProcess.arguments();
     // serve http://...:51290/media.ts
     return QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
 }
@@ -139,8 +139,10 @@ void MediaRelay::onMediaReadFinished()
                     u = originUrl.left(index + 1) + u;
                 }
             }
+            if (u.endsWith('?'))
+                u = u.left(u.length() - 1);
             // u is an absolute path
-            if (QUrl(u).path().endsWith("m3u8", Qt::CaseInsensitive))
+            if (u.endsWith("m3u8", Qt::CaseInsensitive))
             {
                 QByteArray userAgent = reply->request().rawHeader("User-Agent");
                 QByteArray referrer = reply->request().rawHeader("Referer");
