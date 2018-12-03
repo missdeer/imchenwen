@@ -37,7 +37,7 @@ ChangesAssociations=true
 ChangesEnvironment=true
 DefaultGroupName=imchenwen
 AppContact=me@minidump.info
-SetupIconFile=..\..\..\..\imchenwen\src\client\res\imchenwen.ico
+SetupIconFile=..\src\client\res\imchenwen.ico
 ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
