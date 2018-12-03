@@ -188,17 +188,19 @@ win32: {
     contains(QMAKE_HOST.arch, x86_64): {
         LIBS += -L$$PWD/../3rdparty/libmpv/x86_64
         copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/x86_64/mpv-1.dll) $$shell_path($$DESTDIR/mpv-1.dll)'
+        copy_innosetup.commands = '$(COPY_FILE) $$shell_path($$PWD/imchenwen-msvc-x64.iss) $$shell_path($$DESTDIR/imchenwen-msvc-x64.iss)'
     } else : {
         LIBS += -L$$PWD/../3rdparty/libmpv/i686
         copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$DESTDIR/mpv-1.dll)'
+        copy_innosetup.commands = '$(COPY_FILE) $$shell_path($$PWD/imchenwen-msvc-x86.iss) $$shell_path($$DESTDIR/imchenwen-msvc-x86.iss)'
     }
     LIBS += -lmpv
 
     qti18n.depends = translate
     qti18n.commands = '$(COPY_FILE) $$shell_path($$[QT_INSTALL_BINS]/../translations/qt_zh_CN.qm) $$shell_path($${DESTDIR}/translations/qt_zh_CN.qm)'
 
-    QMAKE_EXTRA_TARGETS += copy_mpv_dll
-    POST_TARGETDEPS += copy_mpv_dll
+    QMAKE_EXTRA_TARGETS += copy_mpv_dll copy_innosetup
+    POST_TARGETDEPS += copy_mpv_dll copy_innosetup
 } else : {
     INCLUDEPATH += /usr/local/include
     LIBS += -L/usr/local/lib -lmpv
