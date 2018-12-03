@@ -1,37 +1,17 @@
-## Welcome to GitHub Pages
+# imchenwen（中文名：某橙）
 
-You can use the [editor on GitHub](https://github.com/missdeer/imchenwen/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+可以简单地认为这是[Bilibili Mac Client](https://typcn.com/legacy/bilimac/)的跨平台版本，目前支持Windows和macOS版本，Linux应该也能支持，只是我手上没有机器。
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+所以只支持B站吗？不是的，通过外部解析器，大概支持几十上百个站吧。
 
-### Markdown
+某橙关注播放和观看，可以使用程序内置的播放器，调用外部其他多媒体播放器，或者投屏到DLNA播放器（比如Chromecast之类的）进行播放。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+所以不能下载视频！不能下载视频！不能下载视频！
 
-```markdown
-Syntax highlighted code block
+[功能列表](https://bitbucket.org/missdeer/imchenwen/wiki/Features)
 
-# Header 1
-## Header 2
-### Header 3
+[使用说明](https://bitbucket.org/missdeer/imchenwen/wiki/Usage)
 
-- Bulleted
-- List
+[常见问题](https://bitbucket.org/missdeer/imchenwen/wiki/FAQ)
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/missdeer/imchenwen/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+[技术支持](https://bitbucket.org/missdeer/imchenwen/wiki/Support)
