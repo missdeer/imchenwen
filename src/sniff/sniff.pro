@@ -10,9 +10,17 @@ TARGET = sniff
 TEMPLATE = app
 
 macx: {
-    DESTDIR = $$PWD/../../bin/imchenwen.app/Contents/Tools
+    contains(QMAKE_HOST.arch, x86_64): {
+        DESTDIR = $$PWD/../../bin/x86_64/imchenwen.app/Contents/Tools
+    } else: {
+        DESTDIR = $$PWD/../../bin/x86/imchenwen.app/Contents/Tools
+    }
 } else {
-    DESTDIR = $$PWD/../../bin
+    contains(QMAKE_HOST.arch, x86_64): {
+        DESTDIR = $$PWD/../../bin/x86_64
+    } else: {
+        DESTDIR = $$PWD/../../bin/x86
+    }
 }
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

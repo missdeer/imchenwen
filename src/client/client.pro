@@ -2,7 +2,12 @@ TEMPLATE = app
 TARGET = imchenwen
 QT += webengine webenginecore webenginewidgets xml concurrent
 CONFIG += c++1z
-DESTDIR = $$PWD/../../bin
+
+contains(QMAKE_HOST.arch, x86_64): {
+    DESTDIR = $$PWD/../../bin/x86_64
+} else: {
+    DESTDIR = $$PWD/../../bin/x86
+}
 
 include(Boost.pri)
 include($$PWD/../3rdparty/qhttpengine/qhttpengine.pri)

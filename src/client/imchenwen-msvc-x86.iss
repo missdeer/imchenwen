@@ -5,9 +5,9 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{889D6462-F830-4294-B564-3824442FD6EC}
-AppName=imchenwen 1.0 - x64
-AppVerName=imchenwen 1.0 - x64
+AppId={{8BC462AA-A0E7-4F0D-9353-58778AB3F347}
+AppName=imchenwen 1.0 - x86
+AppVerName=imchenwen 1.0 - x86
 AppPublisher=me@minidump.info
 AppPublisherURL=https://minidump.info/imchenwen/
 AppSupportURL=https://minidump.info/imchenwen/
@@ -15,14 +15,14 @@ AppUpdatesURL=https://minidump.info/imchenwen/
 DefaultDirName={pf}\imchenwen
 AllowNoIcons=true
 OutputDir=.\
-OutputBaseFilename=imchenwenSetup_x64
+OutputBaseFilename=imchenwenSetup_x86
 SolidCompression=true
 Compression=lzma/Ultra
 InternalCompressLevel=Ultra
 VersionInfoVersion=1.0.0.1
 VersionInfoCompany=minidump.info
-VersionInfoDescription=imchenwen 1.0 - x64
-VersionInfoTextVersion=imchenwen 1.0 - x64
+VersionInfoDescription=imchenwen 1.0 - x86
+VersionInfoTextVersion=imchenwen 1.0 - x86
 VersionInfoCopyright=Copyright (c) 2016 minidump.info. All rights reserved.
 AppCopyright=Copyright (C) 2016 minidump.info. All rights reserved.
 PrivilegesRequired=none
@@ -32,13 +32,12 @@ ShowLanguageDialog=auto
 WizardImageFile=compiler:WizModernImage-IS.bmp
 WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
 AppVersion=1.0.0.1
-UninstallDisplayName=imchenwen 1.0 - x64
+UninstallDisplayName=imchenwen 1.0 - x86
 ChangesAssociations=true
 ChangesEnvironment=true
 DefaultGroupName=imchenwen
 AppContact=me@minidump.info
 SetupIconFile=..\..\src\client\res\imchenwen.ico
-ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
 Name: enu; MessagesFile: compiler:Default.isl
