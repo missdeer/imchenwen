@@ -160,20 +160,26 @@ macx: {
 
         deploy.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app\"
 
-        deploy_webengine.depends += deploy
+        deploy_appstore.depends += deploy
+        deploy_appstore.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app\" -appstore-compliant
+
+        deploy_webengine.depends += deploy_appstore
         deploy_webengine.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\"
+
+        fixdeploy.depends += deploy_webengine
+        fixdeploy.commands += $$PWD/../macdeploy/macdeploy \"$${DESTDIR}/$${TARGET}.app\"
 
         APPCERT = Developer ID Application: Fan Yang (Y73SBCN2CG)
         INSTALLERCERT = 3rd Party Mac Developer Installer: Fan Yang (Y73SBCN2CG)
         BUNDLEID = com.dfordsoft.imchenwen
 
-        codesign.depends += deploy_webengine
+        codesign.depends += fixdeploy
         codesign.commands = codesign -s \"$${APPCERT}\" -v -f --timestamp=none --deep \"$${DESTDIR}/$${TARGET}.app\"
 
         makedmg.depends += codesign
-        makedmg.commands = hdiutil create -srcfolder \"$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${TARGET}.dmg\" -ov -scrub -stretch 2g
+        makedmg.commands = hdiutil create -srcfolder \"$${DESTDIR}/$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${DESTDIR}/$${TARGET}.dmg\" -ov -scrub -stretch 2g
 
-        QMAKE_EXTRA_TARGETS += deploy deploy_webengine codesign makedmg
+        QMAKE_EXTRA_TARGETS += deploy deploy_webengine deploy_appstore fixdeploy codesign makedmg
     }
 }
 
