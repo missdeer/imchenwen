@@ -47,6 +47,8 @@ int main(int argc, char **argv)
 #endif
 
     QString locale = QLocale::system().name();
+    if (locale == "en_US")
+        locale = "zh_CN";
     QTranslator translator;
     QTranslator qtTranslator;
 

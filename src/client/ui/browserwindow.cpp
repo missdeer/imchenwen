@@ -9,6 +9,7 @@
 #include "config.h"
 #include "popupmenutoolbutton.h"
 #include "inputurldialog.h"
+#include "donatedialog.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -264,6 +265,15 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
 QMenu *BrowserWindow::createHelpMenu()
 {
     QMenu *helpMenu = new QMenu(tr("&Help"));
+    connect(helpMenu->addAction(tr("Visit Homepage...")), &QAction::triggered, [](){
+        QDesktopServices::openUrl(QUrl("https://minidump.info/imchenwen/"));
+    });
+    connect(helpMenu->addAction(tr("Donate...")), &QAction::triggered, [&](){
+        DonateDialog dlg(this);
+        dlg.exec();
+    });
+    helpMenu->addSeparator();
+
     connect(helpMenu->addAction(tr("Install Adobe Flash Player")), &QAction::triggered, []() {
        QDesktopServices::openUrl(QUrl("https://get.adobe.com/flashplayer/otherversions"));
     });
@@ -277,7 +287,8 @@ QMenu *BrowserWindow::createHelpMenu()
     connect(aboutAction, &QAction::triggered, [this]() {
         QMessageBox::about(this,
                            tr("About imchenwen"),
-                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."));
+                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."
+                              "\n\nBuild at " __DATE__));
     });
 
     QAction *aboutQtAction = helpMenu->addAction(tr("About Qt..."));

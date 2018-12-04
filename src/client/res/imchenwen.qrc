@@ -38,5 +38,7 @@
         <file>preferences/resolver.png</file>
         <file>preferences/storage.png</file>
         <file>preferences/tv.png</file>
+        <file>qrcode/alipay.jpg</file>
+        <file>qrcode/wepay.jpg</file>
     </qresource>
 </RCC>
