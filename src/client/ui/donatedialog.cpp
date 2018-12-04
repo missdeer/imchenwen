@@ -8,6 +8,8 @@ DonateDialog::DonateDialog(QWidget *parent) :
     ui->setupUi(this);
 
     loadImages();
+
+    setFixedSize(size());
 }
 
 DonateDialog::~DonateDialog()
