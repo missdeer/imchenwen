@@ -2,18 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>BuildMachineOSBuild</key>
-    <string>15G31</string>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>en</string>
     <key>CFBundleExecutable</key>
     <string>imchenwen</string>
     <key>CFBundleIconFile</key>
     <string>imchenwen.icns</string>
     <key>CFBundleIdentifier</key>
     <string>com.dfordsoft.imchenwen</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
     <key>CFBundleName</key>
     <string>imchenwen</string>
     <key>CFBundlePackageType</key>
@@ -26,22 +20,6 @@
     <array>
             <string>MacOSX</string>
     </array>
-    <key>CFBundleVersion</key>
-    <string>1.0.0.1</string>
-    <key>DTCompiler</key>
-    <string>com.apple.compilers.llvm.clang.1_0</string>
-    <key>DTPlatformBuild</key>
-    <string>7C1002</string>
-    <key>DTPlatformVersion</key>
-    <string>GM</string>
-    <key>DTSDKBuild</key>
-    <string>15C43</string>
-    <key>DTSDKName</key>
-    <string>macosx10.12</string>
-    <key>DTXcode</key>
-    <string>0721</string>
-    <key>DTXcodeBuild</key>
-    <string>7C1002</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.productivity</string>
     <key>LSMinimumSystemVersion</key>
@@ -52,7 +30,7 @@
             <true/>
     </dict>
     <key>NSHumanReadableCopyright</key>
-    <string>Copyright (c) 2013 - 2017 Leaky Software. All rights reserved.</string>
+    <string>Copyright (c) 2017 - 2018 DForD Software. All rights reserved.</string>
     <key>ForAppStore</key>
     <true/>
     <key>NSPrincipalClass</key>
