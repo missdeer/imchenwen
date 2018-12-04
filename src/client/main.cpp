@@ -35,7 +35,9 @@ int main(int argc, char **argv)
 #elif defined(Q_OS_MAC)
     QDir dir(a.applicationDirPath());
     dir.cdUp();
-    dir.cd("Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS");
+    dir.cd("Frameworks");
+    qputenv("DYLD_LIBRARY_PATH", dir.absolutePath().toUtf8());
+    dir.cd("QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents/MacOS");
     qputenv("QT_MAC_DISABLE_FOREGROUND_APPLICATION_TRANSFORM", "1");
     QString qtWebEngineProcessPath = dir.absolutePath() + "/QtWebEngineProcess";
     if (QFile::exists(qtWebEngineProcessPath))

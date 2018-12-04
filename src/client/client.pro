@@ -158,7 +158,7 @@ macx: {
         qti18n.commands = '$(COPY_FILE) $$shell_path($$[QT_INSTALL_BINS]/../translations/qt_zh_CN.qm) $$shell_path($${DESTDIR}/$${TARGET}.app/Contents/Resources/translations/qt_zh_CN.qm)'
         QMAKE_BUNDLE_DATA += translate qti18n
 
-        deploy.commands += $$MACDEPLOYQT \"$${OUT_PWD}/$${TARGET}.app\"
+        deploy.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app\"
 
         deploy_webengine.depends += deploy
         deploy_webengine.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app\"
