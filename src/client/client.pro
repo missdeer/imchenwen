@@ -55,7 +55,7 @@ HEADERS += \
     $$PWD/webengine/webpopupwindow.h \
     $$PWD/webengine/webview.h \
     $$PWD/browser.h \
-    ui/donatedialog.h
+    $$PWD/ui/donatedialog.h
 
 SOURCES += \
     $$PWD/browser.cpp \
@@ -91,7 +91,7 @@ SOURCES += \
     $$PWD/webengine/webpage.cpp \
     $$PWD/webengine/webpopupwindow.cpp \
     $$PWD/webengine/webview.cpp \
-    ui/donatedialog.cpp
+    $$PWD/ui/donatedialog.cpp
 
 FORMS += \
     $$PWD/dlna/dlnaplayerview.ui \
@@ -101,7 +101,7 @@ FORMS += \
     $$PWD/ui/passworddialog.ui \
     $$PWD/ui/playdialog.ui \
     $$PWD/ui/settings.ui \
-    ui/donatedialog.ui
+    $$PWD/ui/donatedialog.ui
 
 RESOURCES += $$PWD/res/imchenwen.qrc $$PWD/res/icons.qrc
 
