@@ -156,7 +156,10 @@ macx: {
 
         qti18n.depends = translate
         qti18n.commands = '$(COPY_FILE) $$shell_path($$[QT_INSTALL_BINS]/../translations/qt_zh_CN.qm) $$shell_path($${DESTDIR}/$${TARGET}.app/Contents/Resources/translations/qt_zh_CN.qm)'
-        QMAKE_BUNDLE_DATA += translate qti18n
+
+        bundlei18n.depends = qti18n
+        bundlei18n.commands = '$(COPY_DIR) $$shell_path($${PWD}/../../mac/*.lproj) $$shell_path($${DESTDIR}/$${TARGET}.app/Contents/Resources/)'
+        QMAKE_BUNDLE_DATA += translate qti18n bundlei18n
 
         deploy.commands += $$MACDEPLOYQT \"$${DESTDIR}/$${TARGET}.app\"
 
@@ -179,7 +182,8 @@ macx: {
         makedmg.depends += codesign
         makedmg.commands = hdiutil create -srcfolder \"$${DESTDIR}/$${TARGET}.app\" -volname \"$${TARGET}\" -format UDBZ \"$${DESTDIR}/$${TARGET}.dmg\" -ov -scrub -stretch 2g
 
-        QMAKE_EXTRA_TARGETS += deploy deploy_webengine deploy_appstore fixdeploy codesign makedmg
+        QMAKE_EXTRA_TARGETS += deploy deploy_webengine deploy_appstore fixdeploy codesign makedmg bundlei18n
+        POST_TARGETDEPS += bundlei18n
     }
 }
 
