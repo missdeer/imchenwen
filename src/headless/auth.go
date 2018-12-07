@@ -19,34 +19,47 @@ var (
 )
 
 func checkInput(c *gin.Context) (u string, err error) {
-	if !localMode {
-		apiKey := c.PostForm("apikey")
-		if apiKey == "" {
+	apiKey := c.PostForm("apikey")
+	if apiKey == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": "missing api key",
+		})
+		return "", errors.New("missing api key")
+	}
+
+	accountKey := fmt.Sprintf("imchenwen:account:%s", apiKey)
+	acc, err := rd.Get(accountKey)
+	if err != nil || acc == nil {
+		if apiKey == testAPIKey {
+			rd.Put(accountKey, 60)
+			acc, _ = rd.Get(accountKey)
+		} else if apiKey == adminAPIKey {
+			rd.Put(accountKey, math.MaxInt32)
+			acc, _ = rd.Get(accountKey)
+		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"Status": "error",
-				"Result": "missing api key",
+				"Result": "incorrect api key",
 			})
-			return "", errors.New("missing api key")
+			return "", errors.New("incorrect api key")
 		}
+	}
+	rateLimitQuote, err := redis.Int(acc, err)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"Status": "error",
+			"Result": err,
+		})
+		return "", err
+	}
 
-		accountKey := fmt.Sprintf("imchenwen:account:%s", apiKey)
-		acc, err := rd.Get(accountKey)
-		if err != nil || acc == nil {
-			if apiKey == testAPIKey {
-				rd.Put(accountKey, 60)
-				acc, _ = rd.Get(accountKey)
-			} else if apiKey == adminAPIKey {
-				rd.Put(accountKey, math.MaxInt32)
-				acc, _ = rd.Get(accountKey)
-			} else {
-				c.JSON(http.StatusOK, gin.H{
-					"Status": "error",
-					"Result": "incorrect api key",
-				})
-				return "", errors.New("incorrect api key")
-			}
-		}
-		rateLimitQuote, err := redis.Int(acc, err)
+	rateLimitKey := fmt.Sprintf("imchenwen:ratelimit:%d", time.Now().Unix()/60)
+	rateLimitValue, err := rd.Get(rateLimitKey)
+	if err != nil || rateLimitValue == nil {
+		rd.PutWithTimeout(rateLimitKey, 1, 60)
+	} else {
+		rateLimit, err := redis.Int(rateLimitValue, err)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"Status": "error",
@@ -54,30 +67,16 @@ func checkInput(c *gin.Context) (u string, err error) {
 			})
 			return "", err
 		}
-
-		rateLimitKey := fmt.Sprintf("imchenwen:ratelimit:%d", time.Now().Unix()/60)
-		rateLimitValue, err := rd.Get(rateLimitKey)
-		if err != nil || rateLimitValue == nil {
-			rd.PutWithTimeout(rateLimitKey, 1, 60)
-		} else {
-			rateLimit, err := redis.Int(rateLimitValue, err)
-			if err != nil {
-				c.JSON(http.StatusOK, gin.H{
-					"Status": "error",
-					"Result": err,
-				})
-				return "", err
-			}
-			if rateLimit > rateLimitQuote {
-				c.JSON(http.StatusOK, gin.H{
-					"Status": "error",
-					"Result": "exceeded rate limit",
-				})
-				return "", errors.New("exceeded rate limit")
-			}
-			rd.Incr(rateLimitKey)
+		if rateLimit > rateLimitQuote {
+			c.JSON(http.StatusOK, gin.H{
+				"Status": "error",
+				"Result": "exceeded rate limit",
+			})
+			return "", errors.New("exceeded rate limit")
 		}
+		rd.Incr(rateLimitKey)
 	}
+
 	u = c.PostForm("url")
 	if u == "" {
 		c.JSON(http.StatusOK, gin.H{

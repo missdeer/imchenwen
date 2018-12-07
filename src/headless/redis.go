@@ -28,7 +28,7 @@ func redisInit() *RedisCache {
 	return rd
 }
 
-// Redis cache adapter.
+// RedisCache Redis cache adapter.
 type RedisCache struct {
 	p        *redis.Pool // redis connection pool
 	connInfo string
@@ -37,12 +37,12 @@ type RedisCache struct {
 	password string
 }
 
-// create new redis cache with default collection name.
+//newRedisCache  create new redis cache with default collection name.
 func newRedisCache() *RedisCache {
 	return &RedisCache{key: defaultRedisKey}
 }
 
-// actually do the redis cmds
+// do actually do the redis cmds
 func (rc *RedisCache) do(commandName string, args ...interface{}) (reply interface{}, err error) {
 	c := rc.p.Get()
 	defer c.Close()
@@ -88,7 +88,7 @@ ERROR:
 	return rv
 }
 
-// put cache to redis.
+// PutWithTimeout put cache to redis.
 func (rc *RedisCache) PutWithTimeout(key string, val interface{}, timeout int64) error {
 	var err error
 	if _, err = rc.do("SETEX", key, timeout, val); err != nil {
@@ -101,6 +101,7 @@ func (rc *RedisCache) PutWithTimeout(key string, val interface{}, timeout int64)
 	return err
 }
 
+// Put add a record to redis
 func (rc *RedisCache) Put(key string, val interface{}) error {
 	var err error
 	if _, err = rc.do("SET", key, val); err != nil {
@@ -113,7 +114,7 @@ func (rc *RedisCache) Put(key string, val interface{}) error {
 	return err
 }
 
-// delete cache in redis.
+// Delete delete cache in redis.
 func (rc *RedisCache) Delete(key string) error {
 	var err error
 	if _, err = rc.do("DEL", key); err != nil {
@@ -123,7 +124,7 @@ func (rc *RedisCache) Delete(key string) error {
 	return err
 }
 
-// check cache's existence in redis.
+// IsExist check cache's existence in redis.
 func (rc *RedisCache) IsExist(key string) bool {
 	v, err := redis.Bool(rc.do("EXISTS", key))
 	if err != nil {
@@ -137,24 +138,25 @@ func (rc *RedisCache) IsExist(key string) bool {
 	return v
 }
 
+// Add add delta to record value
 func (rc *RedisCache) Add(key string, delta int64) error {
 	_, err := redis.Bool(rc.do("INCRBY", key, delta))
 	return err
 }
 
-// increase counter in redis.
+// Incr increase counter in redis.
 func (rc *RedisCache) Incr(key string) error {
 	_, err := redis.Bool(rc.do("INCRBY", key, 1))
 	return err
 }
 
-// decrease counter in redis.
+// Decr decrease counter in redis.
 func (rc *RedisCache) Decr(key string) error {
 	_, err := redis.Bool(rc.do("INCRBY", key, -1))
 	return err
 }
 
-// clean all cache in redis. delete this redis collection.
+// ClearAll clean all cache in redis. delete this redis collection.
 func (rc *RedisCache) ClearAll() error {
 	cachedKeys, err := redis.Strings(rc.do("HKEYS", rc.key))
 	if err != nil {
@@ -169,7 +171,7 @@ func (rc *RedisCache) ClearAll() error {
 	return err
 }
 
-// start redis cache adapter.
+// StartAndGC start redis cache adapter.
 // config is like {"key":"collection key","conn":"connection info","dbNum":"0"}
 // the cache item in redis are stored forever,
 // so no gc operation.
@@ -202,7 +204,7 @@ func (rc *RedisCache) StartAndGC(config string) error {
 	return c.Err()
 }
 
-// connect to redis.
+// connectInit connect to redis.
 func (rc *RedisCache) connectInit() {
 	dialFunc := func() (c redis.Conn, err error) {
 		c, err = redis.Dial("tcp", rc.connInfo)
