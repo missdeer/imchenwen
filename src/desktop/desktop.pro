@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = imchenwen
 QT += webengine webenginecore webenginewidgets xml concurrent
-CONFIG += c++1z
+CONFIG += c++17
 
 contains(QMAKE_HOST.arch, x86_64): {
     DESTDIR = $$PWD/../../bin/x86_64
@@ -122,9 +122,9 @@ isEmpty(QMAKE_LRELEASE) {
     else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 }
 
-lupdate.commands = $$QMAKE_LUPDATE -no-obsolete $$PWD/client.pro
+lupdate.commands = $$QMAKE_LUPDATE -no-obsolete $$PWD/desktop.pro
 lupdates.depends = $$SOURCES $$HEADERS $$FORMS $$TRANSLATIONS
-lrelease.commands = $$QMAKE_LRELEASE $$PWD/client.pro
+lrelease.commands = $$QMAKE_LRELEASE $$PWD/desktop.pro
 lrelease.depends = lupdate
 translate.depends = lrelease
 QMAKE_EXTRA_TARGETS += lupdate lrelease translate qti18n
@@ -134,7 +134,7 @@ macx: {
     QT += macextras
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
-    LIBS += -framework Cocoa -framework WebKit
+    LIBS += /usr/local/lib -framework Cocoa -framework WebKit
     HEADERS  += \
         $$PWD/cocoawebview/cocoawebview.h \
         $$PWD/cocoawebview/qtcocoawebview.h
@@ -207,7 +207,6 @@ win32: {
         copy_mpv_dll.commands = '$(COPY_FILE) $$shell_path($$PWD/../3rdparty/libmpv/i686/mpv-1.dll) $$shell_path($$DESTDIR/mpv-1.dll)'
         copy_innosetup.commands = '$(COPY_FILE) $$shell_path($$PWD/imchenwen-msvc-x86.iss) $$shell_path($$DESTDIR/imchenwen-msvc-x86.iss)'
     }
-    LIBS += -lmpv
 
     qti18n.depends = translate
     qti18n.commands = '$(COPY_FILE) $$shell_path($$[QT_INSTALL_BINS]/../translations/qt_zh_CN.qm) $$shell_path($${DESTDIR}/translations/qt_zh_CN.qm)'
@@ -216,8 +215,10 @@ win32: {
     POST_TARGETDEPS += copy_mpv_dll copy_innosetup
 } else : {
     INCLUDEPATH += /usr/local/include
-    LIBS += -L/usr/local/lib -lmpv
+    LIBS += -L/usr/local/lib
 }
+
+LIBS += -lmpv
 
 unix: !macx {
     translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR)'
