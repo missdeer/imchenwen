@@ -4,5 +4,5 @@ TEMPLATE = subdirs
 
 #CONFIG += ordered
 
-SUBDIRS += src/client \
+SUBDIRS += src/desktop \
     src/sniff
