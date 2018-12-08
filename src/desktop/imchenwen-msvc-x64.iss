@@ -23,8 +23,8 @@ VersionInfoVersion=1.0.0.1
 VersionInfoCompany=minidump.info
 VersionInfoDescription=imchenwen 1.0 - x64
 VersionInfoTextVersion=imchenwen 1.0 - x64
-VersionInfoCopyright=Copyright (c) 2016 minidump.info. All rights reserved.
-AppCopyright=Copyright (C) 2016 minidump.info. All rights reserved.
+VersionInfoCopyright=Copyright (c) 2017 - 2018 minidump.info. All rights reserved.
+AppCopyright=Copyright (C) 2017 - 2018 minidump.info. All rights reserved.
 PrivilegesRequired=none
 AllowRootDirectory=true
 AllowUNCPath=false
@@ -37,11 +37,13 @@ ChangesAssociations=true
 ChangesEnvironment=true
 DefaultGroupName=imchenwen
 AppContact=me@minidump.info
-SetupIconFile=..\..\src\client\res\imchenwen.ico
+SetupIconFile=..\..\src\desktop\res\imchenwen.ico
 ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
-Name: enu; MessagesFile: compiler:Default.isl
+Name: enu; MessagesFile: compiler:Default.isl    
+Name: chs; MessagesFile: compiler:Languages\ChineseSimplified.isl
+Name: cht; MessagesFile: compiler:Languages\ChineseTraditional.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
