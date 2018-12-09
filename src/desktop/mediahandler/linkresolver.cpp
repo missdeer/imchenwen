@@ -137,6 +137,8 @@ void LinkResolver::parseYouGetNode(const QJsonObject &o, MediaInfoPtr mi, Stream
         auto format = formatObject.toObject();
         auto urlsArray = format["src"];
         auto urls = urlsArray.toArray();
+        if (urls.isEmpty())
+            continue;
         for (auto url : urls)
         {
             stream->urls.append(url.toString());
@@ -185,6 +187,8 @@ void LinkResolver::parseYKDLNode(const QJsonObject &o, MediaInfoPtr mi, Streams 
         auto format = formatObject.toObject();
         auto urlsArray = format["src"];
         auto urls = urlsArray.toArray();
+        if (urls.isEmpty())
+            continue;
         for (auto url : urls)
         {
             stream->urls.append(url.toString());
@@ -274,6 +278,8 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
         auto s = streamObject.toObject();
         auto urlsArray = s["urls"];
         auto urls = urlsArray.toArray();
+        if (urls.isEmpty())
+            continue;
         for (auto url : urls)
         {
             auto urlObj = url.toObject();
