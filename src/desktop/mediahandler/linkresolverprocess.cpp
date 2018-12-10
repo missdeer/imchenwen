@@ -1,4 +1,5 @@
 #include "linkresolverprocess.h"
+#include <QTimer>
 
 LinkResolverProcess::LinkResolverProcess(QObject *parent) : QObject(parent)
 {
@@ -27,6 +28,7 @@ void LinkResolverProcess::start()
 {
     m_data.clear();
     m_process.start();
+    QTimer::singleShot(15 * 1000, this, &LinkResolverProcess::stop);
 }
 
 void LinkResolverProcess::onReadStandardOutput()

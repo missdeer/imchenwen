@@ -11,12 +11,11 @@ public:
     explicit LinkResolverProcess(QObject *parent = nullptr);
     void setProgram(const QString& program);
     void setArguments(const QStringList& arguments);
-    void stop();
     void start();
 signals:
     void done(const QByteArray&);
 public slots:
-
+    void stop();
 private slots:
     void onReadStandardOutput();
     void onFinished(int, QProcess::ExitStatus);
