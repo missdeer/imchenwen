@@ -5,16 +5,21 @@
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
 #include <QTimer>
+#include <tuple>
 #include "urlrequestinterceptor.h"
 
-QUrl commandLineUrlArgument()
+std::tuple<bool, QUrl> commandLineUrlArgument()
 {
     const QStringList args = QCoreApplication::arguments();
+    QUrl u("https://minidump.info/imchenwen/");
+    bool mpv = false;
     for (const QString &arg : args.mid(1)) {
         if (!arg.startsWith(QLatin1Char('-')))
-            return QUrl::fromUserInput(arg);
+            u = QUrl::fromUserInput(arg);
+        if (arg == "--mpv")
+            mpv = true;
     }
-    return QUrl(QStringLiteral("https://minidump.info/imchenwen/"));
+    return std::make_tuple(mpv, u);
 }
 
 void loadSettings(UrlRequestInterceptor& urlRequestInterceptor)
@@ -47,11 +52,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
     QApplication a(argc, argv);
 
-    UrlRequestInterceptor urlRequestInterceptor;
+    auto args = commandLineUrlArgument();
+    UrlRequestInterceptor urlRequestInterceptor(std::get<0>(args));
     loadSettings(urlRequestInterceptor);
 
     QWebEngineView view;
-    view.setUrl(commandLineUrlArgument());
+    view.setUrl(std::get<1>(args));
 
     QTimer::singleShot(30 * 1000, [](){
         qApp->exit(1);
