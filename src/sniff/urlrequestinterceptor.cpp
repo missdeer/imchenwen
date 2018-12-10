@@ -8,6 +8,17 @@ UrlRequestInterceptor::UrlRequestInterceptor(QObject *parent)
 {
 }
 
+void UrlRequestInterceptor::outputToStdout(const QString &output)
+{
+    QTextStream ts(stdout);
+    ts << output;
+}
+
+void UrlRequestInterceptor::playByMPV(const QString &output)
+{
+
+}
+
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
 {
     qDebug() << "1st" <<request.resourceType() << request.requestUrl();
@@ -21,16 +32,14 @@ void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
     if (path.endsWith("m3u8"))
     {
         emit maybeMediaUrl(request.requestUrl().url());
-        QTextStream ts(stdout);
-        ts << request.requestUrl().url();
+        outputToStdout(request.requestUrl().url());
         qApp->quit();
         return;
     }
     if ((url.hasQuery() || u.length() > 60) && (path.endsWith("mp4") || path.endsWith("flv")))
     {
         emit maybeMediaUrl(request.requestUrl().url());
-        QTextStream ts(stdout);
-        ts << request.requestUrl().url();
+        outputToStdout(request.requestUrl().url());
         qApp->quit();
         return;
     }

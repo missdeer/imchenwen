@@ -15,6 +15,8 @@ signals:
     void maybeMediaUrl(const QString&);
 
 private:
+    void outputToStdout(const QString& output);
+    void playByMPV(const QString& output);
 };
 
 #endif // URLREQUESTINTERCEPTOR_H
