@@ -14,6 +14,11 @@ void UrlRequestInterceptor::outputToStdout(const QString &output)
     ts << output;
 }
 
+void UrlRequestInterceptor::playByMPV(const QString &output)
+{
+
+}
+
 void UrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &request)
 {
     qDebug() << "1st" <<request.resourceType() << request.requestUrl();
