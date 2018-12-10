@@ -14,7 +14,7 @@ QUrl commandLineUrlArgument()
         if (!arg.startsWith(QLatin1Char('-')))
             return QUrl::fromUserInput(arg);
     }
-    return QUrl(QStringLiteral("https://minidump.info"));
+    return QUrl(QStringLiteral("https://minidump.info/imchenwen/"));
 }
 
 void loadSettings(UrlRequestInterceptor& urlRequestInterceptor)
