@@ -287,8 +287,7 @@ QMenu *BrowserWindow::createHelpMenu()
     connect(aboutAction, &QAction::triggered, [this]() {
         QMessageBox::about(this,
                            tr("About imchenwen"),
-                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs."
-                              "\n\nBuild at " __DATE__));
+                           tr("Parse video URLs and invoke external player to play the videos, so that you don't need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs.\n\nBuild at ") + QLatin1String( __DATE__ ));
     });
 
     QAction *aboutQtAction = helpMenu->addAction(tr("About Qt..."));

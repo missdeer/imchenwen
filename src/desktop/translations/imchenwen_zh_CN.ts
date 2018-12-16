@@ -69,8 +69,8 @@
     <name>BrowserWindow</name>
     <message>
         <location filename="../ui/browserwindow.cpp" line="90"/>
-        <location filename="../ui/browserwindow.cpp" line="296"/>
-        <location filename="../ui/browserwindow.cpp" line="545"/>
+        <location filename="../ui/browserwindow.cpp" line="295"/>
+        <location filename="../ui/browserwindow.cpp" line="544"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -232,49 +232,49 @@ Build at </source>
 构建于 </translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="294"/>
+        <location filename="../ui/browserwindow.cpp" line="293"/>
         <source>About Qt...</source>
         <translation>关于Qt…</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="304"/>
+        <location filename="../ui/browserwindow.cpp" line="303"/>
         <source>&amp;Shortcut</source>
         <translation>快捷方式(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="311"/>
+        <location filename="../ui/browserwindow.cpp" line="310"/>
         <source>In China</source>
         <translation>中国的</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="312"/>
+        <location filename="../ui/browserwindow.cpp" line="311"/>
         <source>Out of China</source>
         <translation>外国的</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="313"/>
+        <location filename="../ui/browserwindow.cpp" line="312"/>
         <source>Online Film</source>
         <translation>在线电影</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="379"/>
+        <location filename="../ui/browserwindow.cpp" line="378"/>
         <source>Watch Live TV</source>
         <translation>观看在线电视直播</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="404"/>
+        <location filename="../ui/browserwindow.cpp" line="403"/>
         <source>Navigation</source>
         <translation>导航</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="120"/>
-        <location filename="../ui/browserwindow.cpp" line="452"/>
+        <location filename="../ui/browserwindow.cpp" line="451"/>
         <source>Play by Media Player</source>
         <translation>使用媒体播放器播放</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="124"/>
-        <location filename="../ui/browserwindow.cpp" line="457"/>
+        <location filename="../ui/browserwindow.cpp" line="456"/>
         <source>Play VIP by Media Player</source>
         <translation>使用媒体播放器播放VIP视频</translation>
     </message>
@@ -284,44 +284,44 @@ Build at </source>
         <translation>偏好设置...</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="547"/>
+        <location filename="../ui/browserwindow.cpp" line="546"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="559"/>
+        <location filename="../ui/browserwindow.cpp" line="558"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="560"/>
+        <location filename="../ui/browserwindow.cpp" line="559"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="585"/>
+        <location filename="../ui/browserwindow.cpp" line="584"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="593"/>
+        <location filename="../ui/browserwindow.cpp" line="592"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="594"/>
+        <location filename="../ui/browserwindow.cpp" line="593"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="691"/>
+        <location filename="../ui/browserwindow.cpp" line="690"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="695"/>
+        <location filename="../ui/browserwindow.cpp" line="694"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
