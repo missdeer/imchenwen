@@ -503,27 +503,27 @@ Do you wish to override the security check and continue ?   </source>
         <translation>播放器：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="32"/>
+        <location filename="../ui/playdialog.ui" line="45"/>
         <source>...</source>
         <translation>…</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="41"/>
+        <location filename="../ui/playdialog.ui" line="54"/>
         <source>Media:</source>
         <translation>媒体信息：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="61"/>
+        <location filename="../ui/playdialog.ui" line="74"/>
         <source>Upload to Storage Service</source>
         <translation>上传到存储服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="73"/>
+        <location filename="../ui/playdialog.ui" line="86"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="83"/>
+        <location filename="../ui/playdialog.ui" line="96"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -558,18 +558,18 @@ Do you wish to override the security check and continue ?   </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="140"/>
-        <location filename="../ui/playdialog.cpp" line="156"/>
+        <location filename="../ui/playdialog.cpp" line="143"/>
+        <location filename="../ui/playdialog.cpp" line="163"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="140"/>
+        <location filename="../ui/playdialog.cpp" line="143"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="157"/>
+        <location filename="../ui/playdialog.cpp" line="164"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>

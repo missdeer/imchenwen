@@ -116,17 +116,20 @@ void PlayDialog::createExternalPlayerList()
         switch (p->type())
         {
         case Player::PT_BUILTIN:
-            ui->cbPlayers->addItem(p->name());
+            ui->cbPlayers->addItem(QIcon(":/player/builtin.png"), p->name());
             break;
         case Player::PT_DLNA:
-            ui->cbPlayers->addItem(tr("DLNA: ") + p->name());
+            ui->cbPlayers->addItem(QIcon(":/player/dlna.png"), tr("DLNA: ") + p->name());
             break;
         case Player::PT_EXTERNAL:
-            ui->cbPlayers->addItem(p->name() + " " + p->arguments());
+            ui->cbPlayers->addItem(QIcon(":/player/external.png"), p->name() + " " + p->arguments());
             break;
         }
     }
-    ui->cbPlayers->setCurrentIndex(0);
+    int index = cfg.read<int>("selectedPlayerIndex", 0);
+    if (index >= ui->cbPlayers->count())
+        index = 0;
+    ui->cbPlayers->setCurrentIndex(index);
 }
 
 void PlayDialog::doOk()
@@ -150,7 +153,11 @@ void PlayDialog::doOk()
         m_selectedUrl = m_urls[currentRow];
     }
     if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->name())) || m_selectedPlayer->type() != Player::PT_EXTERNAL)
+    {
+        Config cfg;
+        cfg.write("selectedPlayerIndex", currentIndex);
         accept();
+    }
     else
         QMessageBox::warning(this,
                              tr("Error"),

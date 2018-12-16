@@ -29,11 +29,11 @@ int main(int argc, char **argv)
 
 #if defined(Q_OS_WIN)
     auto pathEnv = qgetenv("PATH");
-    pathEnv.append(";" % QDir::toNativeSeparators(a.applicationDirPath()));
+    pathEnv.append(";" % QDir::toNativeSeparators(QCoreApplication::applicationDirPath()));
     qputenv("PATH", pathEnv); // so that extensions can use main executable's Qt binaries
-    qputenv("QT_PLUGIN_PATH", QDir::toNativeSeparators(a.applicationDirPath()).toUtf8());
+    qputenv("QT_PLUGIN_PATH", QDir::toNativeSeparators(QCoreApplication::applicationDirPath()).toUtf8());
 #elif defined(Q_OS_MAC)
-    QDir dir(a.applicationDirPath());
+    QDir dir(QCoreApplication::applicationDirPath());
     dir.cdUp();
     dir.cd("Frameworks");
     qputenv("DYLD_LIBRARY_PATH", dir.absolutePath().toUtf8());
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         qputenv("QTWEBENGINEPROCESS_PATH", qtWebEngineProcessPath.toUtf8());
 #else
     auto pathEnv = qgetenv("LD_LIBRARY_PATH");
-    pathEnv.append(":" % a.applicationDirPath());
+    pathEnv.append(":" % QCoreApplication::applicationDirPath());
     qputenv("LD_LIBRARY_PATH", pathEnv);
 #endif
 
