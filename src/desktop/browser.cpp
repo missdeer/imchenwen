@@ -423,18 +423,18 @@ void Browser::playByDLNARenderer(PlayerPtr player, const QString &url, const QSt
 
 void Browser::onClipboardChanged()
 {
+    if (m_playDialog)
+        return;
     QClipboard *clipboard = QApplication::clipboard();
     QString originalText = clipboard->text();
-    if (originalText.startsWith("https://") || originalText.startsWith("http://"))
-    {
-        if (m_websites.isIn(QUrl(originalText)))
-        {
-            if (m_websites.isIn(QUrl(originalText), "film"))
-                m_sniffer.sniff(originalText);
-            else
-                m_linkResolver.resolve(originalText);
-        }
-    }
+    if (!originalText.startsWith("https://") && !originalText.startsWith("http://"))
+        return;
+    if (!m_websites.isIn(QUrl(originalText)))
+        return;
+    if (m_websites.isIn(QUrl(originalText), "film"))
+        m_sniffer.sniff(originalText);
+    else
+        m_linkResolver.resolve(originalText);
 }
 
 QVector<BrowserWindow*> Browser::windows()
