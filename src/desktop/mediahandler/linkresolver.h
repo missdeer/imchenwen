@@ -57,8 +57,8 @@ public:
     ~LinkResolver();
     void resolve(const QString &url);
 signals:
-    void done(MediaInfoPtr);
-    void error(const QString&);
+    void done(const QString& url, MediaInfoPtr);
+    void error(const QString& url, const QString&msg);
 public slots:
 
 private slots:

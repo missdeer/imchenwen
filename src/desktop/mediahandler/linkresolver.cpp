@@ -44,7 +44,7 @@ void LinkResolver::resolve(const QString& url)
 {
     if (url == m_lastUrl)
     {
-        emit done(m_mediaInfo);
+        emit done(m_lastUrl, m_mediaInfo);
     }
     else
     {
@@ -94,10 +94,10 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
         if (m_mediaInfo->title.isEmpty() && m_mediaInfo->site.isEmpty())
         {
             m_lastUrl.clear();
-            emit error("Resolving failed.");
+            emit error(m_lastUrl, tr("Resolving failed."));
         }
         else
-            emit done(m_mediaInfo);
+            emit done(m_lastUrl, m_mediaInfo);
     }
 }
 

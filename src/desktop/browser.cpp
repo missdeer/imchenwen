@@ -577,8 +577,9 @@ void Browser::stopWaiting()
     }
 }
 
-void Browser::onNormalLinkResolved(MediaInfoPtr mi)
+void Browser::onNormalLinkResolved(const QString& url, MediaInfoPtr mi)
 {
+    Q_UNUSED(url);
     stopWaiting();
 
     if (mi->ykdl.isEmpty() && mi->you_get.isEmpty() && mi->youtube_dl.isEmpty() && mi->annie.isEmpty())
@@ -591,11 +592,11 @@ void Browser::onNormalLinkResolved(MediaInfoPtr mi)
     play(mi);
 }
 
-void Browser::onNormalLinkResolvingError(const QString &u)
+void Browser::onNormalLinkResolvingError(const QString& url, const QString &msg)
 {
     stopWaiting();
 
-    play(QStringList() << u, tr("Play movie online directly\n%1").arg(u));
+    play(QStringList() << url, tr("%1 Play movie online directly\n%2").arg(msg).arg(url));
 }
 
 void Browser::onVIPLinkResolved(const QStringList &urls)

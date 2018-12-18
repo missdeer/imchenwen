@@ -55,8 +55,8 @@ signals:
 
 private slots:
     void onClipboardChanged();
-    void onNormalLinkResolved(MediaInfoPtr mi);
-    void onNormalLinkResolvingError(const QString&);
+    void onNormalLinkResolved(const QString &url, MediaInfoPtr mi);
+    void onNormalLinkResolvingError(const QString&, const QString&);
     void onVIPLinkResolved(const QStringList &urls);
     void onVIPLinkResolvingError();
     void onSnifferDone(const QString& url);
