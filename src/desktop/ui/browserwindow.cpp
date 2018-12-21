@@ -525,6 +525,7 @@ void BrowserWindow::onSettings()
         Browser::instance().m_liveTVHelper.update();
         Browser::instance().m_websites.update();
         Browser::instance().m_vipResolver.update();
+        Browser::instance().m_linkResolver.setupResolvers();
     }
 }
 

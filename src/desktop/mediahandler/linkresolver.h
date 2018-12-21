@@ -56,6 +56,7 @@ public:
     explicit LinkResolver(QObject *parent = nullptr);
     ~LinkResolver();
     void resolve(const QString &url);
+    void setupResolvers();
 signals:
     void done(const QString& url, MediaInfoPtr);
     void error(const QString& url, const QString&msg);

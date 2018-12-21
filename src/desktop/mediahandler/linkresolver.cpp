@@ -19,12 +19,7 @@ LinkResolver::LinkResolver(QObject *parent)
         { "annie", &m_annieProcess, std::bind(&LinkResolver::parseAnnieNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->annie, QStringList() << "-j"},
 })
 {
-    Config cfg;
-    for (auto & r : m_resolvers)
-    {
-        r.process->setProgram(cfg.read<QString>(r.name));
-        connect(r.process, &LinkResolverProcess::done, this, &LinkResolver::onReadResolverOutput);
-    }
+    setupResolvers();
 }
 
 void LinkResolver::terminateResolvers()
@@ -288,5 +283,34 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
         }
         stream->quality = s["quality"].toString();
         streams.append(stream);
+    }
+}
+
+void LinkResolver::setupResolvers()
+{
+    Config cfg;
+    auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QString python = appLocalDataPath + "/python/pythonw.exe";
+    QDir dir(appLocalDataPath + "/python/Scripts");
+    for (auto & r : m_resolvers)
+    {
+        disconnect(r.process, &LinkResolverProcess::done, this, &LinkResolver::onReadResolverOutput);
+#if defined(Q_OS_WIN)
+        QString path = cfg.read<QString>(r.name);
+        QFileInfo fi(path);
+        if (fi.absoluteDir() == dir)
+        {
+            r.process->setProgram(python);
+            if (r.args.at(0) != QDir::toNativeSeparators(path))
+                r.args.insert(0, QDir::toNativeSeparators(path));
+        }
+        else
+        {
+            r.process->setProgram(path);
+        }
+#else
+        r.process->setProgram(cfg.read<QString>(r.name));
+#endif
+        connect(r.process, &LinkResolverProcess::done, this, &LinkResolver::onReadResolverOutput);
     }
 }

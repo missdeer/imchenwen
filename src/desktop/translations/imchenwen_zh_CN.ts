@@ -70,7 +70,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="90"/>
         <location filename="../ui/browserwindow.cpp" line="295"/>
-        <location filename="../ui/browserwindow.cpp" line="544"/>
+        <location filename="../ui/browserwindow.cpp" line="545"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -284,44 +284,44 @@ Build at </source>
         <translation>偏好设置...</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="546"/>
+        <location filename="../ui/browserwindow.cpp" line="547"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="558"/>
+        <location filename="../ui/browserwindow.cpp" line="559"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="559"/>
+        <location filename="../ui/browserwindow.cpp" line="560"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="584"/>
+        <location filename="../ui/browserwindow.cpp" line="585"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="592"/>
+        <location filename="../ui/browserwindow.cpp" line="593"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="593"/>
+        <location filename="../ui/browserwindow.cpp" line="594"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="690"/>
+        <location filename="../ui/browserwindow.cpp" line="691"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="694"/>
+        <location filename="../ui/browserwindow.cpp" line="695"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
@@ -465,7 +465,7 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>LinkResolver</name>
     <message>
-        <location filename="../mediahandler/linkresolver.cpp" line="97"/>
+        <location filename="../mediahandler/linkresolver.cpp" line="92"/>
         <source>Resolving failed.</source>
         <translation>解析失败。</translation>
     </message>
@@ -814,7 +814,7 @@ MPV错误：</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="23"/>
+        <location filename="../main.cpp" line="25"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>

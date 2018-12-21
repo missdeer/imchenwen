@@ -18,7 +18,8 @@ INCLUDEPATH += $$PWD \
     $$PWD/webengine \
     $$PWD/config \
     $$PWD/ui \
-    $$PWD/mediahandler
+    $$PWD/mediahandler \
+    $$PWD/upgrade
 
 HEADERS += \
     $$PWD/util.h \
@@ -55,7 +56,9 @@ HEADERS += \
     $$PWD/webengine/webpopupwindow.h \
     $$PWD/webengine/webview.h \
     $$PWD/browser.h \
-    $$PWD/ui/donatedialog.h
+    $$PWD/ui/donatedialog.h \
+    $$PWD/upgrade/dependenciesupgrade.h \
+    $$PWD/networkreplyhelper.h
 
 SOURCES += \
     $$PWD/browser.cpp \
@@ -91,7 +94,9 @@ SOURCES += \
     $$PWD/webengine/webpage.cpp \
     $$PWD/webengine/webpopupwindow.cpp \
     $$PWD/webengine/webview.cpp \
-    $$PWD/ui/donatedialog.cpp
+    $$PWD/ui/donatedialog.cpp \
+    $$PWD/upgrade/dependenciesupgrade.cpp \
+    $$PWD/networkreplyhelper.cpp
 
 FORMS += \
     $$PWD/dlna/dlnaplayerview.ui \
