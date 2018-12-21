@@ -23,29 +23,38 @@ void DependenciesUpgrade::run()
 
 void DependenciesUpgrade::upgradeForWin()
 {
-#if defined(Q_OS_WIN64)
-    // https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-latest-win64-static.zip
-
-    // https://github.com/iawia002/annie/releases/latest
-    // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_64-bit.zip
-#else
-    // https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-latest-win32-static.zip
-
-    // https://github.com/iawia002/annie/releases/latest
-    // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_32-bit.zip
-#endif
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     QDir d(appLocalDataPath);
     if (!d.exists())
         d.mkpath(appLocalDataPath);
+#if defined(Q_OS_WIN64)
+    QString ffmpegUrl = "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-latest-win64-static.zip";
+    QString ffmpeg = appLocalDataPath + "/ffmpeg-latest-win64-static/bin/ffmpeg.exe";
+
+    // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_64-bit.zip
+#else
+    QString ffmpegUrl = "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-latest-win32-static.zip";
+    QString ffmpeg = appLocalDataPath + "/ffmpeg-latest-win32-static/bin/ffmpeg.exe";
+
+    // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_32-bit.zip
+#endif
+    if (QFile::exists(ffmpeg))
+    {
+        // download latest ffmpeg zip package
+    }
+    QString annieReleaseUrl = "https://github.com/iawia002/annie/releases/latest";
+
     QString python = appLocalDataPath + "/python/python.exe";
     QString pip3 = appLocalDataPath + "/python/Scripts/pip3.exe";
-    QProcess process;
-    process.setProgram(python);
-    process.setArguments(QStringList() << QDir::toNativeSeparators(pip3) << "install" << "--upgrade" << "ykdl" << "you-get" << "youtube-dl");
-    process.setWorkingDirectory(appLocalDataPath + "/python/Scripts");
-    process.start();
-    process.waitForFinished();
+    if (QFile::exists(python) && QFile::exists(pip3))
+    {
+        QProcess process;
+        process.setProgram(python);
+        process.setArguments(QStringList() << QDir::toNativeSeparators(pip3) << "install" << "--upgrade" << "ykdl" << "you-get" << "youtube-dl");
+        process.setWorkingDirectory(appLocalDataPath + "/python/Scripts");
+        process.start();
+        process.waitForFinished();
+    }
 }
 
 void DependenciesUpgrade::upgradeForMac()
