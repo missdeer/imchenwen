@@ -15,8 +15,16 @@ Websites::Websites(QObject *parent)
 bool Websites::isIn(const QUrl &url, const QString& category)
 {
     QString host = url.host();
-    auto it = std::find_if(m_websites.begin(), m_websites.end(),
-                           [&host](WebsitePtr w) { return w->url.contains(host, Qt::CaseInsensitive); });
+    auto it = std::find_if(m_websites.begin(), m_websites.end(), [&host](WebsitePtr w) {
+            QStringList ss = host.split(QChar('.'));
+            while (ss.length() > 1)
+            {
+                if (w->url.contains(ss.join(QChar('.')), Qt::CaseInsensitive))
+                    return true;
+                ss.removeAt(0);
+            }
+            return false;
+    });
 
     if (m_websites.end() != it)
         return category.isEmpty() ? true : (*it)->category == category;

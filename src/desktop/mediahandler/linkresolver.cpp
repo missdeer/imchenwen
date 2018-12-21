@@ -290,7 +290,7 @@ void LinkResolver::setupResolvers()
 {
     Config cfg;
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-    QString python = appLocalDataPath + "/python/pythonw.exe";
+    QString python = appLocalDataPath + "/python/python.exe";
     QDir dir(appLocalDataPath + "/python/Scripts");
     for (auto & r : m_resolvers)
     {

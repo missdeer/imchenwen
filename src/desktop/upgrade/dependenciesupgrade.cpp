@@ -38,7 +38,7 @@ void DependenciesUpgrade::upgradeForWin()
     QDir d(appLocalDataPath);
     if (!d.exists())
         d.mkpath(appLocalDataPath);
-    QString python = appLocalDataPath + "/python/pythonw.exe";
+    QString python = appLocalDataPath + "/python/python.exe";
     QString pip3 = appLocalDataPath + "/python/Scripts/pip3.exe";
     QProcess process;
     process.setProgram(python);
