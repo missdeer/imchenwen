@@ -1,7 +1,9 @@
 #include "dependenciesupgrade.h"
 #include "networkreplyhelper.h"
+#include "config.h"
 #include <QStringList>
 #include <QFile>
+#include <QFileInfo>
 #include <QProcess>
 #include <QStandardPaths>
 #include <QDir>
@@ -46,6 +48,24 @@ void DependenciesUpgrade::upgradeForWin()
 
     QString python = appLocalDataPath + "/python/python.exe";
     QString pip3 = appLocalDataPath + "/python/Scripts/pip3.exe";
+
+    Config cfg;
+    QString ykdlPath = cfg.read<QString>("ykdl");
+    QFileInfo fi(ykdlPath);
+    if (fi.absoluteDir() != QDir(appLocalDataPath + "/python/Scripts"))
+    {
+        if (QFile::exists(fi.absolutePath() + "/pip3.exe"))
+        {
+            pip3 = fi.absolutePath() + "/pip3.exe";
+        }
+        QDir d = fi.absoluteDir();
+        d.cdUp();
+        if (QFile::exists(d.absolutePath() + "/python.exe"))
+        {
+            python = d.absolutePath() + "/python.exe";
+        }
+    }
+
     if (QFile::exists(python) && QFile::exists(pip3))
     {
         QProcess process;
