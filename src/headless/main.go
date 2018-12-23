@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/DeanThompson/ginpprof"
@@ -18,6 +19,13 @@ var (
 
 func handleDynamicReuqest(c *gin.Context) {
 	id := c.Param("id")
+	// 1. 已经下载完成的，本地有对应的完整文件的
+	if b, e := fileExists(filepath.Join(staticPath, id)); e == nil && b {
+		c.Redirect(http.StatusFound, "/v1/s/"+id)
+		return
+	}
+	// 2. 正在下载的，下载到一半的，本地有对应的不完整文件的
+	// 3. 没有下载过的，只有一个目标URL（以及user-agent，cookie，referer等信息）的
 	toURL, err := cache.Get(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -26,7 +34,9 @@ func handleDynamicReuqest(c *gin.Context) {
 		})
 		return
 	}
-	// forward toURL
+	// 3.a. m3u8类型的
+	// 3.b. mp4/flv/ts 等类型的
+
 }
 
 func handleMapURL(c *gin.Context) {
