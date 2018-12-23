@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"time"
 
@@ -14,16 +13,14 @@ import (
 
 var (
 	// the collection name of redis for cache adapter.
-	defaultRedisKey    = "imchenwen:parsed"
+	defaultRedisKey    = "imchenwen:headless"
 	defaultRedisServer = "127.0.0.1:6379"
-	rd                 *RedisCache
 )
 
 func redisInit() *RedisCache {
-	rd = newRedisCache()
+	rd := newRedisCache()
 	if err := rd.StartAndGC(fmt.Sprintf("{\"conn\" : \"%s\"}", defaultRedisServer)); err != nil {
-		log.Panic("connecting to redis failed")
-		os.Exit(1)
+		log.Fatal("connecting to redis failed", err)
 	}
 	return rd
 }
