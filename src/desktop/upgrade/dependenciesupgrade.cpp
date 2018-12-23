@@ -100,7 +100,7 @@ void DependenciesUpgrade::upgradeForMac()
     // brew update && brew upgrade
     process.start("/usr/local/bin/brew update");
     process.waitForFinished();
-    process.start("/usr/local/bin/brew upgrade");
+    process.start("/usr/local/bin/brew upgrade mpv annie python3");
     process.waitForFinished();
     // pip3 install --upgrade ykdl you-get
     process.start("/usr/local/bin/pip3 install --upgrade ykdl you-get");

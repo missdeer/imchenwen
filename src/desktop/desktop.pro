@@ -139,7 +139,7 @@ macx: {
     QT += macextras
     ICON = res/imchenwen.icns
     icon.files += res/imchenwen128.png
-    LIBS += /usr/local/lib -framework Cocoa -framework WebKit
+    LIBS+=-framework Cocoa -framework WebKit
     HEADERS  += \
         $$PWD/cocoawebview/cocoawebview.h \
         $$PWD/cocoawebview/qtcocoawebview.h
