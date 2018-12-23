@@ -52,7 +52,7 @@ void DependenciesUpgrade::upgradeForWin()
     Config cfg;
     QString ykdlPath = cfg.read<QString>("ykdl");
     QFileInfo fi(ykdlPath);
-    if (fi.absoluteDir() != QDir(appLocalDataPath + "/python/Scripts"))
+    if (fi.absoluteDir() != QDir(appLocalDataPath + "/Scripts"))
     {
         if (QFile::exists(fi.absolutePath() + "/pip3.exe"))
         {
@@ -71,7 +71,7 @@ void DependenciesUpgrade::upgradeForWin()
         QProcess process;
         process.setProgram(python);
         process.setArguments(QStringList() << QDir::toNativeSeparators(pip3) << "install" << "--upgrade" << "ykdl" << "you-get" << "youtube-dl");
-        process.setWorkingDirectory(appLocalDataPath + "/python/Scripts");
+        process.setWorkingDirectory(QFileInfo(pip3).absolutePath());
         process.start();
         process.waitForFinished();
     }
