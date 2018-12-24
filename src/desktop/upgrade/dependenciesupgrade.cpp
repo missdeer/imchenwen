@@ -16,7 +16,10 @@
 
 DependenciesUpgrade::DependenciesUpgrade()
 {
-
+    auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir d(appLocalDataPath);
+    if (!d.exists())
+        d.mkpath(appLocalDataPath);
 }
 
 void DependenciesUpgrade::run()
@@ -34,9 +37,6 @@ void DependenciesUpgrade::run()
 void DependenciesUpgrade::upgradeForWin()
 {
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-    QDir d(appLocalDataPath);
-    if (!d.exists())
-        d.mkpath(appLocalDataPath);
 
     // install ykdl/you-get/youtube-dl via pip3
     QString python = appLocalDataPath + "/python/python.exe";
@@ -100,12 +100,11 @@ void DependenciesUpgrade::upgradeForWin()
         cfg.write("ffmpeg", ffmpeg);
     }
 
-    QString annie = d.absolutePath() + "/annie.exe";
+    QString annie = appLocalDataPath + "/annie.exe";
     if (QFile::exists(annie) || !QFile::exists(cfg.read<QString>("annie")))
     {
         QString annieLatestReleasePageUrl = "https://github.com/iawia002/annie/releases/latest";
-        QByteArray data;
-        getData(annieLatestReleasePageUrl, data);
+        QByteArray data = getData(annieLatestReleasePageUrl);
         reg.setPatternOptions(QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = reg.match(data);
         if (match.hasMatch())
@@ -168,8 +167,7 @@ void DependenciesUpgrade::upgradeForMac()
 
 void DependenciesUpgrade::getFile(const QString &u, const QString &saveToFile)
 {
-    QByteArray data;
-    getData(u, data);
+    QByteArray data = getData(u);
     QFile f(saveToFile);
     if (f.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -178,14 +176,14 @@ void DependenciesUpgrade::getFile(const QString &u, const QString &saveToFile)
     }
 }
 
-void DependenciesUpgrade::getData(const QString &u,  QByteArray &data)
+QByteArray DependenciesUpgrade::getData(const QString &u)
 {
     QNetworkRequest req(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     QNetworkReply* reply = nam.get(req);
     NetworkReplyHelper helper(reply);
     helper.waitForFinished();
-    data = helper.content();
+    return std::move(helper.content());
 }
 
 void DependenciesUpgrade::extractZIP(const QString &zip)
@@ -217,13 +215,6 @@ void DependenciesUpgrade::extractZIP(const QString &zip)
 bool DependenciesUpgrade::checkDate()
 {
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-    QDir d(appLocalDataPath);
-    if (!d.exists())
-    {
-        d.mkpath(appLocalDataPath);
-        return true;
-    }
-
     QString dateFile = appLocalDataPath + "/upgrade.lock";
     QFile f(dateFile);
     if (!f.open(QIODevice::ReadOnly))
@@ -240,10 +231,6 @@ bool DependenciesUpgrade::checkDate()
 void DependenciesUpgrade::markDate()
 {
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-    QDir d(appLocalDataPath);
-    if (!d.exists())
-        d.mkpath(appLocalDataPath);
-
     QString dateFile = appLocalDataPath + "/upgrade.lock";
     QFile f(dateFile);
     if (f.open(QIODevice::WriteOnly | QIODevice::Truncate))

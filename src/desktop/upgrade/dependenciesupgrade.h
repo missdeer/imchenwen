@@ -15,7 +15,7 @@ private:
     void upgradeForWin();
     void upgradeForMac();
     void getFile(const QString& u, const QString& saveToFile);
-    void getData(const QString& u, QByteArray &data);
+    QByteArray getData(const QString& u);
     void extractZIP(const QString& zip);
     bool checkDate();
     void markDate();
