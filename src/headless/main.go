@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -45,6 +46,10 @@ func handleDynamicReuqest(c *gin.Context) {
 	request, err := http.NewRequest("GET", toURL, nil)
 	if err != nil {
 		log.Println("Could not parse getting video request:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"result": "error",
+			"reason": fmt.Sprintln("Could not parse getting video request:", err),
+		})
 		return
 	}
 	if userAgent == nil {
@@ -63,6 +68,10 @@ func handleDynamicReuqest(c *gin.Context) {
 	resp, err := client.Do(request)
 	if err != nil {
 		log.Println("Could not send getting video request:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"result": "error",
+			"reason": fmt.Sprintln("Could not send getting video request:", err),
+		})
 		return
 	}
 
