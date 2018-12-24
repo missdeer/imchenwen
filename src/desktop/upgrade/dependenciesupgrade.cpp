@@ -10,7 +10,6 @@
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
-#include <QEventLoop>
 #include <QRegularExpression>
 #include <private/qzipreader_p.h>
 #include <private/qzipwriter_p.h>
@@ -93,7 +92,6 @@ void DependenciesUpgrade::upgradeForWin()
     // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_32-bit.zip
     QRegularExpression reg("\\/iawia002\\/annie\\/releases\\/download\\/[0-9\\.]+\\/annie_[0-9\\.]+_Windows_32\\-bit.zip");
 #endif
-    QEventLoop loop;
     if (QFile::exists(ffmpeg) || !QFile::exists(cfg.read<QString>("ffmpeg")))
     {
         getFile(ffmpegUrl, appLocalDataPath + "/ffmpeg.zip");
@@ -182,15 +180,11 @@ void DependenciesUpgrade::getFile(const QString &u, const QString &saveToFile)
 
 void DependenciesUpgrade::getData(const QString &u,  QByteArray &data)
 {
-    QEventLoop loop;
     QNetworkRequest req(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     QNetworkReply* reply = nam.get(req);
     NetworkReplyHelper helper(reply);
-    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec();
-    reply->deleteLater();
-    QObject::disconnect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    helper.waitForFinished();
     data = helper.content();
 }
 

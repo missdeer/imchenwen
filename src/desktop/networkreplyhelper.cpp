@@ -1,4 +1,5 @@
 #include <QtCore>
+#include <QEventLoop>
 #include "networkreplyhelper.h"
 
 NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent)
@@ -24,6 +25,14 @@ NetworkReplyHelper::~NetworkReplyHelper()
         m_reply->deleteLater();
         m_reply = nullptr;
     }
+}
+
+void NetworkReplyHelper::waitForFinished()
+{
+    QEventLoop loop;
+    QObject::connect(m_reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+    QObject::disconnect(m_reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 }
 
 void NetworkReplyHelper::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)

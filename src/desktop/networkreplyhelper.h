@@ -10,6 +10,7 @@ class NetworkReplyHelper : public QObject
 public:
     explicit NetworkReplyHelper(QNetworkReply* reply, QObject *parent = nullptr);
     ~NetworkReplyHelper();
+    void waitForFinished();
     QByteArray& content() { return m_content; }
 signals:
     void done();
