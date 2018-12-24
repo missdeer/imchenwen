@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = imchenwen
-QT += webengine webenginecore webenginewidgets xml concurrent
+QT += webengine webenginecore webenginewidgets xml concurrent gui-private
 CONFIG += c++17
 
 contains(QMAKE_HOST.arch, x86_64): {
