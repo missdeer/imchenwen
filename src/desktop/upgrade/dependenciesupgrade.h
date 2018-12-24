@@ -17,6 +17,8 @@ private:
     void getFile(const QString& u, const QString& saveToFile);
     void getData(const QString& u, QByteArray &data);
     void extractZIP(const QString& zip);
+    bool checkDate();
+    void markDate();
 };
 
 #endif // DEPENDENCIESUPGRADE_H

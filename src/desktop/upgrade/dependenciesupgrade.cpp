@@ -1,6 +1,7 @@
 #include "dependenciesupgrade.h"
 #include "networkreplyhelper.h"
 #include "config.h"
+#include <QDate>
 #include <QStringList>
 #include <QFile>
 #include <QFileInfo>
@@ -21,6 +22,8 @@ DependenciesUpgrade::DependenciesUpgrade()
 
 void DependenciesUpgrade::run()
 {
+    if (!checkDate())
+        return;
 #if defined (Q_OS_WIN)
     upgradeForWin();
 #elif defined(Q_OS_MAC)
@@ -117,6 +120,8 @@ void DependenciesUpgrade::upgradeForWin()
             cfg.write("annie", annie);
         }
     }
+
+    markDate();
 }
 
 void DependenciesUpgrade::upgradeForMac()
@@ -159,6 +164,8 @@ void DependenciesUpgrade::upgradeForMac()
         cfg.write("annie", "/usr/local/bin/annie");
     if (!QFile::exists(cfg.read<QString>("ffmpeg")))
         cfg.write("ffmpeg", "/usr/local/bin/ffmpeg");
+
+    markDate();
 }
 
 void DependenciesUpgrade::getFile(const QString &u, const QString &saveToFile)
@@ -211,4 +218,43 @@ void DependenciesUpgrade::extractZIP(const QString &zip)
     }
 
     cZip.close();
+}
+
+bool DependenciesUpgrade::checkDate()
+{
+    auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir d(appLocalDataPath);
+    if (!d.exists())
+    {
+        d.mkpath(appLocalDataPath);
+        return true;
+    }
+
+    QString dateFile = appLocalDataPath + "/upgrade.lock";
+    QFile f(dateFile);
+    if (!f.open(QIODevice::ReadOnly))
+    {
+        return true;
+    }
+    QByteArray data = f.readAll();
+    f.close();
+
+    QDate date = QDate::fromString(QString(data), Qt::TextDate);
+    return date.daysTo(QDate::currentDate()) != 0; // return false if it's today
+}
+
+void DependenciesUpgrade::markDate()
+{
+    auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir d(appLocalDataPath);
+    if (!d.exists())
+        d.mkpath(appLocalDataPath);
+
+    QString dateFile = appLocalDataPath + "/upgrade.lock";
+    QFile f(dateFile);
+    if (f.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        f.write(QDate::currentDate().toString(Qt::TextDate).toUtf8());
+        f.close();
+    }
 }
