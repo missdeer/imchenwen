@@ -69,8 +69,10 @@ func handleDynamicReuqest(c *gin.Context) {
 	defer resp.Body.Close()
 	if strings.HasSuffix(toURL, ".m3u8") {
 		// 3.a. m3u8类型的
+
 		// 3.a.1）加密的；
 		// 3.a.2）不加密的。
+
 		// 3.a.1）完整URL的；
 		// 3.a.2）根路径的；
 		// 3.a.3）相对路径的。
@@ -82,6 +84,7 @@ func handleDynamicReuqest(c *gin.Context) {
 		go func() {
 			io.Copy(lp, resp.Body)
 			lp.End()
+			cache.Put(id+":fs", staticFilePath)
 		}()
 
 		c.DataFromReader(http.StatusOK, resp.ContentLength, "application/octet-stream", lp, nil)
