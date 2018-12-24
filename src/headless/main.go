@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -20,23 +20,72 @@ var (
 func handleDynamicReuqest(c *gin.Context) {
 	id := c.Param("id")
 	// 1. 已经下载完成的，本地有对应的完整文件的
-	if b, e := fileExists(filepath.Join(staticPath, id)); e == nil && b {
-		c.Redirect(http.StatusFound, "/v1/s/"+id)
-		return
-	}
 	// 2. 正在下载的，下载到一半的，本地有对应的不完整文件的
+	if p, err := cache.Get(id + ":fs"); err == nil {
+		if b, err := fileExists(p.(string)); err == nil && b {
+			c.File(p.(string))
+			return
+		}
+	}
 	// 3. 没有下载过的，只有一个目标URL（以及user-agent，cookie，referer等信息）的
-	toURL, err := cache.Get(id)
+	to, err := cache.Get(id + ":to")
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"result": "error",
-			"reason": fmt.Sprintln(err),
+			"reason": "not found matched target URL",
 		})
 		return
 	}
-	// 3.a. m3u8类型的
-	// 3.b. mp4/flv/ts 等类型的
+	userAgent, err := cache.Get(id + ":ua")
+	cookie, err := cache.Get(id + ":cookie")
+	referer, err := cache.Get(id + ":referer")
 
+	client := &http.Client{}
+	toURL := to.(string)
+	request, err := http.NewRequest("GET", toURL, nil)
+	if err != nil {
+		log.Println("Could not parse getting video request:", err)
+		return
+	}
+	if userAgent == nil {
+		request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
+	} else {
+		request.Header.Set("User-Agent", userAgent.(string))
+	}
+	if cookie != nil {
+		request.Header.Set("Cookie", cookie.(string))
+	}
+	if referer != nil {
+		request.Header.Set("Referer", referer.(string))
+	}
+	request.Header.Set("Accept", "application/json, text/javascript, */*")
+
+	resp, err := client.Do(request)
+	if err != nil {
+		log.Println("Could not send getting video request:", err)
+		return
+	}
+
+	defer resp.Body.Close()
+	if strings.HasSuffix(toURL, ".m3u8") {
+		// 3.a. m3u8类型的
+		// 3.a.1）加密的；
+		// 3.a.2）不加密的。
+		// 3.a.1）完整URL的；
+		// 3.a.2）根路径的；
+		// 3.a.3）相对路径的。
+	} else {
+		// 3.b. mp4/flv/ts 等类型的
+		staticFilePath := filepath.Join(staticPath, id)
+		lp := &LocalPipe{}
+		lp.File(staticFilePath)
+		go func() {
+			io.Copy(lp, resp.Body)
+			lp.End()
+		}()
+
+		c.DataFromReader(http.StatusOK, resp.ContentLength, "application/octet-stream", lp, nil)
+	}
 }
 
 func handleMapURL(c *gin.Context) {
@@ -51,12 +100,25 @@ func handleMapURL(c *gin.Context) {
 		return
 	}
 	// save to redis
-	cache.Put(from, to)
-	c.JSON(http.StatusOK, gin.H{
+	cache.Put(from+":to", to)
+	res := gin.H{
 		"result": "ok",
 		"from":   from,
 		"to":     to,
-	})
+	}
+	if userAgent := c.PostForm("userAgent"); userAgent != "" {
+		cache.Put(from+":ua", userAgent)
+		res["userAgent"] = userAgent
+	}
+	if cookie := c.PostForm("cookie"); cookie != "" {
+		cache.Put(from+":cookie", cookie)
+		res["cookie"] = cookie
+	}
+	if referer := c.PostForm("referer"); referer != "" {
+		cache.Put(from+":referer", referer)
+		res["referer"] = referer
+	}
+	c.JSON(http.StatusOK, res)
 }
 
 func handleResolveURL(c *gin.Context) {
