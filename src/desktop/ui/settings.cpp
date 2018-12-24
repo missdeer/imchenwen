@@ -436,7 +436,7 @@ void SettingsDialog::onBrowseYouGetPath()
 {
     QString path = QFileDialog::getOpenFileName(this,
                                  tr("Select you-get executable"),
-                                                QString(),
+                                                QDir(edtYouGetPath->text()).absolutePath(),
                                             #if defined(Q_OS_WIN)
                                                 tr("you-get executable (you-get.exe)")
                                             #else
@@ -453,7 +453,7 @@ void SettingsDialog::onBrowseYKDLPath()
 {
     QString path = QFileDialog::getOpenFileName(this,
                                  tr("Select ykdl executable"),
-                                                QString(),
+                                                QDir(edtYKDLPath->text()).absolutePath(),
                                             #if defined(Q_OS_WIN)
                                                 tr("ykdl executable (ykdl.exe)")
                                             #else
@@ -470,7 +470,7 @@ void SettingsDialog::onBrowseYoutubeDLPath()
 {
     QString path = QFileDialog::getOpenFileName(this,
                                  tr("Select youtube-dl executable"),
-                                                QString(),
+                                                QDir(edtYoutubeDLPath->text()).absolutePath(),
                                             #if defined(Q_OS_WIN)
                                                 tr("youtube-dl executable (youtube-dl.exe)")
                                             #else
@@ -487,7 +487,7 @@ void SettingsDialog::onBrowseAnniePath()
 {
     QString path = QFileDialog::getOpenFileName(this,
                                  tr("Select annie executable"),
-                                                QString(),
+                                                QDir(edtAnniePath->text()).absolutePath(),
                                             #if defined(Q_OS_WIN)
                                                 tr("annie executable (annie.exe)")
                                             #else
@@ -504,7 +504,7 @@ void SettingsDialog::onBrowseFFmpegPath()
 {
     QString path = QFileDialog::getOpenFileName(this,
                                  tr("Select FFmpeg executable"),
-                                                QString(),
+                                                QDir(edtFFmpegPath->text()).absolutePath(),
                                             #if defined(Q_OS_WIN)
                                                 tr("FFmpeg executable (ffmpeg.exe)")
                                             #else
