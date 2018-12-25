@@ -25,7 +25,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
 {
     if (originalUrl != m_originalUrl)
     {
-        m_streams.clear();
+        m_resultStreams.clear();
         ui->listMedia->clear();
     }
 
@@ -59,7 +59,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
             else
                 item->setToolTip(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
         }
-        m_streams.append(s.streams);
+        m_resultStreams.append(s.streams);
         nextGroup:
         ;
     }
@@ -69,18 +69,24 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     m_originalUrl = originalUrl;
 }
 
-void PlayDialog::setMediaInfo(const QString &title, const QStringList &urls)
+void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &results)
 {
-    m_originalUrl.clear();
-    m_streams.clear();
-    ui->listMedia->clear();
-    m_urls = urls;
-    for( const auto& url : urls)
+    if (originalUrl != m_originalUrl)
     {
+        m_resultStreams.clear();
+        ui->listMedia->clear();
+    }
+
+    for( const auto& url : results)
+    {
+        if (m_resultUrls.contains(url))
+            continue;
+
         auto item = addItem(QIcon(":/video.png"),
                             title + "\n" + url,
                             ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
         item->setToolTip(QUrl(url).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
+        m_resultUrls.append(url);
     }
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
@@ -162,11 +168,11 @@ void PlayDialog::doOk()
     int currentRow = ui->listMedia->currentRow();
     if (m_complexUrlResources)
     {
-        m_selectedMedia = m_streams[currentRow];
+        m_selectedMedia = m_resultStreams[currentRow];
     }
     else
     {
-        m_selectedUrl = m_urls[currentRow];
+        m_selectedUrl = m_resultUrls[currentRow];
     }
     if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->name())) || m_selectedPlayer->type() != Player::PT_EXTERNAL)
     {

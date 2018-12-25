@@ -25,6 +25,7 @@ Sniffer::Sniffer(QObject *parent)
 
 void Sniffer::sniff(const QString &url)
 {
+    m_originalUrl = url;
     m_data.clear();
     m_process.setArguments(QStringList() << url);
     m_process.start();
@@ -51,7 +52,7 @@ void Sniffer::onFinished(int exitCode, QProcess::ExitStatus )
         for (const auto & line : lines)
         {
             if (line.trimmed().startsWith("http://") || line.trimmed().startsWith("https://"))
-                emit done(QString(line.trimmed()));
+                emit done(m_originalUrl, QString(line.trimmed()));
         }
     }
 }

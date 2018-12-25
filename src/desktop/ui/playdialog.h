@@ -22,7 +22,7 @@ public:
     explicit PlayDialog(QWidget *parent = nullptr);
     ~PlayDialog();
     void setMediaInfo(const QString &originalUrl, MediaInfoPtr mi);
-    void setMediaInfo(const QString &title, const QStringList &urls);
+    void setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &urls);
     PlayerPtr player() { return m_selectedPlayer; }
     StreamInfoPtr media() { return m_selectedMedia; }
     QString url() { return m_selectedUrl; }
@@ -41,8 +41,8 @@ private:
     PlayerList m_players;
     PlayerPtr m_selectedPlayer;
     StreamInfoPtr m_selectedMedia;
-    Streams m_streams;
-    QStringList m_urls;
+    Streams m_resultStreams;
+    QStringList m_resultUrls;
     QString m_selectedUrl;
     QString m_originalUrl;
     bool m_complexUrlResources;

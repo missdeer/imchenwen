@@ -13,7 +13,7 @@ public:
     void sniff(const QString &url);
     void stop();
 signals:
-    void done(const QString &);
+    void done(const QString &, const QString &);
     void error();
 private slots:
     void onReadStandardOutput();
@@ -22,6 +22,7 @@ private slots:
 private:
     QProcess m_process;
     QByteArray m_data;
+    QString m_originalUrl;
 };
 
 

@@ -514,7 +514,7 @@ void BrowserWindow::onLiveTV()
     QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
-    Browser::instance().play(QStringList() << url, "Live TV - " + action->text());
+    Browser::instance().play(url, QStringList() << url, "Live TV - " + action->text());
 }
 
 void BrowserWindow::onSettings()
@@ -582,7 +582,7 @@ void BrowserWindow::onPlayURL()
         }
         else if (dlg.playDirectly())
         {
-            Browser::instance().play(QStringList() << dlg.url(), tr("Play URL directly"));
+            Browser::instance().play(dlg.url(), QStringList() << dlg.url(), tr("Play URL directly"));
         }
     }
 }

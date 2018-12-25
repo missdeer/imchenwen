@@ -49,17 +49,17 @@ public:
     void loadSettings();
     void resolveAndPlayByMediaPlayer(const QString &u);
     void resolveVIPAndPlayByMediaPlayer(const QString &u);
-    void play(const QStringList &url, const QString &title);
+    void play(const QString& originalUrl, const QStringList &results, const QString &title);
     void init();
 signals:
 
 private slots:
     void onClipboardChanged();
-    void onNormalLinkResolved(const QString &url, MediaInfoPtr mi);
+    void onNormalLinkResolved(const QString &originalUrl, MediaInfoPtr results);
     void onNormalLinkResolvingError(const QString&, const QString&);
-    void onVIPLinkResolved(const QStringList &urls);
+    void onVIPLinkResolved(const QString &originalUrl, const QStringList &results);
     void onVIPLinkResolvingError();
-    void onSnifferDone(const QString& url);
+    void onSnifferDone(const QString &originalUrl, const QString& result);
     void onSnifferError();
     void onProcessError(QProcess::ProcessError error);
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);

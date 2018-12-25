@@ -279,15 +279,15 @@ void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
     m_playDialog = nullptr;
 }
 
-void Browser::play(const QStringList &url, const QString &title)
+void Browser::play(const QString& originalUrl, const QStringList &results, const QString &title)
 {
     if (m_playDialog)
     {
-        m_playDialog->setMediaInfo(title, url);
+        m_playDialog->setMediaInfo(originalUrl, title, results);
         return;
     }
     m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    m_playDialog->setMediaInfo(title, url);
+    m_playDialog->setMediaInfo(originalUrl, title, results);
     if (m_playDialog->exec())
     {
         PlayerPtr player = m_playDialog->player();
@@ -578,34 +578,34 @@ void Browser::stopWaiting()
     }
 }
 
-void Browser::onNormalLinkResolved(const QString& url, MediaInfoPtr mi)
+void Browser::onNormalLinkResolved(const QString& originalUrl, MediaInfoPtr results)
 {
-    Q_UNUSED(url);
+    Q_UNUSED(originalUrl);
     stopWaiting();
 
-    if (mi->ykdl.isEmpty() && mi->you_get.isEmpty() && mi->youtube_dl.isEmpty() && mi->annie.isEmpty())
+    if (results->ykdl.isEmpty() && results->you_get.isEmpty() && results->youtube_dl.isEmpty() && results->annie.isEmpty())
     {
         QMessageBox::warning(mainWindow(),
                              tr("Error"), tr("Resolving link address failed! Please try again."), QMessageBox::Ok);
         return;
     }
 
-    play(url, mi);
+    play(originalUrl, results);
 }
 
 void Browser::onNormalLinkResolvingError(const QString& url, const QString &msg)
 {
     stopWaiting();
 
-    play(QStringList() << url, tr("%1 Play movie online directly\n%2").arg(msg).arg(url));
+    play(url, QStringList() << url, tr("%1 Play movie online directly\n%2").arg(msg).arg(url));
 }
 
-void Browser::onVIPLinkResolved(const QStringList &urls)
+void Browser::onVIPLinkResolved(const QString& originalUrl, const QStringList &results)
 {
     stopWaiting();
 
     auto mw = const_cast<BrowserWindow*>(mainWindow());
-    play(urls, mw->maybeVIPVideoTitle());
+    play(originalUrl, results, mw->maybeVIPVideoTitle());
 }
 
 void Browser::onVIPLinkResolvingError()
@@ -618,12 +618,12 @@ void Browser::onVIPLinkResolvingError()
                          QMessageBox::Ok);
 }
 
-void Browser::onSnifferDone(const QString &url)
+void Browser::onSnifferDone(const QString& originalUrl, const QString &result)
 {
     stopWaiting();
 
     auto mw = const_cast<BrowserWindow*>(mainWindow());
-    play(QStringList() << url, mw->maybeVIPVideoTitle());
+    play(originalUrl, QStringList() << result, mw->maybeVIPVideoTitle());
 }
 
 void Browser::onSnifferError()

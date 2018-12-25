@@ -19,14 +19,14 @@ public:
     void stop();
     bool ready() const { return m_ready; }
 signals:
-    void done(const QStringList&);
+    void done(const QString&, const QStringList&);
     void error();
 private slots:
     void onNetworkError(QNetworkReply::NetworkError code);
     void onNetworkSSLErrors(const QList<QSslError> &errors);
     void onReadyRead();
     void onReadFinished();
-    void onSnifferDone(const QString &res);
+    void onSnifferDone(const QString& originalUrl, const QString &result);
     void onSnifferError();
 private:
     bool m_ready;
