@@ -57,6 +57,7 @@ public:
     ~LinkResolver();
     void resolve(const QString &url);
     void setupResolvers();
+    void terminateResolvers();
 signals:
     void done(const QString& url, MediaInfoPtr);
     void error(const QString& url, const QString&msg);
@@ -76,7 +77,6 @@ private:
     void parseYKDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYoutubeDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseAnnieNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
-    void terminateResolvers();
 };
 
 #endif // LINKRESOLVER_H

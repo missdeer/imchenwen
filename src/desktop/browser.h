@@ -87,7 +87,7 @@ private:
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
     void resolveVIPLink(const QString &u);
-    void play(MediaInfoPtr mi);
+    void play(const QString& originalUrl, MediaInfoPtr mi);
     void doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer);
     void playByBuiltinPlayer(const QString &url, const QString& title, const QString &referrer);
     void playByExternalPlayer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);

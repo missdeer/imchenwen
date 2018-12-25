@@ -91,9 +91,10 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
             m_lastUrl.clear();
             emit error(m_lastUrl, tr("Resolving failed."));
         }
-        else
-            emit done(m_lastUrl, m_mediaInfo);
     }
+
+    if (!m_mediaInfo->title.isEmpty() || !m_mediaInfo->site.isEmpty())
+        emit done(m_lastUrl, m_mediaInfo);
 }
 
 void LinkResolver::parseYouGetNode(const QJsonObject &o, MediaInfoPtr mi, Streams &streams)

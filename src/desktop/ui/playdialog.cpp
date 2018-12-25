@@ -21,8 +21,14 @@ PlayDialog::~PlayDialog()
     delete ui;
 }
 
-void PlayDialog::setMediaInfo(MediaInfoPtr mi)
+void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
 {
+    if (originalUrl != m_originalUrl)
+    {
+        m_streams.clear();
+        ui->listMedia->clear();
+    }
+
     struct {
         Streams& streams;
         QString tag;
@@ -40,8 +46,13 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
             if (stream->urls.isEmpty())
                 continue;
 
+            QString itemText = mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag;
+            auto items = ui->listMedia->findItems(itemText, Qt::MatchExactly);
+            if (!items.isEmpty())
+                goto nextGroup;
+
             auto item = addItem(s.icon,
-                                mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag,
+                                itemText,
                                 ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
             if (stream->urls.length() > 1)
                 item->setToolTip(QString("%1 x %2").arg(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery)).arg(stream->urls.length()));
@@ -49,15 +60,19 @@ void PlayDialog::setMediaInfo(MediaInfoPtr mi)
                 item->setToolTip(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
         }
         m_streams.append(s.streams);
+        nextGroup:
+        ;
     }
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
-    m_mediaInfo = mi;
     m_complexUrlResources = true;
+    m_originalUrl = originalUrl;
 }
 
 void PlayDialog::setMediaInfo(const QString &title, const QStringList &urls)
 {
+    m_originalUrl.clear();
+    m_streams.clear();
     ui->listMedia->clear();
     m_urls = urls;
     for( const auto& url : urls)
@@ -91,6 +106,7 @@ void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 void PlayDialog::on_btnPlay_clicked()
 {
     doOk();
+    accept();
 }
 
 void PlayDialog::on_btnCancel_clicked()

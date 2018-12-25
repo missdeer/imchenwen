@@ -255,17 +255,18 @@ void Browser::init()
     m_vipResolver.update();
 }
 
-void Browser::play(MediaInfoPtr mi)
+void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
 {
     if (m_playDialog)
     {
-        m_playDialog->setMediaInfo(mi);
+        m_playDialog->setMediaInfo(originalUrl, mi);
         return;
     }
     m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
-    m_playDialog->setMediaInfo(mi);
+    m_playDialog->setMediaInfo(originalUrl, mi);
     if (m_playDialog->exec())
     {
+        m_linkResolver.terminateResolvers();
         PlayerPtr player = m_playDialog->player();
         StreamInfoPtr stream = m_playDialog->media();
         doPlay(player, stream->urls, mi->title, mi->url);
@@ -589,7 +590,7 @@ void Browser::onNormalLinkResolved(const QString& url, MediaInfoPtr mi)
         return;
     }
 
-    play(mi);
+    play(url, mi);
 }
 
 void Browser::onNormalLinkResolvingError(const QString& url, const QString &msg)
