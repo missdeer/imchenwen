@@ -30,7 +30,7 @@ private slots:
     void onSnifferError();
 private:
     bool m_ready;
-    bool m_done;
+    bool m_stopped;
     int m_resolverIndex;
     int m_finishedCount;
     QByteArray m_data;

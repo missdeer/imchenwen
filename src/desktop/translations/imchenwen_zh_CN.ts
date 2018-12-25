@@ -465,7 +465,7 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>LinkResolver</name>
     <message>
-        <location filename="../mediahandler/linkresolver.cpp" line="92"/>
+        <location filename="../mediahandler/linkresolver.cpp" line="95"/>
         <source>Resolving failed.</source>
         <translation>解析失败。</translation>
     </message>

@@ -66,6 +66,7 @@ public slots:
 private slots:
     void onReadResolverOutput(const QByteArray& data);
 private:
+    bool m_stopped;
     QString m_lastUrl;
     MediaInfoPtr m_mediaInfo;
     LinkResolverProcess m_yougetProcess;

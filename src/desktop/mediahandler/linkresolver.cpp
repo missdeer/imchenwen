@@ -11,6 +11,7 @@
 
 LinkResolver::LinkResolver(QObject *parent)
     : QObject(parent)
+    , m_stopped(false)
     , m_mediaInfo(new MediaInfo)
     , m_resolvers({
         { "you-get", &m_yougetProcess, std::bind(&LinkResolver::parseYouGetNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->you_get, QStringList() << "--json"  },
@@ -24,6 +25,7 @@ LinkResolver::LinkResolver(QObject *parent)
 
 void LinkResolver::terminateResolvers()
 {
+    m_stopped = true;
     m_yougetProcess.stop();
     m_ykdlProcess.stop();
     m_youtubedlProcess.stop();
@@ -44,6 +46,7 @@ void LinkResolver::resolve(const QString& url)
     else
     {
         terminateResolvers();
+        m_stopped = false;
         m_mediaInfo->title.clear();
         m_mediaInfo->site.clear();
 
@@ -93,7 +96,7 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
         }
     }
 
-    if (!m_mediaInfo->title.isEmpty() || !m_mediaInfo->site.isEmpty())
+    if (!m_stopped && (!m_mediaInfo->title.isEmpty() || !m_mediaInfo->site.isEmpty()))
         emit done(m_lastUrl, m_mediaInfo);
 }
 

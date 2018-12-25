@@ -64,7 +64,7 @@ void VIPResolver::resolve(const QString &url)
     }
 
     stop();
-    m_done = false;
+    m_stopped = false;
     m_finishedCount = 0;
     m_resolverIndex = 0;
     m_lastResolveUrl = url;
@@ -78,6 +78,7 @@ void VIPResolver::resolve(const QString &url)
 
 void VIPResolver::stop()
 {
+    m_stopped = true;
     for (auto sniffer : m_sniffers)
         sniffer->stop();
 }
@@ -119,7 +120,7 @@ void VIPResolver::continueSniff(Sniffer *sniffer)
     {
         if (m_results.isEmpty())
             emit error();
-        else
+        else if (!m_stopped)
             emit done(m_lastResolveUrl, m_results);
     }
 }
@@ -127,11 +128,14 @@ void VIPResolver::continueSniff(Sniffer *sniffer)
 void VIPResolver::onSnifferDone(const QString &originalUrl, const QString &result)
 {
     m_finishedCount++;
+    if (m_stopped)
+        return;
 
     if (!m_results.contains(result))
     {
         m_results.append(result);
-        emit done(originalUrl, m_results);
+        if (!m_stopped)
+            emit done(originalUrl, m_results);
     }
 
     Sniffer* sniffer = qobject_cast<Sniffer*>(sender());
@@ -141,7 +145,7 @@ void VIPResolver::onSnifferDone(const QString &originalUrl, const QString &resul
 void VIPResolver::onSnifferError()
 {
     m_finishedCount++;
-    if (m_done)
+    if (m_stopped)
         return;
     Sniffer* sniffer = qobject_cast<Sniffer*>(sender());
     continueSniff(sniffer);
