@@ -87,16 +87,29 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
     }
 
     m_mediaInfo->resultCount++;
-    if (m_mediaInfo->resultCount == m_resolvers.length())
+
+    if ((m_mediaInfo->ykdl.isEmpty() &&
+         m_mediaInfo->you_get.isEmpty() &&
+         m_mediaInfo->youtube_dl.isEmpty() &&
+         m_mediaInfo->annie.isEmpty()) ||
+            (m_mediaInfo->title.isEmpty() &&
+             m_mediaInfo->site.isEmpty()))
     {
-        if (m_mediaInfo->title.isEmpty() && m_mediaInfo->site.isEmpty())
+        if (m_mediaInfo->resultCount == m_resolvers.length())
         {
-            m_lastUrl.clear();
             emit error(m_lastUrl, tr("Resolving failed."));
+            m_lastUrl.clear();
         }
+        return;
     }
 
-    if (!m_stopped && (!m_mediaInfo->title.isEmpty() || !m_mediaInfo->site.isEmpty()))
+    if (!m_stopped &&
+            (!m_mediaInfo->title.isEmpty() ||
+             !m_mediaInfo->site.isEmpty() ||
+             !m_mediaInfo->ykdl.isEmpty() ||
+             !m_mediaInfo->you_get.isEmpty() ||
+             !m_mediaInfo->youtube_dl.isEmpty() ||
+             !m_mediaInfo->annie.isEmpty()))
         emit done(m_lastUrl, m_mediaInfo);
 }
 
