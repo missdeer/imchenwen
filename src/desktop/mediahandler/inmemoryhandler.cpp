@@ -160,14 +160,14 @@ void InMemoryHandler::onInputEnd()
 
 void InMemoryHandler::onNetworkError(QNetworkReply::NetworkError code)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     Socket* socket = m_replySocketMap[reply];
     socket->writeError(code);
 }
 
 void InMemoryHandler::onNetworkSSLErrors(const QList<QSslError> &errors)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     for (auto & e : errors)
         qWarning() << e.errorString();
     Socket* socket = m_replySocketMap[reply];
@@ -176,7 +176,7 @@ void InMemoryHandler::onNetworkSSLErrors(const QList<QSslError> &errors)
 
 void InMemoryHandler::onReadyRead()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     Socket* socket = m_replySocketMap[reply];
 
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -203,7 +203,7 @@ void InMemoryHandler::onMediaReadFinished()
     qDebug() << __FUNCTION__;
     onReadyRead();
 
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     Socket* socket = m_replySocketMap[reply];
     socket->close();
     m_replySocketMap.remove(reply);
@@ -238,7 +238,7 @@ void InMemoryHandler::relayMediaData()
 void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolutePath)
 {
     // Attempt to open the file for reading
-    QFile *file = new QFile(absolutePath);
+    auto file = new QFile(absolutePath);
     if (!file->open(QIODevice::ReadOnly)) {
         delete file;
         qDebug() << __FUNCTION__ << "can't open file for reading:" << absolutePath;
@@ -247,7 +247,7 @@ void InMemoryHandler::serveFileSystemFile(Socket *socket, const QString &absolut
     }
 
     // Create a QIODeviceCopier to copy the file contents to the socket
-    QIODeviceCopier *copier = new QIODeviceCopier(file, socket);
+    auto copier = new QIODeviceCopier(file, socket);
     connect(copier, &QIODeviceCopier::finished, copier, &QIODeviceCopier::deleteLater);
     connect(copier, &QIODeviceCopier::finished, file, &QFile::deleteLater);
     connect(copier, &QIODeviceCopier::finished, [socket]() {

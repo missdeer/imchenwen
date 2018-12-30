@@ -21,7 +21,7 @@ MediaRelay::MediaRelay(QObject *parent) : QObject(parent)
     connect(&m_ffmpegProcess, &QProcess::readyReadStandardOutput, this, &MediaRelay::onReadStandardOutput);
 }
 
-QString MediaRelay::makeM3U8(PlayerPtr player, QStringList &urls)
+QString MediaRelay::makeM3U8(const PlayerPtr& player, QStringList &urls)
 {
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
 
@@ -111,14 +111,14 @@ void MediaRelay::onNetworkSSLErrors(const QList<QSslError> &errors)
 
 void MediaRelay::onReadyRead()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     m_socketData.append(reply->readAll());
 }
 
 void MediaRelay::onMediaReadFinished()
 {
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
     onReadyRead();
 
@@ -156,11 +156,9 @@ void MediaRelay::onMediaReadFinished()
                 // suppose there is only one m3u8 link
                 return;
             }
-            else
-            {
-                u = httpHandler.mapUrl(u);
-                m3u8 = m3u8.replace(line, u.toUtf8());
-            }
+
+            u = httpHandler.mapUrl(u);
+            m3u8 = m3u8.replace(line, u.toUtf8());
         }
     }
     httpHandler.setM3U8(m3u8);
@@ -177,7 +175,7 @@ void MediaRelay::onReadStandardOutput()
 void MediaRelay::onRedirected(const QUrl &url)
 {
     Q_UNUSED(url);
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    auto reply = qobject_cast<QNetworkReply*>(sender());
     emit reply->redirectAllowed();
 }
 
