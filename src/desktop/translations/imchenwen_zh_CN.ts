@@ -1531,7 +1531,7 @@ MPV错误：</translation>
     </message>
     <message>
         <location filename="../config/subscriptionhelper.cpp" line="86"/>
-        <location filename="../config/subscriptionhelper.cpp" line="143"/>
+        <location filename="../config/subscriptionhelper.cpp" line="145"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>

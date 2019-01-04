@@ -100,7 +100,8 @@ bool SubscriptionHelper::parseAsJSON(const QByteArray& data)
         auto o = a.toObject();
         if (!o["name"].isString() || o["name"].toString().isEmpty() || !o["url"].isString() || o["url"].toString().isEmpty())
             continue;
-        if (!QUrl(o["url"].toString()).isValid())
+        QString url = o["url"].toString();
+        if (!QUrl(url).isValid() || (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("rtsp://")))
             continue;
         sl->append(std::make_tuple(o["name"].toString(), o["url"].toString()));
     }
@@ -131,7 +132,8 @@ bool SubscriptionHelper::parseAsPlainText(const QByteArray &data, const QString 
             }
         }
 
-        if (!QUrl(QString(ele[1])).isValid())
+        QString url(ele[1]);
+        if (!QUrl(url).isValid() || (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("rtsp://")))
             continue;
 
         auto vv = std::make_tuple(QString(ele[0].trimmed()), QString(ele[1].trimmed()));
