@@ -16,7 +16,7 @@ LinkResolver::LinkResolver(QObject *parent)
     , m_resolvers({
         { "you-get", &m_yougetProcess, std::bind(&LinkResolver::parseYouGetNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->you_get, QStringList() << "--json"  },
         { "ykdl", &m_ykdlProcess, std::bind(&LinkResolver::parseYKDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->ykdl, QStringList()  << "--json"},
-        { "youtube-dl", &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json"},
+        { "youtube-dl", &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json" << "--no-warnings" << "--no-playlist" << "--flat-playlist" << "--sub-format" << "ass/srt/best" << "--format" << "bestvideo+bestaudio/best" << "--all-subs"},
         { "annie", &m_annieProcess, std::bind(&LinkResolver::parseAnnieNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->annie, QStringList() << "-j"},
 })
 {

@@ -4,63 +4,63 @@
 <context>
     <name>Browser</name>
     <message>
-        <location filename="../browser.cpp" line="529"/>
-        <location filename="../browser.cpp" line="585"/>
-        <location filename="../browser.cpp" line="612"/>
-        <location filename="../browser.cpp" line="630"/>
-        <location filename="../browser.cpp" line="704"/>
+        <location filename="../browser.cpp" line="552"/>
+        <location filename="../browser.cpp" line="608"/>
+        <location filename="../browser.cpp" line="635"/>
+        <location filename="../browser.cpp" line="653"/>
+        <location filename="../browser.cpp" line="727"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="530"/>
+        <location filename="../browser.cpp" line="553"/>
         <source>VIP resolver is not ready now, please try again later.</source>
         <translation>VIP视频解析器尚未就绪，请稍后再试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="585"/>
+        <location filename="../browser.cpp" line="608"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="596"/>
+        <location filename="../browser.cpp" line="619"/>
         <source>%1 Play movie online directly
 %2</source>
         <translation>%1 直接在线播放电影
 %2</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="613"/>
+        <location filename="../browser.cpp" line="636"/>
         <source>Resolving link address as VIP failed!</source>
         <translation>VIP链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="631"/>
+        <location filename="../browser.cpp" line="654"/>
         <source>Resolving link address failed!</source>
         <translation>链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="642"/>
+        <location filename="../browser.cpp" line="665"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="645"/>
+        <location filename="../browser.cpp" line="668"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="648"/>
+        <location filename="../browser.cpp" line="671"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="652"/>
+        <location filename="../browser.cpp" line="675"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="705"/>
+        <location filename="../browser.cpp" line="728"/>
         <source>Transcoding failed.</source>
         <translation>转换编码封装失败。</translation>
     </message>
@@ -536,50 +536,76 @@ Do you wish to override the security check and continue ?   </source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="39"/>
+        <location filename="../ui/playdialog.cpp" line="44"/>
         <source> - by ykdl</source>
         <translation> - 由ykdl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="40"/>
+        <location filename="../ui/playdialog.cpp" line="45"/>
         <source> - by you-get</source>
         <translation> - 由you-get提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="41"/>
+        <location filename="../ui/playdialog.cpp" line="46"/>
         <source> - by annie</source>
         <translation> - 由annie提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="38"/>
+        <location filename="../ui/playdialog.cpp" line="43"/>
         <source> - by youtube_dl</source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="127"/>
+        <location filename="../ui/playdialog.cpp" line="137"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="145"/>
+        <location filename="../ui/playdialog.cpp" line="155"/>
         <source>DLNA: </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="166"/>
-        <location filename="../ui/playdialog.cpp" line="186"/>
+        <location filename="../ui/playdialog.cpp" line="176"/>
+        <location filename="../ui/playdialog.cpp" line="204"/>
+        <location filename="../ui/playdialog.cpp" line="245"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="166"/>
+        <location filename="../ui/playdialog.cpp" line="176"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="187"/>
+        <location filename="../ui/playdialog.cpp" line="193"/>
+        <source>Confirm</source>
+        <translation>确认</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="194"/>
+        <source>No stream is marked as audio track, continue anyway?</source>
+        <translation>没有媒体流被标记为音频，继续吗？</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="205"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="235"/>
+        <source>Mark as Audio Track</source>
+        <translation>标记为音频</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="236"/>
+        <source>Unmark as Audio Track</source>
+        <translation>清除音频标记</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="245"/>
+        <source>Please select a media item in list to be marked as audio track.</source>
+        <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
 </context>
 <context>
@@ -601,19 +627,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../mpv/playercore.cpp" line="322"/>
-        <location filename="../mpv/playercore.cpp" line="743"/>
+        <location filename="../mpv/playercore.cpp" line="744"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="744"/>
+        <location filename="../mpv/playercore.cpp" line="745"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="744"/>
+        <location filename="../mpv/playercore.cpp" line="745"/>
         <source>
 
 MPV Error: </source>

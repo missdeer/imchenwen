@@ -5,13 +5,18 @@
 #include <QtCore>
 #include <QMessageBox>
 #include <QFile>
+#include <QMenu>
 
 PlayDialog::PlayDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PlayDialog),
-    m_complexUrlResources(false)
+    m_complexUrlResources(false),
+    m_demuxed(false)
 {
     ui->setupUi(this);
+
+    ui->listMedia->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->listMedia, &QListWidget::customContextMenuRequested, this, &PlayDialog::onListMediaContextmenu);
 
     createExternalPlayerList();
 }
@@ -42,7 +47,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     };
     for (auto & s : ss)
     {
-        for (auto& stream : s.streams)
+        for (auto stream : s.streams)
         {
             if (stream->urls.isEmpty())
                 continue;
@@ -50,19 +55,24 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
             QString itemText = mi->title + "\n" + mi->site + " - " + stream->container + " - " + stream->quality + s.tag;
             auto items = ui->listMedia->findItems(itemText, Qt::MatchExactly);
             if (!items.isEmpty())
-                goto nextGroup;
+                break;
+            if (!m_demuxed)
+            {
+                if (stream->quality.contains("audio only")
+                        || stream->quality.contains("audio/webm")
+                        || stream->quality.contains("audio/mp4"))
+                    m_demuxed = true;
+            }
 
             auto item = addItem(s.icon,
                                 itemText,
                                 ui->listMedia->count() % 2 ? Qt::white : QColor(0xf0f0f0));
+            m_resultStreams.append(stream);
             if (stream->urls.length() > 1)
                 item->setToolTip(QString("%1 x %2").arg(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery)).arg(stream->urls.length()));
             else
                 item->setToolTip(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
         }
-        m_resultStreams.append(s.streams);
-        nextGroup:
-        ;
     }
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
@@ -169,7 +179,7 @@ void PlayDialog::doOk()
     int currentRow = ui->listMedia->currentRow();
     if (m_complexUrlResources)
     {
-        m_selectedMedia = m_resultStreams[currentRow];
+        m_selectedVideo = m_resultStreams[currentRow];
     }
     else
     {
@@ -177,6 +187,14 @@ void PlayDialog::doOk()
     }
     if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->name())) || m_selectedPlayer->type() != Player::PT_EXTERNAL)
     {
+        if (m_demuxed && !m_selectedAudio)
+        {
+            if (QMessageBox::question(this,
+                                            tr("Confirm"),
+                                            tr("No stream is marked as audio track, continue anyway?"),
+                                            QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No)
+                return;
+        }
         Config cfg;
         cfg.write("selectedPlayerIndex", currentIndex);
         accept();
@@ -207,4 +225,34 @@ QListWidgetItem * PlayDialog::addItem(const QIcon& icon, const QString& text, co
 void PlayDialog::on_listMedia_itemActivated(QListWidgetItem *)
 {
     doOk();
+}
+
+void PlayDialog::onListMediaContextmenu(const QPoint &pos)
+{
+    QPoint globalPos = ui->listMedia->mapToGlobal(pos);
+
+    QMenu myMenu;
+    myMenu.addAction(tr("Mark as Audio Track"), this, SLOT(onMarkAsAudioTrack()));
+    myMenu.addAction(tr("Unmark as Audio Track"),  this, SLOT(onUnmarkAsAudioTrack()));
+    myMenu.exec(globalPos);
+}
+
+void PlayDialog::onMarkAsAudioTrack()
+{
+    QListWidgetItem *currentItem = ui->listMedia->currentItem();
+    if (!currentItem)
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be marked as audio track."), QMessageBox::Ok);
+        return;
+    }
+    int currentRow = ui->listMedia->currentRow();
+    if (m_complexUrlResources)
+    {
+        m_selectedAudio = m_resultStreams[currentRow];
+    }
+}
+
+void PlayDialog::onUnmarkAsAudioTrack()
+{
+    m_selectedAudio.reset();
 }

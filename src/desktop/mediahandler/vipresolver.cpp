@@ -125,7 +125,7 @@ void VIPResolver::continueSniff(Sniffer *sniffer)
     }
 }
 
-void VIPResolver::onSnifferDone(const QString &originalUrl, const QString &result)
+void VIPResolver::onSnifferDone(const QString &, const QString &result)
 {
     m_finishedCount++;
     if (m_stopped)

@@ -24,8 +24,9 @@ public:
     void setMediaInfo(const QString &originalUrl, MediaInfoPtr mi);
     void setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &urls);
     PlayerPtr player() { return m_selectedPlayer; }
-    StreamInfoPtr media() { return m_selectedMedia; }
-    QString url() { return m_selectedUrl; }
+    StreamInfoPtr video() { return m_selectedVideo; }
+    StreamInfoPtr audio() { return m_selectedAudio; }
+    QString videoUrl() { return m_selectedUrl; }
     bool uploadToStorageService();
 private slots:
     void on_btnExternalPlayerConfiguration_clicked();
@@ -36,16 +37,21 @@ private slots:
 
     void on_listMedia_itemActivated(QListWidgetItem *);
 
+    void onListMediaContextmenu(const QPoint&);
+    void onMarkAsAudioTrack();
+    void onUnmarkAsAudioTrack();
 private:
     Ui::PlayDialog *ui;
     PlayerList m_players;
     PlayerPtr m_selectedPlayer;
-    StreamInfoPtr m_selectedMedia;
+    StreamInfoPtr m_selectedVideo;
+    StreamInfoPtr m_selectedAudio;
     Streams m_resultStreams;
     QStringList m_resultUrls;
     QString m_selectedUrl;
     QString m_originalUrl;
     bool m_complexUrlResources;
+    bool m_demuxed;
     void createExternalPlayerList();
     void doOk();
     QListWidgetItem *addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);
