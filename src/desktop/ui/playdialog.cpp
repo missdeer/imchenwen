@@ -27,6 +27,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     {
         m_resultStreams.clear();
         ui->listMedia->clear();
+        m_originalUrl = originalUrl;
     }
 
     struct {
@@ -66,7 +67,6 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
     m_complexUrlResources = true;
-    m_originalUrl = originalUrl;
 }
 
 void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &results)
@@ -75,6 +75,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
     {
         m_resultStreams.clear();
         ui->listMedia->clear();
+        m_originalUrl = originalUrl;
     }
 
     for( const auto& url : results)

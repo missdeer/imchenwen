@@ -135,7 +135,7 @@ void VIPResolver::onSnifferDone(const QString &originalUrl, const QString &resul
     {
         m_results.append(result);
         if (!m_stopped)
-            emit done(originalUrl, m_results);
+            emit done(m_lastResolveUrl, m_results);
     }
 
     Sniffer* sniffer = qobject_cast<Sniffer*>(sender());

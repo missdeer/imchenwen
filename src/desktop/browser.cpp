@@ -191,7 +191,6 @@ void Browser::resolveVIPAndPlayByMediaPlayer(const QString &u)
 void Browser::doPlay(PlayerPtr player, QStringList& urls, const QString& title, const QString& referrer)
 {
     m_playerProcess.kill();
-    waiting(false);
     m_httpHandler.clear();
     if (!m_httpServer.isListening())
     {
@@ -264,16 +263,14 @@ void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
     }
     m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
     m_playDialog->setMediaInfo(originalUrl, mi);
-    if (m_playDialog->exec())
+    int res = m_playDialog->exec();
+    m_linkResolver.terminateResolvers();
+    stopWaiting();
+    if (res)
     {
-        m_linkResolver.terminateResolvers();
         PlayerPtr player = m_playDialog->player();
         StreamInfoPtr stream = m_playDialog->media();
         doPlay(player, stream->urls, mi->title, mi->url);
-    }
-    else
-    {
-        stopWaiting();
     }
     delete m_playDialog;
     m_playDialog = nullptr;
@@ -288,15 +285,14 @@ void Browser::play(const QString& originalUrl, const QStringList &results, const
     }
     m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
     m_playDialog->setMediaInfo(originalUrl, title, results);
-    if (m_playDialog->exec())
+    int res = m_playDialog->exec();
+    m_vipResolver.stop();
+    stopWaiting();
+    if (res)
     {
         PlayerPtr player = m_playDialog->player();
         QString url = m_playDialog->url();
         doPlay(player, QStringList() << url, title, "");
-    }
-    else
-    {
-        stopWaiting();
     }
     delete m_playDialog;
     m_playDialog = nullptr;
@@ -593,7 +589,7 @@ void Browser::onNormalLinkResolved(const QString& originalUrl, MediaInfoPtr resu
     play(originalUrl, results);
 }
 
-void Browser::onNormalLinkResolvingError(const QString& url, const QString &msg)
+void Browser::onNormalLinkResolvingError(const QString &url, const QString &msg)
 {
     stopWaiting();
 
