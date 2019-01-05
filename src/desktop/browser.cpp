@@ -232,7 +232,9 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, QStringList &audi
         qDebug() << __FUNCTION__ << "DLNA playing" << video ;
     }
 
-    QString audio = audioUrls[0];
+    QString audio;
+    if (!audioUrls.isEmpty())
+        audio = audioUrls[0];
     switch (player->type())
     {
     case Player::PT_BUILTIN:
