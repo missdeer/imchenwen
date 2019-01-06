@@ -113,23 +113,26 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menu = page()->createStandardContextMenu();
     const QList<QAction*> actions = menu->actions();
-    auto it = std::find(actions.cbegin(), actions.cend(), page()->action(QWebEnginePage::OpenLinkInThisWindow));
+    auto it = std::find(actions.cbegin(), actions.cend(), page()->action(QWebEnginePage::CopyLinkToClipboard));
     if (it != actions.cend())
     {
         m_rightClickedUrl = page()->contextMenuData().linkUrl().toString();
-        (*it)->setText(tr("Open Link in This Tab"));
-        ++it;
-        QAction *before(it == actions.cend() ? nullptr : *it);
-        menu->insertAction(before, page()->action(QWebEnginePage::OpenLinkInNewTab));
-
         if (m_rightClickedUrl.startsWith("http://") || m_rightClickedUrl.startsWith("https://")  )
         {
-            menu->addSeparator();
-            QAction *playAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play Link by Media Player"), this);
-            menu->addAction(playAction);
-            connect(playAction, &QAction::triggered, [this]() {
+            auto separator = menu->insertSeparator(*actions.cbegin());
+
+            QAction *resolveAsVIPAndPlayAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play VIP by Media Player"), this);
+            menu->insertAction(separator, resolveAsVIPAndPlayAction);
+            connect(resolveAsVIPAndPlayAction, &QAction::triggered, [this]() {
+                Browser::instance().resolveVIPAndPlayByMediaPlayer(m_rightClickedUrl);
+            });
+
+            QAction *resolveAndPlayAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
+            menu->insertAction(resolveAsVIPAndPlayAction, resolveAndPlayAction);
+            connect(resolveAndPlayAction, &QAction::triggered, [this]() {
                 Browser::instance().resolveAndPlayByMediaPlayer(m_rightClickedUrl);
             });
+
             QAction *openAction = menu->addAction(tr("Open URL in Default Web Browser"));
             connect(openAction, &QAction::triggered, [this](){
                 QDesktopServices::openUrl(m_rightClickedUrl);

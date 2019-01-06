@@ -1664,17 +1664,17 @@ Do you want to reload the page ?</source>
 要重新载入页面吗？</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="120"/>
-        <source>Open Link in This Tab</source>
-        <translation>在新标签页打开链接</translation>
+        <location filename="../webengine/webview.cpp" line="130"/>
+        <source>Play by Media Player</source>
+        <translation type="unfinished">使用媒体播放器播放</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="128"/>
-        <source>Play Link by Media Player</source>
-        <translation>使用媒体播放器播放链接</translation>
+        <location filename="../webengine/webview.cpp" line="124"/>
+        <source>Play VIP by Media Player</source>
+        <translation type="unfinished">使用媒体播放器播放VIP视频</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="133"/>
+        <location filename="../webengine/webview.cpp" line="136"/>
         <source>Open URL in Default Web Browser</source>
         <translation>在默认网页浏览器中打开链接</translation>
     </message>
