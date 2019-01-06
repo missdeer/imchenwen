@@ -56,12 +56,9 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
             auto items = ui->listMedia->findItems(itemText, Qt::MatchExactly);
             if (!items.isEmpty())
                 break;
-            if (!m_demuxed)
+            if (!m_demuxed && maybeAudioTrack(stream))
             {
-                if (stream->quality.contains("audio only")
-                        || stream->quality.contains("audio/webm")
-                        || stream->quality.contains("audio/mp4"))
-                    m_demuxed = true;
+                m_demuxed = true;
             }
 
             auto item = addItem(s.icon,
@@ -173,26 +170,39 @@ void PlayDialog::doOk()
     QListWidgetItem *currentItem = ui->listMedia->currentItem();
     if (!currentItem)
     {
-        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be played."), QMessageBox::Ok);
+        QMessageBox::warning(this,
+                             tr("Error"),
+                             tr("Please select a media item in list to be played."),
+                             QMessageBox::Ok);
         return;
     }
     int currentRow = ui->listMedia->currentRow();
     if (m_complexUrlResources)
     {
-        m_selectedVideo = m_resultStreams[currentRow];
+        auto video = m_resultStreams[currentRow];
+        if (maybeAudioTrack(video) && QMessageBox::warning(this,
+                                                           tr("Warning"),
+                                                           tr("This media item may be an audio track, continue anyway?"),
+                                                           QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+        {
+            return;
+        }
+        m_selectedVideo = video;
     }
     else
     {
         m_selectedUrl = m_resultUrls[currentRow];
     }
-    if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->name())) || m_selectedPlayer->type() != Player::PT_EXTERNAL)
+    if ((m_selectedPlayer->type() == Player::PT_EXTERNAL
+         && QFile::exists(m_selectedPlayer->name()))
+            || m_selectedPlayer->type() != Player::PT_EXTERNAL)
     {
         if (m_demuxed && !m_selectedAudio)
         {
             if (QMessageBox::question(this,
-                                            tr("Confirm"),
-                                            tr("No stream is marked as audio track, continue anyway?"),
-                                            QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No)
+                                      tr("Confirm"),
+                                      tr("No stream is marked as audio track, continue anyway?"),
+                                      QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No)
                 return;
         }
         Config cfg;
@@ -222,6 +232,12 @@ QListWidgetItem * PlayDialog::addItem(const QIcon& icon, const QString& text, co
     return item;
 }
 
+bool PlayDialog::maybeAudioTrack(StreamInfoPtr media)
+{
+    return (media->quality.contains("audio only")
+            || media->quality.contains("audio/"));
+}
+
 void PlayDialog::on_listMedia_itemActivated(QListWidgetItem *)
 {
     doOk();
@@ -231,10 +247,10 @@ void PlayDialog::onListMediaContextmenu(const QPoint &pos)
 {
     QPoint globalPos = ui->listMedia->mapToGlobal(pos);
 
-    QMenu myMenu;
-    myMenu.addAction(tr("Mark as Audio Track"), this, SLOT(onMarkAsAudioTrack()));
-    myMenu.addAction(tr("Unmark as Audio Track"),  this, SLOT(onUnmarkAsAudioTrack()));
-    myMenu.exec(globalPos);
+    QMenu menu;
+    menu.addAction(tr("Mark as Audio Track"), this, SLOT(onMarkAsAudioTrack()));
+    menu.addAction(tr("Unmark as Audio Track"),  this, SLOT(onUnmarkAsAudioTrack()));
+    menu.exec(globalPos);
 }
 
 void PlayDialog::onMarkAsAudioTrack()
@@ -242,13 +258,24 @@ void PlayDialog::onMarkAsAudioTrack()
     QListWidgetItem *currentItem = ui->listMedia->currentItem();
     if (!currentItem)
     {
-        QMessageBox::warning(this, tr("Error"), tr("Please select a media item in list to be marked as audio track."), QMessageBox::Ok);
+        QMessageBox::warning(this,
+                             tr("Error"),
+                             tr("Please select a media item in list to be marked as audio track."),
+                             QMessageBox::Ok);
         return;
     }
     int currentRow = ui->listMedia->currentRow();
     if (m_complexUrlResources)
     {
-        m_selectedAudio = m_resultStreams[currentRow];
+        auto audio = m_resultStreams[currentRow];
+        if (!maybeAudioTrack(audio) && QMessageBox::warning(this,
+                                                            tr("Warning"),
+                                                            tr("This media item may be not an audio track, continue anyway?"),
+                                                            QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No)
+        {
+            return;
+        }
+        m_selectedAudio = audio;
     }
 }
 
