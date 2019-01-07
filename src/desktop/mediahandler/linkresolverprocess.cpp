@@ -1,11 +1,14 @@
 #include "linkresolverprocess.h"
 #include <QTimer>
+#include <QStandardPaths>
 
 LinkResolverProcess::LinkResolverProcess(QObject *parent) : QObject(parent)
 {
     m_process.setProcessChannelMode(QProcess::MergedChannels);
     connect(&m_process, &QProcess::readyReadStandardOutput, this, &LinkResolverProcess::onReadStandardOutput);
     connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &LinkResolverProcess::onFinished);
+
+    m_process.setWorkingDirectory( QStandardPaths::writableLocation(QStandardPaths::TempLocation));
 }
 
 void LinkResolverProcess::setProgram(const QString &program)
