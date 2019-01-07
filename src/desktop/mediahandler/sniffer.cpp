@@ -5,10 +5,6 @@
 Sniffer::Sniffer(QObject *parent)
     : QObject(parent)
 {
-    m_process.setProcessChannelMode(QProcess::SeparateChannels);
-    connect(&m_process, &QProcess::readyReadStandardOutput, this, &Sniffer::onReadStandardOutput);
-    connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Sniffer::onFinished);
-
     QDir dir(qApp->applicationDirPath());
 #if defined(Q_OS_MAC)
     dir.cdUp();
@@ -25,6 +21,9 @@ Sniffer::Sniffer(QObject *parent)
 
 void Sniffer::sniff(const QString &url)
 {
+    m_process.setProcessChannelMode(QProcess::SeparateChannels);
+    connect(&m_process, &QProcess::readyReadStandardOutput, this, &Sniffer::onReadStandardOutput);
+    connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Sniffer::onFinished);
     m_originalUrl = url;
     m_data.clear();
     m_process.setArguments(QStringList() << url);
@@ -33,7 +32,10 @@ void Sniffer::sniff(const QString &url)
 
 void Sniffer::stop()
 {
-    m_process.kill();
+    //m_process.kill();
+    disconnect(&m_process, &QProcess::readyReadStandardOutput, this, &Sniffer::onReadStandardOutput);
+    disconnect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Sniffer::onFinished);
+    emit error();
 }
 
 void Sniffer::onReadStandardOutput()

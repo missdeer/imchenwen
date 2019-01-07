@@ -48,6 +48,7 @@ private:
     StreamInfoPtr m_selectedVideo;
     StreamInfoPtr m_selectedAudio;
     Streams m_resultStreams;
+    Subtitles m_subtitles;
     QStringList m_resultUrls;
     QString m_selectedUrl;
     QString m_originalUrl;

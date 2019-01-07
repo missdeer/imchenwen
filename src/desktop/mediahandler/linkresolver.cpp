@@ -16,7 +16,7 @@ LinkResolver::LinkResolver(QObject *parent)
     , m_resolvers({
         { "you-get", &m_yougetProcess, std::bind(&LinkResolver::parseYouGetNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->you_get, QStringList() << "--json"  },
         { "ykdl", &m_ykdlProcess, std::bind(&LinkResolver::parseYKDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->ykdl, QStringList()  << "--json"},
-        { "youtube-dl", &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json" << "--no-warnings" << "--no-playlist" << "--flat-playlist" << "--sub-lang" << "zh-Hans" << "--write-auto-sub" << "--write-sub"},
+        { "youtube-dl", &m_youtubedlProcess, std::bind(&LinkResolver::parseYoutubeDLNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->youtube_dl, QStringList()<< "--skip-download" << "--print-json" << "--no-warnings" << "--no-playlist" << "--flat-playlist" << "--sub-lang" << "zh-CN" << "--write-auto-sub" << "--write-sub"},
         { "annie", &m_annieProcess, std::bind(&LinkResolver::parseAnnieNode, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3), &m_mediaInfo->annie, QStringList() << "-j"},
 })
 {
@@ -246,6 +246,58 @@ void LinkResolver::parseYoutubeDLNode(const QJsonObject &o, MediaInfoPtr mi, Str
         stream->container = format["ext"].toString();
         stream->urls.append(format["url"].toString());
         streams.append(stream);
+    }
+
+    auto subtitles = o["subtitles"];
+    if (subtitles.isObject())
+    {
+        auto subtitlesObj = subtitles.toObject();
+        QStringList languages = subtitlesObj.keys();
+        for (const auto& lang : languages)
+        {
+            auto langNode = subtitlesObj[lang].toArray();
+            auto it = std::find_if(langNode.begin(), langNode.end(), [](QJsonValueRef langFile){
+                        if (!langFile.isObject())
+                            return false;
+                        auto langFileObj = langFile.toObject();
+                        return (langFileObj["ext"].toString() == "vtt");
+            });
+            if (langNode.end() != it)
+            {
+                auto langFileObj = it->toObject();
+                SubtitlePtr subtitle(new Subtitle);
+                subtitle->url = langFileObj["url"].toString();
+                subtitle->language = lang;
+                subtitle->manual = true;
+                mi->subtitles.append(subtitle);
+            }
+        }
+    }
+
+    auto automaticCaptions = o["automatic_captions"];
+    if (automaticCaptions.isObject())
+    {
+        auto automaticCaptionsObj = automaticCaptions.toObject();
+        QStringList languages = automaticCaptionsObj.keys();
+        for (const auto& lang : languages)
+        {
+            auto langNode = automaticCaptionsObj[lang].toArray();
+            auto it = std::find_if(langNode.begin(), langNode.end(), [](QJsonValueRef langFile){
+                        if (!langFile.isObject())
+                            return false;
+                        auto langFileObj = langFile.toObject();
+                        return (langFileObj["ext"].toString() == "vtt");
+            });
+            if (langNode.end() != it)
+            {
+                auto langFileObj = it->toObject();
+                SubtitlePtr subtitle(new Subtitle);
+                subtitle->url = langFileObj["url"].toString();
+                subtitle->language = lang;
+                subtitle->manual = false;
+                mi->subtitles.append(subtitle);
+            }
+        }
     }
 }
 

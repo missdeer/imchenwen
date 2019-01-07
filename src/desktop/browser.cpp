@@ -329,6 +329,27 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
     if (!arg.isEmpty())
         args << arg.split(" ");
 
+    for (;;)
+    {
+        auto beginPos = std::find_if(args.begin(), args.end(), [](const QString& arg){ return arg.startsWith("\"");});
+        auto endPos = std::find_if(beginPos, args.end(), [](const QString& arg){ return arg.endsWith("\"");});
+        if (beginPos == args.end() || endPos == args.end() || beginPos == endPos)
+        {
+            break;
+        }
+
+        QStringList vars;
+        std::copy(beginPos, endPos, std::back_inserter(vars));
+        vars.append(*endPos);
+        QString var = vars.join(" ");
+        var = var.mid(1, var.length() - 2);
+        *beginPos = var;
+        auto beginIndex = std::distance(args.begin(), beginPos);
+        auto endIndex = std::distance(args.begin(), endPos);
+        for(auto removeIndex = endIndex; removeIndex != beginIndex; --removeIndex)
+            args.removeAt(static_cast<int>(removeIndex));
+    }
+
     struct {
         const QString &variable;
         QString escape;

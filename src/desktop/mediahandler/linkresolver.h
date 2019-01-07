@@ -16,6 +16,16 @@ struct StreamInfo
 typedef QSharedPointer<StreamInfo> StreamInfoPtr;
 typedef QList<StreamInfoPtr> Streams;
 
+struct Subtitle
+{
+    QString language;
+    QString url;
+    bool manual;
+};
+
+typedef QSharedPointer<Subtitle> SubtitlePtr;
+typedef QList<SubtitlePtr> Subtitles;
+
 struct MediaInfo
 {
     QString url;
@@ -25,6 +35,7 @@ struct MediaInfo
     Streams you_get;
     Streams youtube_dl;
     Streams annie;
+    Subtitles subtitles;
     int resultCount;
 };
 
