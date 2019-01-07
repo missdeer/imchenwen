@@ -88,9 +88,9 @@ private:
     void resolveLink(const QString &u);
     void resolveVIPLink(const QString &u);
     void play(const QString& originalUrl, MediaInfoPtr mi);
-    void doPlay(PlayerPtr player, QStringList &videoUrls, QStringList &audioUrls, const QString& title, const QString& referrer);
-    void playByBuiltinPlayer(const QString &videoUrl, const QString &audioUrl, const QString& title, const QString &referrer);
-    void playByExternalPlayer(PlayerPtr player, const QString &videoUrl, const QString &audioUrl, const QString& title, const QString &referrer);
+    void doPlay(PlayerPtr player, QStringList &videoUrls, const QString &audioUrl, const QString &subtitleUrl, const QString& title, const QString& referrer);
+    void playByBuiltinPlayer(const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString& title, const QString &referrer);
+    void playByExternalPlayer(PlayerPtr player, const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString& title, const QString &referrer);
     void playByDLNARenderer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);

@@ -158,6 +158,14 @@ void PlayerView::playMedia(const QString &video, const QString &audio)
     m_playerCore->openMedia(video, audio);
 }
 
+void PlayerView::subtitle(const QString &subtitle)
+{
+    if (!subtitle.isEmpty())
+    {
+        m_playerCore->setProperty("sub-file", subtitle);
+    }
+}
+
 void PlayerView::title(const QString &title)
 {
     if (!title.isEmpty())

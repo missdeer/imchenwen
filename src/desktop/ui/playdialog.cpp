@@ -101,6 +101,13 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
     m_complexUrlResources = false;
 }
 
+QString PlayDialog::audioUrl()
+{
+    if (m_selectedAudio && !m_selectedAudio->urls.isEmpty())
+        return m_selectedAudio->urls[0];
+    return "";
+}
+
 bool PlayDialog::uploadToStorageService()
 {
     return ui->btnStorage->isChecked();

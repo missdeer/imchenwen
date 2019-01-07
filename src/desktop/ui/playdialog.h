@@ -25,7 +25,8 @@ public:
     void setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &urls);
     PlayerPtr player() { return m_selectedPlayer; }
     StreamInfoPtr video() { return m_selectedVideo; }
-    StreamInfoPtr audio() { return m_selectedAudio; }
+    QString audioUrl();
+    QString subtitleUrl() { return m_subtitleUrl; }
     QString videoUrl() { return m_selectedUrl; }
     bool uploadToStorageService();
 private slots:
@@ -50,6 +51,7 @@ private:
     QStringList m_resultUrls;
     QString m_selectedUrl;
     QString m_originalUrl;
+    QString m_subtitleUrl;
     bool m_complexUrlResources;
     bool m_demuxed;
     void createExternalPlayerList();

@@ -188,7 +188,7 @@ void Browser::resolveVIPAndPlayByMediaPlayer(const QString &u)
     resolveVIPLink(u.trimmed());
 }
 
-void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, QStringList &audioUrls, const QString& title, const QString& referrer)
+void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &audioUrl, const QString &subtitleUrl, const QString &title, const QString &referrer)
 {
     m_playerProcess.kill();
     m_httpHandler.clear();
@@ -202,49 +202,46 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, QStringList &audi
         m_httpHandler.setReferrer(referrer.toUtf8());
         m_httpHandler.setUserAgent(Config().read<QByteArray>(QLatin1String("httpUserAgent")));
     }
-    QString video = videoUrls[0];
+    QString videoUrl = videoUrls[0];
     if (videoUrls.length() > 1)
     {
-        video = m_mediaRelay.makeM3U8(player, videoUrls);
+        videoUrl = m_mediaRelay.makeM3U8(player, videoUrls);
     }
 
-    qDebug() << __FUNCTION__ << video;
+    qDebug() << __FUNCTION__ << videoUrl;
     if (player->type() == Player::PT_DLNA)
     {
-        if (QUrl(video).path().endsWith("m3u8", Qt::CaseInsensitive))
+        if (QUrl(videoUrl).path().endsWith("m3u8", Qt::CaseInsensitive))
         {
             // DLNA not support m3u8, use ffmpeg to transcode to a single stream
-            if (QUrl(video).hasQuery())
+            if (QUrl(videoUrl).hasQuery())
             {
                 m_mediaRelay.setPlayer(player);
                 m_mediaRelay.setTitle(title);
                 // download the m3u8, extract the real stream urls, then regenerate m3u8 and invoke ffmpeg
-                m_mediaRelay.processM3U8(video,referrer.toUtf8(),Config().read<QByteArray>(QLatin1String("httpUserAgent")));
+                m_mediaRelay.processM3U8(videoUrl,referrer.toUtf8(),Config().read<QByteArray>(QLatin1String("httpUserAgent")));
                 return;
             }
-            video = m_mediaRelay.transcoding(video);
+            videoUrl = m_mediaRelay.transcoding(videoUrl);
         }
-        else if (QUrl(video).hasQuery())
+        else if (QUrl(videoUrl).hasQuery())
         {
             // DLNA not support complex query string
-            video = m_httpHandler.mapUrl(video);
+            videoUrl = m_httpHandler.mapUrl(videoUrl);
         }
-        qDebug() << __FUNCTION__ << "DLNA playing" << video ;
+        qDebug() << __FUNCTION__ << "DLNA playing" << videoUrl ;
     }
 
-    QString audio;
-    if (!audioUrls.isEmpty())
-        audio = audioUrls[0];
     switch (player->type())
     {
     case Player::PT_BUILTIN:
-        playByBuiltinPlayer(video, audio, title, referrer);
+        playByBuiltinPlayer(videoUrl, audioUrl, subtitleUrl, title, referrer);
         break;
     case Player::PT_DLNA:
-        playByDLNARenderer(player, video, title, referrer);
+        playByDLNARenderer(player, videoUrl, title, referrer);
         break;
     case Player::PT_EXTERNAL:
-        playByExternalPlayer(player, video, audio, title, referrer);
+        playByExternalPlayer(player, videoUrl, audioUrl, subtitleUrl, title, referrer);
         break;
     }
     minimizeWindows();
@@ -273,11 +270,7 @@ void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
     {
         PlayerPtr player = m_playDialog->player();
         StreamInfoPtr video = m_playDialog->video();
-        StreamInfoPtr audio = m_playDialog->audio();
-        QStringList audioUrls;
-        if (audio)
-            audioUrls.append(audio->urls);
-        doPlay(player, video->urls,  audioUrls, mi->title, mi->url);
+        doPlay(player, video->urls, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), mi->title, mi->url);
     }
     delete m_playDialog;
     m_playDialog = nullptr;
@@ -299,17 +292,13 @@ void Browser::play(const QString& originalUrl, const QStringList &results, const
     {
         PlayerPtr player = m_playDialog->player();
         QString videoUrl = m_playDialog->videoUrl();
-        QStringList audioUrls;
-        StreamInfoPtr audio = m_playDialog->audio();
-        if (audio)
-            audioUrls.append(audio->urls);
-        doPlay(player, QStringList() << videoUrl, audioUrls, title, "");
+        doPlay(player, QStringList() << videoUrl, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), title, "");
     }
     delete m_playDialog;
     m_playDialog = nullptr;
 }
 
-void Browser::playByBuiltinPlayer(const QString &videoUrl, const QString &audioUrl, const QString& title, const QString& referrer)
+void Browser::playByBuiltinPlayer(const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString& title, const QString& referrer)
 {
     if (!m_builtinPlayer)
     {
@@ -321,10 +310,11 @@ void Browser::playByBuiltinPlayer(const QString &videoUrl, const QString &audioU
     m_builtinPlayer->title(title);
     m_builtinPlayer->referrer(referrer);
     m_builtinPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
+    m_builtinPlayer->subtitle(subtitle);
     m_builtinPlayer->playMedia(videoUrl, audioUrl);
 }
 
-void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, const QString &audioUrl, const QString &title, const QString &referrer)
+void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString &title, const QString &referrer)
 {
     QStringList args;
 #if defined(Q_OS_MAC)
@@ -339,66 +329,31 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
     if (!arg.isEmpty())
         args << arg.split(" ");
 
-    if (referrer.isEmpty())
+    struct {
+        const QString &variable;
+        QString escape;
+    } esc[] = {
+        { referrer, "{{referrer}}"},
+        { title, "{{title}}"},
+        { title, "{{site}}"},
+        { audioUrl, "{{audio}}"},
+        { subtitle, "{{subtitle}}"},
+        { Config().read<QString>(QLatin1String("httpUserAgent")), "{{user-agent}}"},
+    };
+    for (const auto& v : esc)
     {
-        int index = args.indexOf("{{referrer}}");
-        args.removeAt(index);
-        if (index > 0)
-            args.removeAt(index -1);
+        if (v.variable.isEmpty())
+        {
+            int index = args.indexOf(v.escape);
+            args.removeAt(index);
+            if (index > 0)
+                args.removeAt(index -1);
 
-        auto it = std::find_if(args.begin(), args.end(),
-                               [&](const QString& a){ return a.contains("{{referrer}}");});
-        if (args.end() != it)
-            args.erase(it);
-    }
-
-    if (title.isEmpty())
-    {
-        int index = args.indexOf("{{title}}");
-        args.removeAt(index);
-        if (index > 0)
-            args.removeAt(index -1);
-
-        auto it = std::find_if(args.begin(), args.end(),
-                               [&](const QString& a){ return a.contains("{{title}}");});
-        if (args.end() != it)
-            args.erase(it);
-
-        index = args.indexOf("{{site}}");
-        args.removeAt(index);
-        if (index > 0)
-            args.removeAt(index -1);
-
-        it = std::find_if(args.begin(), args.end(),
-                          [&](const QString& a){ return a.contains("{{site}}");});
-        if (args.end() != it)
-            args.erase(it);
-    }
-
-    if (Config().read<QString>(QLatin1String("httpUserAgent")).isEmpty())
-    {
-        int index = args.indexOf("{{user-agent}}");
-        args.removeAt(index);
-        if (index > 0)
-            args.removeAt(index -1);
-
-        auto it = std::find_if(args.begin(), args.end(),
-                               [&](const QString& a){ return a.contains("{{user-agent}}");});
-        if (args.end() != it)
-            args.erase(it);
-    }
-
-    if (audioUrl.isEmpty())
-    {
-        int index = args.indexOf("{{audio}}");
-        args.removeAt(index);
-        if (index > 0)
-            args.removeAt(index -1);
-
-        auto it = std::find_if(args.begin(), args.end(),
-                               [&](const QString& a){ return a.contains("{{audio}}");});
-        if (args.end() != it)
-            args.erase(it);
+            auto it = std::find_if(args.begin(), args.end(),
+                                   [&](const QString& a){ return a.contains(v.escape);});
+            if (args.end() != it)
+                args.erase(it);
+        }
     }
 
     for (QString& a : args)
@@ -407,6 +362,7 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
         a = a.replace("{{title}}", title);
         a = a.replace("{{site}}", title);
         a = a.replace("{{audio}}", audioUrl);
+        a = a.replace("{{subtitle}}", subtitle);
         a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
     }
 
