@@ -35,25 +35,6 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
         m_originalUrl = originalUrl;
     }
 
-    if (ui->labelSubtitle->isVisible())
-    {
-        if (!ui->cbSubtitles->count() && mi->subtitles.isEmpty())
-        {
-            ui->labelSubtitle->setVisible(false);
-            ui->cbSubtitles->setVisible(false);
-            ui->cbSubtitleEnabled->setVisible(false);
-        }
-    }
-    else
-    {
-        if (!mi->subtitles.isEmpty())
-        {
-            ui->labelSubtitle->setVisible(true);
-            ui->cbSubtitles->setVisible(true);
-            ui->cbSubtitleEnabled->setVisible(true);
-        }
-    }
-
     if (!ui->cbSubtitles->count())
     {
         ui->cbSubtitleEnabled->setChecked(false);
@@ -65,6 +46,10 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
             m_subtitles.append(subtitle);
         }
     }
+
+    ui->labelSubtitle->setVisible(!!ui->cbSubtitles->count());
+    ui->cbSubtitles->setVisible(!!ui->cbSubtitles->count());
+    ui->cbSubtitleEnabled->setVisible(!!ui->cbSubtitles->count());
 
     struct {
         Streams& streams;
