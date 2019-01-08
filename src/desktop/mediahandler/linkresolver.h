@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QTime>
+#include <QJsonValue>
 #include "linkresolverprocess.h"
 
 struct StreamInfo
@@ -89,6 +90,7 @@ private:
     void parseYKDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseYoutubeDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
     void parseAnnieNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
+    void parseYoutubeDLSubtitle(const QJsonValue& v, MediaInfoPtr mi, bool manual);
 };
 
 #endif // LINKRESOLVER_H

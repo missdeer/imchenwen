@@ -249,56 +249,10 @@ void LinkResolver::parseYoutubeDLNode(const QJsonObject &o, MediaInfoPtr mi, Str
     }
 
     auto subtitles = o["subtitles"];
-    if (subtitles.isObject())
-    {
-        auto subtitlesObj = subtitles.toObject();
-        QStringList languages = subtitlesObj.keys();
-        for (const auto& lang : languages)
-        {
-            auto langNode = subtitlesObj[lang].toArray();
-            auto it = std::find_if(langNode.begin(), langNode.end(), [](QJsonValueRef langFile){
-                        if (!langFile.isObject())
-                            return false;
-                        auto langFileObj = langFile.toObject();
-                        return (langFileObj["ext"].toString() == "vtt");
-            });
-            if (langNode.end() != it)
-            {
-                auto langFileObj = it->toObject();
-                SubtitlePtr subtitle(new Subtitle);
-                subtitle->url = langFileObj["url"].toString();
-                subtitle->language = lang;
-                subtitle->manual = true;
-                mi->subtitles.append(subtitle);
-            }
-        }
-    }
+    parseYoutubeDLSubtitle(subtitles, mi, true);
 
     auto automaticCaptions = o["automatic_captions"];
-    if (automaticCaptions.isObject())
-    {
-        auto automaticCaptionsObj = automaticCaptions.toObject();
-        QStringList languages = automaticCaptionsObj.keys();
-        for (const auto& lang : languages)
-        {
-            auto langNode = automaticCaptionsObj[lang].toArray();
-            auto it = std::find_if(langNode.begin(), langNode.end(), [](QJsonValueRef langFile){
-                        if (!langFile.isObject())
-                            return false;
-                        auto langFileObj = langFile.toObject();
-                        return (langFileObj["ext"].toString() == "vtt");
-            });
-            if (langNode.end() != it)
-            {
-                auto langFileObj = it->toObject();
-                SubtitlePtr subtitle(new Subtitle);
-                subtitle->url = langFileObj["url"].toString();
-                subtitle->language = lang;
-                subtitle->manual = false;
-                mi->subtitles.append(subtitle);
-            }
-        }
-    }
+    parseYoutubeDLSubtitle(automaticCaptions, mi, false);
 }
 
 void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams &streams)
@@ -352,6 +306,34 @@ void LinkResolver::parseAnnieNode(const QJsonObject &o, MediaInfoPtr mi, Streams
         }
         stream->quality = s["quality"].toString();
         streams.append(stream);
+    }
+}
+
+void LinkResolver::parseYoutubeDLSubtitle(const QJsonValue &v, MediaInfoPtr mi, bool manual)
+{
+    if (!v.isObject())
+        return;
+
+    auto obj = v.toObject();
+    QStringList languages = obj.keys();
+    for (const auto& lang : languages)
+    {
+        auto langNode = obj[lang].toArray();
+        auto it = std::find_if(langNode.begin(), langNode.end(), [](QJsonValueRef langFile){
+                    if (!langFile.isObject())
+                        return false;
+                    auto langFileObj = langFile.toObject();
+                    return (langFileObj["ext"].isString() && langFileObj["ext"].toString() == "vtt");
+        });
+        if (langNode.end() != it)
+        {
+            auto langFileObj = it->toObject();
+            SubtitlePtr subtitle(new Subtitle);
+            subtitle->url = langFileObj["url"].toString();
+            subtitle->language = lang;
+            subtitle->manual = manual;
+            mi->subtitles.append(subtitle);
+        }
     }
 }
 
