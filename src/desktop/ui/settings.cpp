@@ -16,8 +16,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     onTabWidgetCurrentChanged(0);
     QToolBar* toolbar = new QToolBar(this);
     this->layout()->replaceWidget(widgetPlaceholder, toolbar);
-    toolbar->setIconSize(QSize(48, 48));
-    toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    toolbar->setIconSize(QSize(40, 40));
+    toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     QAction *actionGeneral = toolbar->addAction(QIcon(":/preferences/general.png"), tr("General"));
     connect(actionGeneral, &QAction::triggered, [&](){tabWidget->setCurrentIndex(0);});
     QAction *actionAppearance = toolbar->addAction(QIcon(":/preferences/appearance.png"), tr("Appearance"));
