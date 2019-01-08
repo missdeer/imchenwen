@@ -333,11 +333,20 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
     {
         auto beginPos = std::find_if(args.begin(), args.end(), [](const QString& arg){ return arg.startsWith("\"");});
         auto endPos = std::find_if(beginPos, args.end(), [](const QString& arg){ return arg.endsWith("\"");});
-        if (beginPos == args.end() || endPos == args.end() || beginPos == endPos)
+        if (beginPos == args.end() || endPos == args.end())
         {
             break;
         }
 
+        if (beginPos == endPos)
+        {
+            // an argument with single word wrapped by double quote
+            QString var = *beginPos;
+            *beginPos = var.mid(1, var.length() - 2);
+            continue;
+        }
+
+        // an argument with several words wrapped by double quote
         QStringList vars;
         std::copy(beginPos, endPos, std::back_inserter(vars));
         vars.append(*endPos);
