@@ -30,17 +30,15 @@ public:
     QString videoUrl() { return m_selectedUrl; }
     bool uploadToStorageService();
 private slots:
-    void on_btnExternalPlayerConfiguration_clicked();
-
-    void on_btnPlay_clicked();
-
-    void on_btnCancel_clicked();
-
-    void on_listMedia_itemActivated(QListWidgetItem *);
-
     void onListMediaContextmenu(const QPoint&);
     void onMarkAsAudioTrack();
     void onUnmarkAsAudioTrack();
+
+    void on_btnExternalPlayerConfiguration_clicked();
+    void on_btnPlay_clicked();
+    void on_btnCancel_clicked();
+    void on_listMedia_itemActivated(QListWidgetItem *);
+    void on_cbAutoSelectAudioTrack_stateChanged(int state);
 private:
     Ui::PlayDialog *ui;
     PlayerList m_players;

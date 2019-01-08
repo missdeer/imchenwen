@@ -531,17 +531,22 @@ Do you wish to override the security check and continue ?   </source>
         <translation>字幕：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="94"/>
+        <location filename="../ui/playdialog.ui" line="96"/>
+        <source>Auto select Audio Track</source>
+        <translation>自动选择音频流</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.ui" line="103"/>
         <source>Upload to Storage Service</source>
         <translation>上传到存储服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="106"/>
+        <location filename="../ui/playdialog.ui" line="117"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.ui" line="116"/>
+        <location filename="../ui/playdialog.ui" line="127"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -566,70 +571,70 @@ Do you wish to override the security check and continue ?   </source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="157"/>
+        <location filename="../ui/playdialog.cpp" line="159"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="175"/>
+        <location filename="../ui/playdialog.cpp" line="177"/>
         <source>DLNA: </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="197"/>
-        <location filename="../ui/playdialog.cpp" line="243"/>
-        <location filename="../ui/playdialog.cpp" line="291"/>
+        <location filename="../ui/playdialog.cpp" line="199"/>
+        <location filename="../ui/playdialog.cpp" line="245"/>
+        <location filename="../ui/playdialog.cpp" line="293"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="198"/>
+        <location filename="../ui/playdialog.cpp" line="200"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="208"/>
+        <location filename="../ui/playdialog.cpp" line="210"/>
         <source>This media item may be an audio track, continue anyway?</source>
         <translation>该媒体流可能是音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="232"/>
+        <location filename="../ui/playdialog.cpp" line="234"/>
         <source>Confirm</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="233"/>
+        <location filename="../ui/playdialog.cpp" line="235"/>
         <source>No stream is marked as audio track, continue anyway?</source>
         <translation>没有媒体流被标记为音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="244"/>
+        <location filename="../ui/playdialog.cpp" line="246"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="280"/>
+        <location filename="../ui/playdialog.cpp" line="282"/>
         <source>Mark as Audio Track</source>
         <translation>标记为音频</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="281"/>
+        <location filename="../ui/playdialog.cpp" line="283"/>
         <source>Unmark as Audio Track</source>
         <translation>清除音频标记</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="292"/>
+        <location filename="../ui/playdialog.cpp" line="294"/>
         <source>Please select a media item in list to be marked as audio track.</source>
         <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="207"/>
-        <location filename="../ui/playdialog.cpp" line="301"/>
+        <location filename="../ui/playdialog.cpp" line="209"/>
+        <location filename="../ui/playdialog.cpp" line="303"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="302"/>
+        <location filename="../ui/playdialog.cpp" line="304"/>
         <source>This media item may be not an audio track, continue anyway?</source>
         <translation>该媒体流可能不是音频，继续吗？</translation>
     </message>

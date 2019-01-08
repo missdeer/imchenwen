@@ -89,11 +89,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="btnStorage">
-     <property name="text">
-      <string>Upload to Storage Service</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="cbAutoSelectAudioTrack">
+       <property name="text">
+        <string>Auto select Audio Track</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="btnStorage">
+       <property name="text">
+        <string>Upload to Storage Service</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,0">

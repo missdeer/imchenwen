@@ -90,6 +90,8 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
     m_complexUrlResources = true;
+    ui->cbAutoSelectAudioTrack->setEnabled(m_demuxed);
+    ui->cbAutoSelectAudioTrack->setChecked(m_demuxed);
 }
 
 void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &results)
@@ -311,4 +313,19 @@ void PlayDialog::onMarkAsAudioTrack()
 void PlayDialog::onUnmarkAsAudioTrack()
 {
     m_selectedAudio.reset();
+}
+
+void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
+{
+    if (state == Qt::Unchecked)
+    {
+        m_selectedAudio.reset();
+    }
+    else if (state == Qt::Checked)
+    {
+        auto it = std::find_if(m_resultStreams.rbegin(), m_resultStreams.rend(),
+                               [this](StreamInfoPtr stream){ return maybeAudioTrack(stream);});
+        if (m_resultStreams.rend() != it)
+            m_selectedAudio = *it;
+    }
 }
