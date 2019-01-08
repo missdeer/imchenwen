@@ -49,7 +49,7 @@ void LinkResolver::resolve(const QString& url)
         m_stopped = false;
         m_mediaInfo->title.clear();
         m_mediaInfo->site.clear();
-
+        m_mediaInfo->subtitles.clear();
         m_mediaInfo->resultCount = 0;
         m_mediaInfo->url = url;
         for ( auto & r : m_resolvers)

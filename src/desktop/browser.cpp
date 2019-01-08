@@ -342,17 +342,15 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
         {
             // an argument with single word wrapped by double quote
             QString var = *beginPos;
-            *beginPos = var.mid(1, var.length() - 2);
+            *beginPos = var.mid(1, var.length() - 2); // trim double quote at begin & at end
             continue;
         }
 
         // an argument with several words wrapped by double quote
         QStringList vars;
-        std::copy(beginPos, endPos, std::back_inserter(vars));
-        vars.append(*endPos);
+        std::copy(beginPos, endPos+1, std::back_inserter(vars));
         QString var = vars.join(" ");
-        var = var.mid(1, var.length() - 2);
-        *beginPos = var;
+        *beginPos = var.mid(1, var.length() - 2); // trim double quote at begin & at end
         auto beginIndex = std::distance(args.begin(), beginPos);
         auto endIndex = std::distance(args.begin(), endPos);
         for(auto removeIndex = endIndex; removeIndex != beginIndex; --removeIndex)
