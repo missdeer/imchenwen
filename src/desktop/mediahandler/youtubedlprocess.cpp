@@ -1,8 +1,10 @@
 #include "youtubedlprocess.h"
+#include "browser.h"
 #include "config.h"
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
+#include <QTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -84,6 +86,31 @@ void YoutubeDLProcess::init()
     setProgram(cfg.read<QString>("youtube-dl"));
 #endif
     setTimeout(90 * 1000);
+}
+
+void YoutubeDLProcess::start(const QString &url)
+{
+    QStringList args;
+    args << m_args;
+    // network proxy
+    if (!Browser::instance().shortcuts().isIn(QUrl(url), "china"))
+    {
+        Config cfg;
+        if (cfg.read<bool>(QLatin1String("enableProxy"), false))
+        {
+            if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
+                args << "--proxy" << QString("socks5://%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+            else
+                args << "--proxy" << QString("http://%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+        }
+    }
+
+    args << url;
+    m_process.setArguments(args);
+
+    LinkResolverProcess::start(url);
 }
 
 void YoutubeDLProcess::parseSubtitle(const QJsonValue &v, MediaInfoPtr mi, bool manual)

@@ -1,4 +1,5 @@
 #include "yougetprocess.h"
+#include "browser.h"
 #include "config.h"
 #include <QDebug>
 #include <QFileInfo>
@@ -89,4 +90,28 @@ void YouGetProcess::init()
 #else
     setProgram(cfg.read<QString>("you-get"));
 #endif
+}
+
+void YouGetProcess::start(const QString &url)
+{
+    QStringList args;
+    args << m_args;
+    // network proxy
+    if (!Browser::instance().shortcuts().isIn(QUrl(url), "china"))
+    {
+        Config cfg;
+        if (cfg.read<bool>(QLatin1String("enableProxy"), false))
+        {
+            if (cfg.read<int>(QLatin1String("proxyType"), 0) == 1)
+            {
+                args << "-y" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+            }
+        }
+    }
+
+    args << url;
+    m_process.setArguments(args);
+
+    LinkResolverProcess::start(url);
 }

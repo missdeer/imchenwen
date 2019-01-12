@@ -9,6 +9,7 @@ public:
     explicit YKDLProcess(QObject *parent = nullptr);
     void parseNode(const QJsonObject& o, MediaInfoPtr mi);
     void init();
+    void start(const QString& url);
 };
 
 #endif // YKDLPROCESS_H

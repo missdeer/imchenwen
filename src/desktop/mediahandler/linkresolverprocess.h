@@ -57,9 +57,9 @@ class LinkResolverProcess : public QObject
 public:
     explicit LinkResolverProcess(QObject *parent = nullptr);
     virtual ~LinkResolverProcess();
-    void setProgram(const QString& program);
-    void start(const QString& url);
-    void setTimeout(int timeout);
+    virtual void setProgram(const QString& program);
+    virtual void start(const QString& url);
+    virtual void setTimeout(int timeout);
     virtual void parseNode(const QJsonObject&, MediaInfoPtr);
     virtual void init();
 signals:

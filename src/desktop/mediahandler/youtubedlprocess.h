@@ -9,6 +9,7 @@ public:
     explicit YoutubeDLProcess(QObject *parent = nullptr);
     void parseNode(const QJsonObject& o, MediaInfoPtr mi);
     void init();
+    void start(const QString& url);
 private:
     void parseSubtitle(const QJsonValue& v, MediaInfoPtr mi, bool manual);
 };

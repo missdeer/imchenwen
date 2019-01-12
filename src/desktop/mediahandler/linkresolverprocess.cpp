@@ -30,10 +30,9 @@ void LinkResolverProcess::stop()
         m_process.kill();
 }
 
-void LinkResolverProcess::start(const QString& url)
+void LinkResolverProcess::start(const QString& )
 {
     m_data.clear();
-    m_process.setArguments(QStringList() << m_args << url);
     m_process.start();
     QTimer::singleShot(m_timeout, this, &LinkResolverProcess::stop);
 }
@@ -60,5 +59,5 @@ void LinkResolverProcess::parseNode(const QJsonObject &, MediaInfoPtr )
 
 void LinkResolverProcess::init()
 {
-
+    // implement in sub-class
 }
