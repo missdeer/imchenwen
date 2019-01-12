@@ -13,14 +13,15 @@ LinkResolverProcess::LinkResolverProcess(QObject *parent)
     m_process.setWorkingDirectory( QStandardPaths::writableLocation(QStandardPaths::TempLocation));
 }
 
+LinkResolverProcess::~LinkResolverProcess()
+{
+    disconnect(&m_process, &QProcess::readyReadStandardOutput, this, &LinkResolverProcess::onReadStandardOutput);
+    disconnect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &LinkResolverProcess::onFinished);
+}
+
 void LinkResolverProcess::setProgram(const QString &program)
 {
     m_process.setProgram(program);
-}
-
-void LinkResolverProcess::setArguments(const QStringList &arguments)
-{
-    m_process.setArguments(arguments);
 }
 
 void LinkResolverProcess::stop()
@@ -29,9 +30,10 @@ void LinkResolverProcess::stop()
         m_process.kill();
 }
 
-void LinkResolverProcess::start()
+void LinkResolverProcess::start(const QString& url)
 {
     m_data.clear();
+    m_process.setArguments(QStringList() << m_args << url);
     m_process.start();
     QTimer::singleShot(m_timeout, this, &LinkResolverProcess::stop);
 }
@@ -49,4 +51,14 @@ void LinkResolverProcess::onFinished(int , QProcess::ExitStatus )
 void LinkResolverProcess::setTimeout(int timeout)
 {
     m_timeout = timeout;
+}
+
+void LinkResolverProcess::parseNode(const QJsonObject &, MediaInfoPtr )
+{
+    // implement in sub-class
+}
+
+void LinkResolverProcess::init()
+{
+
 }

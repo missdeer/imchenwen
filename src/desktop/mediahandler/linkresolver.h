@@ -5,63 +5,18 @@
 #include <QSharedPointer>
 #include <QTime>
 #include <QJsonValue>
-#include "linkresolverprocess.h"
-
-struct StreamInfo
-{
-    QString container;
-    QString quality;
-    QStringList urls;
-};
-
-typedef QSharedPointer<StreamInfo> StreamInfoPtr;
-typedef QList<StreamInfoPtr> Streams;
-
-struct Subtitle
-{
-    QString language;
-    QString url;
-    bool manual;
-};
-
-typedef QSharedPointer<Subtitle> SubtitlePtr;
-typedef QList<SubtitlePtr> Subtitles;
-
-struct MediaInfo
-{
-    QString url;
-    QString site;
-    QString title;
-    Streams ykdl;
-    Streams you_get;
-    Streams youtube_dl;
-    Streams annie;
-    Subtitles subtitles;
-    int resultCount;
-};
-
-typedef QSharedPointer<MediaInfo> MediaInfoPtr;
-
-struct HistoryItem
-{
-    QString url;
-    QTime time;
-    bool vip;
-    MediaInfoPtr mi;
-};
-
-typedef QSharedPointer<HistoryItem> HistoryItemPtr;
+#include "annieprocess.h"
+#include "yougetprocess.h"
+#include "youtubedlprocess.h"
+#include "ykdlprocess.h"
 
 class LinkResolver : public QObject
 {
     Q_OBJECT
 
     struct Resolver {
-        QString name;
         LinkResolverProcess *process;
-        std::function<void(const QJsonObject , MediaInfoPtr , Streams &)> parse;
         Streams *streams;
-        QStringList args;
     };
 
 public:
@@ -72,7 +27,7 @@ public:
     void terminateResolvers();
 signals:
     void done(const QString& url, MediaInfoPtr);
-    void error(const QString& url, const QString&msg);
+    void error(const QString& url, const QString &msg);
 public slots:
 
 private slots:
@@ -81,16 +36,10 @@ private:
     bool m_stopped;
     QString m_lastUrl;
     MediaInfoPtr m_mediaInfo;
-    LinkResolverProcess m_yougetProcess;
-    LinkResolverProcess m_ykdlProcess;
-    LinkResolverProcess m_youtubedlProcess;
-    LinkResolverProcess m_annieProcess;
-    QList<Resolver> m_resolvers;
-    void parseYouGetNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
-    void parseYKDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
-    void parseYoutubeDLNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
-    void parseAnnieNode(const QJsonObject& o, MediaInfoPtr mi, Streams& streams);
-    void parseYoutubeDLSubtitle(const QJsonValue& v, MediaInfoPtr mi, bool manual);
+    YouGetProcess m_yougetProcess;
+    YKDLProcess m_ykdlProcess;
+    YoutubeDLProcess m_youtubedlProcess;
+    AnnieProcess m_annieProcess;
 };
 
 #endif // LINKRESOLVER_H

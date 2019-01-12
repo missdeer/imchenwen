@@ -58,7 +58,11 @@ HEADERS += \
     $$PWD/browser.h \
     $$PWD/ui/donatedialog.h \
     $$PWD/upgrade/dependenciesupgrade.h \
-    $$PWD/networkreplyhelper.h
+    $$PWD/networkreplyhelper.h \
+    mediahandler/yougetprocess.h \
+    mediahandler/annieprocess.h \
+    mediahandler/ykdlprocess.h \
+    mediahandler/youtubedlprocess.h
 
 SOURCES += \
     $$PWD/browser.cpp \
@@ -96,7 +100,11 @@ SOURCES += \
     $$PWD/webengine/webview.cpp \
     $$PWD/ui/donatedialog.cpp \
     $$PWD/upgrade/dependenciesupgrade.cpp \
-    $$PWD/networkreplyhelper.cpp
+    $$PWD/networkreplyhelper.cpp \
+    mediahandler/yougetprocess.cpp \
+    mediahandler/annieprocess.cpp \
+    mediahandler/ykdlprocess.cpp \
+    mediahandler/youtubedlprocess.cpp
 
 FORMS += \
     $$PWD/dlna/dlnaplayerview.ui \
