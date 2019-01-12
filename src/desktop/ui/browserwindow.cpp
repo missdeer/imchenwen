@@ -10,6 +10,7 @@
 #include "popupmenutoolbutton.h"
 #include "inputurldialog.h"
 #include "donatedialog.h"
+#include "dependenciesupgrade.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -279,6 +280,11 @@ QMenu *BrowserWindow::createHelpMenu()
     });
     connect(helpMenu->addAction(tr("Install mpv")), &QAction::triggered, []() {
        QDesktopServices::openUrl(QUrl("https://mpv.io"));
+    });
+    connect(helpMenu->addAction(tr("Upgrade Resolvers in background")), &QAction::triggered, [](){
+        DependenciesUpgrade upgrader;
+        upgrader.setAutoDelete(false);
+        QThreadPool::globalInstance()->start(&upgrader);
     });
     helpMenu->addSeparator();
 

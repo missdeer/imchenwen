@@ -1,6 +1,5 @@
 #include "browser.h"
 #include "browserwindow.h"
-#include "dependenciesupgrade.h"
 #include <QApplication>
 #include <QtWebEngine>
 #include <QWebEngineSettings>
@@ -113,10 +112,6 @@ int main(int argc, char **argv)
         window->loadPage(url);
     else
         window->loadHomePage();
-
-    DependenciesUpgrade upgrader;
-    upgrader.setAutoDelete(false);
-    QThreadPool::globalInstance()->start(&upgrader);
 
     return a.exec();
 }
