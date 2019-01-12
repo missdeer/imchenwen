@@ -12,6 +12,8 @@ public:
     void setProgram(const QString& program);
     void setArguments(const QStringList& arguments);
     void start();
+    void setTimeout(int timeout);
+
 signals:
     void done(const QByteArray&);
 public slots:
@@ -22,6 +24,7 @@ private slots:
 private:
     QProcess m_process;
     QByteArray m_data;
+    int m_timeout;
 };
 
 #endif // LINKRESOLVERPROCESS_H

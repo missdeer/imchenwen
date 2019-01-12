@@ -2,7 +2,9 @@
 #include <QTimer>
 #include <QStandardPaths>
 
-LinkResolverProcess::LinkResolverProcess(QObject *parent) : QObject(parent)
+LinkResolverProcess::LinkResolverProcess(QObject *parent)
+    : QObject(parent)
+    , m_timeout(15 * 1000)
 {
     m_process.setProcessChannelMode(QProcess::MergedChannels);
     connect(&m_process, &QProcess::readyReadStandardOutput, this, &LinkResolverProcess::onReadStandardOutput);
@@ -31,7 +33,7 @@ void LinkResolverProcess::start()
 {
     m_data.clear();
     m_process.start();
-    QTimer::singleShot(15 * 1000, this, &LinkResolverProcess::stop);
+    QTimer::singleShot(m_timeout, this, &LinkResolverProcess::stop);
 }
 
 void LinkResolverProcess::onReadStandardOutput()
@@ -42,4 +44,9 @@ void LinkResolverProcess::onReadStandardOutput()
 void LinkResolverProcess::onFinished(int , QProcess::ExitStatus )
 {
     emit done(m_data);
+}
+
+void LinkResolverProcess::setTimeout(int timeout)
+{
+    m_timeout = timeout;
 }

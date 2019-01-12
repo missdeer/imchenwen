@@ -363,5 +363,7 @@ void LinkResolver::setupResolvers()
         r.process->setProgram(cfg.read<QString>(r.name));
 #endif
         connect(r.process, &LinkResolverProcess::done, this, &LinkResolver::onReadResolverOutput);
+        if (r.name == "youtube-dl")
+            r.process->setTimeout(90 * 1000);
     }
 }
