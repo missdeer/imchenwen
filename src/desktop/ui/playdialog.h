@@ -40,6 +40,7 @@ private slots:
     void on_listMedia_itemActivated(QListWidgetItem *);
     void on_cbAutoSelectAudioTrack_stateChanged(int state);
     void on_cbSubtitles_currentIndexChanged(int);
+    void on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state);
 
 private:
     Ui::PlayDialog *ui;

@@ -93,7 +93,14 @@
      <item>
       <widget class="QCheckBox" name="cbAutoSelectAudioTrack">
        <property name="text">
-        <string>Auto select Audio Track</string>
+        <string>Auto Select Audio Track</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="cbAutoSelectHighestQualityVideoTrack">
+       <property name="text">
+        <string>Auto Select Highest Quality Video Track</string>
        </property>
       </widget>
      </item>

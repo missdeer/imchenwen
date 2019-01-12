@@ -16,6 +16,8 @@ struct StreamInfo
 typedef QSharedPointer<StreamInfo> StreamInfoPtr;
 typedef QList<StreamInfoPtr> Streams;
 
+bool operator<(StreamInfoPtr lhs, StreamInfoPtr rhs);
+
 struct Subtitle
 {
     QString language;

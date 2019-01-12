@@ -19,6 +19,8 @@ PlayDialog::PlayDialog(QWidget *parent) :
     connect(ui->listMedia, &QListWidget::customContextMenuRequested, this, &PlayDialog::onListMediaContextmenu);
 
     createExternalPlayerList();
+    Config cfg;
+    ui->cbAutoSelectHighestQualityVideoTrack->setChecked(cfg.read<bool>("autoSelectHighestQualityVideoTrack", true));
 }
 
 PlayDialog::~PlayDialog()
@@ -87,7 +89,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
                 item->setToolTip(QUrl(stream->urls[0]).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
         }
     }
-    ui->listMedia->setCurrentRow(0);
+    //ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
     m_complexUrlResources = true;
     ui->cbAutoSelectAudioTrack->setEnabled(m_demuxed);
@@ -195,11 +197,21 @@ bool PlayDialog::doOk()
     QListWidgetItem *currentItem = ui->listMedia->currentItem();
     if (!currentItem)
     {
-        QMessageBox::warning(this,
-                             tr("Error"),
-                             tr("Please select a media item in list to be played."),
-                             QMessageBox::Ok);
-        return false;
+        if (m_complexUrlResources && ui->cbAutoSelectHighestQualityVideoTrack->isChecked())
+        {
+            auto it = std::max_element(m_resultStreams.begin(), m_resultStreams.end());
+            if (m_resultStreams.end() != it)
+                ui->listMedia->setCurrentRow(static_cast<int>(std::distance(m_resultStreams.begin(), it)));
+        }
+
+        if (!ui->listMedia->currentItem())
+        {
+            QMessageBox::warning(this,
+                                 tr("Error"),
+                                 tr("Please select a media item in list to be played."),
+                                 QMessageBox::Ok);
+            return false;
+        }
     }
     int currentRow = ui->listMedia->currentRow();
     if (m_complexUrlResources)
@@ -335,4 +347,10 @@ void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
 void PlayDialog::on_cbSubtitles_currentIndexChanged(int )
 {
     ui->cbSubtitleEnabled->setChecked(true);
+}
+
+void PlayDialog::on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state)
+{
+    Config cfg;
+    cfg.write("autoSelectHighestQualityVideoTrack", state == Qt::Checked);
 }

@@ -79,3 +79,40 @@ void LinkResolverProcess::init()
 {
     // implement in sub-class
 }
+
+bool operator<(StreamInfoPtr lhs, StreamInfoPtr rhs)
+{
+    QStringList keywords = {
+        "144p",
+        "210p",
+        "240p",
+        "640x360",
+        "360p",
+        "480p",
+        "540p",
+        "540p H265",
+        "640p",
+        "1280x720",
+        "hd720",
+        "720p",
+        "720p H265",
+        "1080p",
+        "1440p",
+        "2160p",
+        "4320p",
+        "4k"
+    };
+    auto it = std::find_if(keywords.begin(), keywords.end(), [lhs](const QString& keyword){
+        return lhs->quality.contains(keyword);
+    });
+    if (keywords.end() == it)
+        return true;
+    auto lhsIndex = std::distance(keywords.begin(), it);
+    it = std::find_if(keywords.begin(), keywords.end(), [rhs](const QString& keyword){
+        return rhs->quality.contains(keyword);
+    });
+    if (keywords.end() == it)
+        return false;
+    auto rhsIndex = std::distance(keywords.begin(), it);
+    return lhsIndex < rhsIndex;
+}
