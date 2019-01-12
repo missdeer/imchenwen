@@ -1,4 +1,7 @@
 #include "linkresolverprocess.h"
+#include "browser.h"
+#include "config.h"
+#include <QUrl>
 #include <QTimer>
 #include <QStandardPaths>
 
@@ -45,6 +48,21 @@ void LinkResolverProcess::onReadStandardOutput()
 void LinkResolverProcess::onFinished(int , QProcess::ExitStatus )
 {
     emit done(m_data);
+}
+
+bool LinkResolverProcess::needProxy(const QString &url)
+{
+    Config cfg;
+    if (cfg.read<bool>(QLatin1String("enableProxy"), false) && cfg.read<bool>(QLatin1String("applyProxyToResolvers"), true))
+    {
+        if ((cfg.read<bool>(QLatin1String("applyProxyAbroadOnly"), true)
+             && !Browser::instance().shortcuts().isIn(QUrl(url), "china"))
+                || !cfg.read<bool>(QLatin1String("applyProxyAbroadOnly"), true))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void LinkResolverProcess::setTimeout(int timeout)

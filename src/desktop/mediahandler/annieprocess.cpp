@@ -1,5 +1,4 @@
 #include "annieprocess.h"
-#include "browser.h"
 #include "config.h"
 #include <QDebug>
 #include <QJsonDocument>
@@ -80,18 +79,15 @@ void AnnieProcess::start(const QString &url)
     QStringList args;
     args << m_args;
     // network proxy
-    if (!Browser::instance().shortcuts().isIn(QUrl(url), "china"))
+    if (needProxy(url))
     {
         Config cfg;
-        if (cfg.read<bool>(QLatin1String("enableProxy"), false))
-        {
-            if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
-                args << "-s" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
-                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
-            else
-                args << "-x" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
-                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
-        }
+        if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
+            args << "-s" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                    .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+        else
+            args << "-x" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                    .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
     }
 
     args << url;

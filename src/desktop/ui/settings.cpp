@@ -212,7 +212,6 @@ void SettingsDialog::loadFromSettings()
     QString pdataPath = cfg.read(QLatin1String("persistentDataPath"), persistentDataPath->text());
     persistentDataPath->setText(pdataPath);
 
-
     // Proxy
     proxySupport->setChecked(cfg.read<bool>(QLatin1String("enableProxy"), false));
     proxyType->setCurrentIndex(cfg.read<int>(QLatin1String("proxyType"), 0));
@@ -220,6 +219,8 @@ void SettingsDialog::loadFromSettings()
     proxyPort->setValue(cfg.read<int>(QLatin1String("proxyPort"), 1080));
     proxyUserName->setText(cfg.read<QString>(QLatin1String("proxyUserName")));
     proxyPassword->setText(cfg.read<QString>(QLatin1String("proxyPassword")));
+    cbApplyToResolvers->setChecked(cfg.read<bool>(QLatin1String("applyProxyToResolvers"), true));
+    cbApplyAbroadOnly->setChecked(cfg.read<bool>(QLatin1String("applyProxyAbroadOnly"), true));
 
     // external player
     cfg.read("externalPlayers", m_players);
@@ -296,6 +297,8 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("proxyPort"), proxyPort->text());
     cfg.write(QLatin1String("proxyUserName"), proxyUserName->text());
     cfg.write(QLatin1String("proxyPassword"), proxyPassword->text());
+    cfg.write(QLatin1String("applyProxyToResolvers"), cbApplyToResolvers->isChecked());
+    cfg.write(QLatin1String("applyProxyAbroadOnly"), cbApplyAbroadOnly->isChecked());
 
     // resolver
     cfg.write(QLatin1String("you-get"), edtYouGetPath->text());

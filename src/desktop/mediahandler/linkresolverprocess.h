@@ -74,6 +74,7 @@ protected:
     QByteArray m_data;
     QStringList m_args;
     int m_timeout;
+    bool needProxy(const QString& url);
 };
 
 #endif // LINKRESOLVERPROCESS_H
