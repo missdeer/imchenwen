@@ -39,6 +39,8 @@ private slots:
     void on_btnCancel_clicked();
     void on_listMedia_itemActivated(QListWidgetItem *);
     void on_cbAutoSelectAudioTrack_stateChanged(int state);
+    void on_cbSubtitles_currentIndexChanged(int);
+
 private:
     Ui::PlayDialog *ui;
     PlayerList m_players;
@@ -54,7 +56,7 @@ private:
     bool m_complexUrlResources;
     bool m_demuxed;
     void createExternalPlayerList();
-    void doOk();
+    bool doOk();
     QListWidgetItem *addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);
     bool maybeAudioTrack(StreamInfoPtr media);
 };
