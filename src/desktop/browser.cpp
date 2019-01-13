@@ -68,6 +68,8 @@ Browser::Browser(QObject *parent)
     , m_builtinPlayer(nullptr)
     , m_liveTVHelper("liveTV", "liveTVSubscription")
     , m_playDialog(nullptr)
+    , m_outOfChinaMainlandProxyFactory(nullptr)
+    , m_inGFWListProxyFactory(nullptr)
 {
     connect(&m_linkResolver, &LinkResolver::done, this, &Browser::onNormalLinkResolved);
     connect(&m_linkResolver, &LinkResolver::error, this, &Browser::onNormalLinkResolvingError);
@@ -164,18 +166,48 @@ void Browser::loadSettings()
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
 
-    QNetworkProxy proxy;
-    if (cfg.read<bool>(QLatin1String("enableProxy"), false)) {
-        if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
-            proxy = QNetworkProxy::Socks5Proxy;
-        else
-            proxy = QNetworkProxy::HttpProxy;
+    QNetworkProxy proxy(QNetworkProxy::NoProxy);
+    if (cfg.read<bool>(QLatin1String("enableProxy"), false))
+    {
+        proxy.setType(static_cast<QNetworkProxy::ProxyType>(cfg.read<int>(QLatin1String("proxyType"), 0)));
         proxy.setHostName(cfg.read<QString>(QLatin1String("proxyHostName")));
         proxy.setPort(cfg.read<quint16>(QLatin1String("proxyPort"), 1080));
         proxy.setUser(cfg.read<QString>(QLatin1String("proxyUserName")));
         proxy.setPassword(cfg.read<QString>(QLatin1String("proxyPassword")));
+        int scope = cfg.read<int>(QLatin1String("proxyScope"), 0);
+        switch (scope)
+        {
+        case 0:
+            // global
+            QNetworkProxy::setApplicationProxy(proxy);
+            break;
+        case 1:
+            // out of china mainland
+            if (!m_outOfChinaMainlandProxyFactory)
+            {
+                m_outOfChinaMainlandProxyFactory = new OutOfChinaMainlandProxyFactory;
+                m_outOfChinaMainlandProxyFactory->init();
+            }
+            QNetworkProxyFactory::setApplicationProxyFactory(m_outOfChinaMainlandProxyFactory);
+            break;
+        case 2:
+            // hit gfwlist
+            if (!m_inGFWListProxyFactory)
+            {
+                m_inGFWListProxyFactory = new InGFWListProxyFactory;
+                m_inGFWListProxyFactory->init();
+            }
+            QNetworkProxyFactory::setApplicationProxyFactory(m_inGFWListProxyFactory);
+            break;
+        }
+
+        if (m_outOfChinaMainlandProxyFactory)
+            m_outOfChinaMainlandProxyFactory->updateProxyCache(proxy);
+        if (m_inGFWListProxyFactory)
+            m_inGFWListProxyFactory->updateProxyCache(proxy);
     }
-    QNetworkProxy::setApplicationProxy(proxy);
+    else
+        QNetworkProxy::setApplicationProxy(proxy);
 }
 
 void Browser::resolveAndPlayByMediaPlayer(const QString &u)

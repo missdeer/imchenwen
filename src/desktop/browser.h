@@ -15,6 +15,8 @@
 #include "player.h"
 #include "subscriptionhelper.h"
 #include "mediarelay.h"
+#include "outofchinamainlandproxyfactory.h"
+#include "ingfwlistproxyfactory.h"
 
 class BrowserWindow;
 class WaitingSpinnerWidget;
@@ -83,6 +85,8 @@ private:
     SubscriptionHelper m_liveTVHelper;
     MediaRelay m_mediaRelay;
     PlayDialog *m_playDialog;
+    OutOfChinaMainlandProxyFactory *m_outOfChinaMainlandProxyFactory;
+    InGFWListProxyFactory *m_inGFWListProxyFactory;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);

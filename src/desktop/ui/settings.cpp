@@ -214,13 +214,15 @@ void SettingsDialog::loadFromSettings()
 
     // Proxy
     proxySupport->setChecked(cfg.read<bool>(QLatin1String("enableProxy"), false));
-    proxyType->setCurrentIndex(cfg.read<int>(QLatin1String("proxyType"), 0));
+    proxyType->setCurrentIndex(cfg.read<int>(QLatin1String("proxyType"), 0) == QNetworkProxy::Socks5Proxy ? 0 : 1);
     proxyHostName->setText(cfg.read<QString>(QLatin1String("proxyHostName")));
     proxyPort->setValue(cfg.read<int>(QLatin1String("proxyPort"), 1080));
     proxyUserName->setText(cfg.read<QString>(QLatin1String("proxyUserName")));
     proxyPassword->setText(cfg.read<QString>(QLatin1String("proxyPassword")));
     cbApplyToResolvers->setChecked(cfg.read<bool>(QLatin1String("applyProxyToResolvers"), true));
-    cbApplyAbroadOnly->setChecked(cfg.read<bool>(QLatin1String("applyProxyAbroadOnly"), true));
+    cbProxyScope->setCurrentIndex(cfg.read<int>(QLatin1String("proxyScope"), 0));
+    edtGFWList->setText(cfg.read(QLatin1String("gfwList"), QString("https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt")));
+    edtChinaDomain->setText(cfg.read(QLatin1String("chinaDomain"), QString("https://cdn.jsdelivr.net/gh/felixonmars/dnsmasq-china-list/accelerated-domains.china.conf")));
 
     // external player
     cfg.read("externalPlayers", m_players);
@@ -292,13 +294,15 @@ void SettingsDialog::saveToSettings()
 
     // proxy
     cfg.write(QLatin1String("enableProxy"), proxySupport->isChecked());
-    cfg.write(QLatin1String("proxyType"), proxyType->currentIndex());
+    cfg.write(QLatin1String("proxyType"), proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy);
     cfg.write(QLatin1String("proxyHostName"), proxyHostName->text());
     cfg.write(QLatin1String("proxyPort"), proxyPort->text());
     cfg.write(QLatin1String("proxyUserName"), proxyUserName->text());
     cfg.write(QLatin1String("proxyPassword"), proxyPassword->text());
     cfg.write(QLatin1String("applyProxyToResolvers"), cbApplyToResolvers->isChecked());
-    cfg.write(QLatin1String("applyProxyAbroadOnly"), cbApplyAbroadOnly->isChecked());
+    cfg.write(QLatin1String("proxyScope"), cbProxyScope->currentIndex());
+    cfg.write(QLatin1String("gfwList"), edtGFWList->text());
+    cfg.write(QLatin1String("chinaDomain"), edtChinaDomain->text());
 
     // resolver
     cfg.write(QLatin1String("you-get"), edtYouGetPath->text());

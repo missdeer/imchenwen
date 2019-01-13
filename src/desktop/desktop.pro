@@ -19,7 +19,8 @@ INCLUDEPATH += $$PWD \
     $$PWD/config \
     $$PWD/ui \
     $$PWD/mediahandler \
-    $$PWD/upgrade
+    $$PWD/upgrade \
+    $$PWD/network
 
 HEADERS += \
     $$PWD/util.h \
@@ -58,11 +59,14 @@ HEADERS += \
     $$PWD/browser.h \
     $$PWD/ui/donatedialog.h \
     $$PWD/upgrade/dependenciesupgrade.h \
-    $$PWD/networkreplyhelper.h \
-    mediahandler/yougetprocess.h \
-    mediahandler/annieprocess.h \
-    mediahandler/ykdlprocess.h \
-    mediahandler/youtubedlprocess.h
+    $$PWD/network/networkreplyhelper.h \
+    $$PWD/mediahandler/yougetprocess.h \
+    $$PWD/mediahandler/annieprocess.h \
+    $$PWD/mediahandler/ykdlprocess.h \
+    $$PWD/mediahandler/youtubedlprocess.h \
+    network/proxyrule.h \
+    network/outofchinamainlandproxyfactory.h \
+    network/ingfwlistproxyfactory.h
 
 SOURCES += \
     $$PWD/browser.cpp \
@@ -100,11 +104,14 @@ SOURCES += \
     $$PWD/webengine/webview.cpp \
     $$PWD/ui/donatedialog.cpp \
     $$PWD/upgrade/dependenciesupgrade.cpp \
-    $$PWD/networkreplyhelper.cpp \
-    mediahandler/yougetprocess.cpp \
-    mediahandler/annieprocess.cpp \
-    mediahandler/ykdlprocess.cpp \
-    mediahandler/youtubedlprocess.cpp
+    $$PWD/network/networkreplyhelper.cpp \
+    $$PWD/mediahandler/yougetprocess.cpp \
+    $$PWD/mediahandler/annieprocess.cpp \
+    $$PWD/mediahandler/ykdlprocess.cpp \
+    $$PWD/mediahandler/youtubedlprocess.cpp \
+    network/proxyrule.cpp \
+    network/outofchinamainlandproxyfactory.cpp \
+    network/ingfwlistproxyfactory.cpp
 
 FORMS += \
     $$PWD/dlna/dlnaplayerview.ui \
