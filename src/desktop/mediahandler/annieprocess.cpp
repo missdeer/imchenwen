@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QStandardPaths>
+#include <QNetworkProxy>
 
 AnnieProcess::AnnieProcess(QObject *parent)
     : LinkResolverProcess (parent)
@@ -82,7 +83,7 @@ void AnnieProcess::start(const QString &url)
     if (needProxy(url))
     {
         Config cfg;
-        if (cfg.read<int>(QLatin1String("proxyType"), 0) == 0)
+        if (cfg.read<int>(QLatin1String("proxyType")) == QNetworkProxy::Socks5Proxy)
             args << "-s" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
                     .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
         else

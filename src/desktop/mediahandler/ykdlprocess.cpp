@@ -8,6 +8,7 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QStandardPaths>
+#include <QNetworkProxy>
 
 YKDLProcess::YKDLProcess(QObject *parent)
     :LinkResolverProcess (parent)
@@ -97,7 +98,7 @@ void YKDLProcess::start(const QString &url)
     if (needProxy(url))
     {
         Config cfg;
-        if (cfg.read<int>(QLatin1String("proxyType"), 0) == 1)
+        if (cfg.read<int>(QLatin1String("proxyType")) == QNetworkProxy::HttpProxy)
         {
             args << "--proxy" << QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
                     .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
