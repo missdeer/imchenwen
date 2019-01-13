@@ -1,6 +1,8 @@
 #include "linkresolverprocess.h"
 #include "browser.h"
 #include "config.h"
+#include "outofchinamainlandproxyfactory.h"
+#include "ingfwlistproxyfactory.h"
 #include <QUrl>
 #include <QTimer>
 #include <QStandardPaths>
@@ -55,11 +57,15 @@ bool LinkResolverProcess::needProxy(const QString &url)
     Config cfg;
     if (cfg.read<bool>(QLatin1String("enableProxy"), false) && cfg.read<bool>(QLatin1String("applyProxyToResolvers"), true))
     {
-        if ((cfg.read<bool>(QLatin1String("applyProxyAbroadOnly"), true)
-             && !Browser::instance().shortcuts().isIn(QUrl(url), "china"))
-                || !cfg.read<bool>(QLatin1String("applyProxyAbroadOnly"), true))
+        int scope = cfg.read<int>(QLatin1String("proxyScope"));
+        switch (scope)
         {
+        case 0:
             return true;
+        case 1:
+            return Browser::instance().outOfChinaMainlandProxyFactory()->needProxy(url);
+        case 2:
+            return Browser::instance().inGFWListProxyFactory()->needProxy(url);
         }
     }
     return false;

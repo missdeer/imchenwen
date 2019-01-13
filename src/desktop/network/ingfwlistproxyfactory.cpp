@@ -68,6 +68,11 @@ QList<QNetworkProxy> InGFWListProxyFactory::queryProxy(const QNetworkProxyQuery 
     return m_proxyList;
 }
 
+bool InGFWListProxyFactory::needProxy(const QString &url)
+{
+    return isAutoProxyRuleMatched(QUrl::fromUserInput(url));
+}
+
 void InGFWListProxyFactory::done()
 {
     NetworkReplyHelper* helper = qobject_cast<NetworkReplyHelper*>(sender());
@@ -98,6 +103,8 @@ void InGFWListProxyFactory::done()
 
 bool InGFWListProxyFactory::isAutoProxyRuleMatched(const QUrl &url)
 {
+    if (url.toString().isEmpty())
+        return true;
     // first check the excluding rules, because their priorities are the highest
     for(ProxyRule* rule: m_excludingProxyRules) {
         if (rule->isMatched(url)) {

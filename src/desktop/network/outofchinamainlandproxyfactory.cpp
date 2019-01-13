@@ -32,23 +32,33 @@ QList<QNetworkProxy> OutOfChinaMainlandProxyFactory::queryProxy(const QNetworkPr
 {
     QList<QNetworkProxy> m_proxyList;
 
-    QString host = query.url().host();
+    if (needProxy(query.url().toString()))
+        m_proxyList.append(m_proxyCache);
+    else
+        m_proxyList.append(m_proxyCache);
+
+    return m_proxyList;
+}
+
+bool OutOfChinaMainlandProxyFactory::needProxy(const QString &url)
+{
+    if (url.isEmpty())
+        return true;
+    QString host = QUrl(url).host();
     auto hostSegs = host.split('.');
     DomainMap* domainMap = &m_chinaDomains;
     for (auto it = hostSegs.rbegin(); hostSegs.rend() != it; ++it)
     {
         if (!domainMap || domainMap->find(*it) == domainMap->end())
         {
+            if (std::distance(hostSegs.rbegin(), it) > 1)
+                return false;
             // not found, so it's out of China Mainland
-            qDebug() << host << "is not a China Mainland domain";
-            m_proxyList.append(m_proxyCache);
-            return m_proxyList;
+            return true;
         }
         domainMap = static_cast<DomainMap*>(domainMap->value(*it));
     }
-
-    m_proxyList.append(QNetworkProxy::NoProxy);
-    return m_proxyList;
+    return false;
 }
 
 void OutOfChinaMainlandProxyFactory::done()

@@ -53,6 +53,9 @@ public:
     void resolveVIPAndPlayByMediaPlayer(const QString &u);
     void play(const QString& originalUrl, const QStringList &results, const QString &title);
     void init();
+    OutOfChinaMainlandProxyFactory *outOfChinaMainlandProxyFactory() const;
+    InGFWListProxyFactory *inGFWListProxyFactory() const;
+
 signals:
 
 private slots:

@@ -15,7 +15,7 @@ public:
     void init();
     void updateProxyCache(const QNetworkProxy &proxy);
     QList<QNetworkProxy> queryProxy ( const QNetworkProxyQuery & query = QNetworkProxyQuery() ) ;
-
+    bool needProxy(const QString& url);
 private slots:
     void done();
 

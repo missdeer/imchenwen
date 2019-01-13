@@ -226,7 +226,15 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     m_httpHandler.clear();
     if (!m_httpServer.isListening())
     {
-        m_httpServer.listen(QHostAddress::Any, 51290);
+        m_httpServer.setProxy(QNetworkProxy::NoProxy);
+        if (!m_httpServer.listen(QHostAddress::Any, 51290))
+        {
+            QMessageBox::warning(mainWindow(),
+                tr("Error"),
+                tr("Media relay listening on port failed, can't play media."),
+                QMessageBox::Ok);
+            return;
+        }
         m_httpServer.setHandler(&m_httpHandler);
     }
     if (!referrer.isEmpty())
@@ -745,5 +753,15 @@ void Browser::onTranscodingFailed()
                          tr("Error"),
                          tr("Transcoding failed."),
                          QMessageBox::Ok);
+}
+
+InGFWListProxyFactory *Browser::inGFWListProxyFactory() const
+{
+    return m_inGFWListProxyFactory;
+}
+
+OutOfChinaMainlandProxyFactory *Browser::outOfChinaMainlandProxyFactory() const
+{
+    return m_outOfChinaMainlandProxyFactory;
 }
 
