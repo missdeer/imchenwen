@@ -16,6 +16,7 @@
 
 DependenciesUpgrade::DependenciesUpgrade()
 {
+    setAutoDelete(true);
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     QDir d(appLocalDataPath);
     if (!d.exists())

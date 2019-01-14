@@ -75,8 +75,8 @@
     <name>BrowserWindow</name>
     <message>
         <location filename="../ui/browserwindow.cpp" line="91"/>
-        <location filename="../ui/browserwindow.cpp" line="301"/>
-        <location filename="../ui/browserwindow.cpp" line="551"/>
+        <location filename="../ui/browserwindow.cpp" line="299"/>
+        <location filename="../ui/browserwindow.cpp" line="549"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -219,17 +219,17 @@
         <translation>安装mpv媒体播放器</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="291"/>
+        <location filename="../ui/browserwindow.cpp" line="289"/>
         <source>About...</source>
         <translation>关于…</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="295"/>
+        <location filename="../ui/browserwindow.cpp" line="293"/>
         <source>About imchenwen</source>
         <translation>关于某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="296"/>
+        <location filename="../ui/browserwindow.cpp" line="294"/>
         <source>Parse video URLs and invoke external player to play the videos, so that you don&apos;t need web browsers such as IE, Chrome, Firefox, Opera, Safari etc any more. It is designed for poor performance machines/OSs.
 
 Build at </source>
@@ -238,49 +238,49 @@ Build at </source>
 构建于 </translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="299"/>
+        <location filename="../ui/browserwindow.cpp" line="297"/>
         <source>About Qt...</source>
         <translation>关于Qt…</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="309"/>
+        <location filename="../ui/browserwindow.cpp" line="307"/>
         <source>&amp;Shortcut</source>
         <translation>快捷方式(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="316"/>
+        <location filename="../ui/browserwindow.cpp" line="314"/>
         <source>In China</source>
         <translation>中国的</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="317"/>
+        <location filename="../ui/browserwindow.cpp" line="315"/>
         <source>Out of China</source>
         <translation>外国的</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="318"/>
+        <location filename="../ui/browserwindow.cpp" line="316"/>
         <source>Online Film</source>
         <translation>在线电影</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="384"/>
+        <location filename="../ui/browserwindow.cpp" line="382"/>
         <source>Watch Live TV</source>
         <translation>观看在线电视直播</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="409"/>
+        <location filename="../ui/browserwindow.cpp" line="407"/>
         <source>Navigation</source>
         <translation>导航</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="121"/>
-        <location filename="../ui/browserwindow.cpp" line="457"/>
+        <location filename="../ui/browserwindow.cpp" line="455"/>
         <source>Play by Media Player</source>
         <translation>使用媒体播放器播放</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="125"/>
-        <location filename="../ui/browserwindow.cpp" line="462"/>
+        <location filename="../ui/browserwindow.cpp" line="460"/>
         <source>Play VIP by Media Player</source>
         <translation>使用媒体播放器播放VIP视频</translation>
     </message>
@@ -295,44 +295,44 @@ Build at </source>
         <translation>后台升级视频解析器</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="553"/>
+        <location filename="../ui/browserwindow.cpp" line="551"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="565"/>
+        <location filename="../ui/browserwindow.cpp" line="563"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="566"/>
+        <location filename="../ui/browserwindow.cpp" line="564"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="591"/>
+        <location filename="../ui/browserwindow.cpp" line="589"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="599"/>
+        <location filename="../ui/browserwindow.cpp" line="597"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="600"/>
+        <location filename="../ui/browserwindow.cpp" line="598"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="697"/>
+        <location filename="../ui/browserwindow.cpp" line="695"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="701"/>
+        <location filename="../ui/browserwindow.cpp" line="699"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>

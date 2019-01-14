@@ -282,9 +282,7 @@ QMenu *BrowserWindow::createHelpMenu()
        QDesktopServices::openUrl(QUrl("https://mpv.io"));
     });
     connect(helpMenu->addAction(tr("Upgrade Resolvers in background")), &QAction::triggered, [](){
-        DependenciesUpgrade upgrader;
-        upgrader.setAutoDelete(false);
-        QThreadPool::globalInstance()->start(&upgrader);
+        QThreadPool::globalInstance()->start(new DependenciesUpgrade);
     });
     helpMenu->addSeparator();
 
