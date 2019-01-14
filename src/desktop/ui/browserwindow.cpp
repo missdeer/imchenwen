@@ -276,10 +276,10 @@ QMenu *BrowserWindow::createHelpMenu()
     helpMenu->addSeparator();
 
     connect(helpMenu->addAction(tr("Install Adobe Flash Player")), &QAction::triggered, []() {
-       QDesktopServices::openUrl(QUrl("https://get.adobe.com/flashplayer/otherversions"));
+        QDesktopServices::openUrl(QUrl("https://get.adobe.com/flashplayer/otherversions"));
     });
     connect(helpMenu->addAction(tr("Install mpv")), &QAction::triggered, []() {
-       QDesktopServices::openUrl(QUrl("https://mpv.io"));
+        QDesktopServices::openUrl(QUrl("https://mpv.io"));
     });
     connect(helpMenu->addAction(tr("Upgrade Resolvers in background")), &QAction::triggered, [](){
         QThreadPool::globalInstance()->start(new DependenciesUpgrade);

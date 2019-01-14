@@ -70,10 +70,11 @@ void YoutubeDLProcess::init()
 #if defined(Q_OS_WIN)
     QString path = cfg.read<QString>("youtube-dl");
     QFileInfo fi(path);
-    QDir dir(appLocalDataPath + "/python/Scripts");
-    if (fi.absoluteDir() == dir)
+    QDir d(fi.absoluteDir());
+    d.cdUp();
+    QString python = d.absolutePath() + "/python.exe";
+    if (QFile::exists(python))
     {
-        QString python = appLocalDataPath + "/python/python.exe";
         setProgram(python);
         if (m_args.at(0) != QDir::toNativeSeparators(path))
             m_args.insert(0, QDir::toNativeSeparators(path));
