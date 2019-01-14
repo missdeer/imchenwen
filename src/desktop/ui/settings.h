@@ -43,6 +43,7 @@ private slots:
     void onLiveTVTableItemSelectionChanged();
 
     void onTabWidgetCurrentChanged(int index);
+    void onProxyScopeCurrentIndexChanged(int index);
 private:
     QFont standardFont;
     QFont fixedFont;

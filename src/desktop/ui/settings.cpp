@@ -76,6 +76,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnBrowseYoutubeDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYoutubeDLPath);
     connect(btnBrowseAnniePath, &QPushButton::clicked, this, &SettingsDialog::onBrowseAnniePath);
     connect(btnBrowseFFmpegPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseFFmpegPath);
+    connect(cbProxyScope, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SettingsDialog::onProxyScopeCurrentIndexChanged);
     loadDefaults();
     loadFromSettings();
 }
@@ -696,6 +697,28 @@ void SettingsDialog::onTabWidgetCurrentChanged(int index)
         setWindowTitle(titles[index]);
     else
         setWindowTitle(tr("Settings"));
+}
+
+void SettingsDialog::onProxyScopeCurrentIndexChanged(int index)
+{
+    switch(index)
+    {
+    case 0:
+        // global
+        edtGFWList->setEnabled(false);
+        edtChinaDomain->setEnabled(false);
+        break;
+    case 1:
+        // china domain
+        edtGFWList->setEnabled(false);
+        edtChinaDomain->setEnabled(true);
+        break;
+    case 2:
+        // gfw list
+        edtGFWList->setEnabled(true);
+        edtChinaDomain->setEnabled(false);
+        break;
+    }
 }
 
 bool SettingsDialog::importLiveTVAsJSON(const QString &path)
