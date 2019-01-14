@@ -105,7 +105,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="btnStorage">
+      <widget class="QCheckBox" name="cbUploadToStorageService">
        <property name="text">
         <string>Upload to Storage Service</string>
        </property>
