@@ -353,9 +353,20 @@ void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
     else if (state == Qt::Checked)
     {
         auto it = std::find_if(m_resultStreams.rbegin(), m_resultStreams.rend(),
-                               [this](StreamInfoPtr stream){ return maybeAudioTrack(stream);});
+                               [this](StreamInfoPtr stream){ return maybeAudioTrack(stream) && stream->container.compare("m4a",  Qt::CaseInsensitive) == 0;}); // m4a is preferred first
         if (m_resultStreams.rend() != it)
+        {
             m_selectedAudio = *it;
+            return;
+        }
+
+        it = std::find_if(m_resultStreams.rbegin(), m_resultStreams.rend(),
+                                       [this](StreamInfoPtr stream){ return maybeAudioTrack(stream);});
+        if (m_resultStreams.rend() != it)
+        {
+            m_selectedAudio = *it;
+            return;
+        }
     }
 }
 
