@@ -516,7 +516,7 @@ void Browser::doSubmitToStorageService(const QString &baseUrl, const QString &ta
             % referrer
             % "\", \"user-agent\":\""
             % Config().read<QString>("httpUserAgent")
-            % "\"}]}]]";
+            % "\", \"auto-file-renaming\": true }]}]]";
     query.addQueryItem("params", QString(params.toUtf8().toBase64()));
     u.setQuery(query);
     req.setUrl(u);
