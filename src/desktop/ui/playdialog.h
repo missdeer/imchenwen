@@ -25,6 +25,7 @@ public:
     void setMediaInfo(const QString &originalUrl, const QString &title, const QStringList &urls);
     PlayerPtr player() { return m_selectedPlayer; }
     StreamInfoPtr video() { return m_selectedVideo; }
+    StreamInfoPtr audio() { return m_selectedAudio; }
     QString audioUrl();
     QString subtitleUrl() { return m_subtitleUrl; }
     QString videoUrl() { return m_selectedUrl; }
@@ -41,8 +42,7 @@ private slots:
     void on_cbAutoSelectAudioTrack_stateChanged(int state);
     void on_cbSubtitles_currentIndexChanged(int);
     void on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state);
-
-    void on_cbUploadToStorageService_stateChanged(int arg1);
+    void on_cbUploadToStorageService_stateChanged(int state);
 
 private:
     Ui::PlayDialog *ui;

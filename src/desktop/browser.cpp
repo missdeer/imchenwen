@@ -7,10 +7,12 @@
 #include "playerview.h"
 #include "dlnaplayerview.h"
 #include "util.h"
+#include "networkreplyhelper.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QFile>
+#include <QUrlQuery>
 #include <QApplication>
 #include <QClipboard>
 #include <QWebEngineSettings>
@@ -306,10 +308,11 @@ void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
     int res = m_playDialog->exec();
     m_linkResolver.terminateResolvers();
     stopWaiting();
-    if (res)
+    if (res == QDialog::Accepted)
     {
         PlayerPtr player = m_playDialog->player();
         StreamInfoPtr video = m_playDialog->video();
+        submitToStorageService(video, m_playDialog->audio(), m_playDialog->subtitleUrl(), mi->title, mi->url);
         doPlay(player, video->urls, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), mi->title, mi->url);
     }
     delete m_playDialog;
@@ -328,10 +331,11 @@ void Browser::play(const QString& originalUrl, const QStringList &results, const
     int res = m_playDialog->exec();
     m_vipResolver.stop();
     stopWaiting();
-    if (res)
+    if (res == QDialog::Accepted)
     {
         PlayerPtr player = m_playDialog->player();
         QString videoUrl = m_playDialog->videoUrl();
+        submitToStorageService(videoUrl, title);
         doPlay(player, QStringList() << videoUrl, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), title, "");
     }
     delete m_playDialog;
@@ -465,6 +469,62 @@ void Browser::playByDLNARenderer(PlayerPtr player, const QString &url, const QSt
     m_dlnaPlayer->setRenderer(player->name());
     m_dlnaPlayer->playMedia(url);
     m_dlnaPlayer->show();
+}
+
+void Browser::submitToStorageService(StreamInfoPtr video, StreamInfoPtr audio, const QString &subtitle, const QString &title, const QString &referrer)
+{
+    Config cfg;
+    if (!cfg.read<bool>("enableStorageService", false))
+        return;
+    QString baseUrl = cfg.read<QString>("storageServiceAddress");
+    if (!QUrl(baseUrl).isValid())
+        return;
+    for (const auto& videoUrl : video->urls)
+        doSubmitToStorageService(baseUrl, videoUrl, title + "." + video->container, referrer);
+    if (audio && !audio->urls.isEmpty())
+        doSubmitToStorageService(baseUrl, audio->urls[0], title + "." + audio->container, referrer);
+    doSubmitToStorageService(baseUrl, subtitle, title+".vtt", referrer);
+}
+
+void Browser::submitToStorageService(const QString &videoUrl, const QString &title)
+{
+    Config cfg;
+    if (!cfg.read<bool>("enableStorageService", false))
+        return;
+    QString baseUrl = cfg.read<QString>("storageServiceAddress");
+    if (!QUrl(baseUrl).isValid())
+        return;
+    doSubmitToStorageService(baseUrl, videoUrl, title+".mp4", videoUrl);
+}
+
+void Browser::doSubmitToStorageService(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer)
+{
+    if(targetLink.isEmpty())
+        return;
+
+    QNetworkRequest req;
+    QUrl u(baseUrl);
+    QUrlQuery query;
+    query.addQueryItem("jsonrpc", "2");
+    query.addQueryItem("id", QUuid::createUuid().toString());
+    query.addQueryItem("method", "system.multicall");
+    QString params = "[[{\"methodName\":\"aria2.addUri\",\"params\":[[\""
+            % targetLink
+            % "\"],{\"out\":\""
+            % saveAs
+            % "\", \"referer\": \""
+            % referrer
+            % "\", \"user-agent\":\""
+            % Config().read<QString>("httpUserAgent")
+            % "\"}]}]]";
+    query.addQueryItem("params", QString(params.toUtf8().toBase64()));
+    u.setQuery(query);
+    req.setUrl(u);
+    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+    auto reply = m_nam.get(req);
+    auto helper = new NetworkReplyHelper(reply);
+    connect(helper, &NetworkReplyHelper::done, this, &Browser::onSubmitToStorageService);
 }
 
 void Browser::onClipboardChanged()
@@ -753,6 +813,12 @@ void Browser::onTranscodingFailed()
                          tr("Error"),
                          tr("Transcoding failed."),
                          QMessageBox::Ok);
+}
+
+void Browser::onSubmitToStorageService()
+{
+    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    reply->deleteLater();
 }
 
 InGFWListProxyFactory *Browser::inGFWListProxyFactory() const

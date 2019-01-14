@@ -70,6 +70,7 @@ private slots:
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onNewM3U8Ready();
     void onTranscodingFailed();
+    void onSubmitToStorageService();
 private:
     QNetworkAccessManager m_nam;
     Kast m_kast;
@@ -99,6 +100,9 @@ private:
     void playByBuiltinPlayer(const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString& title, const QString &referrer);
     void playByExternalPlayer(PlayerPtr player, const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString& title, const QString &referrer);
     void playByDLNARenderer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);
+    void submitToStorageService(StreamInfoPtr video, StreamInfoPtr audio, const QString &subtitle, const QString &title, const QString &referrer);
+    void submitToStorageService(const QString &videoUrl, const QString &title);
+    void doSubmitToStorageService(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);
     void clearAtExit();
