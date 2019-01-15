@@ -15,6 +15,7 @@ public:
 
     QString makeM3U8(const PlayerPtr& player, QStringList& urls);
     QString transcoding(const QString &media);
+    QString merge(const QString &videoUrl, const QString &audioUrl, const QString &subtitleUrl);
     void processM3U8(const QString& media, const QByteArray &userAgent, const QByteArray &referrer);
     void stop();
     PlayerPtr player() const;

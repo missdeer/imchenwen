@@ -72,6 +72,30 @@ QString MediaRelay::transcoding(const QString& media)
     return QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
 }
 
+QString MediaRelay::merge(const QString &videoUrl, const QString &audioUrl, const QString &subtitleUrl)
+{
+    m_ffmpegProcess.kill();
+    m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
+    QStringList args;
+    args << "-y"
+         << "-protocol_whitelist" << "file,http,https,tcp,tls,crypto"
+         << "-i" << videoUrl
+         << "-i" << audioUrl;
+    if (QUrl(subtitleUrl).isValid())
+        args << "-i" << subtitleUrl
+             << "-c:s mov_text";
+    args << "-c" << "copy"
+         << "-copyts"
+         << "-f" << "mpegts"
+         << "-";
+    m_ffmpegProcess.setArguments(args);
+    m_ffmpegProcess.setProcessChannelMode(QProcess::SeparateChannels);
+    m_ffmpegProcess.start();
+    qDebug() << __FUNCTION__ << m_ffmpegProcess.arguments();
+    // serve http://...:51290/media.ts
+    return QString("http://%1:51290/media.ts").arg(Util::getLocalAddress().toString());
+}
+
 void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, const QByteArray& referrer)
 {
     qDebug() << __FUNCTION__ << media << userAgent << referrer;

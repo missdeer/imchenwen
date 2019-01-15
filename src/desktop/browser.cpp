@@ -266,6 +266,11 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
             }
             videoUrl = m_mediaRelay.transcoding(videoUrl);
         }
+        else if (QUrl(audioUrl).isValid())
+        {
+            // merge video & audio by ffmpeg
+            videoUrl = m_mediaRelay.merge(videoUrl, audioUrl, subtitleUrl);
+        }
         else if (QUrl(videoUrl).hasQuery())
         {
             // DLNA not support complex query string

@@ -5,11 +5,11 @@
     <name>Browser</name>
     <message>
         <location filename="../browser.cpp" line="235"/>
-        <location filename="../browser.cpp" line="652"/>
-        <location filename="../browser.cpp" line="708"/>
-        <location filename="../browser.cpp" line="735"/>
-        <location filename="../browser.cpp" line="753"/>
-        <location filename="../browser.cpp" line="827"/>
+        <location filename="../browser.cpp" line="657"/>
+        <location filename="../browser.cpp" line="713"/>
+        <location filename="../browser.cpp" line="740"/>
+        <location filename="../browser.cpp" line="758"/>
+        <location filename="../browser.cpp" line="832"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -19,54 +19,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="653"/>
+        <location filename="../browser.cpp" line="658"/>
         <source>VIP resolver is not ready now, please try again later.</source>
         <translation>VIP视频解析器尚未就绪，请稍后再试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="708"/>
+        <location filename="../browser.cpp" line="713"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="719"/>
+        <location filename="../browser.cpp" line="724"/>
         <source>%1 Play movie online directly
 %2</source>
         <translation>%1 直接在线播放电影
 %2</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="736"/>
+        <location filename="../browser.cpp" line="741"/>
         <source>Resolving link address as VIP failed!</source>
         <translation>VIP链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="754"/>
+        <location filename="../browser.cpp" line="759"/>
         <source>Resolving link address failed!</source>
         <translation>链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="765"/>
+        <location filename="../browser.cpp" line="770"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="768"/>
+        <location filename="../browser.cpp" line="773"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="771"/>
+        <location filename="../browser.cpp" line="776"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="775"/>
+        <location filename="../browser.cpp" line="780"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="828"/>
+        <location filename="../browser.cpp" line="833"/>
         <source>Transcoding failed.</source>
         <translation>转换编码封装失败。</translation>
     </message>
