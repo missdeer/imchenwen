@@ -410,7 +410,7 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
             args.removeAt(static_cast<int>(removeIndex));
     }
     Config cfg;
-    QString proxy;
+    QString httpProxy, socks5Proxy;
     if (cfg.read<bool>(QLatin1String("enableProxy"), false))
     {
         int scope = cfg.read<int>(QLatin1String("proxyScope"));
@@ -418,8 +418,12 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
                 (scope == 1 && m_outOfChinaMainlandProxyFactory->needProxy(videoUrl)) ||
                 (scope == 2 && m_inGFWListProxyFactory->needProxy(videoUrl)))
         {
-            proxy = QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
-                    .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+            if (cfg.read<int>(QLatin1String("proxyType")) == QNetworkProxy::HttpProxy)
+                httpProxy = QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
+            if (cfg.read<int>(QLatin1String("proxyType")) == QNetworkProxy::Socks5Proxy)
+                socks5Proxy = QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
+                        .arg(cfg.read<int>(QLatin1String("proxyPort"), 1080));
         }
     }
     struct {
@@ -431,7 +435,8 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
         { title, "{{site}}"},
         { audioUrl, "{{audio}}"},
         { subtitle, "{{subtitle}}"},
-        { proxy, "{{proxy}}"},
+        { httpProxy, "{{httpProxy}}"},
+        { socks5Proxy, "{{socks5Proxy}}"},
         { cfg.read<QString>(QLatin1String("httpUserAgent")), "{{user-agent}}"},
     };
     for (const auto& v : esc)
@@ -457,7 +462,8 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
         a = a.replace("{{site}}", title);
         a = a.replace("{{audio}}", audioUrl);
         a = a.replace("{{subtitle}}", subtitle);
-        a = a.replace("{{proxy}}", proxy);
+        a = a.replace("{{httpProxy}}", httpProxy);
+        a = a.replace("{{socks5Proxy}}", socks5Proxy);
         a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
     }
 
