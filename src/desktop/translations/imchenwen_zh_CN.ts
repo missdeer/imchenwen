@@ -16,7 +16,7 @@
     <message>
         <location filename="../browser.cpp" line="236"/>
         <source>Media relay listening on port failed, can&apos;t play media.</source>
-        <translation type="unfinished"></translation>
+        <translation>媒体流转发器监听端口失败，不能播放该媒体流。</translation>
     </message>
     <message>
         <location filename="../browser.cpp" line="658"/>
