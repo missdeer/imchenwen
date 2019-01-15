@@ -317,8 +317,10 @@ void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
     {
         PlayerPtr player = m_playDialog->player();
         StreamInfoPtr video = m_playDialog->video();
-        submitToStorageService(video, m_playDialog->audio(), m_playDialog->subtitleUrl(), mi->title, mi->url);
-        doPlay(player, video->urls, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), mi->title, mi->url);
+        if (m_playDialog->action() == PlayDialog::PLAY_AND_DOWNLOAD || m_playDialog->action() == PlayDialog::DOWNLOAD)
+            submitToStorageService(video, m_playDialog->audio(), m_playDialog->subtitleUrl(), mi->title, mi->url);
+        if (m_playDialog->action() == PlayDialog::PLAY_AND_DOWNLOAD || m_playDialog->action() == PlayDialog::PLAY)
+            doPlay(player, video->urls, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), mi->title, mi->url);
     }
     delete m_playDialog;
     m_playDialog = nullptr;
@@ -340,8 +342,10 @@ void Browser::play(const QString& originalUrl, const QStringList &results, const
     {
         PlayerPtr player = m_playDialog->player();
         QString videoUrl = m_playDialog->videoUrl();
-        submitToStorageService(videoUrl, title);
-        doPlay(player, QStringList() << videoUrl, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), title, "");
+        if (m_playDialog->action() == PlayDialog::PLAY_AND_DOWNLOAD || m_playDialog->action() == PlayDialog::DOWNLOAD)
+            submitToStorageService(videoUrl, title);
+        if (m_playDialog->action() == PlayDialog::PLAY_AND_DOWNLOAD || m_playDialog->action() == PlayDialog::PLAY)
+            doPlay(player, QStringList() << videoUrl, m_playDialog->audioUrl(), m_playDialog->subtitleUrl(), title, "");
     }
     delete m_playDialog;
     m_playDialog = nullptr;

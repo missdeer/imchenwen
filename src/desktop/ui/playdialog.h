@@ -19,6 +19,12 @@ class PlayDialog : public QDialog
     Q_OBJECT
 
 public:
+    enum Action {
+        PLAY_AND_DOWNLOAD,
+        PLAY,
+        DOWNLOAD,
+        CANCEL,
+    };
     explicit PlayDialog(QWidget *parent = nullptr);
     ~PlayDialog();
     void setMediaInfo(const QString &originalUrl, MediaInfoPtr mi);
@@ -29,7 +35,8 @@ public:
     QString audioUrl();
     QString subtitleUrl() { return m_subtitleUrl; }
     QString videoUrl() { return m_selectedUrl; }
-    bool uploadToStorageService();
+    Action action() const;
+
 private slots:
     void onListMediaContextmenu(const QPoint&);
     void onMarkAsAudioTrack();
@@ -38,11 +45,12 @@ private slots:
     void on_btnExternalPlayerConfiguration_clicked();
     void on_btnPlay_clicked();
     void on_btnCancel_clicked();
+    void on_btnPlayDownload_clicked();
+    void on_btnDownload_clicked();
     void on_listMedia_itemActivated(QListWidgetItem *);
     void on_cbAutoSelectAudioTrack_stateChanged(int state);
     void on_cbSubtitles_currentIndexChanged(int);
     void on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state);
-    void on_cbUploadToStorageService_stateChanged(int state);
 
 private:
     Ui::PlayDialog *ui;
@@ -58,6 +66,7 @@ private:
     QString m_subtitleUrl;
     bool m_complexUrlResources;
     bool m_demuxed;
+    Action m_action;
     void createExternalPlayerList();
     bool doOk();
     QListWidgetItem *addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);

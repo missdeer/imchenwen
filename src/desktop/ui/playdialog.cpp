@@ -21,7 +21,6 @@ PlayDialog::PlayDialog(QWidget *parent) :
     createExternalPlayerList();
     Config cfg;
     ui->cbAutoSelectHighestQualityVideoTrack->setChecked(cfg.read<bool>("autoSelectHighestQualityVideoTrack", true));
-    ui->cbUploadToStorageService->setChecked(cfg.read<bool>("uploadToStorageService", false));
 }
 
 PlayDialog::~PlayDialog()
@@ -143,11 +142,6 @@ QString PlayDialog::audioUrl()
     return "";
 }
 
-bool PlayDialog::uploadToStorageService()
-{
-    return ui->cbUploadToStorageService->isChecked();
-}
-
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 {
     SettingsDialog dlg(this);
@@ -161,12 +155,14 @@ void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
 
 void PlayDialog::on_btnPlay_clicked()
 {
+    m_action = PlayDialog::PLAY;
     if (doOk())
         accept();
 }
 
 void PlayDialog::on_btnCancel_clicked()
 {
+    m_action = PlayDialog::CANCEL;
     reject();
 }
 
@@ -299,6 +295,7 @@ bool PlayDialog::maybeAudioTrack(StreamInfoPtr media)
 
 void PlayDialog::on_listMedia_itemActivated(QListWidgetItem *)
 {
+    m_action = PlayDialog::PLAY_AND_DOWNLOAD;
     if (doOk())
         accept();
 }
@@ -381,8 +378,21 @@ void PlayDialog::on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state)
     cfg.write("autoSelectHighestQualityVideoTrack", state == Qt::Checked);
 }
 
-void PlayDialog::on_cbUploadToStorageService_stateChanged(int state)
+PlayDialog::Action PlayDialog::action() const
 {
-    Config cfg;
-    cfg.write("uploadToStorageService", state == Qt::Checked);
+    return m_action;
+}
+
+void PlayDialog::on_btnPlayDownload_clicked()
+{
+    m_action = PlayDialog::PLAY_AND_DOWNLOAD;
+    if (doOk())
+        accept();
+}
+
+void PlayDialog::on_btnDownload_clicked()
+{
+    m_action = PlayDialog::DOWNLOAD;
+    if (doOk())
+        accept();
 }

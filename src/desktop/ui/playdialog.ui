@@ -104,24 +104,27 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QCheckBox" name="cbUploadToStorageService">
-       <property name="text">
-        <string>Upload to Storage Service</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0,0,0">
      <item>
-      <widget class="QWidget" name="widget" native="true"/>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnPlay">
+      <widget class="QPushButton" name="btnPlayDownload">
        <property name="text">
-        <string>Play</string>
+        <string>Play &amp;&amp; Download</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -129,9 +132,26 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="btnDownload">
+       <property name="text">
+        <string>&amp;Download</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnPlay">
+       <property name="text">
+        <string>&amp;Play</string>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btnCancel">
        <property name="text">
-        <string>Cancel</string>
+        <string>&amp;Cancel</string>
        </property>
       </widget>
      </item>
