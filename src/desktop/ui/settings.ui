@@ -955,11 +955,32 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="label_31">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FFmpeg: &lt;a href=&quot;https://www.ffmpeg.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://www.ffmpeg.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,1">
+         <item>
+          <widget class="QLabel" name="label_31">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FFmpeg: &lt;a href=&quot;https://www.ffmpeg.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://www.ffmpeg.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="cbEnableFFmpegHardwareAcceleration">
+           <property name="text">
+            <string>Enable FFmpeg hardware acceleration</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbFFmpegHardwareAcceleration"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelFFmpegHardwareAccelerationDescription">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_9">

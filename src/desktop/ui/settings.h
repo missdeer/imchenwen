@@ -44,6 +44,8 @@ private slots:
 
     void onTabWidgetCurrentChanged(int index);
     void onProxyScopeCurrentIndexChanged(int index);
+    void onFFmpegHardwardAccelerationCurrentTextChanged(const QString& text);
+    void onEnableFFmpegHardwardAccelerationStateChanged(int state);
 private:
     QFont standardFont;
     QFont fixedFont;
@@ -64,6 +66,7 @@ private:
     void showCookies();
     void showExceptions();
     void setupLiveTVTable();
+    void setupFFmpegHardwareAccelerationList();
 };
 
 #endif // SETTINGS_H

@@ -50,6 +50,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
         }
     }
 
+
     connect(setHomeToCurrentPageButton, &QPushButton::clicked, this, &SettingsDialog::onSetHomeToCurrentPage);
     connect(standardFontButton, &QPushButton::clicked, this, &SettingsDialog::onChooseFont);
     connect(fixedFontButton, &QPushButton::clicked, this, &SettingsDialog::onChooseFixedFont);
@@ -77,6 +78,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnBrowseAnniePath, &QPushButton::clicked, this, &SettingsDialog::onBrowseAnniePath);
     connect(btnBrowseFFmpegPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseFFmpegPath);
     connect(cbProxyScope, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SettingsDialog::onProxyScopeCurrentIndexChanged);
+
+    connect(cbEnableFFmpegHardwareAcceleration, &QCheckBox::stateChanged, this, &SettingsDialog::onEnableFFmpegHardwardAccelerationStateChanged);
+    connect(cbFFmpegHardwareAcceleration, &QComboBox::currentTextChanged, this, &SettingsDialog::onFFmpegHardwardAccelerationCurrentTextChanged);
+    setupFFmpegHardwareAccelerationList();
     loadDefaults();
     loadFromSettings();
 }
@@ -245,6 +250,10 @@ void SettingsDialog::loadFromSettings()
     edtFFmpegPath->setText(cfg.read<QString>(QLatin1String("ffmpeg")));
     edtVIPResolverSubscription->setText(cfg.read<QString>(QLatin1String("vipResolvers")));
     edtShortcutSubscription->setText(cfg.read<QString>(QLatin1String("shortcut")));
+    cbEnableFFmpegHardwareAcceleration->setChecked(cfg.read<bool>(QLatin1String("enableFFmpegHWAccel"), false));
+    if (!cbEnableFFmpegHardwareAcceleration->isChecked())
+        cbFFmpegHardwareAcceleration->setEnabled(false);
+    cbFFmpegHardwareAcceleration->setCurrentText(cfg.read<QString>(QLatin1String("ffmpegHWAccel")));
 
     // storage
     gbStorageService->setChecked(cfg.read<bool>(QLatin1String("enableStorageService")));
@@ -313,6 +322,8 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("ffmpeg"), edtFFmpegPath->text());
     cfg.write(QLatin1String("vipResolvers"), edtVIPResolverSubscription->text());
     cfg.write(QLatin1String("shortcut"), edtShortcutSubscription->text());
+    cfg.write(QLatin1String("enableFFmpegHWAccel"), cbEnableFFmpegHardwareAcceleration->isChecked());
+    cfg.write(QLatin1String("ffmpegHWAccel"), cbFFmpegHardwareAcceleration->currentText());
 
     // external players
     cfg.write("externalPlayers", m_players);
@@ -721,6 +732,35 @@ void SettingsDialog::onProxyScopeCurrentIndexChanged(int index)
     }
 }
 
+void SettingsDialog::onFFmpegHardwardAccelerationCurrentTextChanged(const QString &text)
+{
+#if defined(Q_OS_WIN)
+    QMap<QString, QString> m = {
+        { "cuda", "NVIDIA's CUDA" },
+        { "dxva2", "Direct3D 9 Video Acceleration API" },
+        { "d3d11va", "Direct3D 11 Video Acceleration API" },
+        { "cuvid", "NVIDIA's hardware-accelerated encoding and decoding APIs" },
+        { "qsv", "Intel® Quick Sync Video" },
+    };
+#elif defined(Q_OS_MAC)
+    QMap<QString, QString> m = {
+        { "videotoolbox", "VideoToolbox" },
+        { "opencl", "OpenCL" },
+    };
+#elif defined(Q_OS_LINUX)
+    QMap<QString, QString> m = {
+        { "vaapi", "Video Acceleration API" },
+        { "vdpau", "Video Decode and Presentation API for Unix" },
+    };
+#endif
+    labelFFmpegHardwareAccelerationDescription->setText(m[text]);
+}
+
+void SettingsDialog::onEnableFFmpegHardwardAccelerationStateChanged(int state)
+{
+    cbFFmpegHardwareAcceleration->setEnabled(state == Qt::Checked);
+}
+
 bool SettingsDialog::importLiveTVAsJSON(const QString &path)
 {
     QFile f(path);
@@ -845,4 +885,15 @@ void SettingsDialog::setupLiveTVTable()
     tblLiveTVSubscription->setColumnCount(1);
     tblLiveTVSubscription->setHorizontalHeaderLabels(QStringList() << tr("URL"));
     tblLiveTVSubscription->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+}
+
+void SettingsDialog::setupFFmpegHardwareAccelerationList()
+{
+#if defined(Q_OS_WIN)
+    cbFFmpegHardwareAcceleration->addItems(QStringList() << "cuda" << "dxva2" << "qsv" << "d3d11va" << "cuvid");
+#elif defined(Q_OS_MAC)
+    cbFFmpegHardwareAcceleration->addItems(QStringList() << "videotoolbox" << "opencl");
+#elif defined(Q_OS_LINUX)
+    cbFFmpegHardwareAcceleration->addItems(QStringList() << "vaapi" << "vdpau");
+#endif
 }
