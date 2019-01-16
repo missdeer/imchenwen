@@ -21,6 +21,13 @@ PlayDialog::PlayDialog(QWidget *parent) :
     createExternalPlayerList();
     Config cfg;
     ui->cbAutoSelectHighestQualityVideoTrack->setChecked(cfg.read<bool>("autoSelectHighestQualityVideoTrack", true));
+
+    if (!cfg.read<bool>(QLatin1String("enableStorageService"))
+            || !QUrl(cfg.read<QString>(QLatin1String("storageServiceAddress"))).isValid())
+    {
+        ui->btnDownload->setEnabled(false);
+        ui->btnPlayDownload->setEnabled(false);
+    }
 }
 
 PlayDialog::~PlayDialog()
