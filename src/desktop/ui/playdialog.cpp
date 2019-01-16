@@ -70,9 +70,9 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
         }
     }
 
-    ui->labelSubtitle->setVisible(!!ui->cbSubtitles->count());
-    ui->cbSubtitles->setVisible(!!ui->cbSubtitles->count());
-    ui->cbSubtitleEnabled->setVisible(!!ui->cbSubtitles->count());
+    ui->labelSubtitle->setVisible(!m_subtitles.isEmpty());
+    ui->cbSubtitles->setVisible(!m_subtitles.isEmpty());
+    ui->cbSubtitleEnabled->setVisible(!m_subtitles.isEmpty());
 
     struct {
         Streams& streams;
