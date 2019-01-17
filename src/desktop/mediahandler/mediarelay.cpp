@@ -57,14 +57,20 @@ QString MediaRelay::transcoding(const QString& media)
 {
     m_ffmpegProcess.kill();
     m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
-    m_ffmpegProcess.setArguments(QStringList() << "-y"
-                                 << "-protocol_whitelist" << "file,http,https,tcp,tls,crypto"
-                                 << "-i" << media
-                                 << "-c" << "copy"
-                                 << "-copyts"
-                                 << "-f" << "mpegts"
-                                 << "-"
-                                 );
+    QStringList args;
+    Config cfg;
+    if (cfg.read<bool>(QLatin1String("enableFFmpegHWAccel"), false))
+    {
+        args << "-hwaccel" << cfg.read<QString>(QLatin1String("ffmpegHWAccel"));
+    }
+    args << "-y"
+         << "-protocol_whitelist" << "file,http,https,tcp,tls,crypto"
+         << "-i" << media
+         << "-c" << "copy"
+         << "-copyts"
+         << "-f" << "mpegts"
+         << "-";
+    m_ffmpegProcess.setArguments(args);
     m_ffmpegProcess.setProcessChannelMode(QProcess::SeparateChannels);
     m_ffmpegProcess.start();
     qDebug() << __FUNCTION__ << m_ffmpegProcess.arguments();
@@ -77,6 +83,11 @@ QString MediaRelay::merge(const QString &videoUrl, const QString &audioUrl, cons
     m_ffmpegProcess.kill();
     m_ffmpegProcess.setProgram(Config().read<QString>("ffmpeg"));
     QStringList args;
+    Config cfg;
+    if (cfg.read<bool>(QLatin1String("enableFFmpegHWAccel"), false))
+    {
+        args << "-hwaccel" << cfg.read<QString>(QLatin1String("ffmpegHWAccel"));
+    }
     args << "-y"
          << "-protocol_whitelist" << "file,http,https,tcp,tls,crypto"
          << "-i" << videoUrl
