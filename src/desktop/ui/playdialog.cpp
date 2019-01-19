@@ -126,6 +126,10 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
         m_originalUrl = originalUrl;
     }
 
+    ui->labelSubtitle->setVisible(false);
+    ui->cbSubtitles->setVisible(false);
+    ui->cbSubtitleEnabled->setVisible(false);
+
     for( const auto& url : results)
     {
         if (m_resultUrls.contains(url))
@@ -137,9 +141,13 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
         item->setToolTip(QUrl(url).toString(QUrl::RemoveAuthority | QUrl::RemoveQuery));
         m_resultUrls.append(url);
     }
-    ui->listMedia->setCurrentRow(0);
+    //ui->listMedia->setCurrentRow(0);
     ui->listMedia->setIconSize(QSize(40, 40));
     m_complexUrlResources = false;
+    ui->cbAutoSelectAudioTrack->setEnabled(false);
+    ui->cbAutoSelectAudioTrack->setChecked(true);
+    ui->cbAutoSelectHighestQualityVideoTrack->setEnabled(false);
+    ui->cbAutoSelectHighestQualityVideoTrack->setChecked(true);
 }
 
 QString PlayDialog::audioUrl()
