@@ -101,6 +101,7 @@ bool operator<(StreamInfoPtr lhs, StreamInfoPtr rhs)
         "1280x720",
         "hd720",
         "720p",
+        "hdflv",
         "720p60",
         "720p H265",
         "1080p",
@@ -111,13 +112,13 @@ bool operator<(StreamInfoPtr lhs, StreamInfoPtr rhs)
         "4k"
     };
     auto it = std::find_if(keywords.rbegin(), keywords.rend(), [lhs](const QString& keyword){
-        return lhs->quality.contains(keyword);
+        return lhs->quality.contains(keyword, Qt::CaseInsensitive);
     });
     if (keywords.rend() == it)
         return true;
     auto lhsIndex = std::distance(keywords.rbegin(), it);
     it = std::find_if(keywords.rbegin(), keywords.rend(), [rhs](const QString& keyword){
-        return rhs->quality.contains(keyword);
+        return rhs->quality.contains(keyword, Qt::CaseInsensitive);
     });
     if (keywords.rend() == it)
         return false;
