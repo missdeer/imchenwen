@@ -46,19 +46,11 @@ bool OutOfChinaMainlandProxyFactory::needProxy(const QString &url)
         return true;
     QString host = QUrl(url).host();
     auto hostSegs = host.split('.');
-    DomainMap* domainMap = &m_chinaDomains;
-    for (auto it = hostSegs.rbegin(); hostSegs.rend() != it; ++it)
+    while (!hostSegs.isEmpty() && m_chinaDomains.find(hostSegs.join('.')) == m_chinaDomains.end())
     {
-        if (!domainMap || domainMap->find(*it) == domainMap->end())
-        {
-            if (std::distance(hostSegs.rbegin(), it) > 1)
-                return false;
-            // not found, so it's out of China Mainland
-            return true;
-        }
-        domainMap = static_cast<DomainMap*>(domainMap->value(*it));
+        hostSegs.removeFirst();
     }
-    return false;
+    return hostSegs.isEmpty();  // not found, so it's out of China Mainland
 }
 
 void OutOfChinaMainlandProxyFactory::done()
@@ -76,17 +68,6 @@ void OutOfChinaMainlandProxyFactory::done()
         auto segs = line.split('/');
         if (segs.length() != 3)
             continue;
-         
-        DomainMap* domainMap = &m_chinaDomains;
-        QString domain(segs.at(1));
-        auto domainSegs = domain.split('.');
-        for (auto it = domainSegs.rbegin(); domainSegs.rend() != it; ++it)
-        {
-            if (domainMap->find(*it) == domainMap->end())
-            {
-                domainMap->insert(*it, new DomainMap);
-            }
-            domainMap = static_cast<DomainMap*>(domainMap->value(*it));
-        }
+        m_chinaDomains.insert(segs.at(1), true);
     }
 }

@@ -5,7 +5,7 @@
 #include <QNetworkReply>
 #include <QObject>
 
-typedef QMap<QString, void*> DomainMap; // void* => DomainMap*
+typedef QMap<QString, bool> DomainMap; // bool is just a placeholder
 
 class OutOfChinaMainlandProxyFactory : public QObject, public QNetworkProxyFactory
 {
