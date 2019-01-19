@@ -26,6 +26,7 @@ public:
     ~PlayerView();
 
     void playMedia(const QString &video, const QString &audio = QString());
+    void playMedia(const QStringList &videos, const QString &audio = QString());
     void subtitle(const QString& subtitle);
     void title(const QString& title);
     void referrer(const QString& referrer);

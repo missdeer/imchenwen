@@ -61,6 +61,7 @@ public slots:
     void setVolume(int volume);
     void openFile(const QString &m_mediaFile, const QString &m_audioTrack = QString());
     void openMedia(const QString &video, const QString &audio);
+    void openMedia(const QStringList &videos, const QString &audio);
     void openAudioTrack(const QString &audioFile);
     void screenShot(void);
     void speedUp(void);

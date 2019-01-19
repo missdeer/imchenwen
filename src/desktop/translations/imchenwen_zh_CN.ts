@@ -5,11 +5,11 @@
     <name>Browser</name>
     <message>
         <location filename="../browser.cpp" line="235"/>
-        <location filename="../browser.cpp" line="667"/>
-        <location filename="../browser.cpp" line="723"/>
-        <location filename="../browser.cpp" line="750"/>
-        <location filename="../browser.cpp" line="768"/>
-        <location filename="../browser.cpp" line="842"/>
+        <location filename="../browser.cpp" line="669"/>
+        <location filename="../browser.cpp" line="725"/>
+        <location filename="../browser.cpp" line="752"/>
+        <location filename="../browser.cpp" line="770"/>
+        <location filename="../browser.cpp" line="844"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -19,54 +19,54 @@
         <translation>媒体流转发器监听端口失败，不能播放该媒体流。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="668"/>
+        <location filename="../browser.cpp" line="670"/>
         <source>VIP resolver is not ready now, please try again later.</source>
         <translation>VIP视频解析器尚未就绪，请稍后再试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="723"/>
+        <location filename="../browser.cpp" line="725"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="734"/>
+        <location filename="../browser.cpp" line="736"/>
         <source>%1 Play movie online directly
 %2</source>
         <translation>%1 直接在线播放电影
 %2</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="751"/>
+        <location filename="../browser.cpp" line="753"/>
         <source>Resolving link address as VIP failed!</source>
         <translation>VIP链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="769"/>
+        <location filename="../browser.cpp" line="771"/>
         <source>Resolving link address failed!</source>
         <translation>链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="780"/>
+        <location filename="../browser.cpp" line="782"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="783"/>
+        <location filename="../browser.cpp" line="785"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="786"/>
+        <location filename="../browser.cpp" line="788"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="790"/>
+        <location filename="../browser.cpp" line="792"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="843"/>
+        <location filename="../browser.cpp" line="845"/>
         <source>Transcoding failed.</source>
         <translation>转换编码封装失败。</translation>
     </message>
@@ -679,19 +679,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../mpv/playercore.cpp" line="311"/>
-        <location filename="../mpv/playercore.cpp" line="733"/>
+        <location filename="../mpv/playercore.cpp" line="750"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="734"/>
+        <location filename="../mpv/playercore.cpp" line="751"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="734"/>
+        <location filename="../mpv/playercore.cpp" line="751"/>
         <source>
 
 MPV Error: </source>
@@ -845,13 +845,13 @@ MPV错误：</translation>
         <translation>减速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="558"/>
+        <location filename="../mpv/playerview.cpp" line="563"/>
         <source>Input</source>
         <translation>输入</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="173"/>
+        <location filename="../mpv/playerview.cpp" line="178"/>
         <source>imchenwen builtin media player</source>
         <translation>某橙内置媒体播放器</translation>
     </message>
@@ -861,12 +861,12 @@ MPV错误：</translation>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="543"/>
+        <location filename="../mpv/playerview.cpp" line="548"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="558"/>
+        <location filename="../mpv/playerview.cpp" line="563"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>

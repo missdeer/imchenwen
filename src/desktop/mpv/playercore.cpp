@@ -498,6 +498,23 @@ void PlayerCore::openMedia(const QString &video, const QString &audio)
     mpv::qt::command_variant(m_mpv, QStringList() << "audio-add" << audio << "auto" << "");
 }
 
+void PlayerCore::openMedia(const QStringList &videos, const QString &audio)
+{
+    if (videos.isEmpty())
+        return;
+    if (state != STOPPING)
+    {
+        m_noEmitStopped = true;
+    }
+
+    m_playSpeed = 1.0;
+
+    mpv::qt::command_variant(m_mpv, QStringList() << "playlist-clear");
+    for (const auto& video: videos)
+        mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << video << "append");
+    mpv::qt::command_variant(m_mpv, QStringList() << "audio-add" << audio << "auto" << "");
+}
+
 // switch between play and pause
 void PlayerCore::changeState()
 {
