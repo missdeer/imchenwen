@@ -82,6 +82,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(cbEnableFFmpegHardwareAcceleration, &QCheckBox::stateChanged, this, &SettingsDialog::onEnableFFmpegHardwardAccelerationStateChanged);
     connect(cbFFmpegHardwareAcceleration, &QComboBox::currentTextChanged, this, &SettingsDialog::onFFmpegHardwardAccelerationCurrentTextChanged);
     setupFFmpegHardwareAccelerationList();
+    connect(cbEnableBuiltinPlayerHardwareAcceleration, &QCheckBox::stateChanged, this, &SettingsDialog::onEnableBuiltinPlayerHardwardAccelerationStateChanged);
+    connect(cbBuiltinPlayerHardwareAcceleration, &QComboBox::currentTextChanged, this, &SettingsDialog::onBuiltinPlayerHardwardAccelerationCurrentTextChanged);
+    setupBuiltinPlayerHardwareAccelerationList();
+
     loadDefaults();
     loadFromSettings();
 }
@@ -230,9 +234,13 @@ void SettingsDialog::loadFromSettings()
     edtGFWList->setText(cfg.read(QLatin1String("gfwList"), QString("https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt")));
     edtChinaDomain->setText(cfg.read(QLatin1String("chinaDomain"), QString("https://cdn.jsdelivr.net/gh/felixonmars/dnsmasq-china-list/accelerated-domains.china.conf")));
 
-    // external player
+    // player
     cfg.read("externalPlayers", m_players);
     fillExternalPlayerTable();
+    cbEnableBuiltinPlayerHardwareAcceleration->setChecked(cfg.read<bool>(QLatin1String("enableBuiltinPlayerHWAccel"), false));
+    if (!cbEnableBuiltinPlayerHardwareAcceleration->isChecked())
+        cbBuiltinPlayerHardwareAcceleration->setEnabled(false);
+    cbBuiltinPlayerHardwareAcceleration->setCurrentText(cfg.read<QString>(QLatin1String("builtinPlayerHWAccel")));
 
     // Live TV
     cfg.read("liveTV", m_liveTV);
@@ -325,8 +333,10 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("enableFFmpegHWAccel"), cbEnableFFmpegHardwareAcceleration->isChecked());
     cfg.write(QLatin1String("ffmpegHWAccel"), cbFFmpegHardwareAcceleration->currentText());
 
-    // external players
+    // players
     cfg.write("externalPlayers", m_players);
+    cfg.write(QLatin1String("enableBuiltinPlayerHWAccel"), cbEnableBuiltinPlayerHardwareAcceleration->isChecked());
+    cfg.write(QLatin1String("builtinPlayerHWAccel"), cbBuiltinPlayerHardwareAcceleration->currentText());
 
     // live TV
     cfg.write("liveTV", m_liveTV);
@@ -761,6 +771,40 @@ void SettingsDialog::onEnableFFmpegHardwardAccelerationStateChanged(int state)
     cbFFmpegHardwareAcceleration->setEnabled(state == Qt::Checked);
 }
 
+void SettingsDialog::onBuiltinPlayerHardwardAccelerationCurrentTextChanged(const QString &text)
+{
+#if defined(Q_OS_WIN)
+    QMap<QString, QString> m = {
+        { "cuda", "h264_cuvid/hevc_cuvid/mjpeg_cuvid/mpeg1_cuvid/mpeg2_cuvid/mpeg4_cuvid/vc1_cuvid/vp8_cuvid/vp9_cuvid" },
+        { "cuda-copy", "h264_cuvid/hevc_cuvid/mjpeg_cuvid/mpeg1_cuvid/mpeg2_cuvid/mpeg4_cuvid/vc1_cuvid/vp8_cuvid/vp9_cuvid" },
+        { "dxva2", "h264/hevc/mpeg2video/vc1/vp9/wmv3" },
+        { "dxva2-copy", "h264/hevc/mpeg2video/vc1/vp9/wmv3" },
+        { "d3d11va", "h264/hevc/mpeg2video/vc1/vp9/wmv3" },
+        { "d3d11va-copy", "h264/hevc/mpeg2video/vc1/vp9/wmv3" },
+        { "nvdec", "h264/hevc/mjpeg/mpeg1video/mpeg2video/mpeg4/vc1/vp8/vp9/wmv3" },
+        { "nvdec-copy", "h264/hevc/mjpeg/mpeg1video/mpeg2video/mpeg4/vc1/vp8/vp9/wmv3" },
+        { "qsv", "h264/hevc/mpeg2/vc1/vp8" },
+        { "qsv-copy", "h264/hevc/mpeg2/vc1/vp8" },
+    };
+#elif defined(Q_OS_MAC)
+    QMap<QString, QString> m = {
+        { "videotoolbox", "VideoToolbox" },
+        { "videotoolbox-copy", "OpenCL" },
+    };
+#elif defined(Q_OS_LINUX)
+    QMap<QString, QString> m = {
+        { "vaapi", "Video Acceleration API" },
+        { "vdpau", "Video Decode and Presentation API for Unix" },
+    };
+#endif
+    labelBuiltinPlayerHardwareAccelerationDescription->setText(m[text]);
+}
+
+void SettingsDialog::onEnableBuiltinPlayerHardwardAccelerationStateChanged(int state)
+{
+    cbBuiltinPlayerHardwareAcceleration->setEnabled(state == Qt::Checked);
+}
+
 bool SettingsDialog::importLiveTVAsJSON(const QString &path)
 {
     QFile f(path);
@@ -895,5 +939,22 @@ void SettingsDialog::setupFFmpegHardwareAccelerationList()
     cbFFmpegHardwareAcceleration->addItems(QStringList() << "videotoolbox" << "opencl");
 #elif defined(Q_OS_LINUX)
     cbFFmpegHardwareAcceleration->addItems(QStringList() << "vaapi" << "vdpau");
+#endif
+}
+
+void SettingsDialog::setupBuiltinPlayerHardwareAccelerationList()
+{
+#if defined(Q_OS_WIN)
+    cbBuiltinPlayerHardwareAcceleration->addItems(QStringList()
+                                                  << "qsv" << "qsv-copy"
+                                                  << "cuda" << "cuda-copy"
+                                                  << "nvdec" << "nvdec-copy"
+                                                  << "dxva2" << "dxva2-copy"
+                                                  << "d3d11va" << "d3d11va-copy"
+                                                  );
+#elif defined(Q_OS_MAC)
+    cbBuiltinPlayerHardwareAcceleration->addItems(QStringList() << "videotoolbox" << "videotoolbox-copy");
+#elif defined(Q_OS_LINUX)
+    cbBuiltinPlayerHardwareAcceleration->addItems(QStringList() << "vaapi" << "vdpau");
 #endif
 }

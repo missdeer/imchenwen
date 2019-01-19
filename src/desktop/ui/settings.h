@@ -46,6 +46,8 @@ private slots:
     void onProxyScopeCurrentIndexChanged(int index);
     void onFFmpegHardwardAccelerationCurrentTextChanged(const QString& text);
     void onEnableFFmpegHardwardAccelerationStateChanged(int state);
+    void onBuiltinPlayerHardwardAccelerationCurrentTextChanged(const QString& text);
+    void onEnableBuiltinPlayerHardwardAccelerationStateChanged(int state);
 private:
     QFont standardFont;
     QFont fixedFont;
@@ -67,6 +69,7 @@ private:
     void showExceptions();
     void setupLiveTVTable();
     void setupFFmpegHardwareAccelerationList();
+    void setupBuiltinPlayerHardwareAccelerationList();
 };
 
 #endif // SETTINGS_H

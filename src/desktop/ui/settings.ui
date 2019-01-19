@@ -785,22 +785,10 @@
        <string>Player</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
-       <property name="leftMargin">
-        <number>9</number>
-       </property>
-       <property name="topMargin">
-        <number>9</number>
-       </property>
-       <property name="rightMargin">
-        <number>9</number>
-       </property>
-       <property name="bottomMargin">
-        <number>9</number>
-       </property>
        <item>
         <widget class="QLabel" name="label_18">
          <property name="text">
-          <string>Players:</string>
+          <string>External Players:</string>
          </property>
         </widget>
        </item>
@@ -858,6 +846,34 @@
           <widget class="QPushButton" name="btnModifyPlayer">
            <property name="text">
             <string>Modify</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_37">
+         <property name="text">
+          <string>Builtin Player Hardware Acceleration:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,1">
+         <item>
+          <widget class="QCheckBox" name="cbEnableBuiltinPlayerHardwareAcceleration">
+           <property name="text">
+            <string>Enable</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbBuiltinPlayerHardwareAcceleration"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelBuiltinPlayerHardwareAccelerationDescription">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
