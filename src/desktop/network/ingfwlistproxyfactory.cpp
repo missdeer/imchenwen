@@ -105,7 +105,15 @@ bool InGFWListProxyFactory::isAutoProxyRuleMatched(const QUrl &url)
 {
     if (url.toString().isEmpty())
         return true;
-    if (!QHostAddress(url.host()).isNull())
+    QHostAddress host(url.host());
+    if (!host.isNull() 
+        || host.isInSubnet(QHostAddress("127.0.0.0"), 8)
+        || host.isInSubnet(QHostAddress("192.168.0.0"), 16)
+        || host.isInSubnet(QHostAddress("169.254.0.0"), 16)
+        || host.isInSubnet(QHostAddress("224.0.0.0"), 4)
+        || host.isInSubnet(QHostAddress("240.0.0.0"), 4)
+        || host.isInSubnet(QHostAddress("10.0.0.0"), 8)
+        || host.isInSubnet(QHostAddress("172.16.0.0"), 12))
         return false;
     // first check the excluding rules, because their priorities are the highest
     for(ProxyRule* rule: m_excludingProxyRules) {

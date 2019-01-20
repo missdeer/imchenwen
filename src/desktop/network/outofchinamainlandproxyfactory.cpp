@@ -43,10 +43,18 @@ bool OutOfChinaMainlandProxyFactory::needProxy(const QString &url)
 {
     if (url.isEmpty())
         return true;
-    QString host = QUrl(url).host();
-    if (!QHostAddress(host).isNull())
+    QString hostAddr = QUrl(url).host();
+    QHostAddress host(hostAddr);
+    if (!host.isNull()
+        || host.isInSubnet(QHostAddress("127.0.0.0"), 8)
+        || host.isInSubnet(QHostAddress("192.168.0.0"), 16)
+        || host.isInSubnet(QHostAddress("169.254.0.0"), 16)
+        || host.isInSubnet(QHostAddress("224.0.0.0"), 4)
+        || host.isInSubnet(QHostAddress("240.0.0.0"), 4)
+        || host.isInSubnet(QHostAddress("10.0.0.0"), 8)
+        || host.isInSubnet(QHostAddress("172.16.0.0"), 12))
         return false;
-    auto hostSegs = host.split('.');
+    auto hostSegs = hostAddr.split('.');
     while (!hostSegs.isEmpty() && m_chinaDomains.find(hostSegs.join('.')) == m_chinaDomains.end())
     {
         hostSegs.removeFirst();
