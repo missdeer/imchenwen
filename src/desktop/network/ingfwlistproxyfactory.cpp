@@ -105,6 +105,8 @@ bool InGFWListProxyFactory::isAutoProxyRuleMatched(const QUrl &url)
 {
     if (url.toString().isEmpty())
         return true;
+    if (!QHostAddress(url.host()).isNull())
+        return false;
     // first check the excluding rules, because their priorities are the highest
     for(ProxyRule* rule: m_excludingProxyRules) {
         if (rule->isMatched(url)) {

@@ -31,11 +31,10 @@ void OutOfChinaMainlandProxyFactory::updateProxyCache(const QNetworkProxy &proxy
 QList<QNetworkProxy> OutOfChinaMainlandProxyFactory::queryProxy(const QNetworkProxyQuery &query)
 {
     QList<QNetworkProxy> m_proxyList;
-
     if (needProxy(query.url().toString()))
         m_proxyList.append(m_proxyCache);
     else
-        m_proxyList.append(m_proxyCache);
+        m_proxyList.append(QNetworkProxy::NoProxy);
 
     return m_proxyList;
 }
@@ -45,6 +44,8 @@ bool OutOfChinaMainlandProxyFactory::needProxy(const QString &url)
     if (url.isEmpty())
         return true;
     QString host = QUrl(url).host();
+    if (!QHostAddress(host).isNull())
+        return false;
     auto hostSegs = host.split('.');
     while (!hostSegs.isEmpty() && m_chinaDomains.find(hostSegs.join('.')) == m_chinaDomains.end())
     {
