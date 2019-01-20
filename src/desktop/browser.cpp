@@ -246,7 +246,7 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     }
     QString videoUrl = videoUrls[0];
     bool useM3U8 = false;
-    if (videoUrls.length() > 1 && (videoUrls.join(" ").length() > 7*1024 || player->type() == Player::PT_DLNA))
+    if (videoUrls.length() > 1)
     {
         useM3U8 = true;
         videoUrl = m_mediaRelay.makeM3U8(player, videoUrls);
