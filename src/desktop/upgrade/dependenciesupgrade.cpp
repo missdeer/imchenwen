@@ -62,12 +62,16 @@ void DependenciesUpgrade::upgradeForWin()
 
     if (QFile::exists(python) && QFile::exists(pip3))
     {
-        QProcess process;
-        process.setProgram(python);
-        process.setArguments(QStringList() << QDir::toNativeSeparators(pip3) << "install" << "--upgrade" << "ykdl" << "you-get" << "youtube-dl");
-        process.setWorkingDirectory(fi.absolutePath());
-        process.start();
-        process.waitForFinished();
+        do {
+            QProcess process;
+            process.setProgram(python);
+            process.setArguments(QStringList() << QDir::toNativeSeparators(pip3) << "install" << "--upgrade" << "ykdl" << "you-get" << "youtube-dl");
+            process.setWorkingDirectory(fi.absolutePath());
+            process.start();
+            process.waitForFinished();
+        } while (!QFile::exists(fi.absolutePath() + "/ykdl.exe") ||
+                 !QFile::exists(fi.absolutePath() + "/you-get.exe") ||
+                 !QFile::exists(fi.absolutePath() + "/youtube-dl.exe"));
 
         if (!QFile::exists(cfg.read<QString>("ykdl")))
             cfg.write("ykdl", fi.absolutePath() + "/ykdl.exe");
@@ -75,8 +79,6 @@ void DependenciesUpgrade::upgradeForWin()
             cfg.write("you-get", fi.absolutePath() + "/you-get.exe");
         if (!QFile::exists(cfg.read<QString>("youtube-dl")))
             cfg.write("youtube-dl", fi.absolutePath() + "/youtube-dl.exe");
-        if (!QFile::exists(cfg.read<QString>("annie")))
-            cfg.write("annie", fi.absolutePath() + "/annie.exe");
     }
 
     // get ffmpeg & annie via http link
