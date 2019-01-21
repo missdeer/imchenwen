@@ -20,7 +20,8 @@ INCLUDEPATH += $$PWD \
     $$PWD/ui \
     $$PWD/mediahandler \
     $$PWD/upgrade \
-    $$PWD/network
+    $$PWD/network \
+    $$PWD/storage
 
 HEADERS += \
     $$PWD/util.h \
@@ -64,9 +65,10 @@ HEADERS += \
     $$PWD/mediahandler/annieprocess.h \
     $$PWD/mediahandler/ykdlprocess.h \
     $$PWD/mediahandler/youtubedlprocess.h \
-    network/proxyrule.h \
-    network/outofchinamainlandproxyfactory.h \
-    network/ingfwlistproxyfactory.h
+    $$PWD/network/proxyrule.h \
+    $$PWD/network/outofchinamainlandproxyfactory.h \
+    $$PWD/network/ingfwlistproxyfactory.h \
+    $$PWD/storage/storageservice.h
 
 SOURCES += \
     $$PWD/browser.cpp \
@@ -109,9 +111,10 @@ SOURCES += \
     $$PWD/mediahandler/annieprocess.cpp \
     $$PWD/mediahandler/ykdlprocess.cpp \
     $$PWD/mediahandler/youtubedlprocess.cpp \
-    network/proxyrule.cpp \
-    network/outofchinamainlandproxyfactory.cpp \
-    network/ingfwlistproxyfactory.cpp
+    $$PWD/network/proxyrule.cpp \
+    $$PWD/network/outofchinamainlandproxyfactory.cpp \
+    $$PWD/network/ingfwlistproxyfactory.cpp \
+    $$PWD/storage/storageservice.cpp
 
 FORMS += \
     $$PWD/dlna/dlnaplayerview.ui \

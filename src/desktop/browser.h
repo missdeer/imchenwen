@@ -17,6 +17,7 @@
 #include "mediarelay.h"
 #include "outofchinamainlandproxyfactory.h"
 #include "ingfwlistproxyfactory.h"
+#include "storageservice.h"
 
 class BrowserWindow;
 class WaitingSpinnerWidget;
@@ -70,7 +71,6 @@ private slots:
     void onPlayerFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onNewM3U8Ready();
     void onTranscodingFailed();
-    void onSubmitToStorageService();
 private:
     QNetworkAccessManager m_nam;
     Kast m_kast;
@@ -91,6 +91,7 @@ private:
     PlayDialog *m_playDialog;
     OutOfChinaMainlandProxyFactory *m_outOfChinaMainlandProxyFactory;
     InGFWListProxyFactory *m_inGFWListProxyFactory;
+    StorageService m_storageService;
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);
@@ -100,9 +101,6 @@ private:
     void playByBuiltinPlayer(const QStringList &videoUrls, const QString &audioUrl, const QString &subtitle, const QString& title, const QString &referrer);
     void playByExternalPlayer(PlayerPtr player, const QStringList &videoUrls, const QString &audioUrl, const QString &subtitle, const QString& title, const QString &referrer);
     void playByDLNARenderer(PlayerPtr player, const QString &url, const QString& title, const QString &referrer);
-    void submitToStorageService(StreamInfoPtr video, StreamInfoPtr audio, const QString &subtitle, const QString &title, const QString &referrer);
-    void submitToStorageService(const QString &videoUrl, const QString &title);
-    void doSubmitToStorageService(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer);
     void clean();
     void waiting(bool disableParent = true);
     void clearAtExit();
