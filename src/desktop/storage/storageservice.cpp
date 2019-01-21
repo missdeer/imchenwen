@@ -20,10 +20,11 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
     QString baseUrl = cfg.read<QString>("storageServiceAddress");
     if (!QUrl(baseUrl).isValid())
         return;
-    for (const auto& videoUrl : video->urls)
+    for (int index = 0; index < video->urls.length(); ++index)
     {
+        const QString& videoUrl = video->urls.at(index);
         if (QUrl(videoUrl).isValid())
-            doSubmit(baseUrl, videoUrl, title + "." + video->container, referrer);
+            doSubmit(baseUrl, videoUrl, QString("%1-%2.%3").arg(title).arg(index).arg(video->container), referrer);
     }
     if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
         doSubmit(baseUrl, audio->urls[0], title + "." + audio->container, referrer);
