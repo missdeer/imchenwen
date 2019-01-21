@@ -18,7 +18,7 @@ private slots:
     void onSubmitted();
 
 private:
-    void doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer);
+    QUuid doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer);
 };
 
 #endif // STORAGESERVICE_H

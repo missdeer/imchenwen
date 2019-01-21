@@ -21,10 +21,14 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
     if (!QUrl(baseUrl).isValid())
         return;
     for (const auto& videoUrl : video->urls)
-        doSubmit(baseUrl, videoUrl, title + "." + video->container, referrer);
-    if (audio && !audio->urls.isEmpty())
+    {
+        if (QUrl(videoUrl).isValid())
+            doSubmit(baseUrl, videoUrl, title + "." + video->container, referrer);
+    }
+    if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
         doSubmit(baseUrl, audio->urls[0], title + "." + audio->container, referrer);
-    doSubmit(baseUrl, subtitle, title+".vtt", referrer);
+    if (QUrl(subtitle).isValid())
+        doSubmit(baseUrl, subtitle, title+".vtt", referrer);
 }
 
 void StorageService::submit(const QString &videoUrl, const QString &title)
@@ -35,7 +39,8 @@ void StorageService::submit(const QString &videoUrl, const QString &title)
     QString baseUrl = cfg.read<QString>("storageServiceAddress");
     if (!QUrl(baseUrl).isValid())
         return;
-    doSubmit(baseUrl, videoUrl, title+".mp4", videoUrl);
+    if (!QUrl(videoUrl).isValid())
+        doSubmit(baseUrl, videoUrl, title+".mp4", videoUrl);
 }
 
 void StorageService::onSubmitted()
@@ -44,16 +49,14 @@ void StorageService::onSubmitted()
     reply->deleteLater();
 }
 
-void StorageService::doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer)
+QUuid StorageService::doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer)
 {
-    if(targetLink.isEmpty())
-        return;
-
     QNetworkRequest req;
     QUrl u(baseUrl);
     QUrlQuery query;
     query.addQueryItem("jsonrpc", "2");
-    query.addQueryItem("id", QUuid::createUuid().toString());
+    QUuid uuid = QUuid::createUuid();
+    query.addQueryItem("id", uuid.toString());
     query.addQueryItem("method", "system.multicall");
     QString params = "[[{\"methodName\":\"aria2.addUri\",\"params\":[[\""
             % targetLink
@@ -72,4 +75,6 @@ void StorageService::doSubmit(const QString &baseUrl, const QString &targetLink,
     auto reply = Browser::instance().networkAccessManager().get(req);
     auto helper = new NetworkReplyHelper(reply);
     connect(helper, &NetworkReplyHelper::done, this, &StorageService::onSubmitted);
+
+    return uuid;
 }
