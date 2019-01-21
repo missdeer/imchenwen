@@ -66,6 +66,7 @@ void YKDLProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
 
 void YKDLProcess::init()
 {
+    m_args.clear();
     m_args << "--json";
     Config cfg;
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);

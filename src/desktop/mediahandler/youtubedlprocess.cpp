@@ -63,6 +63,7 @@ void YoutubeDLProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
 
 void YoutubeDLProcess::init()
 {
+    m_args.clear();
     m_args << "--skip-download" << "--print-json" << "--no-warnings" << "--no-playlist" << "--flat-playlist" << "--sub-lang" << "zh-CN" << "--write-auto-sub" << "--write-sub";
     Config cfg;
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);

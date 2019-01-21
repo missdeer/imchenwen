@@ -68,6 +68,7 @@ void YouGetProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
 
 void YouGetProcess::init()
 {
+    m_args.clear();
     m_args << "--json";
     Config cfg;
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);

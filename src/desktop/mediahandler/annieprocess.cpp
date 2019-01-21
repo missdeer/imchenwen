@@ -70,6 +70,7 @@ void AnnieProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
 
 void AnnieProcess::init()
 {
+    m_args.clear();
     m_args << "-j";
     Config cfg;
     setProgram(cfg.read<QString>("annie"));
