@@ -66,7 +66,6 @@ void YoutubeDLProcess::init()
     m_args.clear();
     m_args << "--skip-download" << "--print-json" << "--no-warnings" << "--no-playlist" << "--flat-playlist" << "--sub-lang" << "zh-CN" << "--write-auto-sub" << "--write-sub";
     Config cfg;
-    auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
 
 #if defined(Q_OS_WIN)
     QString path = cfg.read<QString>("youtube-dl");
@@ -131,7 +130,7 @@ void YoutubeDLProcess::parseSubtitle(const QJsonValue &v, MediaInfoPtr mi, bool 
         if (langNode.end() != it)
         {
             auto langFileObj = it->toObject();
-            SubtitlePtr subtitle(new Subtitle);
+            SubtitleInfoPtr subtitle(new SubtitleInfo);
             subtitle->url = langFileObj["url"].toString();
             subtitle->language = lang;
             subtitle->manual = manual;

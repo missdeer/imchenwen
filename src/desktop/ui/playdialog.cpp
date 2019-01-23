@@ -225,7 +225,8 @@ bool PlayDialog::doOk()
     {
         if (m_complexUrlResources && ui->cbAutoSelectHighestQualityVideoTrack->isChecked())
         {
-            auto it = std::max_element(m_resultStreams.begin(), m_resultStreams.end());
+            auto it = std::max_element(m_resultStreams.begin(), m_resultStreams.end(),
+                                       [](StreamInfoPtr largest, StreamInfoPtr first){return largest < first;});
             if (m_resultStreams.end() != it)
                 ui->listMedia->setCurrentRow(static_cast<int>(std::distance(m_resultStreams.begin(), it)));
         }
