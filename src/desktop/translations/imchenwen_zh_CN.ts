@@ -604,7 +604,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../ui/playdialog.cpp" line="237"/>
         <location filename="../ui/playdialog.cpp" line="284"/>
-        <location filename="../ui/playdialog.cpp" line="335"/>
+        <location filename="../ui/playdialog.cpp" line="329"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -634,28 +634,28 @@ Do you wish to override the security check and continue ?   </source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="324"/>
+        <location filename="../ui/playdialog.cpp" line="318"/>
         <source>Mark as Audio Track</source>
         <translation>标记为音频</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="325"/>
+        <location filename="../ui/playdialog.cpp" line="319"/>
         <source>Unmark as Audio Track</source>
         <translation>清除音频标记</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="336"/>
+        <location filename="../ui/playdialog.cpp" line="330"/>
         <source>Please select a media item in list to be marked as audio track.</source>
         <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
     <message>
         <location filename="../ui/playdialog.cpp" line="248"/>
-        <location filename="../ui/playdialog.cpp" line="345"/>
+        <location filename="../ui/playdialog.cpp" line="339"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="346"/>
+        <location filename="../ui/playdialog.cpp" line="340"/>
         <source>This media item may be not an audio track, continue anyway?</source>
         <translation>该媒体流可能不是音频，继续吗？</translation>
     </message>

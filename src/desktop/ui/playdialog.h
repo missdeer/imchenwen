@@ -70,7 +70,6 @@ private:
     void createExternalPlayerList();
     bool doOk();
     QListWidgetItem *addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);
-    bool maybeAudioTrack(StreamInfoPtr media);
 };
 
 #endif // EXTERNALPLAYDIALOG_H

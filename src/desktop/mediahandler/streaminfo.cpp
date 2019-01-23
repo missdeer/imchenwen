@@ -44,3 +44,10 @@ bool operator<(const StreamInfo &lhs, const StreamInfo &rhs)
     auto rhsIndex = std::distance(keywords.rbegin(), it);
     return lhsIndex > rhsIndex;
 }
+
+bool StreamInfo::maybeAudio()
+{
+    return (quality.contains("audio only", Qt::CaseInsensitive)
+            || quality.contains("DASH audio", Qt::CaseInsensitive)
+            || quality.contains("audio/", Qt::CaseInsensitive));
+}

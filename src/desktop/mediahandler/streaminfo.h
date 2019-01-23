@@ -8,6 +8,7 @@ struct StreamInfo
     QString container;
     QString quality;
     QStringList urls;
+    bool maybeAudio();
 };
 
 typedef QSharedPointer<StreamInfo> StreamInfoPtr;
