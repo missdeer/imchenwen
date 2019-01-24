@@ -42,6 +42,13 @@ bool operator<(const StreamInfo &lhs, const StreamInfo &rhs)
     if (keywords.rend() == it)
         return false;
     auto rhsIndex = std::distance(keywords.rbegin(), it);
+    if (lhsIndex == rhsIndex)
+    {
+        if (rhs.container.contains("mp4", Qt::CaseInsensitive))
+            return true;
+        if (lhs.container.contains("mp4", Qt::CaseInsensitive))
+            return false;
+    }
     return lhsIndex > rhsIndex;
 }
 
