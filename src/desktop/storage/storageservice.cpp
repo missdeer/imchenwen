@@ -61,11 +61,12 @@ void StorageService::onSubmitted()
 
 QString StorageService::baseName(const QString &base)
 {
+    const QString validChars = " -_.+(){}[]!@#$%^&;~";
     QString bn = base;
     for (int index = bn.length() - 1; index >=0; --index)
     {
         QChar ch = bn.at(index);
-        if (!ch.isLetterOrNumber() && ch != QChar(' ') && ch != QChar('-') && ch != QChar('_') && ch != QChar('.'))
+        if (!ch.isLetterOrNumber() && !validChars.contains(ch, Qt::CaseInsensitive))
             bn.remove(index, 1);
     }
     return bn;
