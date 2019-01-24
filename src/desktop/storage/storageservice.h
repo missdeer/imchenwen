@@ -18,6 +18,7 @@ private slots:
     void onSubmitted();
 
 private:
+    QString baseName(const QString &base);
     QUuid doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer);
 };
 
