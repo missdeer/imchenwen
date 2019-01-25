@@ -246,10 +246,13 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     }
     QString videoUrl = videoUrls[0];
     bool useM3U8 = false;
-    if (videoUrls.length() > 1 && player->type() != Player::PT_BUILTIN)
+    if (videoUrls.length() > 1)
     {
         useM3U8 = true;
-        videoUrl = m_mediaRelay.makeM3U8(player, videoUrls);
+        if (player->type() == Player::PT_DLNA)
+            videoUrl = m_mediaRelay.makeOnlineM3U8(videoUrls);
+        else
+            videoUrl = m_mediaRelay.makeLocalM3U8(videoUrls);
     }
 
     qDebug() << __FUNCTION__ << videoUrl;
@@ -284,7 +287,7 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     switch (player->type())
     {
     case Player::PT_BUILTIN:
-        playByBuiltinPlayer( videoUrls, audioUrl, subtitleUrl, title, referrer);
+        playByBuiltinPlayer((useM3U8 ? QStringList() << videoUrl : videoUrls), audioUrl, subtitleUrl, title, referrer);
         break;
     case Player::PT_DLNA:
         playByDLNARenderer(player, videoUrl, title, referrer);

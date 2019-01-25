@@ -13,7 +13,8 @@ class MediaRelay : public QObject
 public:
     explicit MediaRelay(QObject *parent = nullptr);
 
-    QString makeM3U8(const PlayerPtr& player, QStringList& urls);
+    QString makeOnlineM3U8(const QStringList &urls);
+    QString makeLocalM3U8(const QStringList& urls);
     QString transcoding(const QString &media);
     QString merge(const QString &videoUrl, const QString &audioUrl, const QString &subtitleUrl);
     void processM3U8(const QString& media, const QByteArray &userAgent, const QByteArray &referrer);
