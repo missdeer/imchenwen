@@ -510,8 +510,9 @@ void PlayerCore::openMedia(const QStringList &videos, const QString &audio)
     m_playSpeed = 1.0;
 
     mpv::qt::command_variant(m_mpv, QStringList() << "playlist-clear");
-    for (const auto& video: videos)
-        mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << video << "append");
+    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << videos.at(0) << "replace");
+    for (int i = 1; i < videos.length(); i++)
+        mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << videos.at(i) << "append");
     mpv::qt::command_variant(m_mpv, QStringList() << "audio-add" << audio << "auto" << "");
 }
 

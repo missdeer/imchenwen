@@ -284,7 +284,7 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     switch (player->type())
     {
     case Player::PT_BUILTIN:
-        playByBuiltinPlayer((useM3U8 ? QStringList() << videoUrl : videoUrls), audioUrl, subtitleUrl, title, referrer);
+        playByBuiltinPlayer( videoUrls, audioUrl, subtitleUrl, title, referrer);
         break;
     case Player::PT_DLNA:
         playByDLNARenderer(player, videoUrl, title, referrer);
