@@ -76,7 +76,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="91"/>
         <location filename="../ui/browserwindow.cpp" line="299"/>
-        <location filename="../ui/browserwindow.cpp" line="549"/>
+        <location filename="../ui/browserwindow.cpp" line="563"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -99,6 +99,16 @@
         <location filename="../ui/browserwindow.cpp" line="117"/>
         <source>Play Url...</source>
         <translation>播放URL…</translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="121"/>
+        <source>Resolve Url</source>
+        <translation>解析地址</translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="125"/>
+        <source>Resolve Url As VIP</source>
+        <translation>解析VIP地址</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="135"/>
@@ -273,13 +283,11 @@ Build at </source>
         <translation>导航</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="121"/>
         <location filename="../ui/browserwindow.cpp" line="455"/>
         <source>Play by Media Player</source>
         <translation>使用媒体播放器播放</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="125"/>
         <location filename="../ui/browserwindow.cpp" line="460"/>
         <source>Play VIP by Media Player</source>
         <translation>使用媒体播放器播放VIP视频</translation>
@@ -295,44 +303,44 @@ Build at </source>
         <translation>后台升级视频解析器</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="551"/>
+        <location filename="../ui/browserwindow.cpp" line="565"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="563"/>
+        <location filename="../ui/browserwindow.cpp" line="577"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="564"/>
+        <location filename="../ui/browserwindow.cpp" line="578"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="589"/>
+        <location filename="../ui/browserwindow.cpp" line="603"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="597"/>
+        <location filename="../ui/browserwindow.cpp" line="611"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="598"/>
+        <location filename="../ui/browserwindow.cpp" line="612"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="695"/>
+        <location filename="../ui/browserwindow.cpp" line="709"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="699"/>
+        <location filename="../ui/browserwindow.cpp" line="713"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
@@ -1760,14 +1768,14 @@ Do you want to reload the page ?</source>
 要重新载入页面吗？</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="130"/>
-        <source>Play by Media Player</source>
-        <translation>使用媒体播放器播放</translation>
+        <location filename="../webengine/webview.cpp" line="124"/>
+        <source>Resolve Url As VIP</source>
+        <translation>解析VIP地址</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="124"/>
-        <source>Play VIP by Media Player</source>
-        <translation>使用媒体播放器播放VIP视频</translation>
+        <location filename="../webengine/webview.cpp" line="130"/>
+        <source>Resolve Url</source>
+        <translation>解析地址</translation>
     </message>
     <message>
         <location filename="../webengine/webview.cpp" line="136"/>

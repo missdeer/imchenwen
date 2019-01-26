@@ -50,8 +50,8 @@ public:
     QNetworkAccessManager &networkAccessManager();
 
     void loadSettings();
-    void resolveAndPlayByMediaPlayer(const QString &u);
-    void resolveVIPAndPlayByMediaPlayer(const QString &u);
+    void resolveUrl(const QString &u);
+    void resolveUrlAsVIP(const QString &u);
     void play(const QString& originalUrl, const QStringList &results, const QString &title);
     void init();
     OutOfChinaMainlandProxyFactory *outOfChinaMainlandProxyFactory() const;

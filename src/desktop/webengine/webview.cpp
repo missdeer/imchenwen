@@ -121,16 +121,16 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         {
             auto separator = menu->insertSeparator(*actions.cbegin());
 
-            QAction *resolveAsVIPAndPlayAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play VIP by Media Player"), this);
-            menu->insertAction(separator, resolveAsVIPAndPlayAction);
-            connect(resolveAsVIPAndPlayAction, &QAction::triggered, [this]() {
-                Browser::instance().resolveVIPAndPlayByMediaPlayer(m_rightClickedUrl);
+            QAction *resolveUrlAsVIPAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Resolve Url As VIP"), this);
+            menu->insertAction(separator, resolveUrlAsVIPAction);
+            connect(resolveUrlAsVIPAction, &QAction::triggered, [this]() {
+                Browser::instance().resolveUrlAsVIP(m_rightClickedUrl);
             });
 
-            QAction *resolveAndPlayAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
-            menu->insertAction(resolveAsVIPAndPlayAction, resolveAndPlayAction);
-            connect(resolveAndPlayAction, &QAction::triggered, [this]() {
-                Browser::instance().resolveAndPlayByMediaPlayer(m_rightClickedUrl);
+            QAction *resolveUrlAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Resolve Url"), this);
+            menu->insertAction(resolveUrlAsVIPAction, resolveUrlAction);
+            connect(resolveUrlAction, &QAction::triggered, [this]() {
+                Browser::instance().resolveUrl(m_rightClickedUrl);
             });
 
             QAction *openAction = menu->addAction(tr("Open URL in Default Web Browser"));

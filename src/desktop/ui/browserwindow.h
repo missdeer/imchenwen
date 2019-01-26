@@ -51,8 +51,8 @@ private slots:
     void onShortcut();
     void onLiveTV();
     void onSettings();
-    void onPlayByExternalMediaPlayer();
-    void onPlayVIPByExternalMediaPlayer();
+    void onResolveUrl();
+    void onResolveUrlAsVIP();
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
     QMenu *createViewMenu(QToolBar *toolBar);

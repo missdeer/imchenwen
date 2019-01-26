@@ -212,12 +212,12 @@ void Browser::loadSettings()
         QNetworkProxy::setApplicationProxy(proxy);
 }
 
-void Browser::resolveAndPlayByMediaPlayer(const QString &u)
+void Browser::resolveUrl(const QString &u)
 {
     resolveLink(u.trimmed());
 }
 
-void Browser::resolveVIPAndPlayByMediaPlayer(const QString &u)
+void Browser::resolveUrlAsVIP(const QString &u)
 {
     resolveVIPLink(u.trimmed());
 }
