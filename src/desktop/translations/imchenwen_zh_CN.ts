@@ -5,11 +5,11 @@
     <name>Browser</name>
     <message>
         <location filename="../browser.cpp" line="235"/>
-        <location filename="../browser.cpp" line="616"/>
-        <location filename="../browser.cpp" line="672"/>
-        <location filename="../browser.cpp" line="699"/>
-        <location filename="../browser.cpp" line="717"/>
-        <location filename="../browser.cpp" line="791"/>
+        <location filename="../browser.cpp" line="613"/>
+        <location filename="../browser.cpp" line="669"/>
+        <location filename="../browser.cpp" line="696"/>
+        <location filename="../browser.cpp" line="714"/>
+        <location filename="../browser.cpp" line="788"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -19,54 +19,54 @@
         <translation>媒体流转发器监听端口失败，不能播放该媒体流。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="617"/>
+        <location filename="../browser.cpp" line="614"/>
         <source>VIP resolver is not ready now, please try again later.</source>
         <translation>VIP视频解析器尚未就绪，请稍后再试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="672"/>
+        <location filename="../browser.cpp" line="669"/>
         <source>Resolving link address failed! Please try again.</source>
         <translation>链接地址解析失败！请重试。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="683"/>
+        <location filename="../browser.cpp" line="680"/>
         <source>%1 Play movie online directly
 %2</source>
         <translation>%1 直接在线播放电影
 %2</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="700"/>
+        <location filename="../browser.cpp" line="697"/>
         <source>Resolving link address as VIP failed!</source>
         <translation>VIP链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="718"/>
+        <location filename="../browser.cpp" line="715"/>
         <source>Resolving link address failed!</source>
         <translation>链接地址解析失败！</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="729"/>
+        <location filename="../browser.cpp" line="726"/>
         <source>The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program.</source>
         <translation>进程启动失败！可能是程序文件不存在，或者你没有足够权限调用该程序。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="732"/>
+        <location filename="../browser.cpp" line="729"/>
         <source>The process crashed some time after starting successfully.</source>
         <translation>进程在启动成功后崩溃了。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="735"/>
+        <location filename="../browser.cpp" line="732"/>
         <source>An unknown error occurred.</source>
         <translation>发生未知错误。</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="739"/>
+        <location filename="../browser.cpp" line="736"/>
         <source>Launching external player failed, please try built-in player</source>
         <translation>启动外部播放器失败，请尝试使用内置播放器</translation>
     </message>
     <message>
-        <location filename="../browser.cpp" line="792"/>
+        <location filename="../browser.cpp" line="789"/>
         <source>Transcoding failed.</source>
         <translation>转换编码封装失败。</translation>
     </message>
@@ -683,41 +683,31 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="312"/>
+        <location filename="../mpv/playercore.cpp" line="313"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="313"/>
+        <location filename="../mpv/playercore.cpp" line="314"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="314"/>
+        <location filename="../mpv/playercore.cpp" line="315"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="311"/>
-        <location filename="../mpv/playercore.cpp" line="751"/>
+        <location filename="../mpv/playercore.cpp" line="312"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="752"/>
+        <location filename="../mpv/playercore.cpp" line="749"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
-    </message>
-    <message>
-        <location filename="../mpv/playercore.cpp" line="752"/>
-        <source>
-
-MPV Error: </source>
-        <translation>
-
-MPV错误：</translation>
     </message>
 </context>
 <context>
@@ -794,99 +784,99 @@ MPV错误：</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="83"/>
+        <location filename="../mpv/playerview.cpp" line="82"/>
         <source>Video</source>
         <translation>视频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="87"/>
-        <location filename="../mpv/playerview.cpp" line="104"/>
+        <location filename="../mpv/playerview.cpp" line="86"/>
+        <location filename="../mpv/playerview.cpp" line="103"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="89"/>
+        <location filename="../mpv/playerview.cpp" line="88"/>
         <source>Equalizer</source>
         <translation>均衡器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="91"/>
+        <location filename="../mpv/playerview.cpp" line="90"/>
         <source>Audio</source>
         <translation>音频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="92"/>
+        <location filename="../mpv/playerview.cpp" line="91"/>
         <source>Stereo</source>
         <translation>立体声</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="93"/>
+        <location filename="../mpv/playerview.cpp" line="92"/>
         <source>Left channel</source>
         <translation>左声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="94"/>
+        <location filename="../mpv/playerview.cpp" line="93"/>
         <source>Right channel</source>
         <translation>右声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="95"/>
+        <location filename="../mpv/playerview.cpp" line="94"/>
         <source>Swap channel</source>
         <translation>交换声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="97"/>
+        <location filename="../mpv/playerview.cpp" line="96"/>
         <source>Select track</source>
         <translation>选择音轨</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="98"/>
+        <location filename="../mpv/playerview.cpp" line="97"/>
         <source>Load from file</source>
         <translation>载入文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="99"/>
+        <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Delay</source>
         <translation>延迟</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="101"/>
+        <location filename="../mpv/playerview.cpp" line="100"/>
         <source>Speed</source>
         <translation>速度</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="102"/>
+        <location filename="../mpv/playerview.cpp" line="101"/>
         <source>Speed up</source>
         <translation>加速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="103"/>
+        <location filename="../mpv/playerview.cpp" line="102"/>
         <source>Speed down</source>
         <translation>减速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="563"/>
+        <location filename="../mpv/playerview.cpp" line="547"/>
         <source>Input</source>
         <translation>输入</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="178"/>
+        <location filename="../mpv/playerview.cpp" line="164"/>
         <source>imchenwen builtin media player</source>
         <translation>某橙内置媒体播放器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="112"/>
+        <location filename="../mpv/playerview.cpp" line="111"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="548"/>
+        <location filename="../mpv/playerview.cpp" line="532"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="563"/>
+        <location filename="../mpv/playerview.cpp" line="547"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>

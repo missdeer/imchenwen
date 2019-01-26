@@ -66,6 +66,7 @@ PlayerCore::PlayerCore(QWidget *parent)
     mpv::qt::set_option_variant(m_mpv, "softvol", "yes");         // mpv handles the volume
     mpv::qt::set_option_variant(m_mpv, "ytdl", "no");             // We handle video url parsing
     mpv::qt::set_option_variant(m_mpv, "osc", "no");
+    mpv::qt::set_option_variant(m_mpv, "avsync", 0);
     mpv::qt::set_option_variant(m_mpv, "cache-secs", 60);
     mpv::qt::set_option_variant(m_mpv, "cache-default", 8196);
     mpv::qt::set_option_variant(m_mpv, "prefetch-playlist", "yes");
@@ -473,8 +474,8 @@ void PlayerCore::openFile(const QString &file, const QString &audioTrack)
     {
         m_noEmitStopped = true;
     }
-    this->m_mediaFile = file;
-    this->m_audioTrack = audioTrack;
+    m_mediaFile = file;
+    m_audioTrack = audioTrack;
 
     m_playSpeed = 1.0;
 
@@ -483,9 +484,9 @@ void PlayerCore::openFile(const QString &file, const QString &audioTrack)
     handleMpvError(mpv_command_async(m_mpv, 2, args));
 }
 
-void PlayerCore::openMedia(const QString &video, const QString &audio)
+void PlayerCore::openMedia(const QString &video, const QString &audio, const QString &subtitle)
 {
-    if (video.isEmpty())
+    if (!QUrl(video).isValid())
         return;
     if (state != STOPPING)
     {
@@ -494,26 +495,24 @@ void PlayerCore::openMedia(const QString &video, const QString &audio)
 
     m_playSpeed = 1.0;
 
-    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << video << "replace");
-    mpv::qt::command_variant(m_mpv, QStringList() << "audio-add" << audio << "auto" << "");
-}
-
-void PlayerCore::openMedia(const QStringList &videos, const QString &audio)
-{
-    if (videos.isEmpty())
-        return;
-    if (state != STOPPING)
+    if (QUrl(audio).isValid())
     {
-        m_noEmitStopped = true;
+        m_audioTrack = audio;
+        QByteArray tmp = audio.toUtf8();
+        const char *args[] = {"audio-add", tmp.constData(), "select", nullptr};
+        handleMpvError(mpv_command_async(m_mpv, 2, args));
     }
+    if (QUrl(subtitle).isValid())
+    {
+        QByteArray tmp = subtitle.toUtf8();
+        const char *args[] = {"sub-add", tmp.constData(), "select", nullptr};
+        handleMpvError(mpv_command_async(m_mpv, 2, args));
+    }
+    m_mediaFile = video;
 
-    m_playSpeed = 1.0;
-
-    mpv::qt::command_variant(m_mpv, QStringList() << "playlist-clear");
-    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << videos.at(0) << "replace");
-    for (int i = 1; i < videos.length(); i++)
-        mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << videos.at(i) << "append");
-    mpv::qt::command_variant(m_mpv, QStringList() << "audio-add" << audio << "auto" << "");
+    QByteArray tmp = video.toUtf8();
+    const char *args[] = {"loadfile", tmp.constData(),  "replace", nullptr};
+    handleMpvError(mpv_command_async(m_mpv, 2, args));
 }
 
 // switch between play and pause
@@ -747,10 +746,10 @@ void PlayerCore::handleMpvError(int code)
 {
     if(code < 0)
     {
-        QMessageBox::warning(this,
-                             tr("MPV Error"),
-                             tr("Error while playing file:\n") + m_mediaFile + tr("\n\nMPV Error: ") + mpv_error_string(code),
-                             QMessageBox::Ok);
+        qDebug() << tr("Error while playing file:\n")
+                 << m_mediaFile
+                 << m_audioTrack
+                 << mpv_error_string(code);
     }
 }
 
