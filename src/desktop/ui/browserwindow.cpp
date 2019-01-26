@@ -452,15 +452,15 @@ QToolBar *BrowserWindow::createToolBar()
     navigationBar->addWidget(m_urlLineEdit);
     navigationBar->setIconSize(QSize(32, 32));
 
-    QAction *playByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
-    playByMediaPlayerAction->setToolTip(playByMediaPlayerAction->text());
-    connect(playByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onResolveUrl);
-    navigationBar->addAction(playByMediaPlayerAction);
+    QAction *resolveUrlAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Resolve Url"), this);
+    resolveUrlAction->setToolTip(resolveUrlAction->text());
+    connect(resolveUrlAction, &QAction::triggered, this, &BrowserWindow::onResolveUrl);
+    navigationBar->addAction(resolveUrlAction);
 
-    QAction *playVIPByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play VIP by Media Player"), this);
-    playVIPByMediaPlayerAction->setToolTip(playVIPByMediaPlayerAction->text());
-    connect(playVIPByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onResolveUrlAsVIP);
-    navigationBar->addAction(playVIPByMediaPlayerAction);
+    QAction *resolveUrlAsVIPAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Resolve Url As VIP"), this);
+    resolveUrlAsVIPAction->setToolTip(resolveUrlAsVIPAction->text());
+    connect(resolveUrlAsVIPAction, &QAction::triggered, this, &BrowserWindow::onResolveUrlAsVIP);
+    navigationBar->addAction(resolveUrlAsVIPAction);
 
     createLiveTVToolButton(navigationBar);
 
@@ -518,7 +518,7 @@ void BrowserWindow::onLiveTV()
     QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
-    Browser::instance().play(url, QStringList() << url, "Live TV - " + action->text());
+    Browser::instance().play(url, QStringList() << url, tr("Live TV - ") + action->text());
 }
 
 void BrowserWindow::onSettings()

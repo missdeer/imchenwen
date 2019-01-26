@@ -102,11 +102,13 @@
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="121"/>
+        <location filename="../ui/browserwindow.cpp" line="455"/>
         <source>Resolve Url</source>
         <translation>解析地址</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="125"/>
+        <location filename="../ui/browserwindow.cpp" line="460"/>
         <source>Resolve Url As VIP</source>
         <translation>解析VIP地址</translation>
     </message>
@@ -283,16 +285,6 @@ Build at </source>
         <translation>导航</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="455"/>
-        <source>Play by Media Player</source>
-        <translation>使用媒体播放器播放</translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="460"/>
-        <source>Play VIP by Media Player</source>
-        <translation>使用媒体播放器播放VIP视频</translation>
-    </message>
-    <message>
         <location filename="../ui/browserwindow.cpp" line="129"/>
         <source>Preferences...</source>
         <translation>偏好设置...</translation>
@@ -301,6 +293,11 @@ Build at </source>
         <location filename="../ui/browserwindow.cpp" line="284"/>
         <source>Upgrade Resolvers in background</source>
         <translation>后台升级视频解析器</translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="521"/>
+        <source>Live TV - </source>
+        <translation>电视直播 - </translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="565"/>
@@ -687,19 +684,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../mpv/playercore.cpp" line="311"/>
-        <location filename="../mpv/playercore.cpp" line="751"/>
+        <location filename="../mpv/playercore.cpp" line="749"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="752"/>
+        <location filename="../mpv/playercore.cpp" line="750"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="752"/>
+        <location filename="../mpv/playercore.cpp" line="750"/>
         <source>
 
 MPV Error: </source>
