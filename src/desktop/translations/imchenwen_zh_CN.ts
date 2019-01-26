@@ -609,7 +609,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../ui/playdialog.cpp" line="237"/>
         <location filename="../ui/playdialog.cpp" line="284"/>
-        <location filename="../ui/playdialog.cpp" line="329"/>
+        <location filename="../ui/playdialog.cpp" line="339"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -649,18 +649,33 @@ Do you wish to override the security check and continue ?   </source>
         <translation>清除音频标记</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="330"/>
+        <location filename="../ui/playdialog.cpp" line="326"/>
+        <source>Play &amp; Download</source>
+        <translation>播放并下载</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="327"/>
+        <source>Download</source>
+        <translation>下载</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="329"/>
+        <source>Play</source>
+        <translation>播放</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="340"/>
         <source>Please select a media item in list to be marked as audio track.</source>
         <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
     <message>
         <location filename="../ui/playdialog.cpp" line="248"/>
-        <location filename="../ui/playdialog.cpp" line="339"/>
+        <location filename="../ui/playdialog.cpp" line="349"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="340"/>
+        <location filename="../ui/playdialog.cpp" line="350"/>
         <source>This media item may be not an audio track, continue anyway?</source>
         <translation>该媒体流可能不是音频，继续吗？</translation>
     </message>
@@ -684,19 +699,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../mpv/playercore.cpp" line="311"/>
-        <location filename="../mpv/playercore.cpp" line="749"/>
+        <location filename="../mpv/playercore.cpp" line="751"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="750"/>
+        <location filename="../mpv/playercore.cpp" line="752"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="750"/>
+        <location filename="../mpv/playercore.cpp" line="752"/>
         <source>
 
 MPV Error: </source>

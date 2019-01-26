@@ -317,6 +317,16 @@ void PlayDialog::onListMediaContextmenu(const QPoint &pos)
     QMenu menu;
     menu.addAction(tr("Mark as Audio Track"), this, SLOT(onMarkAsAudioTrack()));
     menu.addAction(tr("Unmark as Audio Track"),  this, SLOT(onUnmarkAsAudioTrack()));
+    menu.addSeparator();
+
+    Config cfg;
+    if (cfg.read<bool>(QLatin1String("enableStorageService"))
+            && QUrl(cfg.read<QString>(QLatin1String("storageServiceAddress"))).isValid())
+    {
+        menu.addAction(tr("Play & Download"), this, SLOT(onPlayAndDownload()));
+        menu.addAction(tr("Download"), this, SLOT(onDownload()));
+    }
+    menu.addAction(tr("Play"), this, SLOT(onPlay()));
     menu.exec(globalPos);
 }
 
@@ -349,6 +359,27 @@ void PlayDialog::onMarkAsAudioTrack()
 void PlayDialog::onUnmarkAsAudioTrack()
 {
     m_selectedAudio.reset();
+}
+
+void PlayDialog::onPlayAndDownload()
+{
+    m_action = PlayDialog::PLAY_AND_DOWNLOAD;
+    if (doOk())
+        accept();
+}
+
+void PlayDialog::onDownload()
+{
+    m_action = PlayDialog::DOWNLOAD;
+    if (doOk())
+        accept();
+}
+
+void PlayDialog::onPlay()
+{
+    m_action = PlayDialog::PLAY;
+    if (doOk())
+        accept();
 }
 
 void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
