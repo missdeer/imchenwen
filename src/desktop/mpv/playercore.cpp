@@ -498,21 +498,20 @@ void PlayerCore::openMedia(const QString &video, const QString &audio, const QSt
     if (QUrl(audio).isValid())
     {
         m_audioTrack = audio;
-        QByteArray tmp = audio.toUtf8();
-        const char *args[] = {"audio-add", tmp.constData(), "select", nullptr};
-        handleMpvError(mpv_command_async(m_mpv, 2, args));
+        mpv::qt::set_option_variant(m_mpv, "audio-file", audio);
     }
     if (QUrl(subtitle).isValid())
     {
-        QByteArray tmp = subtitle.toUtf8();
-        const char *args[] = {"sub-add", tmp.constData(), "select", nullptr};
-        handleMpvError(mpv_command_async(m_mpv, 2, args));
+        mpv::qt::set_option_variant(m_mpv, "sub-file", subtitle);
+#if defined(Q_OS_WIN)
+        mpv::qt::set_option_variant(m_mpv, "sub-font", "Microsoft YaHei");
+#elif defined(Q_OS_MAC)
+        mpv::qt::set_option_variant(m_mpv, "sub-font", "Pingfang CS");
+#else
+#endif
     }
     m_mediaFile = video;
-
-    QByteArray tmp = video.toUtf8();
-    const char *args[] = {"loadfile", tmp.constData(),  "replace", nullptr};
-    handleMpvError(mpv_command_async(m_mpv, 2, args));
+    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << video);
 }
 
 // switch between play and pause
