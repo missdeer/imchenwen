@@ -500,7 +500,9 @@ void PlayerCore::openMedia(const QString &video, const QString &audio, const QSt
     {
         // workaround force to show subtitle, add a delay
         QTimer::singleShot(200, [subtitle, this](){
-            mpv::qt::command_variant(m_mpv, QStringList() << "sub-add" << subtitle << "select");
+            QByteArray tmp = subtitle.toUtf8();
+            const char *args[] = {"sub-add", tmp.constData(),"select", nullptr};
+            handleMpvError(mpv_command_async(m_mpv, 2, args));
         });
 
 #if defined(Q_OS_WIN)
