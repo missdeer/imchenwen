@@ -703,7 +703,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="748"/>
+        <location filename="../mpv/playercore.cpp" line="755"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：

@@ -494,24 +494,29 @@ void PlayerCore::openMedia(const QString &video, const QString &audio, const QSt
     }
 
     m_playSpeed = 1.0;
+    m_mediaFile = video;
+    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << video);
+    if (QUrl(subtitle).isValid())
+    {
+        // workaround force to show subtitle, add a delay
+        QEventLoop loop;
+        QTimer::singleShot(200, [&loop](){loop.quit();});
+        loop.exec();
+        mpv::qt::command_variant(m_mpv, QStringList() << "sub-add" << subtitle << "select");
+
+#if defined(Q_OS_WIN)
+        mpv::qt::set_property_variant(m_mpv, "sub-font", "Microsoft YaHei");
+#elif defined(Q_OS_MAC)
+        mpv::qt::set_property_variant(m_mpv, "sub-font", "Pingfang CS");
+#else
+#endif
+    }
 
     if (QUrl(audio).isValid())
     {
         m_audioTrack = audio;
-        mpv::qt::set_option_variant(m_mpv, "audio-file", audio);
+        mpv::qt::set_property_variant(m_mpv, "audio-file", audio);
     }
-    if (QUrl(subtitle).isValid())
-    {
-        mpv::qt::set_option_variant(m_mpv, "sub-file", subtitle);
-#if defined(Q_OS_WIN)
-        mpv::qt::set_option_variant(m_mpv, "sub-font", "Microsoft YaHei");
-#elif defined(Q_OS_MAC)
-        mpv::qt::set_option_variant(m_mpv, "sub-font", "Pingfang CS");
-#else
-#endif
-    }
-    m_mediaFile = video;
-    mpv::qt::command_variant(m_mpv, QStringList() << "loadfile" << video);
 }
 
 // switch between play and pause
