@@ -499,10 +499,9 @@ void PlayerCore::openMedia(const QString &video, const QString &audio, const QSt
     if (QUrl(subtitle).isValid())
     {
         // workaround force to show subtitle, add a delay
-        QEventLoop loop;
-        QTimer::singleShot(200, [&loop](){loop.quit();});
-        loop.exec();
-        mpv::qt::command_variant(m_mpv, QStringList() << "sub-add" << subtitle << "select");
+        QTimer::singleShot(200, [subtitle, this](){
+            mpv::qt::command_variant(m_mpv, QStringList() << "sub-add" << subtitle << "select");
+        });
 
 #if defined(Q_OS_WIN)
         mpv::qt::set_property_variant(m_mpv, "sub-font", "Microsoft YaHei");
