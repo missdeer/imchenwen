@@ -76,7 +76,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="91"/>
         <location filename="../ui/browserwindow.cpp" line="299"/>
-        <location filename="../ui/browserwindow.cpp" line="549"/>
+        <location filename="../ui/browserwindow.cpp" line="563"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -99,6 +99,18 @@
         <location filename="../ui/browserwindow.cpp" line="117"/>
         <source>Play Url...</source>
         <translation>播放URL…</translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="121"/>
+        <location filename="../ui/browserwindow.cpp" line="455"/>
+        <source>Resolve Url</source>
+        <translation>解析地址</translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="125"/>
+        <location filename="../ui/browserwindow.cpp" line="460"/>
+        <source>Resolve Url As VIP</source>
+        <translation>解析VIP地址</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="135"/>
@@ -273,18 +285,6 @@ Build at </source>
         <translation>导航</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="121"/>
-        <location filename="../ui/browserwindow.cpp" line="455"/>
-        <source>Play by Media Player</source>
-        <translation>使用媒体播放器播放</translation>
-    </message>
-    <message>
-        <location filename="../ui/browserwindow.cpp" line="125"/>
-        <location filename="../ui/browserwindow.cpp" line="460"/>
-        <source>Play VIP by Media Player</source>
-        <translation>使用媒体播放器播放VIP视频</translation>
-    </message>
-    <message>
         <location filename="../ui/browserwindow.cpp" line="129"/>
         <source>Preferences...</source>
         <translation>偏好设置...</translation>
@@ -295,44 +295,49 @@ Build at </source>
         <translation>后台升级视频解析器</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="551"/>
+        <location filename="../ui/browserwindow.cpp" line="521"/>
+        <source>Live TV - </source>
+        <translation>电视直播 - </translation>
+    </message>
+    <message>
+        <location filename="../ui/browserwindow.cpp" line="565"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="563"/>
+        <location filename="../ui/browserwindow.cpp" line="577"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="564"/>
+        <location filename="../ui/browserwindow.cpp" line="578"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="589"/>
+        <location filename="../ui/browserwindow.cpp" line="603"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="597"/>
+        <location filename="../ui/browserwindow.cpp" line="611"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="598"/>
+        <location filename="../ui/browserwindow.cpp" line="612"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="695"/>
+        <location filename="../ui/browserwindow.cpp" line="709"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="699"/>
+        <location filename="../ui/browserwindow.cpp" line="713"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
@@ -602,60 +607,75 @@ Do you wish to override the security check and continue ?   </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="236"/>
-        <location filename="../ui/playdialog.cpp" line="283"/>
-        <location filename="../ui/playdialog.cpp" line="334"/>
+        <location filename="../ui/playdialog.cpp" line="237"/>
+        <location filename="../ui/playdialog.cpp" line="284"/>
+        <location filename="../ui/playdialog.cpp" line="339"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="237"/>
+        <location filename="../ui/playdialog.cpp" line="238"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="248"/>
+        <location filename="../ui/playdialog.cpp" line="249"/>
         <source>This media item may be an audio track, continue anyway?</source>
         <translation>该媒体流可能是音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="272"/>
+        <location filename="../ui/playdialog.cpp" line="273"/>
         <source>Confirm</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="273"/>
+        <location filename="../ui/playdialog.cpp" line="274"/>
         <source>No stream is marked as audio track, continue anyway?</source>
         <translation>没有媒体流被标记为音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="284"/>
+        <location filename="../ui/playdialog.cpp" line="285"/>
         <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
         <translation>找不到播放器‘%1’，请重新配置。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="323"/>
+        <location filename="../ui/playdialog.cpp" line="318"/>
         <source>Mark as Audio Track</source>
         <translation>标记为音频</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="324"/>
+        <location filename="../ui/playdialog.cpp" line="319"/>
         <source>Unmark as Audio Track</source>
         <translation>清除音频标记</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="335"/>
+        <location filename="../ui/playdialog.cpp" line="326"/>
+        <source>Play &amp; Download</source>
+        <translation>播放并下载</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="327"/>
+        <source>Download</source>
+        <translation>下载</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="329"/>
+        <source>Play</source>
+        <translation>播放</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="340"/>
         <source>Please select a media item in list to be marked as audio track.</source>
         <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="247"/>
-        <location filename="../ui/playdialog.cpp" line="344"/>
+        <location filename="../ui/playdialog.cpp" line="248"/>
+        <location filename="../ui/playdialog.cpp" line="349"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="345"/>
+        <location filename="../ui/playdialog.cpp" line="350"/>
         <source>This media item may be not an audio track, continue anyway?</source>
         <translation>该媒体流可能不是音频，继续吗？</translation>
     </message>
@@ -663,41 +683,31 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="312"/>
+        <location filename="../mpv/playercore.cpp" line="313"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="313"/>
+        <location filename="../mpv/playercore.cpp" line="314"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="314"/>
+        <location filename="../mpv/playercore.cpp" line="315"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="311"/>
-        <location filename="../mpv/playercore.cpp" line="750"/>
+        <location filename="../mpv/playercore.cpp" line="312"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="751"/>
+        <location filename="../mpv/playercore.cpp" line="755"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
 </translation>
-    </message>
-    <message>
-        <location filename="../mpv/playercore.cpp" line="751"/>
-        <source>
-
-MPV Error: </source>
-        <translation>
-
-MPV错误：</translation>
     </message>
 </context>
 <context>
@@ -774,99 +784,99 @@ MPV错误：</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="83"/>
+        <location filename="../mpv/playerview.cpp" line="82"/>
         <source>Video</source>
         <translation>视频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="87"/>
-        <location filename="../mpv/playerview.cpp" line="104"/>
+        <location filename="../mpv/playerview.cpp" line="86"/>
+        <location filename="../mpv/playerview.cpp" line="103"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="89"/>
+        <location filename="../mpv/playerview.cpp" line="88"/>
         <source>Equalizer</source>
         <translation>均衡器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="91"/>
+        <location filename="../mpv/playerview.cpp" line="90"/>
         <source>Audio</source>
         <translation>音频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="92"/>
+        <location filename="../mpv/playerview.cpp" line="91"/>
         <source>Stereo</source>
         <translation>立体声</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="93"/>
+        <location filename="../mpv/playerview.cpp" line="92"/>
         <source>Left channel</source>
         <translation>左声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="94"/>
+        <location filename="../mpv/playerview.cpp" line="93"/>
         <source>Right channel</source>
         <translation>右声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="95"/>
+        <location filename="../mpv/playerview.cpp" line="94"/>
         <source>Swap channel</source>
         <translation>交换声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="97"/>
+        <location filename="../mpv/playerview.cpp" line="96"/>
         <source>Select track</source>
         <translation>选择音轨</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="98"/>
+        <location filename="../mpv/playerview.cpp" line="97"/>
         <source>Load from file</source>
         <translation>载入文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="99"/>
+        <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Delay</source>
         <translation>延迟</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="101"/>
+        <location filename="../mpv/playerview.cpp" line="100"/>
         <source>Speed</source>
         <translation>速度</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="102"/>
+        <location filename="../mpv/playerview.cpp" line="101"/>
         <source>Speed up</source>
         <translation>加速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="103"/>
+        <location filename="../mpv/playerview.cpp" line="102"/>
         <source>Speed down</source>
         <translation>减速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="563"/>
+        <location filename="../mpv/playerview.cpp" line="547"/>
         <source>Input</source>
         <translation>输入</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="178"/>
+        <location filename="../mpv/playerview.cpp" line="164"/>
         <source>imchenwen builtin media player</source>
         <translation>某橙内置媒体播放器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="112"/>
+        <location filename="../mpv/playerview.cpp" line="111"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="548"/>
+        <location filename="../mpv/playerview.cpp" line="532"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="563"/>
+        <location filename="../mpv/playerview.cpp" line="547"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>
@@ -1760,14 +1770,14 @@ Do you want to reload the page ?</source>
 要重新载入页面吗？</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="130"/>
-        <source>Play by Media Player</source>
-        <translation>使用媒体播放器播放</translation>
+        <location filename="../webengine/webview.cpp" line="124"/>
+        <source>Resolve Url As VIP</source>
+        <translation>解析VIP地址</translation>
     </message>
     <message>
-        <location filename="../webengine/webview.cpp" line="124"/>
-        <source>Play VIP by Media Player</source>
-        <translation>使用媒体播放器播放VIP视频</translation>
+        <location filename="../webengine/webview.cpp" line="130"/>
+        <source>Resolve Url</source>
+        <translation>解析地址</translation>
     </message>
     <message>
         <location filename="../webengine/webview.cpp" line="136"/>

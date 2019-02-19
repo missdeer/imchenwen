@@ -25,9 +25,7 @@ public:
     explicit PlayerView(QWidget *parent = nullptr);
     ~PlayerView();
 
-    void playMedia(const QString &video, const QString &audio = QString());
-    void playMedia(const QStringList &videos, const QString &audio = QString());
-    void subtitle(const QString& subtitle);
+    void playMedia(const QString &video, const QString &audio, const QString &subtitle);
     void title(const QString& title);
     void referrer(const QString& referrer);
     void userAgent(const QString& userAgent);

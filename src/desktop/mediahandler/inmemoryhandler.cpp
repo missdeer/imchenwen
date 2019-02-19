@@ -44,10 +44,10 @@ QString InMemoryHandler::mapUrl(const QString &url)
     QFileInfo fi(u.path());
     QString ext = fi.suffix();
 
-    QString path = QString("%1.%2").arg(QUuid::createUuid().toString(QUuid::WithoutBraces)).arg(ext);
+    QString path = QString("%1.%2").arg(QUuid::createUuid().toString(QUuid::WithoutBraces), ext);
     m_1to1UrlMap.insert(path, url);
 
-    return QString("http://%1:51290/%2").arg(m_localAddress).arg(path);
+    return QString("http://%1:51290/%2").arg(m_localAddress, path);
 }
 
 void InMemoryHandler::clear()

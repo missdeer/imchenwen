@@ -118,13 +118,13 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     playUrlAction->setShortcut(QKeySequence("Ctrl+Shift+P"));
     connect(playUrlAction, &QAction::triggered, this, &BrowserWindow::onPlayURL);
 
-    QAction *resolveThenPlayAction = fileMenu->addAction(tr("Play by Media Player"));
-    resolveThenPlayAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(resolveThenPlayAction, &QAction::triggered, this, &BrowserWindow::onPlayByExternalMediaPlayer);
+    QAction *resolveUrlAction = fileMenu->addAction(tr("Resolve Url"));
+    resolveUrlAction->setShortcut(QKeySequence("Ctrl+P"));
+    connect(resolveUrlAction, &QAction::triggered, this, &BrowserWindow::onResolveUrl);
 
-    QAction *resolveAsVIPThenPlayAction = fileMenu->addAction(tr("Play VIP by Media Player"));
-    resolveAsVIPThenPlayAction->setShortcut(QKeySequence("Ctrl+Shift+V"));
-    connect(resolveAsVIPThenPlayAction, &QAction::triggered, this, &BrowserWindow::onPlayVIPByExternalMediaPlayer);
+    QAction *resolveUrlAsVIPAction = fileMenu->addAction(tr("Resolve Url As VIP"));
+    resolveUrlAsVIPAction->setShortcut(QKeySequence("Ctrl+Shift+V"));
+    connect(resolveUrlAsVIPAction, &QAction::triggered, this, &BrowserWindow::onResolveUrlAsVIP);
 
     QAction *settingsAction = fileMenu->addAction(tr("Preferences..."));
     settingsAction->setMenuRole(QAction::PreferencesRole);
@@ -452,15 +452,15 @@ QToolBar *BrowserWindow::createToolBar()
     navigationBar->addWidget(m_urlLineEdit);
     navigationBar->setIconSize(QSize(32, 32));
 
-    QAction *playByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Play by Media Player"), this);
-    playByMediaPlayerAction->setToolTip(playByMediaPlayerAction->text());
-    connect(playByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onPlayByExternalMediaPlayer);
-    navigationBar->addAction(playByMediaPlayerAction);
+    QAction *resolveUrlAction = new QAction(QIcon(QStringLiteral(":play.png")), tr("Resolve Url"), this);
+    resolveUrlAction->setToolTip(resolveUrlAction->text());
+    connect(resolveUrlAction, &QAction::triggered, this, &BrowserWindow::onResolveUrl);
+    navigationBar->addAction(resolveUrlAction);
 
-    QAction *playVIPByMediaPlayerAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Play VIP by Media Player"), this);
-    playVIPByMediaPlayerAction->setToolTip(playVIPByMediaPlayerAction->text());
-    connect(playVIPByMediaPlayerAction, &QAction::triggered, this, &BrowserWindow::onPlayVIPByExternalMediaPlayer);
-    navigationBar->addAction(playVIPByMediaPlayerAction);
+    QAction *resolveUrlAsVIPAction = new QAction(QIcon(QStringLiteral(":playvip.png")), tr("Resolve Url As VIP"), this);
+    resolveUrlAsVIPAction->setToolTip(resolveUrlAsVIPAction->text());
+    connect(resolveUrlAsVIPAction, &QAction::triggered, this, &BrowserWindow::onResolveUrlAsVIP);
+    navigationBar->addAction(resolveUrlAsVIPAction);
 
     createLiveTVToolButton(navigationBar);
 
@@ -518,7 +518,7 @@ void BrowserWindow::onLiveTV()
     QAction *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
-    Browser::instance().play(url, QStringList() << url, "Live TV - " + action->text());
+    Browser::instance().play(url, QStringList() << url, tr("Live TV - ") + action->text());
 }
 
 void BrowserWindow::onSettings()
@@ -533,14 +533,28 @@ void BrowserWindow::onSettings()
     }
 }
 
-void BrowserWindow::onPlayByExternalMediaPlayer()
+void BrowserWindow::onResolveUrl()
 {
-    Browser::instance().resolveAndPlayByMediaPlayer(m_urlLineEdit->text());
+    if (!m_tabWidget)
+        return;
+    if (!m_tabWidget->currentWebView())
+        return;
+    QUrl u = m_tabWidget->currentWebView()->url();
+    if (!u.isValid())
+        return;
+    Browser::instance().resolveUrl(u.toString());
 }
 
-void BrowserWindow::onPlayVIPByExternalMediaPlayer()
+void BrowserWindow::onResolveUrlAsVIP()
 {
-    Browser::instance().resolveVIPAndPlayByMediaPlayer(m_urlLineEdit->text());
+    if (!m_tabWidget)
+        return;
+    if (!m_tabWidget->currentWebView())
+        return;
+    QUrl u = m_tabWidget->currentWebView()->url();
+    if (!u.isValid())
+        return;
+    Browser::instance().resolveUrlAsVIP(u.toString());
 }
 
 void BrowserWindow::onWebViewTitleChanged(const QString &title)
@@ -574,11 +588,11 @@ void BrowserWindow::onPlayURL()
     {
         if (dlg.resolveThenPlay())
         {
-            Browser::instance().resolveAndPlayByMediaPlayer(dlg.url());
+            Browser::instance().resolveUrl(dlg.url());
         }
         else if (dlg.resolveAsVIPThenPlay())
         {
-            Browser::instance().resolveVIPAndPlayByMediaPlayer(dlg.url());
+            Browser::instance().resolveUrlAsVIP(dlg.url());
         }
         else if (dlg.sniffThenPlay())
         {

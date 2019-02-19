@@ -11,7 +11,6 @@
 #include <QGridLayout>
 #include <QInputDialog>
 #include <QMenu>
-#include <QMessageBox>
 #include <QMimeData>
 #include <QResizeEvent>
 #include <QTimer>
@@ -153,22 +152,9 @@ PlayerView::~PlayerView()
     delete ui;
 }
 
-void PlayerView::playMedia(const QString &video, const QString &audio)
+void PlayerView::playMedia(const QString &video, const QString &audio, const QString &subtitle)
 {
-    m_playerCore->openMedia(video, audio);
-}
-
-void PlayerView::playMedia(const QStringList &videos, const QString &audio)
-{
-    m_playerCore->openMedia(videos, audio);
-}
-
-void PlayerView::subtitle(const QString &subtitle)
-{
-    if (!subtitle.isEmpty())
-    {
-        m_playerCore->setProperty("sub-file", subtitle);
-    }
+    m_playerCore->openMedia(video, audio, subtitle);
 }
 
 void PlayerView::title(const QString &title)
@@ -186,18 +172,16 @@ void PlayerView::referrer(const QString &referrer)
     if (!referrer.isEmpty())
     {
         m_playerCore->setProperty("referrer", referrer);
-        m_playerCore->setOption("http-header-fields",
+        m_playerCore->setProperty("http-header-fields",
                                 QString("Origin: %1://%2,Referer: %3")
-                                .arg(QUrl(referrer).scheme())
-                                .arg(QUrl(referrer).host())
-                                .arg(referrer));
+                                .arg(QUrl(referrer).scheme(), QUrl(referrer).host(), referrer));
     }
 }
 
 void PlayerView::userAgent(const QString &userAgent)
 {
     if (!userAgent.isEmpty())
-        m_playerCore->setOption("user-agent", userAgent);
+        m_playerCore->setProperty("user-agent", userAgent);
 }
 
 void PlayerView::onStopButton()

@@ -68,7 +68,10 @@ HEADERS += \
     $$PWD/network/proxyrule.h \
     $$PWD/network/outofchinamainlandproxyfactory.h \
     $$PWD/network/ingfwlistproxyfactory.h \
-    $$PWD/storage/storageservice.h
+    $$PWD/storage/storageservice.h \
+    mediahandler/streaminfo.h \
+    mediahandler/mediainfo.h \
+    mediahandler/subtitleinfo.h
 
 SOURCES += \
     $$PWD/browser.cpp \
@@ -114,7 +117,10 @@ SOURCES += \
     $$PWD/network/proxyrule.cpp \
     $$PWD/network/outofchinamainlandproxyfactory.cpp \
     $$PWD/network/ingfwlistproxyfactory.cpp \
-    $$PWD/storage/storageservice.cpp
+    $$PWD/storage/storageservice.cpp \
+    mediahandler/streaminfo.cpp \
+    mediahandler/mediainfo.cpp \
+    mediahandler/subtitleinfo.cpp
 
 FORMS += \
     $$PWD/dlna/dlnaplayerview.ui \

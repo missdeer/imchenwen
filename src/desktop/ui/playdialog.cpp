@@ -95,7 +95,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
             auto items = ui->listMedia->findItems(itemText, Qt::MatchExactly);
             if (!items.isEmpty())
                 break;
-            if (!m_demuxed && maybeAudioTrack(stream))
+            if (!m_demuxed && stream->maybeAudio())
             {
                 m_demuxed = true;
             }
@@ -225,7 +225,8 @@ bool PlayDialog::doOk()
     {
         if (m_complexUrlResources && ui->cbAutoSelectHighestQualityVideoTrack->isChecked())
         {
-            auto it = std::max_element(m_resultStreams.begin(), m_resultStreams.end());
+            auto it = std::max_element(m_resultStreams.begin(), m_resultStreams.end(),
+                                       [](StreamInfoPtr largest, StreamInfoPtr first){return largest < first;});
             if (m_resultStreams.end() != it)
                 ui->listMedia->setCurrentRow(static_cast<int>(std::distance(m_resultStreams.begin(), it)));
         }
@@ -243,7 +244,7 @@ bool PlayDialog::doOk()
     if (m_complexUrlResources)
     {
         auto video = m_resultStreams[currentRow];
-        if (maybeAudioTrack(video) && QMessageBox::warning(this,
+        if (video->maybeAudio() && QMessageBox::warning(this,
                                                            tr("Warning"),
                                                            tr("This media item may be an audio track, continue anyway?"),
                                                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
@@ -302,12 +303,6 @@ QListWidgetItem * PlayDialog::addItem(const QIcon& icon, const QString& text, co
     return item;
 }
 
-bool PlayDialog::maybeAudioTrack(StreamInfoPtr media)
-{
-    return (media->quality.contains("audio only")
-            || media->quality.contains("audio/"));
-}
-
 void PlayDialog::on_listMedia_itemActivated(QListWidgetItem *)
 {
     m_action = PlayDialog::PLAY_AND_DOWNLOAD;
@@ -322,6 +317,16 @@ void PlayDialog::onListMediaContextmenu(const QPoint &pos)
     QMenu menu;
     menu.addAction(tr("Mark as Audio Track"), this, SLOT(onMarkAsAudioTrack()));
     menu.addAction(tr("Unmark as Audio Track"),  this, SLOT(onUnmarkAsAudioTrack()));
+    menu.addSeparator();
+
+    Config cfg;
+    if (cfg.read<bool>(QLatin1String("enableStorageService"))
+            && QUrl(cfg.read<QString>(QLatin1String("storageServiceAddress"))).isValid())
+    {
+        menu.addAction(tr("Play & Download"), this, SLOT(onPlayAndDownload()));
+        menu.addAction(tr("Download"), this, SLOT(onDownload()));
+    }
+    menu.addAction(tr("Play"), this, SLOT(onPlay()));
     menu.exec(globalPos);
 }
 
@@ -340,7 +345,7 @@ void PlayDialog::onMarkAsAudioTrack()
     if (m_complexUrlResources)
     {
         auto audio = m_resultStreams[currentRow];
-        if (!maybeAudioTrack(audio) && QMessageBox::warning(this,
+        if (!audio->maybeAudio() && QMessageBox::warning(this,
                                                             tr("Warning"),
                                                             tr("This media item may be not an audio track, continue anyway?"),
                                                             QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No)
@@ -356,6 +361,27 @@ void PlayDialog::onUnmarkAsAudioTrack()
     m_selectedAudio.reset();
 }
 
+void PlayDialog::onPlayAndDownload()
+{
+    m_action = PlayDialog::PLAY_AND_DOWNLOAD;
+    if (doOk())
+        accept();
+}
+
+void PlayDialog::onDownload()
+{
+    m_action = PlayDialog::DOWNLOAD;
+    if (doOk())
+        accept();
+}
+
+void PlayDialog::onPlay()
+{
+    m_action = PlayDialog::PLAY;
+    if (doOk())
+        accept();
+}
+
 void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
 {
     if (state == Qt::Unchecked)
@@ -365,7 +391,7 @@ void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
     else if (state == Qt::Checked)
     {
         auto it = std::find_if(m_resultStreams.rbegin(), m_resultStreams.rend(),
-                               [this](StreamInfoPtr stream){ return maybeAudioTrack(stream) && stream->container.compare("m4a",  Qt::CaseInsensitive) == 0;}); // m4a is preferred first
+                               [](StreamInfoPtr stream){ return stream->maybeAudio() && stream->container.compare("m4a",  Qt::CaseInsensitive) == 0;}); // m4a is preferred first
         if (m_resultStreams.rend() != it)
         {
             m_selectedAudio = *it;
@@ -373,7 +399,7 @@ void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
         }
 
         it = std::find_if(m_resultStreams.rbegin(), m_resultStreams.rend(),
-                                       [this](StreamInfoPtr stream){ return maybeAudioTrack(stream);});
+                                       [](StreamInfoPtr stream){ return stream->maybeAudio();});
         if (m_resultStreams.rend() != it)
         {
             m_selectedAudio = *it;

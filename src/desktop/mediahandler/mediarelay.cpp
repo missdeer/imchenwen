@@ -21,36 +21,47 @@ MediaRelay::MediaRelay(QObject *parent) : QObject(parent)
     connect(&m_ffmpegProcess, &QProcess::readyReadStandardOutput, this, &MediaRelay::onReadStandardOutput);
 }
 
-QString MediaRelay::makeM3U8(const PlayerPtr& player, QStringList &urls)
+QString MediaRelay::makeOnlineM3U8(const QStringList &urls)
 {
     InMemoryHandler& httpHandler = Browser::instance().m_httpHandler;
 
     int duration = 1500 / urls.length();
     QByteArray m3u8;
     m3u8.append(QString("#EXTM3U\n#EXT-X-TARGETDURATION:%1\n").arg(duration > 8 ? duration + 3 : 8).toUtf8());
-    if (player->type() == Player::PT_DLNA)
+    for (const auto & u : urls)
     {
-        for (const auto & u : urls)
-        {
-            m3u8.append(QString("#EXTINF:%1,\n%2\n")
-                        .arg(duration > 5 ? duration : 5)
-                        .arg(httpHandler.mapUrl(u))
-                        .toUtf8());
-        }
-    }
-    else
-    {
-        for (const auto & u : urls)
-        {
-            m3u8.append(QString("#EXTINF:%1,\n%2\n")
-                        .arg(duration > 5 ? duration : 5)
-                        .arg(u)
-                        .toUtf8());
-        }
+        m3u8.append(QString("#EXTINF:%1,\n%2\n")
+                    .arg(duration > 5 ? duration : 5)
+                    .arg(httpHandler.mapUrl(u))
+                    .toUtf8());
     }
     m3u8.append("#EXT-X-ENDLIST\n");
     httpHandler.setM3U8(m3u8);
     return QString("http://%1:51290/media.m3u8").arg(Util::getLocalAddress().toString());
+}
+
+QString MediaRelay::makeLocalM3U8(const QStringList &urls)
+{
+    int duration = 1500 / urls.length();
+    QByteArray m3u8;
+    m3u8.append(QString("#EXTM3U\n#EXT-X-TARGETDURATION:%1\n").arg(duration > 8 ? duration + 3 : 8).toUtf8());
+    for (const auto & u : urls)
+    {
+        m3u8.append(QString("#EXTINF:%1,\n%2\n")
+                    .arg(duration > 5 ? duration : 5)
+                    .arg(u)
+                    .toUtf8());
+    }
+    m3u8.append("#EXT-X-ENDLIST\n");
+
+    QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation) % "/" % QUuid::createUuid().toString(QUuid::WithoutBraces) % ".m3u8";
+    QFile f(path);
+    if (f.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        f.write(m3u8);
+        f.close();
+    }
+    return QDir::toNativeSeparators(path);
 }
 
 QString MediaRelay::transcoding(const QString& media)

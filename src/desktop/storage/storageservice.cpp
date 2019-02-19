@@ -20,16 +20,25 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
     QString baseUrl = cfg.read<QString>("storageServiceAddress");
     if (!QUrl(baseUrl).isValid())
         return;
-    for (int index = 0; index < video->urls.length(); ++index)
+    QString name = baseName(title);
+    if (video->urls.length() == 1)
     {
-        const QString& videoUrl = video->urls.at(index);
-        if (QUrl(videoUrl).isValid())
-            doSubmit(baseUrl, videoUrl, QString("%1-%2.%3").arg(title).arg(index).arg(video->container), referrer);
+        if (QUrl(video->urls.at(0)).isValid())
+            doSubmit(baseUrl, video->urls.at(0), name % "." % video->container, referrer);
+    }
+    else
+    {
+        for (int index = 0; index < video->urls.length(); ++index)
+        {
+            const QString& videoUrl = video->urls.at(index);
+            if (QUrl(videoUrl).isValid())
+                doSubmit(baseUrl, videoUrl, QString("%1-%2.%3").arg(name).arg(index).arg(video->container), referrer);
+        }
     }
     if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
-        doSubmit(baseUrl, audio->urls[0], title + "." + audio->container, referrer);
+        doSubmit(baseUrl, audio->urls[0], name % "." % audio->container, referrer);
     if (QUrl(subtitle).isValid())
-        doSubmit(baseUrl, subtitle, title+".vtt", referrer);
+        doSubmit(baseUrl, subtitle, name % ".vtt", referrer);
 }
 
 void StorageService::submit(const QString &videoUrl, const QString &title)
@@ -41,13 +50,26 @@ void StorageService::submit(const QString &videoUrl, const QString &title)
     if (!QUrl(baseUrl).isValid())
         return;
     if (!QUrl(videoUrl).isValid())
-        doSubmit(baseUrl, videoUrl, title+".mp4", videoUrl);
+        doSubmit(baseUrl, videoUrl, baseName(title) % ".mp4", videoUrl);
 }
 
 void StorageService::onSubmitted()
 {
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
+}
+
+QString StorageService::baseName(const QString &base)
+{
+    const QString validChars = " -_.+(){}[]!@#$%^&;~";
+    QString bn = base;
+    for (int index = bn.length() - 1; index >=0; --index)
+    {
+        QChar ch = bn.at(index);
+        if (!ch.isLetterOrNumber() && !validChars.contains(ch, Qt::CaseInsensitive))
+            bn.remove(index, 1);
+    }
+    return bn;
 }
 
 QUuid StorageService::doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer)
@@ -67,7 +89,7 @@ QUuid StorageService::doSubmit(const QString &baseUrl, const QString &targetLink
             % referrer
             % "\", \"user-agent\":\""
             % Config().read<QString>("httpUserAgent")
-            % "\", \"auto-file-renaming\": true }]}]]";
+            % "\", \"allow-overwrite\": \"true\", \"auto-file-renaming\": \"false\" }]}]]";
     query.addQueryItem("params", QString(params.toUtf8().toBase64()));
     u.setQuery(query);
     req.setUrl(u);

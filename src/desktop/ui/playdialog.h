@@ -41,6 +41,9 @@ private slots:
     void onListMediaContextmenu(const QPoint&);
     void onMarkAsAudioTrack();
     void onUnmarkAsAudioTrack();
+    void onPlayAndDownload();
+    void onDownload();
+    void onPlay();
 
     void on_btnExternalPlayerConfiguration_clicked();
     void on_btnPlay_clicked();
@@ -70,7 +73,6 @@ private:
     void createExternalPlayerList();
     bool doOk();
     QListWidgetItem *addItem(const QIcon &icon, const QString& text, const QColor& backgroundColor);
-    bool maybeAudioTrack(StreamInfoPtr media);
 };
 
 #endif // EXTERNALPLAYDIALOG_H

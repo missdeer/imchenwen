@@ -212,12 +212,12 @@ void Browser::loadSettings()
         QNetworkProxy::setApplicationProxy(proxy);
 }
 
-void Browser::resolveAndPlayByMediaPlayer(const QString &u)
+void Browser::resolveUrl(const QString &u)
 {
     resolveLink(u.trimmed());
 }
 
-void Browser::resolveVIPAndPlayByMediaPlayer(const QString &u)
+void Browser::resolveUrlAsVIP(const QString &u)
 {
     resolveVIPLink(u.trimmed());
 }
@@ -245,11 +245,12 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
         m_httpHandler.setUserAgent(Config().read<QByteArray>(QLatin1String("httpUserAgent")));
     }
     QString videoUrl = videoUrls[0];
-    bool useM3U8 = false;
-    if (videoUrls.length() > 1 && player->type() != Player::PT_BUILTIN)
+    if (videoUrls.length() > 1)
     {
-        useM3U8 = true;
-        videoUrl = m_mediaRelay.makeM3U8(player, videoUrls);
+        if (player->type() == Player::PT_DLNA)
+            videoUrl = m_mediaRelay.makeOnlineM3U8(videoUrls);
+        else
+            videoUrl = m_mediaRelay.makeLocalM3U8(videoUrls);
     }
 
     qDebug() << __FUNCTION__ << videoUrl;
@@ -284,13 +285,13 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     switch (player->type())
     {
     case Player::PT_BUILTIN:
-        playByBuiltinPlayer((useM3U8 ? QStringList() << videoUrl : videoUrls), audioUrl, subtitleUrl, title, referrer);
+        playByBuiltinPlayer(videoUrl, audioUrl, subtitleUrl, title, referrer);
         break;
     case Player::PT_DLNA:
         playByDLNARenderer(player, videoUrl, title, referrer);
         break;
     case Player::PT_EXTERNAL:
-        playByExternalPlayer(player, (useM3U8 ? QStringList() << videoUrl : videoUrls), audioUrl, subtitleUrl, title, referrer);
+        playByExternalPlayer(player, videoUrl, audioUrl, subtitleUrl, title, referrer);
         break;
     }
     minimizeWindows();
@@ -353,7 +354,7 @@ void Browser::play(const QString& originalUrl, const QStringList &results, const
     m_playDialog = nullptr;
 }
 
-void Browser::playByBuiltinPlayer(const QStringList &videoUrls, const QString &audioUrl, const QString &subtitle, const QString &title, const QString &referrer)
+void Browser::playByBuiltinPlayer(const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString &title, const QString &referrer)
 {
     if (!m_builtinPlayer)
     {
@@ -365,11 +366,10 @@ void Browser::playByBuiltinPlayer(const QStringList &videoUrls, const QString &a
     m_builtinPlayer->title(title);
     m_builtinPlayer->referrer(referrer);
     m_builtinPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
-    m_builtinPlayer->subtitle(subtitle);
-    m_builtinPlayer->playMedia(videoUrls, audioUrl);
+    m_builtinPlayer->playMedia(videoUrl, audioUrl, subtitle);
 }
 
-void Browser::playByExternalPlayer(PlayerPtr player, const QStringList &videoUrls, const QString &audioUrl, const QString &subtitle, const QString &title, const QString &referrer)
+void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, const QString &audioUrl, const QString &subtitle, const QString &title, const QString &referrer)
 {
     QStringList args;
 #if defined(Q_OS_MAC)
@@ -417,8 +417,8 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QStringList &videoUrl
     {
         int scope = cfg.read<int>(QLatin1String("proxyScope"));
         if (scope == 0 ||
-                (scope == 1 && m_outOfChinaMainlandProxyFactory->needProxy(videoUrls.at(0))) ||
-                (scope == 2 && m_inGFWListProxyFactory->needProxy(videoUrls.at(0))))
+                (scope == 1 && m_outOfChinaMainlandProxyFactory->needProxy(videoUrl)) ||
+                (scope == 2 && m_inGFWListProxyFactory->needProxy(videoUrl)))
         {
             if (cfg.read<int>(QLatin1String("proxyType")) == QNetworkProxy::HttpProxy)
                 httpProxy = QString("%1:%2").arg(cfg.read<QString>(QLatin1String("proxyHostName")))
@@ -469,7 +469,7 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QStringList &videoUrl
         a = a.replace("{{user-agent}}", Config().read<QString>(QLatin1String("httpUserAgent")));
     }
 
-    args << videoUrls;
+    args << videoUrl;
     m_playerProcess.setArguments(args);
 
 #if defined(Q_OS_MAC)
@@ -677,7 +677,7 @@ void Browser::onNormalLinkResolvingError(const QString &url, const QString &msg)
 {
     stopWaiting();
 
-    play(url, QStringList() << url, tr("%1 Play movie online directly\n%2").arg(msg).arg(url));
+    play(url, QStringList() << url, tr("%1 Play movie online directly\n%2").arg(msg, url));
 }
 
 void Browser::onVIPLinkResolved(const QString& originalUrl, const QStringList &results)
