@@ -311,7 +311,7 @@ void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
         m_playDialog->setMediaInfo(originalUrl, mi);
         return;
     }
-    m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    m_playDialog = new PlayDialog(static_cast<QWidget*>(mainWindow()));
     m_playDialog->setMediaInfo(originalUrl, mi);
     int res = m_playDialog->exec();
     m_linkResolver.terminateResolvers();
@@ -336,7 +336,7 @@ void Browser::play(const QString& originalUrl, const QStringList &results, const
         m_playDialog->setMediaInfo(originalUrl, title, results);
         return;
     }
-    m_playDialog = new PlayDialog(reinterpret_cast<QWidget*>(const_cast<BrowserWindow*>(mainWindow())));
+    m_playDialog = new PlayDialog(static_cast<QWidget*>(mainWindow()));
     m_playDialog->setMediaInfo(originalUrl, title, results);
     int res = m_playDialog->exec();
     m_vipResolver.stop();
