@@ -13,8 +13,6 @@
 
 using namespace QHttpEngine;
 
-Q_DECLARE_METATYPE(const QStringList *);
-
 InMemoryHandler::InMemoryHandler(QObject *parent)
     : Handler(parent)
     , m_inputEnd(false)
