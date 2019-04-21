@@ -16,7 +16,11 @@ class TabWidget : public QTabWidget
 
 public:
     TabWidget(QWidget *parent = nullptr);
-    ~TabWidget();
+    TabWidget(const TabWidget &) = delete;
+    TabWidget(TabWidget &&) = delete;
+    TabWidget& operator=(const TabWidget &) = delete;
+    TabWidget& operator=(TabWidget &&) = delete;
+    ~TabWidget() override = default;
 
     WebView *currentWebView() const;
     WebView *navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent = true);

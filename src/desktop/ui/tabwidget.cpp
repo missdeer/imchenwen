@@ -27,10 +27,6 @@ TabWidget::TabWidget(QWidget *parent)
     connect(this, &QTabWidget::currentChanged, this, &TabWidget::onCurrentChanged);
 }
 
-TabWidget::~TabWidget()
-{
-}
-
 void TabWidget::onCurrentChanged(int index)
 {
     if (index != -1) {

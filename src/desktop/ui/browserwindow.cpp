@@ -92,10 +92,6 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     m_tabWidget->onCreateTab();
 }
 
-BrowserWindow::~BrowserWindow()
-{
-}
-
 QSize BrowserWindow::sizeHint() const
 {
     QRect desktopRect = QApplication::desktop()->screenGeometry();

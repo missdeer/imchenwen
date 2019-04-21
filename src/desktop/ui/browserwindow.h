@@ -20,7 +20,11 @@ class BrowserWindow : public QMainWindow
 
 public:
     BrowserWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
-    ~BrowserWindow() override;
+    BrowserWindow(const BrowserWindow &) = delete;
+    BrowserWindow(BrowserWindow &&) = delete;
+    BrowserWindow& operator=(const BrowserWindow &) = delete;
+    BrowserWindow& operator=(BrowserWindow &&) = delete;
+    ~BrowserWindow() override = default;
     QSize sizeHint() const override;
     TabWidget *tabWidget() const;
     WebView *currentTab() const;
