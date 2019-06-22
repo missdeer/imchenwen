@@ -683,27 +683,27 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>PlayerCore</name>
     <message>
-        <location filename="../mpv/playercore.cpp" line="313"/>
+        <location filename="../mpv/playercore.cpp" line="328"/>
         <source>Fails to load: </source>
         <translation>载入失败：</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="314"/>
+        <location filename="../mpv/playercore.cpp" line="329"/>
         <source>Skip</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="315"/>
+        <location filename="../mpv/playercore.cpp" line="330"/>
         <source>Try again</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="312"/>
+        <location filename="../mpv/playercore.cpp" line="327"/>
         <source>MPV Error</source>
         <translation>MPV错误</translation>
     </message>
     <message>
-        <location filename="../mpv/playercore.cpp" line="754"/>
+        <location filename="../mpv/playercore.cpp" line="769"/>
         <source>Error while playing file:
 </source>
         <translation>播放文件错误：
@@ -784,99 +784,99 @@ Do you wish to override the security check and continue ?   </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="82"/>
+        <location filename="../mpv/playerview.cpp" line="83"/>
         <source>Video</source>
         <translation>视频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="86"/>
-        <location filename="../mpv/playerview.cpp" line="103"/>
+        <location filename="../mpv/playerview.cpp" line="87"/>
+        <location filename="../mpv/playerview.cpp" line="104"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="88"/>
+        <location filename="../mpv/playerview.cpp" line="89"/>
         <source>Equalizer</source>
         <translation>均衡器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="90"/>
+        <location filename="../mpv/playerview.cpp" line="91"/>
         <source>Audio</source>
         <translation>音频</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="91"/>
+        <location filename="../mpv/playerview.cpp" line="92"/>
         <source>Stereo</source>
         <translation>立体声</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="92"/>
+        <location filename="../mpv/playerview.cpp" line="93"/>
         <source>Left channel</source>
         <translation>左声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="93"/>
+        <location filename="../mpv/playerview.cpp" line="94"/>
         <source>Right channel</source>
         <translation>右声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="94"/>
+        <location filename="../mpv/playerview.cpp" line="95"/>
         <source>Swap channel</source>
         <translation>交换声道</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="96"/>
+        <location filename="../mpv/playerview.cpp" line="97"/>
         <source>Select track</source>
         <translation>选择音轨</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="97"/>
+        <location filename="../mpv/playerview.cpp" line="98"/>
         <source>Load from file</source>
         <translation>载入文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="98"/>
+        <location filename="../mpv/playerview.cpp" line="99"/>
         <source>Delay</source>
         <translation>延迟</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="100"/>
+        <location filename="../mpv/playerview.cpp" line="101"/>
         <source>Speed</source>
         <translation>速度</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="101"/>
+        <location filename="../mpv/playerview.cpp" line="102"/>
         <source>Speed up</source>
         <translation>加速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="102"/>
+        <location filename="../mpv/playerview.cpp" line="103"/>
         <source>Speed down</source>
         <translation>减速</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="547"/>
+        <location filename="../mpv/playerview.cpp" line="548"/>
         <source>Input</source>
         <translation>输入</translation>
     </message>
     <message>
         <location filename="../mpv/playerview.ui" line="17"/>
-        <location filename="../mpv/playerview.cpp" line="164"/>
+        <location filename="../mpv/playerview.cpp" line="165"/>
         <source>imchenwen builtin media player</source>
         <translation>某橙内置媒体播放器</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="111"/>
+        <location filename="../mpv/playerview.cpp" line="112"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="532"/>
+        <location filename="../mpv/playerview.cpp" line="533"/>
         <source>Open audio track file</source>
         <translation>打开音频音轨文件</translation>
     </message>
     <message>
-        <location filename="../mpv/playerview.cpp" line="547"/>
+        <location filename="../mpv/playerview.cpp" line="548"/>
         <source>Audio delay (sec):</source>
         <translation>音频延迟(秒)：</translation>
     </message>

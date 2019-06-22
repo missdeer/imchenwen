@@ -66,6 +66,7 @@ PlayerView::PlayerView(QWidget *parent) :
 
     // create player core
     m_playerCore = new PlayerCore(this);
+    m_playerCore->initialize();
     m_playerCore->move(0, 0);
     m_playerCore->setAttribute(Qt::WA_TransparentForMouseEvents);
 

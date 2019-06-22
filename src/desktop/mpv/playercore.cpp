@@ -27,13 +27,13 @@ static void *GLAPIENTRY glMPGetNativeDisplay(const char *name)
 }
 #endif
 
-static void wakeup(void *ptr)
+void wakeup(void *ptr)
 {
-    PlayerCore *core = static_cast<PlayerCore*>(ptr);
+    auto *core = static_cast<PlayerCore*>(ptr);
     QCoreApplication::postEvent(core, new QEvent(QEvent::User));
 }
 
-static void *get_proc_address(void *, const char *name)
+void *get_proc_address(void *, const char *name)
 {
     // hardware acceleration fix
 #ifdef Q_OS_LINUX
@@ -45,17 +45,25 @@ static void *get_proc_address(void *, const char *name)
     if (!glctx)
         return nullptr;
 
-    return reinterpret_cast<void *>(glctx->getProcAddress(QByteArray(name)));
+    void *res = (void *)glctx->getProcAddress(QByteArray(name));
+#ifdef Q_OS_WIN32
+    // wglGetProcAddress(), which is used by Qt, does not always resolve all
+    // builtin functions with all drivers (only extensions). Qt compensates this
+    // for a degree, but does this only for functions Qt happens to need. So
+    // we need our own falback as well.
+    if (!res)
+    {
+        HMODULE handle = (HMODULE)QOpenGLContext::openGLModuleHandle();
+        if (handle)
+            res = (void *)GetProcAddress(handle, name);
+    }
+#endif
+    return res;
 }
 }
 
-PlayerCore::PlayerCore(QWidget *parent)
-    : QOpenGLWidget(parent)
-    , m_mpvGL(nullptr)
+void PlayerCore::initialize()
 {
-    setFocusPolicy(Qt::StrongFocus);
-
-    // create mpv instance
     m_mpv = mpv::qt::Handle::FromRawHandle(mpv_create());
     if (!m_mpv)
     {
@@ -133,7 +141,7 @@ PlayerCore::PlayerCore(QWidget *parent)
             {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
             {MPV_RENDER_PARAM_INVALID, nullptr}
         };
-
+        makeCurrent();
         if (mpv_render_context_create(&m_mpvGL, m_mpv, params) < 0)
             qDebug("failed to initialize mpv GL context");
         mpv_render_context_set_update_callback(m_mpvGL, PlayerCore::on_update, static_cast<void *>(this));
@@ -147,6 +155,13 @@ PlayerCore::PlayerCore(QWidget *parent)
     m_emitStoppedWhenIdle = false;
     m_unseekableForced = false;
     m_renderingPaused = false;
+}
+
+PlayerCore::PlayerCore(QWidget *parent)
+    : QOpenGLWidget(parent)
+    , m_mpvGL(nullptr)
+{
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 // opengl

@@ -23,7 +23,11 @@ class PlayerView : public QWidget
 
 public:
     explicit PlayerView(QWidget *parent = nullptr);
-    ~PlayerView();
+    ~PlayerView() override;
+    PlayerView& operator=(const PlayerView&) = delete;
+    PlayerView(const PlayerView&) = delete;
+    PlayerView& operator=( PlayerView&&) = delete;
+    PlayerView( PlayerView&&) = delete;
 
     void playMedia(const QString &video, const QString &audio, const QString &subtitle);
     void title(const QString& title);
@@ -31,39 +35,39 @@ public:
     void userAgent(const QString& userAgent);
 protected:
 #ifdef Q_OS_MAC
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 #endif
-    void contextMenuEvent(QContextMenuEvent *e);
-    void closeEvent(QCloseEvent *e);
-    void dragEnterEvent(QDragEnterEvent *e);
-    void dropEvent(QDropEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    void keyReleaseEvent(QKeyEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void resizeEvent(QResizeEvent *e);
+    void contextMenuEvent(QContextMenuEvent *e) override;
+    void closeEvent(QCloseEvent *e) override;
+    void dragEnterEvent(QDragEnterEvent *e) override;
+    void dropEvent(QDropEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
+    void keyReleaseEvent(QKeyEvent *e) override;
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
 
 signals:
     void finished(int , QProcess::ExitStatus );
 private slots:
     void onLengthChanged(int len);
     void onTimeChanged(int time);
-    void onTimeSliderPressed(void);
+    void onTimeSliderPressed();
     void onTimeSliderValueChanged(int time);
-    void onTimeSliderReleased(void);
+    void onTimeSliderReleased();
     void onSizeChanged(const QSize &sz);
-    void onMaxButton(void);
-    void onStopButton(void);
-    void onStopped(void);
-    void addAudioTrack(void);
-    void selectAudioTrack(void);
-    void setAudioDelay(void);
+    void onMaxButton();
+    void onStopButton();
+    void onStopped();
+    void addAudioTrack();
+    void selectAudioTrack();
+    void setAudioDelay();
     void saveVolume(int vol);
-    void setFullScreen(void);
-    void showVolumeSlider(void);
-    void hideElements(void);
+    void setFullScreen();
+    void showVolumeSlider();
+    void hideElements();
 
 private:
     Ui::PlayerView *ui;

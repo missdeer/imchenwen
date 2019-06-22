@@ -4,7 +4,6 @@
 #include <QOpenGLWidget>
 #include <QHash>
 #include <mpv/client.h>
-#include <mpv/opengl_cb.h>
 #include <mpv/qthelper.hpp>
 
 QT_BEGIN_NAMESPACE
@@ -20,19 +19,23 @@ QT_END_NAMESPACE
 
 #ifdef USE_OPENGL_CB
 #include <mpv/opengl_cb.h>
-typedef mpv_opengl_cb_context mpv_context;
+using mpv_context = mpv_opengl_cb_context;
 #else
 #include <mpv/render_gl.h>
-typedef mpv_render_context mpv_context;
+using mpv_context = mpv_render_context;
 #endif
 
 class PlayerCore : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    typedef enum {STOPPING, VIDEO_PLAYING, VIDEO_PAUSING, TV_PLAYING} State;
+    enum State {STOPPING, VIDEO_PLAYING, VIDEO_PAUSING, TV_PLAYING} ;
     explicit PlayerCore(QWidget *parent = nullptr);
-    virtual ~PlayerCore();
+    ~PlayerCore() override;
+    PlayerCore& operator=(const PlayerCore&) = delete;
+    PlayerCore(const PlayerCore&) = delete;
+    PlayerCore& operator=( PlayerCore&&) = delete;
+    PlayerCore( PlayerCore&&) = delete;
     State state;
     QString currentFile() { return m_mediaFile; }
     int64_t getTime() { return m_time; }
@@ -44,42 +47,44 @@ public:
     void setOption(const QString& name, const QVariant& value);
     void setProperty(const QString& name, const QVariant& value);
 
+    void initialize();
+
 signals:
-    void played(void);
-    void paused(void);
-    void stopped(void);
-    void fullScreen(void);
+    void played();
+    void paused();
+    void stopped();
+    void fullScreen();
     void timeChanged(int pos);
     void lengthChanged(int len);
     void sizeChanged(const QSize &size);
 
 public slots:
-    void stop(void);
-    void changeState(void);
+    void stop();
+    void changeState();
     void jumpTo(int pos);
     void setProgress(int pos);
     void setVolume(int volume);
     void openFile(const QString &m_mediaFile, const QString &m_audioTrack = QString());
     void openMedia(const QString &video, const QString &audio, const QString &subtitle);
     void openAudioTrack(const QString &audioFile);
-    void screenShot(void);
-    void speedUp(void);
-    void speedDown(void);
-    void speedSetToDefault(void);
+    void screenShot();
+    void speedUp();
+    void speedDown();
+    void speedSetToDefault();
     void showText(const QByteArray &text);
-    void pauseRendering(void);
-    void unpauseRendering(void);
+    void pauseRendering();
+    void unpauseRendering();
     void setAid(int64_t aid);
     void setSid(int64_t sid);
     void setAudioDelay(double v);
-    void setChannel_Left(void);
-    void setChannel_Right(void);
-    void setChannel_Stereo(void);
-    void setChannel_Swap(void);
-    void setRatio_16_9(void);
-    void setRatio_16_10(void);
-    void setRatio_4_3(void);
-    void setRatio_0(void);
+    void setChannel_Left();
+    void setChannel_Right();
+    void setChannel_Stereo();
+    void setChannel_Swap();
+    void setRatio_16_9();
+    void setRatio_16_10();
+    void setRatio_4_3();
+    void setRatio_0();
     void setBrightness(int64_t v);
     void setContrast(int64_t v);
     void setSaturation(int64_t v);
@@ -88,12 +93,12 @@ public slots:
 
 
 private slots:
-    void swapped(void);
+    void swapped();
     void maybeUpdate();
 protected:
-    void initializeGL();
-    void paintGL();
-    bool event(QEvent *e);
+    void initializeGL() override;
+    void paintGL() override;
+    bool event(QEvent *e) override;
 
 private:
     mpv::qt::Handle m_mpv;
@@ -117,7 +122,5 @@ private:
     void handleMpvError(int code);
     static void on_update(void *ctx);
 };
-
-extern PlayerCore *g_playerCore;
 
 #endif // MPLAYER_H
