@@ -69,6 +69,11 @@ void PlayerCore::initialize()
     {
         qDebug("Cannot create mpv instance.");
     }
+    // initialize mpv
+    if (mpv_initialize(m_mpv) < 0)
+    {
+        qDebug("Cannot initialize mpv.");
+    }
 
     // set mpv options
     mpv::qt::set_option_variant(m_mpv, "softvol", "yes");         // mpv handles the volume
@@ -103,7 +108,12 @@ void PlayerCore::initialize()
     QString hwdec = cfg.read<QString>(QLatin1String("builtinPlayerHWAccel"));
     if (!hwdec.isEmpty())
         mpv::qt::set_option_variant(m_mpv, "hwdec", hwdec);
+
+#ifdef USE_OPENGL_CB
+    mpv::qt::set_option_variant(m_mpv, "vo", "opengl-cb");
+#else
     mpv::qt::set_option_variant(m_mpv, "vo", "libmpv");
+#endif
     mpv::qt::set_option_variant(m_mpv, "hwdec-codecs", "all");
 
     // listen mpv event
@@ -117,12 +127,6 @@ void PlayerCore::initialize()
     mpv_observe_property(m_mpv, 0, "sid",              MPV_FORMAT_INT64);
     mpv_set_wakeup_callback(m_mpv, wakeup, this);
 
-    // initialize mpv
-    if (mpv_initialize(m_mpv) < 0)
-    {
-        qDebug("Cannot initialize mpv.");
-    }
-
 #ifdef USE_OPENGL_CB
     // initialize opengl
     m_mpvGL = (mpv_opengl_cb_context*) mpv_get_sub_api(m_mpv, MPV_SUB_API_OPENGL_CB);
@@ -133,19 +137,21 @@ void PlayerCore::initialize()
     mpv_opengl_cb_set_update_callback(m_mpvGL, PlayerCore::on_update, (void*) this);
     connect(this, &PlayerCore::frameSwapped, this, &PlayerCore::swapped);
 #else
-    if (!m_mpvGL)
-    {
-        mpv_opengl_init_params gl_init_params{get_proc_address, nullptr, nullptr};
-        mpv_render_param params[]{
-            {MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_OPENGL)},
-            {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
-            {MPV_RENDER_PARAM_INVALID, nullptr}
-        };
-        makeCurrent();
-        if (mpv_render_context_create(&m_mpvGL, m_mpv, params) < 0)
-            qDebug("failed to initialize mpv GL context");
-        mpv_render_context_set_update_callback(m_mpvGL, PlayerCore::on_update, static_cast<void *>(this));
+    QWidget *nativeParent = nativeParentWidget();
+    if (nativeParent == nullptr) {
+        qFatal("glwidget, no native parent handle");
     }
+    mpv_opengl_init_params gl_init_params{ get_proc_address, this, nullptr };
+    mpv_render_param params[]{
+        {MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_OPENGL)},
+        {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
+        {MPV_RENDER_PARAM_INVALID, nullptr},
+        {MPV_RENDER_PARAM_INVALID, nullptr}
+    };
+
+    if (mpv_render_context_create(&m_mpvGL, m_mpv, params) < 0)
+        qDebug("failed to initialize mpv GL context");
+    mpv_render_context_set_update_callback(m_mpvGL, PlayerCore::on_update, static_cast<void *>(this));
 #endif
 
     // set state
@@ -168,7 +174,7 @@ PlayerCore::PlayerCore(QWidget *parent)
 void PlayerCore::initializeGL()
 {
     qDebug() << "OpenGL Version: " << context()->format().majorVersion() << "." << context()->format().minorVersion();
-
+    initialize();
 #ifdef USE_OPENGL_CB
 #ifdef Q_OS_LINUX
     int r = mpv_opengl_cb_init_gl(m_mpvGL, "GL_MP_MPGetNativeDisplay", get_proc_address, nullptr);
