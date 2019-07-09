@@ -354,22 +354,23 @@ void BrowserWindow::createLiveTVToolButton(QToolBar *navigationBar)
     if (content.isEmpty())
         return;
     auto titles = content.keys();
-    QMenu *popupMenu = new QMenu();
+    auto *popupMenu = new QMenu(this);
     for (const auto & title : titles)
     {
         auto subscriptions = content.values(title);
         if (!subscriptions.isEmpty())
         {
-            QMenu *subMenu = new QMenu(title, popupMenu);
+            auto *subMenu = new QMenu(title, popupMenu);
             popupMenu->addMenu(subMenu);
             for (const auto & subscription : subscriptions)
             {
-                for (auto it = subscription->begin(); subscription->end() != it; ++it)
+                for (const auto& sub : *subscription)
                 {
-                    QAction *action  = new QAction(std::get<0>(*it), subMenu);
-                    action->setData(std::get<1>(*it));
-                    action->setToolTip(std::get<1>(*it));
-                    action->setStatusTip(std::get<1>(*it));
+                    const auto& [name, tip] = sub;
+                    auto *action  = new QAction(name, subMenu);
+                    action->setData(tip);
+                    action->setToolTip(tip);
+                    action->setStatusTip(tip);
                     connect(action, &QAction::triggered, this, &BrowserWindow::onLiveTV);
                     subMenu->addAction(action);
                 }
@@ -516,7 +517,7 @@ void BrowserWindow::onWebActionEnabledChanged(QWebEnginePage::WebAction action, 
 
 void BrowserWindow::onShortcut()
 {
-    QAction *action = qobject_cast<QAction*>(sender());
+    auto *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
     if (!url.isEmpty())
@@ -530,7 +531,7 @@ void BrowserWindow::onShortcut()
 
 void BrowserWindow::onLiveTV()
 {
-    QAction *action = qobject_cast<QAction*>(sender());
+    auto *action = qobject_cast<QAction*>(sender());
     Q_ASSERT(action);
     auto url = action->data().toString();
     Browser::instance().play(url, QStringList() << url, tr("Live TV - ") + action->text());
@@ -582,7 +583,7 @@ void BrowserWindow::onWebViewTitleChanged(const QString &title)
 
 void BrowserWindow::onNewWindow()
 {
-    BrowserWindow *window = new BrowserWindow();
+    auto *window = new BrowserWindow();
     Browser::instance().addWindow(window);
     window->loadHomePage();
 }
@@ -738,7 +739,7 @@ void BrowserWindow::onWebViewLoadProgress(int progress)
 
 void BrowserWindow::onShowWindow()
 {
-    if (QAction *action = qobject_cast<QAction*>(sender())) {
+    if (auto *action = qobject_cast<QAction*>(sender()); action) {
         int offset = action->data().toInt();
         QVector<BrowserWindow*> windows = Browser::instance().windows();
         windows.at(offset)->activateWindow();

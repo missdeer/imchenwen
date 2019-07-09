@@ -3,6 +3,7 @@
 
 #include <QMacCocoaViewContainer>
 #include <QUrl>
+#include <QIcon>
 
 class QtCocoaWebView : public QMacCocoaViewContainer
 {
@@ -35,6 +36,7 @@ public:
     void setZoomFactor(qreal factor);
     
     void setHtml(const QString &html, const QUrl &baseUrl = QUrl());
+    QIcon icon();
 signals:
     void loadFinish(const QString &strUrl, const QString &strHtml);
     void loadError();
@@ -46,6 +48,8 @@ signals:
     
 private:
     QUrl m_url;
+    QString m_title;
+    QIcon m_icon;
 };
 
 #endif // WEBVIEWINQT_H

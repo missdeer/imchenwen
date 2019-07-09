@@ -185,7 +185,7 @@ void TabWidget::setupView(ImWebView *webView)
 
 ImWebView *TabWidget::onCreateTab(bool makeCurrent)
 {
-    auto *webView = new ImWebView;
+    auto *webView = new ImWebView(this);
 #if !defined (Q_OS_MAC)
     auto *webPage = new WebPage(QWebEngineProfile::defaultProfile(), webView);
     webView->setPage(webPage);

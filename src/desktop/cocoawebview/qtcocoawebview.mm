@@ -13,6 +13,10 @@ QtCocoaWebView::QtCocoaWebView(QWidget *parent) :
     NSRect rect = {{0, 0}, {(CGFloat)parent->width(), (CGFloat)parent->height()}};
 
     CocoaWebView *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
+    
+    [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput("https://www.google.com").toNSURL()
+                                        cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
+    
     setCocoaView(cWebView);
 
     [cWebView release];
@@ -25,15 +29,12 @@ QtCocoaWebView::QtCocoaWebView(const QString& loadUrl, QWidget *parent) :
 {
     @autoreleasepool{
 
-    NSString *strUrl = loadUrl.toNSString();
-
     NSRect rect = {{0, 0}, {(CGFloat)parent->width(), (CGFloat)parent->height()}};
 
     CocoaWebView *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
 
-    [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:[NSURL URLWithString:strUrl]
+    [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput(loadUrl).toNSURL()
                                         cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
-
 
     setCocoaView(cWebView);
 
@@ -83,11 +84,13 @@ void QtCocoaWebView::reload()
 
 void QtCocoaWebView::onTitleChanged(const QString &strTitle)
 {
+    m_title = strTitle;
     emit titleChanged(strTitle);
 }
 
 void QtCocoaWebView::onIconChanged(const QIcon &icon)
 {
+    m_icon = icon;
     emit iconChanged(icon);
 }
 
@@ -114,7 +117,7 @@ void QtCocoaWebView::setUrl(const QUrl &u)
 
 QString QtCocoaWebView::title() const
 {
-    return "";
+    return m_title;
 }
 
 int QtCocoaWebView::loadProgress()
@@ -137,6 +140,11 @@ void QtCocoaWebView::setHtml(const QString &html, const QUrl &baseUrl)
     
 }
 
+QIcon QtCocoaWebView::icon()
+{
+    return m_icon;
+}
+
 void QtCocoaWebView::onLoadFinish(const QString &strUrl, const QString &strHtml)
 {
     emit loadFinish(strUrl, strHtml);
@@ -149,5 +157,6 @@ void QtCocoaWebView::onLoadError()
 
 void QtCocoaWebView::onUrlChanged(const QString &strUrl)
 {
+    m_url = QUrl::fromUserInput(strUrl);
     emit urlChanged(strUrl);
 }

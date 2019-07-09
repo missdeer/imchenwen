@@ -76,7 +76,7 @@
     <message>
         <location filename="../ui/browserwindow.cpp" line="93"/>
         <location filename="../ui/browserwindow.cpp" line="301"/>
-        <location filename="../ui/browserwindow.cpp" line="578"/>
+        <location filename="../ui/browserwindow.cpp" line="579"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
     </message>
@@ -102,13 +102,13 @@
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="119"/>
-        <location filename="../ui/browserwindow.cpp" line="466"/>
+        <location filename="../ui/browserwindow.cpp" line="467"/>
         <source>Resolve Url</source>
         <translation>解析地址</translation>
     </message>
     <message>
         <location filename="../ui/browserwindow.cpp" line="123"/>
-        <location filename="../ui/browserwindow.cpp" line="471"/>
+        <location filename="../ui/browserwindow.cpp" line="472"/>
         <source>Resolve Url As VIP</source>
         <translation>解析VIP地址</translation>
     </message>
@@ -275,12 +275,12 @@ Build at </source>
         <translation>在线电影</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="384"/>
+        <location filename="../ui/browserwindow.cpp" line="385"/>
         <source>Watch Live TV</source>
         <translation>观看在线电视直播</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="409"/>
+        <location filename="../ui/browserwindow.cpp" line="410"/>
         <source>Navigation</source>
         <translation>导航</translation>
     </message>
@@ -295,49 +295,49 @@ Build at </source>
         <translation>后台升级视频解析器</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="536"/>
+        <location filename="../ui/browserwindow.cpp" line="537"/>
         <source>Live TV - </source>
         <translation>电视直播 - </translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="580"/>
+        <location filename="../ui/browserwindow.cpp" line="581"/>
         <source>%1 - imchenwen</source>
         <translation>%1 - 某橙</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="592"/>
+        <location filename="../ui/browserwindow.cpp" line="593"/>
         <source>Open Web Resource</source>
         <translation>打开Web资源</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="593"/>
+        <location filename="../ui/browserwindow.cpp" line="594"/>
         <source>Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)</source>
         <translation>Web资源 (*.html *.htm *.svg *.png *.gif *.svgz);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="618"/>
+        <location filename="../ui/browserwindow.cpp" line="619"/>
         <source>Play URL directly</source>
         <translation>直接播放URL</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="626"/>
+        <location filename="../ui/browserwindow.cpp" line="627"/>
         <source>Confirm close</source>
         <translation>确认关闭</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="627"/>
+        <location filename="../ui/browserwindow.cpp" line="628"/>
         <source>Are you sure you want to close the window ?
 There are %1 tabs open.</source>
         <translation>你确定要关闭窗口吗？
 有%1个标签页仍打开着。</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="727"/>
+        <location filename="../ui/browserwindow.cpp" line="728"/>
         <source>Stop loading the current page</source>
         <translation>停止载入当前页面</translation>
     </message>
     <message>
-        <location filename="../ui/browserwindow.cpp" line="734"/>
+        <location filename="../ui/browserwindow.cpp" line="735"/>
         <source>Reload the current page</source>
         <translation>重新载入当前页面</translation>
     </message>
