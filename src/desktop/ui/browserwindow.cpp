@@ -531,7 +531,7 @@ void BrowserWindow::onShortcut()
         if (m_tabWidget->currentWebView()->url().url().isEmpty())
             loadPage(url);
         else
-            m_tabWidget->navigateInNewWebEngineTab(url);
+            m_tabWidget->navigateInNewTab(url);
     }
 }
 
@@ -618,7 +618,7 @@ void BrowserWindow::onPlayURL()
         }
         else if (dlg.sniffThenPlay())
         {
-            m_tabWidget->navigateInNewWebEngineTab(dlg.url());
+            m_tabWidget->navigateInNewTab(dlg.url());
         }
         else if (dlg.playDirectly())
         {

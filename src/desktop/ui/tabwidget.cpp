@@ -1,6 +1,7 @@
 #include "tabwidget.h"
 #include <QMenu>
 #include <QTabBar>
+#include <QtCore>
 
 TabWidget::TabWidget(QWidget *parent)
     : QTabWidget(parent)
@@ -98,7 +99,7 @@ ImWebView *TabWidget::currentWebView() const
     return webView(currentIndex());
 }
 
-ImWebView *TabWidget::navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent)
+ImWebView *TabWidget::navigateInNewTab(const QUrl &url, bool makeCurrent)
 {
     auto v = onCreateTab(makeCurrent);
     v->setUrl(url);
@@ -129,7 +130,34 @@ ImWebView *TabWidget::webView(int index) const
 void TabWidget::setupView(ImWebView *webView)
 {
 #if defined (Q_OS_MAC)
-    
+    connect(webView, &ImWebView::titleChanged, [this, webView](const QString &title) {
+        int index = indexOf(webView);
+        if (index != -1)
+            setTabText(index, title);
+        if (currentIndex() == index)
+            emit titleChanged(title);
+    });
+    connect(webView, &ImWebView::loadFinish, [this, webView](const QString &strUrl, const QString &) {
+        QUrl url = QUrl::fromEncoded(QByteArray::fromPercentEncoding(strUrl.toUtf8()));
+        int index = indexOf(webView);
+        if (index != -1)
+            tabBar()->setTabData(index, url);
+        if (currentIndex() == index)
+            emit urlChanged(url);
+    });
+    connect(webView, &ImWebView::iconChanged, [this, webView](const QIcon &icon) {
+        int index = indexOf(webView);
+        QIcon ico = icon.isNull() ? QIcon(QStringLiteral(":defaulticon.png")) : icon;
+
+        if (index != -1)
+            setTabIcon(index, ico);
+        if (currentIndex() == index)
+            emit iconChanged(ico);
+    });
+    connect(webView, &ImWebView::newWindowsRequest, [this](const QString& strUrl) {
+        qDebug() << __FUNCTION__ << strUrl;
+        navigateInNewTab(strUrl);
+    });
 #else
     QWebEnginePage *webPage = webView->page();
 

@@ -34,7 +34,7 @@ public:
     ~TabWidget() override = default;
 
     ImWebView *currentWebView() const;
-    ImWebView *navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent = true);
+    ImWebView *navigateInNewTab(const QUrl &url, bool makeCurrent = true);
     void closeAllTabs();
 signals:
     // current tab/page signals

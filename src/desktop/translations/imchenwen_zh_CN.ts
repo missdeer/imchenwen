@@ -1687,37 +1687,37 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>TabWidget</name>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="66"/>
+        <location filename="../ui/tabwidget.cpp" line="67"/>
         <source>New &amp;Tab</source>
         <translation>新建标签页(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="69"/>
+        <location filename="../ui/tabwidget.cpp" line="70"/>
         <source>Clone Tab</source>
         <translation>复制标签页</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="74"/>
+        <location filename="../ui/tabwidget.cpp" line="75"/>
         <source>&amp;Close Tab</source>
         <translation>关闭标签页(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="79"/>
+        <location filename="../ui/tabwidget.cpp" line="80"/>
         <source>Close &amp;Other Tabs</source>
         <translation>关闭所有其他标签页(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="84"/>
+        <location filename="../ui/tabwidget.cpp" line="85"/>
         <source>Reload Tab</source>
         <translation>重新载入该标签页</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="92"/>
+        <location filename="../ui/tabwidget.cpp" line="93"/>
         <source>Reload All Tabs</source>
         <translation>重新载入所有标签页</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="194"/>
+        <location filename="../ui/tabwidget.cpp" line="222"/>
         <source>(Untitled)</source>
         <translation>(未命名)</translation>
     </message>
