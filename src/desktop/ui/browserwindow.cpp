@@ -51,8 +51,8 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     menuBar()->addMenu(createWindowMenu(m_tabWidget));
     menuBar()->addMenu(createHelpMenu());
 
-    QWidget *centralWidget = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout;
+    auto *centralWidget = new QWidget(this);
+    auto *layout = new QVBoxLayout;
     layout->setSpacing(0);
     layout->setMargin(0);
     addToolBarBreak();
@@ -427,6 +427,8 @@ QToolBar *BrowserWindow::createToolBar()
     m_historyBackAction->setIcon(QIcon(QStringLiteral(":go-previous.png")));
     connect(m_historyBackAction, &QAction::triggered, [this]() {
 #if defined(Q_OS_MAC)
+        auto* view = m_tabWidget->currentWebView();
+        view->back();
 #else
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Back);
 #endif
@@ -447,6 +449,8 @@ QToolBar *BrowserWindow::createToolBar()
     m_historyForwardAction->setIcon(QIcon(QStringLiteral(":go-next.png")));
     connect(m_historyForwardAction, &QAction::triggered, [this]() {
 #if defined(Q_OS_MAC)
+        auto* view = m_tabWidget->currentWebView();
+        view->forward();
 #else
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Forward);
 #endif
@@ -456,6 +460,8 @@ QToolBar *BrowserWindow::createToolBar()
     m_stopReloadAction = new QAction(this);
     connect(m_stopReloadAction, &QAction::triggered, [this]() {
 #if defined(Q_OS_MAC)
+        auto* view = m_tabWidget->currentWebView();
+        view->stop();
 #else
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::WebAction(m_stopReloadAction->data().toInt()));
 #endif

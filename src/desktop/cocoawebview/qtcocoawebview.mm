@@ -9,18 +9,16 @@ QtCocoaWebView::QtCocoaWebView(QWidget *parent) :
     QMacCocoaViewContainer(nullptr, parent)
 {
     @autoreleasepool{
-
-    NSRect rect = {{0, 0}, {(CGFloat)parent->width(), (CGFloat)parent->height()}};
-
-    CocoaWebView *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
-    
-    [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput("https://www.google.com").toNSURL()
-                                        cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
-    
-    setCocoaView(cWebView);
-
-    [cWebView release];
-
+        NSRect rect = {{0, 0}, {(CGFloat)parent->width(), (CGFloat)parent->height()}};
+        
+        auto *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
+        
+        [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput("https://www.google.com").toNSURL()
+          cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
+        
+        setCocoaView(cWebView);
+        
+        [cWebView release];
     }
 }
 
@@ -28,58 +26,86 @@ QtCocoaWebView::QtCocoaWebView(const QString& loadUrl, QWidget *parent) :
     QMacCocoaViewContainer(nullptr, parent)
 {
     @autoreleasepool{
-
-    NSRect rect = {{0, 0}, {(CGFloat)parent->width(), (CGFloat)parent->height()}};
-
-    CocoaWebView *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
-
-    [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput(loadUrl).toNSURL()
-                                        cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
-
-    setCocoaView(cWebView);
-
-    [cWebView release];
-
+        
+        NSRect rect = {{0, 0}, {(CGFloat)parent->width(), (CGFloat)parent->height()}};
+        
+        auto *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
+        
+        [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput(loadUrl).toNSURL()
+          cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
+        
+        setCocoaView(cWebView);
+        
+        [cWebView release];
+        
     }
-
+    
 }
 
 void QtCocoaWebView::loadRequest(const QString& loadUrl)
 {
-   @autoreleasepool{
-
-    CocoaWebView *cWebView = (CocoaWebView*)this->cocoaView();
-    NSString *strUrl = loadUrl.toNSString();
-
-    [[cWebView mainFrame] loadRequest:
-        [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithString:strUrl]]]];
-
+    @autoreleasepool{
+        
+        auto *cWebView = (CocoaWebView*)this->cocoaView();
+        auto u = QUrl::fromUserInput(loadUrl);
+        
+        [[cWebView mainFrame] loadRequest:
+            [NSURLRequest requestWithURL:u.toNSURL()]];
     }
 }
 
 bool QtCocoaWebView::canGoBack()
 {
+    @autoreleasepool{
+        auto *cWebView = (CocoaWebView*)this->cocoaView();
+        return cWebView.canGoBack;
+    }
     return false;
 }
 
 bool QtCocoaWebView::canGoForward()
 {
+    @autoreleasepool{
+        auto *cWebView = (CocoaWebView*)this->cocoaView();
+        return cWebView.canGoForward;
+    }
     return false;
 }
 
 void QtCocoaWebView::back()
 {
-
+    @autoreleasepool{
+        auto *cWebView = (CocoaWebView*)this->cocoaView();
+        
+        [cWebView goBack];
+    }
 }
 
 void QtCocoaWebView::forward()
 {
-    
+    @autoreleasepool{
+        auto* cWebView = (CocoaWebView*)this->cocoaView();
+        
+        [cWebView goForward];
+    }
 }
 
 void QtCocoaWebView::reload()
 {
-    
+    @autoreleasepool{
+        auto *cWebView = (CocoaWebView*)this->cocoaView();
+        
+        [cWebView reload];
+    }
+}
+
+void QtCocoaWebView::stop()
+{
+    @autoreleasepool{
+        auto *cWebView = (CocoaWebView*)this->cocoaView();
+        
+        [cWebView stopLoading];
+    }
 }
 
 void QtCocoaWebView::onTitleChanged(const QString &strTitle)
@@ -122,7 +148,7 @@ QString QtCocoaWebView::title() const
 
 int QtCocoaWebView::loadProgress()
 {
-    
+    return 0;
 }
 
 qreal QtCocoaWebView::zoomFactor() const

@@ -18,6 +18,7 @@ public:
     void back();
     void forward();
     void reload();
+    void stop();
 
     void onLoadFinish(const QString &strUrl, const QString &strHtml);
     void onLoadError();
