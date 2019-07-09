@@ -1,10 +1,16 @@
 #include "browser.h"
 #include "browserwindow.h"
 #include <QApplication>
-#include <QtWebEngine>
-#include <QWebEngineSettings>
 #include <QTranslator>
 #include <QThreadPool>
+
+#if defined (Q_OS_MAC)
+
+#else
+
+#include <QtWebEngine>
+#include <QWebEngineSettings>
+#endif
 
 QString getCommandLineUrlArgument()
 {
@@ -96,11 +102,12 @@ int main(int argc, char **argv)
     setlocale(LC_NUMERIC, "C");
 
 #if defined(Q_OS_MAC)
-    a.setWindowIcon(QIcon(":imchenwen.icns"));
+    QApplication::setWindowIcon(QIcon(":imchenwen.icns"));
 #else
-    a.setWindowIcon(QIcon(":imchenwen.ico"));
-#endif
+    QApplication::setWindowIcon(QIcon(":imchenwen.ico"));
+    
     QtWebEngine::initialize();
+#endif
 
     Browser& browser = Browser::instance();
     browser.loadSettings();
@@ -113,5 +120,5 @@ int main(int argc, char **argv)
     else
         window->loadHomePage();
 
-    return a.exec();
+    return QApplication::exec();
 }

@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = imchenwen
-QT += webengine webenginecore webenginewidgets xml concurrent gui-private
+QT += core gui widgets network xml concurrent gui-private
 CONFIG += c++17
 
 contains(QMAKE_HOST.arch, x86_64): {
@@ -15,7 +15,6 @@ include($$PWD/../3rdparty/qhttpengine/qhttpengine.pri)
 INCLUDEPATH += $$PWD \
     $$PWD/dlna \
     $$PWD/mpv \
-    $$PWD/webengine \
     $$PWD/config \
     $$PWD/ui \
     $$PWD/mediahandler \
@@ -54,9 +53,6 @@ HEADERS += \
     $$PWD/ui/tabwidget.h \
     $$PWD/ui/urllineedit.h \
     $$PWD/ui/waitingspinnerwidget.h \
-    $$PWD/webengine/webpage.h \
-    $$PWD/webengine/webpopupwindow.h \
-    $$PWD/webengine/webview.h \
     $$PWD/browser.h \
     $$PWD/ui/donatedialog.h \
     $$PWD/upgrade/dependenciesupgrade.h \
@@ -104,9 +100,6 @@ SOURCES += \
     $$PWD/ui/tabwidget.cpp \
     $$PWD/ui/urllineedit.cpp \
     $$PWD/ui/waitingspinnerwidget.cpp \
-    $$PWD/webengine/webpage.cpp \
-    $$PWD/webengine/webpopupwindow.cpp \
-    $$PWD/webengine/webview.cpp \
     $$PWD/ui/donatedialog.cpp \
     $$PWD/upgrade/dependenciesupgrade.cpp \
     $$PWD/network/networkreplyhelper.cpp \
@@ -214,6 +207,20 @@ macx: {
         QMAKE_EXTRA_TARGETS += deploy deploy_webengine deploy_appstore fixdeploy codesign makedmg bundlei18n
         POST_TARGETDEPS += bundlei18n
     }
+} else: {
+    QT += webengine webenginecore webenginewidgets 
+    SOURCES += \
+        $$PWD/webengine/webpage.cpp \
+        $$PWD/webengine/webpopupwindow.cpp \
+        $$PWD/webengine/webview.cpp 
+    
+    INCLUDEPATH += \
+        $$PWD/webengine 
+
+    HEADERS += \
+        $$PWD/webengine/webpage.h \
+        $$PWD/webengine/webpopupwindow.h \
+        $$PWD/webengine/webview.h 
 }
 
 win32: {

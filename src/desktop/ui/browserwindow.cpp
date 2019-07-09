@@ -2,7 +2,6 @@
 #include "browserwindow.h"
 #include "tabwidget.h"
 #include "urllineedit.h"
-#include "webview.h"
 #include "settings.h"
 #include "websites.h"
 #include "subscriptionhelper.h"
@@ -74,7 +73,10 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::onWebViewLoadProgress);
     connect(m_tabWidget, &TabWidget::urlChanged, this, &BrowserWindow::onWebViewUrlChanged);
     connect(m_tabWidget, &TabWidget::iconChanged, this, &BrowserWindow::onWebViewIconChanged);
+#if defined(Q_OS_MAC)
+#else
     connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::onWebActionEnabledChanged);
+#endif
     connect(m_urlLineEdit, &QLineEdit::returnPressed, [this]() {
         m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
         loadPage(m_urlLineEdit->url());
@@ -157,15 +159,19 @@ QMenu *BrowserWindow::createViewMenu(QToolBar *toolbar)
     shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Period));
     shortcuts.append(Qt::Key_Escape);
     m_stopAction->setShortcuts(shortcuts);
-    connect(m_stopAction, &QAction::triggered, [this]() {
-        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Stop);
-    });
 
     m_reloadAction = viewMenu->addAction(tr("Reload Page"));
     m_reloadAction->setShortcuts(QKeySequence::Refresh);
+    
+#if defined(Q_OS_MAC)
+#else
+    connect(m_stopAction, &QAction::triggered, [this]() {
+        m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Stop);
+    });
     connect(m_reloadAction, &QAction::triggered, [this]() {
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Reload);
     });
+#endif
 
     QAction *zoomIn = viewMenu->addAction(tr("Zoom &In"));
     zoomIn->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Plus));
@@ -419,7 +425,10 @@ QToolBar *BrowserWindow::createToolBar()
     m_historyBackAction->setIconVisibleInMenu(false);
     m_historyBackAction->setIcon(QIcon(QStringLiteral(":go-previous.png")));
     connect(m_historyBackAction, &QAction::triggered, [this]() {
+#if defined(Q_OS_MAC)
+#else
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Back);
+#endif
     });
     navigationBar->addAction(m_historyBackAction);
 
@@ -436,13 +445,19 @@ QToolBar *BrowserWindow::createToolBar()
     m_historyForwardAction->setIconVisibleInMenu(false);
     m_historyForwardAction->setIcon(QIcon(QStringLiteral(":go-next.png")));
     connect(m_historyForwardAction, &QAction::triggered, [this]() {
+#if defined(Q_OS_MAC)
+#else
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::Forward);
+#endif
     });
     navigationBar->addAction(m_historyForwardAction);
 
     m_stopReloadAction = new QAction(this);
     connect(m_stopReloadAction, &QAction::triggered, [this]() {
+#if defined(Q_OS_MAC)
+#else
         m_tabWidget->onTriggerWebPageAction(QWebEnginePage::WebAction(m_stopReloadAction->data().toInt()));
+#endif
     });
     navigationBar->addAction(m_stopReloadAction);
     navigationBar->addWidget(m_urlLineEdit);
@@ -475,6 +490,9 @@ void BrowserWindow::onWebViewUrlChanged(const QUrl &url)
         m_urlLineEdit->setFocus();
 }
 
+#if defined (Q_OS_MAC)
+
+#else
 void BrowserWindow::onWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled)
 {
     switch (action) {
@@ -494,6 +512,7 @@ void BrowserWindow::onWebActionEnabledChanged(QWebEnginePage::WebAction action, 
         qWarning("Unhandled webActionChanged singal");
     }
 }
+#endif
 
 void BrowserWindow::onShortcut()
 {
@@ -689,7 +708,7 @@ TabWidget *BrowserWindow::tabWidget() const
     return m_tabWidget;
 }
 
-WebView *BrowserWindow::currentTab() const
+ImWebView *BrowserWindow::currentTab() const
 {
     return m_tabWidget->currentWebView();
 }
@@ -700,11 +719,17 @@ void BrowserWindow::onWebViewLoadProgress(int progress)
     static QIcon reloadIcon(QStringLiteral(":view-refresh.png"));
 
     if (progress < 100 && progress > 0) {
+#if defined (Q_OS_MAC)
+#else
         m_stopReloadAction->setData(QWebEnginePage::Stop);
+#endif
         m_stopReloadAction->setIcon(stopIcon);
         m_stopReloadAction->setToolTip(tr("Stop loading the current page"));
     } else {
+#if defined (Q_OS_MAC)
+#else
         m_stopReloadAction->setData(QWebEnginePage::Reload);
+#endif
         m_stopReloadAction->setIcon(reloadIcon);
         m_stopReloadAction->setToolTip(tr("Reload the current page"));
     }

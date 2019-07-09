@@ -2,16 +2,14 @@
 #define BROWSERWINDOW_H
 
 #include <QMainWindow>
-#include <QWebEnginePage>
+#include "tabwidget.h"
 
 QT_BEGIN_NAMESPACE
 class QProgressBar;
 class QToolBar;
 QT_END_NAMESPACE
 
-class TabWidget;
 class UrlLineEdit;
-class WebView;
 class PopupMenuToolButton;
 
 class BrowserWindow : public QMainWindow
@@ -27,7 +25,7 @@ public:
     ~BrowserWindow() override = default;
     QSize sizeHint() const override;
     TabWidget *tabWidget() const;
-    WebView *currentTab() const;
+    ImWebView *currentTab() const;
 
     void loadPage(const QString &url);
     void loadPage(const QUrl &url);
@@ -50,7 +48,11 @@ private slots:
     void onWebViewTitleChanged(const QString &title);
     void onWebViewUrlChanged(const QUrl &url);
     void onWebViewIconChanged(const QIcon &icon);
+    
+#if defined (Q_OS_MAC)
+#else
     void onWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
+#endif
 
     void onShortcut();
     void onLiveTV();

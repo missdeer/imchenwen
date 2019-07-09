@@ -85,24 +85,24 @@ bool WebView::isWebActionEnabled(QWebEnginePage::WebAction webAction) const
     return page()->action(webAction)->isEnabled();
 }
 
-QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
+WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
     switch (type) {
     case QWebEnginePage::WebBrowserTab: {
-        BrowserWindow *mainWindow = qobject_cast<BrowserWindow*>(window());
+        auto *mainWindow = qobject_cast<BrowserWindow*>(window());
         return mainWindow->tabWidget()->onCreateTab();
     }
     case QWebEnginePage::WebBrowserBackgroundTab: {
-        BrowserWindow *mainWindow = qobject_cast<BrowserWindow*>(window());
+        auto *mainWindow = qobject_cast<BrowserWindow*>(window());
         return mainWindow->tabWidget()->onCreateTab(false);
     }
     case QWebEnginePage::WebBrowserWindow: {
-        BrowserWindow *mainWindow = new BrowserWindow();
+        auto *mainWindow = new BrowserWindow();
         Browser::instance().addWindow(mainWindow);
         return mainWindow->currentTab();
     }
     case QWebEnginePage::WebDialog: {
-        WebPopupWindow *popup = new WebPopupWindow(page()->profile());
+        auto *popup = new WebPopupWindow(page()->profile());
         return popup->view();
     }
     }

@@ -20,7 +20,7 @@ QtCocoaWebView::QtCocoaWebView(QWidget *parent) :
     }
 }
 
-QtCocoaWebView::QtCocoaWebView(QString loadUrl, QWidget *parent) :
+QtCocoaWebView::QtCocoaWebView(const QString& loadUrl, QWidget *parent) :
     QMacCocoaViewContainer(nullptr, parent)
 {
     @autoreleasepool{
@@ -66,14 +66,19 @@ bool QtCocoaWebView::canGoForward()
     return false;
 }
 
-void QtCocoaWebView::goBack()
+void QtCocoaWebView::back()
 {
 
 }
 
-void QtCocoaWebView::goForward()
+void QtCocoaWebView::forward()
 {
+    
+}
 
+void QtCocoaWebView::reload()
+{
+    
 }
 
 void QtCocoaWebView::onTitleChanged(const QString &strTitle)
@@ -94,6 +99,42 @@ void QtCocoaWebView::onNewWindowsRequest(const QString &strUrl)
 void QtCocoaWebView::onStatusTextChanged(const QString &text)
 {
     emit statusTextChanged(text);
+}
+
+QUrl QtCocoaWebView::url() const
+{
+    return m_url;
+}
+
+void QtCocoaWebView::setUrl(const QUrl &u)
+{
+    m_url = u;
+    loadRequest(u.toString());
+}
+
+QString QtCocoaWebView::title() const
+{
+    return "";
+}
+
+int QtCocoaWebView::loadProgress()
+{
+    
+}
+
+qreal QtCocoaWebView::zoomFactor() const
+{
+    return 1.0;
+}
+
+void QtCocoaWebView::setZoomFactor(qreal factor)
+{
+    
+}
+
+void QtCocoaWebView::setHtml(const QString &html, const QUrl &baseUrl)
+{
+    
 }
 
 void QtCocoaWebView::onLoadFinish(const QString &strUrl, const QString &strHtml)

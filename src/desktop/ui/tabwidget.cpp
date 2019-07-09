@@ -1,9 +1,6 @@
 #include "tabwidget.h"
-#include "webpage.h"
-#include "webview.h"
 #include <QMenu>
 #include <QTabBar>
-#include <QWebEngineProfile>
 
 TabWidget::TabWidget(QWidget *parent)
     : QTabWidget(parent)
@@ -30,12 +27,14 @@ TabWidget::TabWidget(QWidget *parent)
 void TabWidget::onCurrentChanged(int index)
 {
     if (index != -1) {
-        WebView *view = webView(index);
+        ImWebView *view = webView(index);
         if (!view->url().isEmpty())
             view->setFocus();
         emit titleChanged(view->title());
         emit loadProgress(view->loadProgress());
         emit urlChanged(view->url());
+#if defined (Q_OS_MAC)
+#else
         QIcon pageIcon = view->page()->icon();
         if (!pageIcon.isNull())
             emit iconChanged(pageIcon);
@@ -45,15 +44,19 @@ void TabWidget::onCurrentChanged(int index)
         emit webActionEnabledChanged(QWebEnginePage::Forward, view->isWebActionEnabled(QWebEnginePage::Forward));
         emit webActionEnabledChanged(QWebEnginePage::Stop, view->isWebActionEnabled(QWebEnginePage::Stop));
         emit webActionEnabledChanged(QWebEnginePage::Reload,view->isWebActionEnabled(QWebEnginePage::Reload));
+#endif
     } else {
         emit titleChanged(QString());
         emit loadProgress(0);
         emit urlChanged(QUrl());
         emit iconChanged(QIcon(QStringLiteral(":defaulticon.png")));
+#if defined (Q_OS_MAC)
+#else
         emit webActionEnabledChanged(QWebEnginePage::Back, false);
         emit webActionEnabledChanged(QWebEnginePage::Forward, false);
         emit webActionEnabledChanged(QWebEnginePage::Stop, false);
         emit webActionEnabledChanged(QWebEnginePage::Reload, true);
+#endif
     }
 }
 
@@ -90,12 +93,12 @@ void TabWidget::onContextMenuRequested(const QPoint &pos)
     menu.exec(QCursor::pos());
 }
 
-WebView *TabWidget::currentWebView() const
+ImWebView *TabWidget::currentWebView() const
 {
     return webView(currentIndex());
 }
 
-WebView *TabWidget::navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent)
+ImWebView *TabWidget::navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent)
 {
     auto v = onCreateTab(makeCurrent);
     v->setUrl(url);
@@ -110,7 +113,7 @@ void TabWidget::closeAllTabs()
 {
     while (count() > 0)
     {
-        WebView *view = webView(0);
+        auto *view = webView(0);
         removeTab(0);
         delete view;
     }
@@ -118,13 +121,16 @@ void TabWidget::closeAllTabs()
         onCreateTab();
 }
 
-WebView *TabWidget::webView(int index) const
+ImWebView *TabWidget::webView(int index) const
 {
-    return qobject_cast<WebView*>(widget(index));
+    return qobject_cast<ImWebView*>(widget(index));
 }
 
-void TabWidget::setupView(WebView *webView)
+void TabWidget::setupView(ImWebView *webView)
 {
+#if defined (Q_OS_MAC)
+    
+#else
     QWebEnginePage *webPage = webView->page();
 
     connect(webView, &QWebEngineView::titleChanged, [this, webView](const QString &title) {
@@ -174,13 +180,16 @@ void TabWidget::setupView(WebView *webView)
         if (index >= 0)
             onCloseTab(index);
     });
+#endif
 }
 
-WebView *TabWidget::onCreateTab(bool makeCurrent)
+ImWebView *TabWidget::onCreateTab(bool makeCurrent)
 {
-    WebView *webView = new WebView;
-    WebPage *webPage = new WebPage(QWebEngineProfile::defaultProfile(), webView);
+    auto *webView = new ImWebView;
+#if !defined (Q_OS_MAC)
+    auto *webPage = new WebPage(QWebEngineProfile::defaultProfile(), webView);
     webView->setPage(webPage);
+#endif
     setupView(webView);
     addTab(webView, tr("(Untitled)"));
     if (makeCurrent)
@@ -204,9 +213,9 @@ void TabWidget::onCloseOtherTabs(int index)
 
 void TabWidget::onCloseTab(int index)
 {
-    if (WebView *view = webView(index))
+    if (auto *view = webView(index); view)
     {
-        bool hasFocus = view->hasFocus();
+        auto hasFocus = view->hasFocus();
         removeTab(index);
         if (hasFocus && count() > 0)
             currentWebView()->setFocus();
@@ -218,27 +227,32 @@ void TabWidget::onCloseTab(int index)
 
 void TabWidget::onCloneTab(int index)
 {
-    if (WebView *view = webView(index)) {
-        WebView *tab = onCreateTab(false);
+    if (auto *view = webView(index); view) 
+    {
+        auto *tab = onCreateTab(false);
         tab->setUrl(view->url());
     }
 }
 
 void TabWidget::onSetUrl(const QUrl &url)
 {
-    if (WebView *view = currentWebView()) {
+    if (auto *view = currentWebView(); view) 
+    {
         view->setUrl(url);
         view->setFocus();
     }
 }
 
+#if !defined (Q_OS_MAC)
 void TabWidget::onTriggerWebPageAction(QWebEnginePage::WebAction action)
 {
-    if (WebView *webView = currentWebView()) {
+    if (auto *view = currentWebView(); view) 
+    {
         webView->triggerPageAction(action);
         webView->setFocus();
     }
 }
+#endif
 
 void TabWidget::onNextTab()
 {
@@ -258,6 +272,6 @@ void TabWidget::onPreviousTab()
 
 void TabWidget::onReloadTab(int index)
 {
-    if (WebView *view = webView(index))
+    if (auto *view = webView(index); view)
         view->reload();
 }

@@ -2,19 +2,21 @@
 #define QTCOCOAWEBVIEW_H
 
 #include <QMacCocoaViewContainer>
+#include <QUrl>
 
 class QtCocoaWebView : public QMacCocoaViewContainer
 {
     Q_OBJECT
 public:
     explicit QtCocoaWebView(QWidget *parent = nullptr);
-    explicit QtCocoaWebView(QString loadUrl, QWidget *parent = nullptr);
+    explicit QtCocoaWebView(const QString& loadUrl, QWidget *parent = nullptr);
 
     void loadRequest(const QString &loadUrl);
     bool canGoBack();
     bool canGoForward();
-    void goBack();
-    void goForward();
+    void back();
+    void forward();
+    void reload();
 
     void onLoadFinish(const QString &strUrl, const QString &strHtml);
     void onLoadError();
@@ -23,6 +25,16 @@ public:
     void onIconChanged(const QIcon& icon);
     void onNewWindowsRequest(const QString &strUrl);
     void onStatusTextChanged(const QString &text);
+    
+    QUrl url() const;
+    void setUrl(const QUrl& u);
+    QString title() const;
+    int loadProgress();
+    
+    qreal zoomFactor() const;
+    void setZoomFactor(qreal factor);
+    
+    void setHtml(const QString &html, const QUrl &baseUrl = QUrl());
 signals:
     void loadFinish(const QString &strUrl, const QString &strHtml);
     void loadError();
@@ -31,6 +43,9 @@ signals:
     void iconChanged(const QIcon& icon);
     void newWindowsRequest(const QString &strUrl);
     void statusTextChanged(const QString &text);
+    
+private:
+    QUrl m_url;
 };
 
 #endif // WEBVIEWINQT_H

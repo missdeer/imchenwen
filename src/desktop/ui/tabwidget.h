@@ -2,13 +2,24 @@
 #define TABWIDGET_H
 
 #include <QTabWidget>
+
+#if defined(Q_OS_MAC)
+#include <qtcocoawebview.h>
+
+using ImWebView = QtCocoaWebView;
+#else
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
+#include "webpage.h"
+#include "webview.h"
+
+using ImWebView = WebView;
+#endif
 
 QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
 
-class WebView;
 
 class TabWidget : public QTabWidget
 {
@@ -22,8 +33,8 @@ public:
     TabWidget& operator=(TabWidget &&) = delete;
     ~TabWidget() override = default;
 
-    WebView *currentWebView() const;
-    WebView *navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent = true);
+    ImWebView *currentWebView() const;
+    ImWebView *navigateInNewWebEngineTab(const QUrl &url, bool makeCurrent = true);
     void closeAllTabs();
 signals:
     // current tab/page signals
@@ -32,14 +43,22 @@ signals:
     void titleChanged(const QString &title);
     void urlChanged(const QUrl &url);
     void iconChanged(const QIcon &icon);
+    
+#if defined(Q_OS_MAC)
+#else
     void webActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
+#endif
 
 public slots:
     // current tab/page slots
     void onSetUrl(const QUrl &url);
+    
+#if defined (Q_OS_MAC)
+#else
     void onTriggerWebPageAction(QWebEnginePage::WebAction action);
+#endif
 
-    WebView *onCreateTab(bool makeCurrent = true);
+    ImWebView *onCreateTab(bool makeCurrent = true);
     void onCloseTab(int index);
     void onNextTab();
     void onPreviousTab();
@@ -53,8 +72,8 @@ private slots:
     void onReloadTab(int index);
 
 private:
-    WebView *webView(int index) const;
-    void setupView(WebView *webView);
+    ImWebView *webView(int index) const;
+    void setupView(ImWebView *webView);
 };
 
 #endif // TABWIDGET_H

@@ -24,7 +24,7 @@ public:
     bool isWebActionEnabled(QWebEnginePage::WebAction webAction) const;
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
-    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type) override;
+    WebView *createWindow(QWebEnginePage::WebWindowType type) override;
 
 signals:
     void webActionEnabledChanged(QWebEnginePage::WebAction webAction, bool enabled);

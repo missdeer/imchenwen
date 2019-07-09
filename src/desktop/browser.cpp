@@ -1,6 +1,5 @@
 #include "browser.h"
 #include "browserwindow.h"
-#include "webview.h"
 #include "linkresolver.h"
 #include "waitingspinnerwidget.h"
 #include "playdialog.h"
@@ -15,10 +14,6 @@
 #include <QUrlQuery>
 #include <QApplication>
 #include <QClipboard>
-#include <QWebEngineSettings>
-#include <QWebEngineProfile>
-#include <QWebEngineScript>
-#include <QWebEngineScriptCollection>
 #include <QNetworkProxy>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -27,6 +22,13 @@
 #include <QStandardPaths>
 #include <QtConcurrent>
 #include <QDesktopWidget>
+#if defined(Q_OS_MAC)
+
+#else
+#include <QWebEngineSettings>
+#include <QWebEngineProfile>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
 
 static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSheet, BrowserWindow *mainWindow = nullptr)
 {
@@ -62,6 +64,9 @@ static void setUserStyleSheet(QWebEngineProfile *profile, const QString &styleSh
     if (mainWindow)
         QMetaObject::invokeMethod(mainWindow, "runScriptOnOpenViews", Qt::QueuedConnection, Q_ARG(QString, source));
 }
+
+#endif
+
 
 Browser::Browser(QObject *parent)
     : QObject(parent)
@@ -119,6 +124,10 @@ Browser &Browser::instance()
 void Browser::loadSettings()
 {
     Config cfg;
+    
+#if defined (Q_OS_MAC)
+    
+#else
     QWebEngineSettings *defaultSettings = QWebEngineSettings::globalSettings();
     QWebEngineProfile *defaultProfile = QWebEngineProfile::defaultProfile();
 
@@ -167,7 +176,8 @@ void Browser::loadSettings()
     defaultProfile->setPersistentCookiesPolicy(persistentCookiesPolicy);
     QString pdataPath = cfg.read<QString>(QLatin1String("persistentDataPath"));
     defaultProfile->setPersistentStoragePath(pdataPath);
-
+#endif
+    
     QNetworkProxy proxy(QNetworkProxy::NoProxy);
     if (cfg.read<bool>(QLatin1String("enableProxy"), false))
     {

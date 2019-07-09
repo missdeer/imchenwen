@@ -1,12 +1,15 @@
 #include "settings.h"
 #include "browser.h"
 #include "browserwindow.h"
-#include "webview.h"
-#include <QtCore/QLocale>
-#include <QtCore/QSettings>
-#include <QtWidgets/QtWidgets>
-#include <QtWebEngineWidgets/QtWebEngineWidgets>
+#include <QLocale>
+#include <QSettings>
+#include <QtWidgets>
 #include <QNetworkInterface>
+#if defined (Q_OS_MAC)
+#else
+#include "webview.h"
+#include <QtWebEngineWidgets>
+#endif
 
 SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
@@ -107,6 +110,8 @@ static QString defaultAcceptLanguage()
 
 void SettingsDialog::loadDefaults()
 {
+#if defined (Q_OS_MAC)
+#else
     QWebEngineSettings *defaultSettings = QWebEngineSettings::globalSettings();
     QString standardFontFamily = defaultSettings->fontFamily(QWebEngineSettings::StandardFont);
     int standardFontSize = defaultSettings->fontSize(QWebEngineSettings::DefaultFontSize);
@@ -136,6 +141,7 @@ void SettingsDialog::loadDefaults()
         faviconDownloadMode->setCurrentIndex(1);
     else
         faviconDownloadMode->setCurrentIndex(2);
+#endif
 }
 
 void SettingsDialog::fillLiveTVTable()
@@ -298,11 +304,13 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("enableScrollAnimator"), enableScrollAnimator->isChecked());
     cfg.write(QLatin1String("userStyleSheet"), userStyleSheet->toPlainText());
     cfg.write(QLatin1String("httpUserAgent"), httpUserAgent->text());
+#if defined (Q_OS_MAC)
+#else
     QWebEngineProfile::defaultProfile()->setHttpUserAgent(httpUserAgent->text());
     cfg.write(QLatin1String("httpAcceptLanguage"), httpAcceptLanguage->text());
     QWebEngineProfile::defaultProfile()->setHttpAcceptLanguage(httpAcceptLanguage->text());
     cfg.write(QLatin1String("faviconDownloadMode"), faviconDownloadMode->currentIndex());
-
+#endif
     //Privacy
     int persistentCookiesPolicy = sessionCookiesCombo->currentIndex();
     cfg.write(QLatin1String("persistentCookiesPolicy"), persistentCookiesPolicy);
@@ -914,8 +922,8 @@ void SettingsDialog::exportLiveTVAsPlainText(const QString &path)
 
 void SettingsDialog::onSetHomeToCurrentPage()
 {
-    BrowserWindow *mw = static_cast<BrowserWindow*>(parent());
-    WebView *webView = mw->currentTab();
+    auto *mw = static_cast<BrowserWindow*>(parent());
+    auto *webView = mw->currentTab();
     if (webView)
         homeLineEdit->setText(webView->url().toString());
 }
