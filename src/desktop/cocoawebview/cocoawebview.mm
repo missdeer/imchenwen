@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <QtMac>
 
-@interface CocoaWebView()<WebFrameLoadDelegate, WebResourceLoadDelegate, WebUIDelegate>
+@interface CocoaWebView()<WebFrameLoadDelegate, WebResourceLoadDelegate, WebUIDelegate, WebPolicyDelegate>
 @end
 
 @implementation CocoaWebView
@@ -13,9 +13,11 @@
     self = [super initWithFrame:frameRect frameName:frameName groupName:groupName];
     if (self)
     {
+        [self setUIDelegate:self];
         [self setResourceLoadDelegate:self];
         [self setFrameLoadDelegate:self];
-
+        [self setPolicyDelegate:self];
+        
         pTarget = target;
     }
     return self;
@@ -64,7 +66,7 @@
 {
     Q_UNUSED(sender);
     @autoreleasepool{
-
+        
         NSString *strCurr = [[[[frame dataSource]request]URL]absoluteString];
         QString str = QString::fromNSString(strCurr);
 
@@ -103,18 +105,6 @@
     }
 }
 
-- (WebView *)webView:(WebView *)sender createWebViewWithRequest:(NSURLRequest *)request
-{
-    Q_UNUSED(sender);
-    @autoreleasepool {
-        if (pTarget)
-        {
-            QString strUrl = QString::fromNSString(request.URL.absoluteString);
-            pTarget->onNewWindowsRequest(strUrl);
-        }
-    }
-}
-
 - (void)webView:(WebView *)sender setStatusText:(NSString *)text
 {
     Q_UNUSED(sender);
@@ -124,6 +114,18 @@
         {
             QString statusText = QString::fromNSString(text);
             pTarget->onStatusTextChanged(statusText);
+        }
+    }
+}
+
+- (void)webView:(WebView *)sender decidePolicyForNewWindowAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request newFrameName:(NSString *)frameName decisionListener:(id<WebPolicyDecisionListener>)listener
+{
+    Q_UNUSED(sender);
+    @autoreleasepool {
+        if (pTarget)
+        {
+            QString strUrl = QString::fromNSString(request.URL.absoluteString);
+            pTarget->onNewWindowsRequest(strUrl);
         }
     }
 }

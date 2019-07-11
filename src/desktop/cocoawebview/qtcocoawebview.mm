@@ -13,7 +13,7 @@ QtCocoaWebView::QtCocoaWebView(QWidget *parent) :
         
         auto *cWebView = [[CocoaWebView alloc]initWithObjects:rect frameName:nil groupName:nil target:this];
         
-        [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput("https://www.google.com").toNSURL()
+        [[cWebView mainFrame] loadRequest: [NSURLRequest requestWithURL:QUrl::fromUserInput("https://minidump.info").toNSURL()
           cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15]];
         
         setCocoaView(cWebView);
@@ -173,6 +173,7 @@ QIcon QtCocoaWebView::icon()
 
 void QtCocoaWebView::onLoadFinish(const QString &strUrl, const QString &strHtml)
 {
+    m_url = QUrl::fromUserInput(strUrl);
     emit loadFinish(strUrl, strHtml);
 }
 
@@ -183,6 +184,5 @@ void QtCocoaWebView::onLoadError()
 
 void QtCocoaWebView::onUrlChanged(const QString &strUrl)
 {
-    m_url = QUrl::fromUserInput(strUrl);
     emit urlChanged(strUrl);
 }

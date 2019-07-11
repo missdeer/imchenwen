@@ -155,7 +155,6 @@ void TabWidget::setupView(ImWebView *webView)
             emit iconChanged(ico);
     });
     connect(webView, &ImWebView::newWindowsRequest, [this](const QString& strUrl) {
-        qDebug() << __FUNCTION__ << strUrl;
         navigateInNewTab(strUrl);
     });
 #else
@@ -271,7 +270,8 @@ void TabWidget::onSetUrl(const QUrl &url)
     }
 }
 
-#if !defined (Q_OS_MAC)
+#if defined (Q_OS_MAC)
+#else
 void TabWidget::onTriggerWebPageAction(QWebEnginePage::WebAction action)
 {
     if (auto *view = currentWebView(); view) 

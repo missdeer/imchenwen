@@ -1717,7 +1717,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>重新载入所有标签页</translation>
     </message>
     <message>
-        <location filename="../ui/tabwidget.cpp" line="222"/>
+        <location filename="../ui/tabwidget.cpp" line="221"/>
         <source>(Untitled)</source>
         <translation>(未命名)</translation>
     </message>
