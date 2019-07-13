@@ -85,7 +85,7 @@ bool WebView::isWebActionEnabled(QWebEnginePage::WebAction webAction) const
     return page()->action(webAction)->isEnabled();
 }
 
-WebView *WebView::createWindow(QWebEnginePage::WebWindowType type)
+QWebEngineView  *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
     switch (type) {
     case QWebEnginePage::WebBrowserTab: {
