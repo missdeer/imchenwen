@@ -276,8 +276,8 @@ void TabWidget::onTriggerWebPageAction(QWebEnginePage::WebAction action)
 {
     if (auto *view = currentWebView(); view) 
     {
-        webView->triggerPageAction(action);
-        webView->setFocus();
+        view->triggerPageAction(action);
+        view->setFocus();
     }
 }
 #endif
