@@ -57,7 +57,7 @@ bool QtCocoaWebView::canGoBack()
 {
     @autoreleasepool{
         auto *cWebView = (CocoaWebView*)this->cocoaView();
-        return cWebView.canGoBack;
+        return cWebView.canGoBack == YES;
     }
     return false;
 }
@@ -66,7 +66,7 @@ bool QtCocoaWebView::canGoForward()
 {
     @autoreleasepool{
         auto *cWebView = (CocoaWebView*)this->cocoaView();
-        return cWebView.canGoForward;
+        return cWebView.canGoForward == YES;
     }
     return false;
 }
@@ -76,7 +76,7 @@ void QtCocoaWebView::back()
     @autoreleasepool{
         auto *cWebView = (CocoaWebView*)this->cocoaView();
         
-        [cWebView goBack];
+        [cWebView goBack:cWebView];
     }
 }
 
@@ -85,7 +85,7 @@ void QtCocoaWebView::forward()
     @autoreleasepool{
         auto* cWebView = (CocoaWebView*)this->cocoaView();
         
-        [cWebView goForward];
+        [cWebView goForward:cWebView];
     }
 }
 
@@ -94,7 +94,7 @@ void QtCocoaWebView::reload()
     @autoreleasepool{
         auto *cWebView = (CocoaWebView*)this->cocoaView();
         
-        [cWebView reload];
+        [cWebView reload:cWebView];
     }
 }
 
@@ -103,7 +103,7 @@ void QtCocoaWebView::stop()
     @autoreleasepool{
         auto *cWebView = (CocoaWebView*)this->cocoaView();
         
-        [cWebView stopLoading];
+        [cWebView stopLoading:cWebView];
     }
 }
 
