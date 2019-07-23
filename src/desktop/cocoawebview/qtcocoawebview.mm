@@ -37,7 +37,6 @@ QtCocoaWebView::QtCocoaWebView(const QString& loadUrl, QWidget *parent) :
         setCocoaView(cWebView);
         
         [cWebView release];
-        
     }
     
 }
@@ -173,7 +172,9 @@ QIcon QtCocoaWebView::icon()
 
 void QtCocoaWebView::onLoadFinish(const QString &strUrl, const QString &strHtml)
 {
-    m_url = QUrl::fromUserInput(strUrl);
+    auto u = QUrl::fromUserInput(strUrl);
+    if (u.isValid())
+        m_url = u;
     emit loadFinish(strUrl, strHtml);
 }
 
@@ -184,5 +185,8 @@ void QtCocoaWebView::onLoadError()
 
 void QtCocoaWebView::onUrlChanged(const QString &strUrl)
 {
+    auto u = QUrl::fromUserInput(strUrl);
+    if (u.isValid())
+        m_url = u;
     emit urlChanged(strUrl);
 }
