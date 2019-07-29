@@ -17,28 +17,80 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
     Config cfg;
     if (!cfg.read<bool>("enableStorageService", false))
         return;
-    QString baseUrl = cfg.read<QString>("storageServiceAddress");
-    if (!QUrl(baseUrl).isValid())
-        return;
-    QString name = baseName(title);
-    if (video->urls.length() == 1)
+    if (cfg.read<QString>("aria2Type") == "rpc")
     {
-        if (QUrl(video->urls.at(0)).isValid())
-            doSubmit(baseUrl, video->urls.at(0), name % "." % video->container, referrer);
-    }
-    else
-    {
-        for (int index = 0; index < video->urls.length(); ++index)
+        QString baseUrl = cfg.read<QString>("aria2RPCAddress");
+        if (!QUrl(baseUrl).isValid())
+            return;
+        QString name = baseName(title);
+        if (video->urls.length() == 1)
         {
-            const QString& videoUrl = video->urls.at(index);
-            if (QUrl(videoUrl).isValid())
-                doSubmit(baseUrl, videoUrl, QString("%1-%2.%3").arg(name).arg(index).arg(video->container), referrer);
+            if (QUrl(video->urls.at(0)).isValid())
+                doSubmit(baseUrl, video->urls.at(0), name % "." % video->container, referrer);
+        }
+        else
+        {
+            for (int index = 0; index < video->urls.length(); ++index)
+            {
+                const QString& videoUrl = video->urls.at(index);
+                if (QUrl(videoUrl).isValid())
+                    doSubmit(baseUrl, videoUrl, QString("%1-%2.%3").arg(name).arg(index).arg(video->container), referrer);
+            }
+        }
+        if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
+            doSubmit(baseUrl, audio->urls[0], name % "." % audio->container, referrer);
+        if (QUrl(subtitle).isValid())
+            doSubmit(baseUrl, subtitle, name % ".vtt", referrer);
+    }
+    else 
+    {
+        QString aria2c = cfg.read<QString>("aria2ExecutablePath");
+        QString savePath = cfg.read<QString>("downloadSavePath");
+        
+        QString name = baseName(title);
+        if (video->urls.length() == 1)
+        {
+            if (QUrl(video->urls.at(0)).isValid())
+            {
+                QProcess::startDetached(aria2c,
+                                        QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
+                                        << "-d" << savePath
+                                        << "-o" << name % "." % video->container
+                                        << video->urls.at(0));
+            }
+        }
+        else
+        {
+            for (int index = 0; index < video->urls.length(); ++index)
+            {
+                const QString& videoUrl = video->urls.at(index);
+                if (QUrl(videoUrl).isValid())
+                {
+                    QProcess::startDetached(aria2c,
+                                            QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
+                                            << "-d" << savePath
+                                            << "-o" << QString("%1-%2.%3").arg(name).arg(index).arg(video->container)
+                                            << videoUrl);
+                }
+            }
+        }
+        if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
+        {
+            QProcess::startDetached(aria2c,
+                                    QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
+                                    << "-d" << savePath
+                                    << "-o" << name % "." % audio->container
+                                    << audio->urls.at(0));
+        }
+        if (QUrl(subtitle).isValid())
+        {
+            QProcess::startDetached(aria2c,
+                                    QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
+                                    << "-d" << savePath
+                                    << "-o" << name % ".vtt"
+                                    << subtitle);
         }
     }
-    if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
-        doSubmit(baseUrl, audio->urls[0], name % "." % audio->container, referrer);
-    if (QUrl(subtitle).isValid())
-        doSubmit(baseUrl, subtitle, name % ".vtt", referrer);
 }
 
 void StorageService::submit(const QString &videoUrl, const QString &title)
@@ -46,11 +98,25 @@ void StorageService::submit(const QString &videoUrl, const QString &title)
     Config cfg;
     if (!cfg.read<bool>("enableStorageService", false))
         return;
-    QString baseUrl = cfg.read<QString>("storageServiceAddress");
-    if (!QUrl(baseUrl).isValid())
-        return;
-    if (!QUrl(videoUrl).isValid())
-        doSubmit(baseUrl, videoUrl, baseName(title) % ".mp4", videoUrl);
+    
+    if (cfg.read<QString>("aria2Type") == "rpc")
+    {
+        QString baseUrl = cfg.read<QString>("aria2RPCAddress");
+        if (!QUrl(baseUrl).isValid())
+            return;
+        if (!QUrl(videoUrl).isValid())
+            doSubmit(baseUrl, videoUrl, baseName(title) % ".mp4", videoUrl);        
+    }
+    else 
+    {
+        QString aria2c = cfg.read<QString>("aria2ExecutablePath");
+        QString savePath = cfg.read<QString>("downloadSavePath");
+        QProcess::startDetached(aria2c,
+                                QStringList() << "-x" << "16" << "-s" << "16" 
+                                << "-d" << savePath
+                                << "-o" << baseName(title) % ".mp4"
+                                << videoUrl);
+    }
 }
 
 void StorageService::onSubmitted()
