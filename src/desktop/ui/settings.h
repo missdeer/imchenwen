@@ -48,6 +48,9 @@ private slots:
     void onEnableFFmpegHardwardAccelerationStateChanged(int state);
     void onBuiltinPlayerHardwardAccelerationCurrentTextChanged(const QString& text);
     void onEnableBuiltinPlayerHardwardAccelerationStateChanged(int state);
+    
+    void onBrowseAria2Path();
+    void onDownloadSavePath();
 private:
     QFont standardFont;
     QFont fixedFont;

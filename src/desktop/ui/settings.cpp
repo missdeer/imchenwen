@@ -88,6 +88,9 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(cbEnableBuiltinPlayerHardwareAcceleration, &QCheckBox::stateChanged, this, &SettingsDialog::onEnableBuiltinPlayerHardwardAccelerationStateChanged);
     connect(cbBuiltinPlayerHardwareAcceleration, &QComboBox::currentTextChanged, this, &SettingsDialog::onBuiltinPlayerHardwardAccelerationCurrentTextChanged);
     setupBuiltinPlayerHardwareAccelerationList();
+    
+    connect(btnBrowseAria2, &QPushButton::clicked, this, &SettingsDialog::onBrowseAria2Path);
+    connect(btnBrowseDownloadSavePath, &QPushButton::clicked, this, &SettingsDialog::onDownloadSavePath);
 
     loadDefaults();
     loadFromSettings();
@@ -271,7 +274,13 @@ void SettingsDialog::loadFromSettings()
 
     // storage
     gbStorageService->setChecked(cfg.read<bool>(QLatin1String("enableStorageService")));
-    edtStorageServiceAddress->setText(cfg.read<QString>(QLatin1String("storageServiceAddress")));
+    edtAria2RPCAddress->setText(cfg.read<QString>(QLatin1String("aria2RPCAddress")));
+    edtAria2Path->setText(QDir::toNativeSeparators(cfg.read<QString>(QLatin1String("aria2ExecutablePath"))));
+    edtDownloadSavePath->setText(QDir::toNativeSeparators(cfg.read<QString>(QLatin1String("downloadSavePath"))));
+    if (cfg.read<QString>(QLatin1String("aria2Type")) == "rpc")
+        rbAria2RPC->setChecked(true);
+    else
+        rbNewAria2Process->setChecked(true);
     btnEnableStorageTranscoding->setChecked(cfg.read<bool>(QLatin1String("enableStorageTranscoding")));
 }
 
@@ -354,7 +363,10 @@ void SettingsDialog::saveToSettings()
 
     // stoarge
     cfg.write("enableStorageService", gbStorageService->isChecked());
-    cfg.write("storageServiceAddress", edtStorageServiceAddress->text());
+    cfg.write("aria2Type", rbAria2RPC->isChecked() ? "rpc" : "process");
+    cfg.write("aria2ExecutablePath", edtAria2Path->text());
+    cfg.write("aria2RPCAddress", edtAria2RPCAddress->text());
+    cfg.write("downloadSavePath", edtDownloadSavePath->text());
     cfg.write("enableStorageTranscoding", btnEnableStorageTranscoding->isChecked());
 
     Browser::instance().loadSettings();
@@ -811,6 +823,36 @@ void SettingsDialog::onBuiltinPlayerHardwardAccelerationCurrentTextChanged(const
 void SettingsDialog::onEnableBuiltinPlayerHardwardAccelerationStateChanged(int state)
 {
     cbBuiltinPlayerHardwareAcceleration->setEnabled(state == Qt::Checked);
+}
+
+void SettingsDialog::onBrowseAria2Path()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                 tr("Aria2 executable"),
+                                 QDir(edtAria2Path->text()).absolutePath(),
+                             #if defined(Q_OS_WIN)
+                                 tr("Aria2 executable (aria2c.exe)")
+                             #else
+                                 tr("Aria2 executable (aria2c)")
+                             #endif
+                                 );
+    if (QFile::exists(path))
+    {
+        edtAria2Path->setText( QDir::toNativeSeparators( path));
+    }
+}
+
+void SettingsDialog::onDownloadSavePath()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, 
+                                                    tr("Select directory to save download files"),
+                                                    QDir(edtDownloadSavePath->text()).absolutePath(),
+                                                    QFileDialog::ShowDirsOnly
+                                                    | QFileDialog::DontResolveSymlinks);
+    if (QDir(dir).exists())
+    {
+        edtDownloadSavePath->setText( QDir::toNativeSeparators(dir));
+    }
 }
 
 bool SettingsDialog::importLiveTVAsJSON(const QString &path)

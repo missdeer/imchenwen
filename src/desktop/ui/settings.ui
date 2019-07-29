@@ -742,18 +742,86 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
+             <item>
+              <widget class="QRadioButton" name="rbNewAria2Process">
+               <property name="text">
+                <string>New Aria2 Process</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rbAria2RPC">
+               <property name="text">
+                <string>Aria2 RPC</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <widget class="QLabel" name="label_35">
             <property name="text">
-             <string>Storage Service Address</string>
+             <string>Aria2 RPC Address:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="edtStorageServiceAddress">
+           <widget class="QLineEdit" name="edtAria2RPCAddress">
             <property name="placeholderText">
              <string>http://192.168.66.110:31783</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_38">
+            <property name="text">
+             <string>Aria2 Executable Path:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <item>
+             <widget class="QLineEdit" name="edtAria2Path"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnBrowseAria2">
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_39">
+            <property name="text">
+             <string>Download save to path:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
+             <widget class="QLineEdit" name="edtDownloadSavePath"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnBrowseDownloadSavePath">
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QCheckBox" name="btnEnableStorageTranscoding">
@@ -770,7 +838,7 @@
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>294</height>
+              <height>40</height>
              </size>
             </property>
            </spacer>
