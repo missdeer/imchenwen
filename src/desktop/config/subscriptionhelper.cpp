@@ -36,6 +36,7 @@ void SubscriptionHelper::requestSubscription(QStringList *subscriptItems, int in
     QUrl u(subscriptItems->at(index));
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);

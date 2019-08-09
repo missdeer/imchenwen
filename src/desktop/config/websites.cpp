@@ -89,6 +89,7 @@ void Websites::update()
     QUrl u(cfg.read<QString>(QLatin1String("shortcut")));
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);

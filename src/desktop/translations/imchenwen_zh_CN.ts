@@ -1715,13 +1715,13 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>SubscriptionHelper</name>
     <message>
-        <location filename="../config/subscriptionhelper.cpp" line="56"/>
+        <location filename="../config/subscriptionhelper.cpp" line="57"/>
         <source>Custom</source>
         <translation>自定义</translation>
     </message>
     <message>
-        <location filename="../config/subscriptionhelper.cpp" line="86"/>
-        <location filename="../config/subscriptionhelper.cpp" line="145"/>
+        <location filename="../config/subscriptionhelper.cpp" line="87"/>
+        <location filename="../config/subscriptionhelper.cpp" line="146"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>

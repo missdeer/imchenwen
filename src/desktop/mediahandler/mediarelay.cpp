@@ -129,6 +129,7 @@ void MediaRelay::processM3U8(const QString &media, const QByteArray& userAgent, 
     req.setRawHeader("Referer", referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::UserVerifiedRedirectPolicy);
+    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);

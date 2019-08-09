@@ -183,6 +183,7 @@ QByteArray DependenciesUpgrade::getData(const QString &u)
 {
     QNetworkRequest req(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
     QNetworkReply* reply = nam.get(req);
     NetworkReplyHelper helper(reply);
     helper.waitForFinished();

@@ -160,6 +160,7 @@ QUuid StorageService::doSubmit(const QString &baseUrl, const QString &targetLink
     u.setQuery(query);
     req.setUrl(u);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
 
     auto reply = Browser::instance().networkAccessManager().get(req);
     auto helper = new NetworkReplyHelper(reply);

@@ -95,6 +95,7 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
     if (!m_referrer.isEmpty())
         req.setRawHeader("Referer", m_referrer);
     req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
 
     qDebug() << __FUNCTION__ << url << QString(m_userAgent) << QString(m_referrer);
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
