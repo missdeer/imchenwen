@@ -19,29 +19,34 @@ void UrlRequestInterceptor::outputToStdout(const QString &output)
 void UrlRequestInterceptor::playByMPV(const QString &output)
 {
 #if defined(Q_OS_WIN)
-    QProcess::startDetached("mpv.exe", QStringList() << "--hwdec=dxva2-copy"
-                            << "--no-ytdl"
-                            << "--title=media from sniff"
-                            << "--force-media-title=media from sniff"
-                            << "--user-agent=Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.11.2 Chrome/65.0.3325.230 Safari/537.36"
-                            << "--prefetch-playlist=yes"
-                            << output);
+    QProcess::startDetached(
+        "mpv.exe",
+        QStringList()
+            << "--hwdec=dxva2-copy"
+            << "--no-ytdl"
+            << "--title=media from sniff"
+            << "--force-media-title=media from sniff"
+            << "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.3994.0 Safari/537.36"
+            << "--prefetch-playlist=yes" << output);
 #elif defined(Q_OS_MAC)
-    QProcess::startDetached("mpv", QStringList() << "--hwdec=videotoolbox-copy"
-                            << "--no-ytdl"
-                            << "--title=media from sniff"
-                            << "--force-media-title=media from sniff"
-                            << "--user-agent=Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.11.2 Chrome/65.0.3325.230 Safari/537.36"
-                            << "--prefetch-playlist=yes"
-                            << output);
+    QProcess::startDetached(
+        "mpv",
+        QStringList()
+            << "--hwdec=videotoolbox-copy"
+            << "--no-ytdl"
+            << "--title=media from sniff"
+            << "--force-media-title=media from sniff"
+            << "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.3994.0 Safari/537.36"
+            << "--prefetch-playlist=yes" << output);
 #else
-    QProcess::startDetached("mpv", QStringList()
-                            << "--no-ytdl"
-                            << "--title=media from sniff"
-                            << "--force-media-title=media from sniff"
-                            << "--user-agent=Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.11.2 Chrome/65.0.3325.230 Safari/537.36"
-                            << "--prefetch-playlist=yes"
-                            << output);
+    QProcess::startDetached(
+        "mpv",
+        QStringList()
+            << "--no-ytdl"
+            << "--title=media from sniff"
+            << "--force-media-title=media from sniff"
+            << "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.3994.0 Safari/537.36"
+            << "--prefetch-playlist=yes" << output);
 #endif
 }
 

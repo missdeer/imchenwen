@@ -9,24 +9,24 @@
 #include <QStandardPaths>
 #include "player.h"
 
-typedef std::tuple<QString, QString> Tuple2;
-typedef QSharedPointer<Tuple2> Tuple2Ptr;
-typedef QList<Tuple2> Tuple2List;
-typedef std::tuple<QString, QString, QString> Tuple3;
-typedef QSharedPointer<Tuple3> Tuple3Ptr;
-typedef QList<Tuple3> Tuple3List;
-typedef std::tuple<QString, QString, QString, QString> Tuple4;
-typedef QSharedPointer<Tuple4> Tuple4Ptr;
-typedef QList<Tuple4> Tuple4List;
-typedef std::tuple<QString, QString, QString, QString, QString> Tuple5;
-typedef QSharedPointer<Tuple5> Tuple5Ptr;
-typedef QList<Tuple5> Tuple5List;
+using Tuple2     = std::tuple<QString, QString>;
+using Tuple2Ptr  = QSharedPointer<Tuple2>;
+using Tuple2List = QList<Tuple2>;
+using Tuple3     = std::tuple<QString, QString, QString>;
+using Tuple3Ptr  = QSharedPointer<Tuple3>;
+using Tuple3List = QList<Tuple3>;
+using Tuple4     = std::tuple<QString, QString, QString, QString>;
+using Tuple4Ptr  = QSharedPointer<Tuple4>;
+using Tuple4List = QList<Tuple4>;
+using Tuple5     = std::tuple<QString, QString, QString, QString, QString>;
+using Tuple5Ptr  = QSharedPointer<Tuple5>;
+using Tuple5List = QList<Tuple5>;
 
 class Config
 {
 public:
-    Config();
-    ~Config();
+    Config()  = default;
+    ~Config() = default;
 
     template<typename T>
     T read(const QString& key);

@@ -1,14 +1,5 @@
 #include "config.h"
 
-Config::Config()
-{
-
-}
-
-Config::~Config()
-{
-}
-
 void Config::read(const QString& key, QString& value)
 {
     value = settings().value(key).toString();
