@@ -73,25 +73,7 @@ void YouGetProcess::init()
     Config cfg;
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
 
-#if defined(Q_OS_WIN)
-    QString path = cfg.read<QString>("you-get");
-    QFileInfo fi(path);
-    QDir d(fi.absoluteDir());
-    d.cdUp();
-    QString python = d.absolutePath() + "/python.exe";
-    if (QFile::exists(python))
-    {
-        setProgram(python);
-        if (m_args.at(0) != QDir::toNativeSeparators(path))
-            m_args.insert(0, QDir::toNativeSeparators(path));
-    }
-    else
-    {
-        setProgram(path);
-    }
-#else
     setProgram(cfg.read<QString>("you-get"));
-#endif
 }
 
 void YouGetProcess::start(const QString &url)

@@ -71,25 +71,7 @@ void YKDLProcess::init()
     Config cfg;
     auto appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
 
-#if defined(Q_OS_WIN)
-    QString path = cfg.read<QString>("ykdl");
-    QFileInfo fi(path);
-    QDir d(fi.absoluteDir());
-    d.cdUp();
-    QString python = d.absolutePath() + "/python.exe";
-    if (QFile::exists(python))
-    {
-        setProgram(python);
-        if (m_args.at(0) != QDir::toNativeSeparators(path))
-            m_args.insert(0, QDir::toNativeSeparators(path));
-    }
-    else
-    {
-        setProgram(path);
-    }
-#else
     setProgram(cfg.read<QString>("ykdl"));
-#endif
 }
 
 void YKDLProcess::start(const QString &url)

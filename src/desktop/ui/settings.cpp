@@ -238,7 +238,9 @@ void SettingsDialog::loadFromSettings()
     proxyPort->setValue(cfg.read<int>(QLatin1String("proxyPort"), 1080));
     proxyUserName->setText(cfg.read<QString>(QLatin1String("proxyUserName")));
     proxyPassword->setText(cfg.read<QString>(QLatin1String("proxyPassword")));
-    cbApplyToResolvers->setChecked(cfg.read<bool>(QLatin1String("applyProxyToResolvers"), true));
+    rbResolversOnly->setChecked(cfg.read<bool>(QLatin1String("applyProxyToResolvers"), false));
+    rbWebViewsOnly->setChecked(cfg.read<bool>(QLatin1String("applyProxyToWebViews"), false));
+    rbBothWebViewsAndResolvers->setChecked(cfg.read<bool>(QLatin1String("applyProxyToBothWebViewsAndResolvers"), true));
     cbProxyScope->setCurrentIndex(cfg.read<int>(QLatin1String("proxyScope"), 0));
     edtGFWList->setText(cfg.read(QLatin1String("gfwList"), QString("https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt")));
     edtChinaDomain->setText(cfg.read(QLatin1String("chinaDomain"), QString("https://cdn.jsdelivr.net/gh/felixonmars/dnsmasq-china-list/accelerated-domains.china.conf")));
@@ -334,7 +336,9 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("proxyPort"), proxyPort->text());
     cfg.write(QLatin1String("proxyUserName"), proxyUserName->text());
     cfg.write(QLatin1String("proxyPassword"), proxyPassword->text());
-    cfg.write(QLatin1String("applyProxyToResolvers"), cbApplyToResolvers->isChecked());
+    cfg.write(QLatin1String("applyProxyToResolvers"), rbResolversOnly->isChecked());
+    cfg.write(QLatin1String("applyProxyToWebViews"), rbWebViewsOnly->isChecked());
+    cfg.write(QLatin1String("applyProxyToBothWebViewsAndResolvers"), rbBothWebViewsAndResolvers->isChecked());
     cfg.write(QLatin1String("proxyScope"), cbProxyScope->currentIndex());
     cfg.write(QLatin1String("gfwList"), edtGFWList->text());
     cfg.write(QLatin1String("chinaDomain"), edtChinaDomain->text());
@@ -476,9 +480,8 @@ void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
     if (currentRow < 0 && currentRow >= m_players.size())
         return;
 
-    PlayerPtr p = m_players.at(currentRow);
-    edtPlayerPath->setText(p->name());
-    edtPlayerArguments->setText(p->arguments());
+    edtPlayerPath->setText(m_players[currentRow]->name());
+    edtPlayerArguments->setText(m_players[currentRow]->arguments());
 }
 
 void SettingsDialog::onBrowseYouGetPath()

@@ -55,7 +55,8 @@ void LinkResolverProcess::onFinished(int , QProcess::ExitStatus )
 bool LinkResolverProcess::needProxy(const QString &url)
 {
     Config cfg;
-    if (cfg.read<bool>(QLatin1String("enableProxy"), false) && cfg.read<bool>(QLatin1String("applyProxyToResolvers"), true))
+    if (cfg.read<bool>(QLatin1String("enableProxy"), false) &&
+        (cfg.read<bool>(QLatin1String("applyProxyToResolvers"), false) || cfg.read<bool>(QLatin1String("applyProxyToBothWebViewsResolvers"), true)))
     {
         int scope = cfg.read<int>(QLatin1String("proxyScope"));
         switch (scope)

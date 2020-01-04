@@ -67,25 +67,7 @@ void YoutubeDLProcess::init()
     m_args << "--skip-download" << "--print-json" << "--no-warnings" << "--no-playlist" << "--flat-playlist" << "--sub-lang" << "zh-CN" << "--write-auto-sub" << "--write-sub";
     Config cfg;
 
-#if defined(Q_OS_WIN)
-    QString path = cfg.read<QString>("youtube-dl");
-    QFileInfo fi(path);
-    QDir d(fi.absoluteDir());
-    d.cdUp();
-    QString python = d.absolutePath() + "/python.exe";
-    if (QFile::exists(python))
-    {
-        setProgram(python);
-        if (m_args.at(0) != QDir::toNativeSeparators(path))
-            m_args.insert(0, QDir::toNativeSeparators(path));
-    }
-    else
-    {
-        setProgram(path);
-    }
-#else
     setProgram(cfg.read<QString>("youtube-dl"));
-#endif
     setTimeout(30 * 1000);
 }
 

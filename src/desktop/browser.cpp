@@ -179,7 +179,8 @@ void Browser::loadSettings()
 #endif
     
     QNetworkProxy proxy(QNetworkProxy::NoProxy);
-    if (cfg.read<bool>(QLatin1String("enableProxy"), false))
+    if (cfg.read<bool>(QLatin1String("enableProxy"), false) &&
+        (cfg.read<bool>(QLatin1String("applyProxyToWebViews"), false) || cfg.read<bool>(QLatin1String("applyProxyToBothWebViewsResolvers"), true)))
     {
         proxy.setType(static_cast<QNetworkProxy::ProxyType>(cfg.read<int>(QLatin1String("proxyType"), 0)));
         proxy.setHostName(cfg.read<QString>(QLatin1String("proxyHostName")));

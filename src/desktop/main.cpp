@@ -32,6 +32,7 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
+    QtWebEngine::initialize();
     QApplication a(argc, argv);
 
 #if defined(Q_OS_WIN)
@@ -105,8 +106,6 @@ int main(int argc, char **argv)
     QApplication::setWindowIcon(QIcon(":imchenwen.icns"));
 #else
     QApplication::setWindowIcon(QIcon(":imchenwen.ico"));
-    
-    QtWebEngine::initialize();
 #endif
 
     Browser& browser = Browser::instance();
