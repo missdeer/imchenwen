@@ -225,12 +225,8 @@ macx: {
 
 win32: {
     DEFINES += _WIN32_WINNT=0x0600 BOOST_ALL_NO_LIB=1
-
-    CONFIG(release, debug|release) : {
-        #QMAKE_CXXFLAGS += /Zi
-        #QMAKE_LFLAGS += /INCREMENTAL:NO /Debug
-        WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
-    }
+    QMAKE_CXXFLAGS_RELEASE += /Zi
+    WINDEPLOYQT = $$[QT_INSTALL_BINS]/windeployqt.exe
     translate.commands = '$(COPY_DIR) $$shell_path($$PWD/translations) $$shell_path($$DESTDIR/translations)'
 
     INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
