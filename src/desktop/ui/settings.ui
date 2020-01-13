@@ -903,6 +903,16 @@
         <widget class="QListWidget" name="listPlayer"/>
        </item>
        <item>
+        <widget class="QLabel" name="label_40">
+         <property name="text">
+          <string>Title</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="edtPlayerTitle"/>
+       </item>
+       <item>
         <widget class="QLabel" name="label_19">
          <property name="text">
           <string>External Player Path:</string>
