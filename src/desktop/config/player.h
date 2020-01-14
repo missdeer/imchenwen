@@ -14,19 +14,23 @@ public:
         PT_DLNA,
     };
 
-    Player(Type t, const QString n);
+    Player(Type t, const QString &title, const QString &path);
     Type type() const;
     void setType(const Type &type);
 
-    const QString &name() const;
-    void setName(const QString &name);
+    const QString &path() const;
+    void           setPath(const QString &path);
 
     const QString &arguments() const;
     void setArguments(const QString &arguments);
 
+    const QString &title() const;
+    void           setTitle(const QString &title);
+
 private:
-    Type m_type;
-    QString m_name;
+    Type    m_type;
+    QString m_title;
+    QString m_path;
     QString m_arguments;
 };
 

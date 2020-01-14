@@ -70,7 +70,7 @@ void Config::read(const QString &key, PlayerList &players)
     for (int i = 0; i < size; ++i)
     {
         settings().setArrayIndex(i);
-        PlayerPtr p(new Player(Player::PT_EXTERNAL, settings().value("e1").toString()));
+        PlayerPtr p(new Player(Player::PT_EXTERNAL, settings().value("e0").toString(), settings().value("e1").toString()));
         p->setArguments(settings().value("e2").toString());
         players.append(p);
     }
@@ -152,7 +152,8 @@ void Config::write(const QString &key, const PlayerList &players)
     for (int i = 0; i < players.size(); ++i)
     {
         settings().setArrayIndex(i);
-        settings().setValue("e1", players[i]->name());
+        settings().setValue("e0", players[i]->title());
+        settings().setValue("e1", players[i]->path());
         settings().setValue("e2", players[i]->arguments());
     }
     settings().endArray();

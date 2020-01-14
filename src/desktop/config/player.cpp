@@ -1,10 +1,6 @@
 #include "player.h"
 
-Player::Player(Player::Type t, const QString n)
-    : m_type(t), m_name(n)
-{
-
-}
+Player::Player(Player::Type t, const QString &title, const QString &path) : m_type(t), m_title(title), m_path(path) {}
 
 Player::Type Player::type() const
 {
@@ -16,14 +12,14 @@ void Player::setType(const Player::Type &type)
     m_type = type;
 }
 
-const QString &Player::name() const
+const QString &Player::path() const
 {
-    return m_name;
+    return m_path;
 }
 
-void Player::setName(const QString &name)
+void Player::setPath(const QString &path)
 {
-    m_name = name;
+    m_path = path;
 }
 
 const QString &Player::arguments() const
@@ -34,4 +30,14 @@ const QString &Player::arguments() const
 void Player::setArguments(const QString &arguments)
 {
     m_arguments = arguments;
+}
+
+const QString &Player::title() const
+{
+    return m_title;
+}
+
+void Player::setTitle(const QString &title)
+{
+    m_title = title;
 }

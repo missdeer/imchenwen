@@ -184,14 +184,14 @@ void PlayDialog::on_btnCancel_clicked()
 void PlayDialog::createExternalPlayerList()
 {
     m_players.clear();
-    PlayerPtr builtinPlayer(new Player(Player::PT_BUILTIN, tr("Built-in player")));
+    PlayerPtr builtinPlayer(new Player(Player::PT_BUILTIN, tr("Built-in player"), tr("")));
     m_players.push_back(builtinPlayer);
     Config cfg;
     cfg.read("externalPlayers", m_players);
     auto dlnaRenderers = Browser::instance().kast().getRenderers();
     for (auto& r : dlnaRenderers)
     {
-        PlayerPtr p(new Player(Player::PT_DLNA, r));
+        PlayerPtr p(new Player(Player::PT_DLNA, r, tr("")));
         m_players.push_back(p);
     }
     for (auto& p : m_players)
@@ -199,13 +199,13 @@ void PlayDialog::createExternalPlayerList()
         switch (p->type())
         {
         case Player::PT_BUILTIN:
-            ui->cbPlayers->addItem(QIcon(":/player/builtin.png"), p->name());
+            ui->cbPlayers->addItem(QIcon(":/player/builtin.png"), p->title());
             break;
         case Player::PT_DLNA:
-            ui->cbPlayers->addItem(QIcon(":/player/dlna.png"), tr("DLNA: ") + p->name());
+            ui->cbPlayers->addItem(QIcon(":/player/dlna.png"), tr("DLNA: ") + p->title());
             break;
         case Player::PT_EXTERNAL:
-            ui->cbPlayers->addItem(QIcon(":/player/external.png"), p->name()/* + " " + p->arguments()*/);
+            ui->cbPlayers->addItem(QIcon(":/player/external.png"), p->title());
             break;
         }
     }
@@ -263,9 +263,8 @@ bool PlayDialog::doOk()
         currentRow = ui->cbSubtitles->currentIndex();
         m_subtitleUrl = m_subtitles[currentRow]->url;
     }
-    if ((m_selectedPlayer->type() == Player::PT_EXTERNAL
-         && QFile::exists(m_selectedPlayer->name()))
-            || m_selectedPlayer->type() != Player::PT_EXTERNAL)
+    if ((m_selectedPlayer->type() == Player::PT_EXTERNAL && QFile::exists(m_selectedPlayer->path())) ||
+        m_selectedPlayer->type() != Player::PT_EXTERNAL)
     {
         if (m_demuxed && !m_selectedAudio)
         {
@@ -280,10 +279,8 @@ bool PlayDialog::doOk()
         return true;
     }
 
-    QMessageBox::warning(this,
-                         tr("Error"),
-                         tr("Cannot find player at '%1', please reconfiguration it.").arg(m_selectedPlayer->name()),
-                         QMessageBox::Ok);
+    QMessageBox::warning(
+        this, tr("Error"), tr("Cannot find player '%1', please reconfiguration it.").arg(m_selectedPlayer->title()), QMessageBox::Ok);
     return false;
 }
 

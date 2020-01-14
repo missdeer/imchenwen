@@ -608,8 +608,8 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <location filename="../ui/playdialog.cpp" line="237"/>
-        <location filename="../ui/playdialog.cpp" line="284"/>
-        <location filename="../ui/playdialog.cpp" line="339"/>
+        <location filename="../ui/playdialog.cpp" line="283"/>
+        <location filename="../ui/playdialog.cpp" line="336"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -624,58 +624,58 @@ Do you wish to override the security check and continue ?   </source>
         <translation>该媒体流可能是音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="273"/>
+        <location filename="../ui/playdialog.cpp" line="272"/>
         <source>Confirm</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="274"/>
+        <location filename="../ui/playdialog.cpp" line="273"/>
         <source>No stream is marked as audio track, continue anyway?</source>
         <translation>没有媒体流被标记为音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="285"/>
-        <source>Cannot find player at &apos;%1&apos;, please reconfiguration it.</source>
-        <translation>找不到播放器‘%1’，请重新配置。</translation>
-    </message>
-    <message>
-        <location filename="../ui/playdialog.cpp" line="318"/>
+        <location filename="../ui/playdialog.cpp" line="315"/>
         <source>Mark as Audio Track</source>
         <translation>标记为音频</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="319"/>
+        <location filename="../ui/playdialog.cpp" line="316"/>
         <source>Unmark as Audio Track</source>
         <translation>清除音频标记</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="326"/>
+        <location filename="../ui/playdialog.cpp" line="323"/>
         <source>Play &amp; Download</source>
         <translation>播放并下载</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="327"/>
+        <location filename="../ui/playdialog.cpp" line="324"/>
         <source>Download</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="329"/>
+        <location filename="../ui/playdialog.cpp" line="326"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="340"/>
+        <location filename="../ui/playdialog.cpp" line="337"/>
         <source>Please select a media item in list to be marked as audio track.</source>
         <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
     <message>
         <location filename="../ui/playdialog.cpp" line="248"/>
-        <location filename="../ui/playdialog.cpp" line="349"/>
+        <location filename="../ui/playdialog.cpp" line="346"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="350"/>
+        <location filename="../ui/playdialog.cpp" line="283"/>
+        <source>Cannot find player &apos;%1&apos;, please reconfiguration it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="347"/>
         <source>This media item may be not an audio track, continue anyway?</source>
         <translation>该媒体流可能不是音频，继续吗？</translation>
     </message>
@@ -1226,19 +1226,19 @@ Do you wish to override the security check and continue ?   </source>
         <translation>播放器</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="908"/>
+        <location filename="../ui/settings.ui" line="918"/>
         <source>External Player Path:</source>
         <translation>外部播放器路径：</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="838"/>
         <location filename="../ui/settings.ui" line="859"/>
-        <location filename="../ui/settings.ui" line="920"/>
-        <location filename="../ui/settings.ui" line="1011"/>
-        <location filename="../ui/settings.ui" line="1032"/>
-        <location filename="../ui/settings.ui" line="1053"/>
-        <location filename="../ui/settings.ui" line="1074"/>
-        <location filename="../ui/settings.ui" line="1116"/>
+        <location filename="../ui/settings.ui" line="930"/>
+        <location filename="../ui/settings.ui" line="1021"/>
+        <location filename="../ui/settings.ui" line="1042"/>
+        <location filename="../ui/settings.ui" line="1063"/>
+        <location filename="../ui/settings.ui" line="1084"/>
+        <location filename="../ui/settings.ui" line="1126"/>
         <source>...</source>
         <translation></translation>
     </message>
@@ -1288,137 +1288,142 @@ Do you wish to override the security check and continue ?   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="929"/>
+        <location filename="../ui/settings.ui" line="908"/>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/settings.ui" line="939"/>
         <source>External Play Arugments:</source>
         <translation>外部播放器参数：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="941"/>
-        <location filename="../ui/settings.ui" line="1203"/>
-        <location filename="../ui/settings.ui" line="1265"/>
+        <location filename="../ui/settings.ui" line="951"/>
+        <location filename="../ui/settings.ui" line="1213"/>
+        <location filename="../ui/settings.ui" line="1275"/>
         <source>+</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="948"/>
+        <location filename="../ui/settings.ui" line="958"/>
         <source> -</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="955"/>
-        <location filename="../ui/settings.ui" line="1289"/>
+        <location filename="../ui/settings.ui" line="965"/>
+        <location filename="../ui/settings.ui" line="1299"/>
         <source>Modify</source>
         <translation>修改</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="964"/>
+        <location filename="../ui/settings.ui" line="974"/>
         <source>Builtin Player Hardware Acceleration:</source>
         <translation>内置媒体播放器硬件加速：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="973"/>
+        <location filename="../ui/settings.ui" line="983"/>
         <source>Enable</source>
         <translation>使用</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="993"/>
+        <location filename="../ui/settings.ui" line="1003"/>
         <source>Resolver</source>
         <translation>解析器</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="999"/>
+        <location filename="../ui/settings.ui" line="1009"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;you-get: &lt;a href=&quot;https://you-get.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://you-get.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1020"/>
+        <location filename="../ui/settings.ui" line="1030"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ykdl: &lt;a href=&quot;https://github.com/zhangn1985/ykdl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/zhangn1985/ykdl&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1041"/>
+        <location filename="../ui/settings.ui" line="1051"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;youtube-dl: &lt;a href=&quot;https://rg3.github.io/youtube-dl/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://rg3.github.io/youtube-dl/index.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1062"/>
+        <location filename="../ui/settings.ui" line="1072"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;annie: &lt;a href=&quot;https://github.com/iawia002/annie&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iawia002/annie&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1085"/>
+        <location filename="../ui/settings.ui" line="1095"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FFmpeg: &lt;a href=&quot;https://www.ffmpeg.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://www.ffmpeg.org/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1092"/>
+        <location filename="../ui/settings.ui" line="1102"/>
         <source>Enable FFmpeg hardware acceleration</source>
         <translation>使用FFmpeg硬件加速</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1125"/>
+        <location filename="../ui/settings.ui" line="1135"/>
         <source>VIP resolvers subscription:</source>
         <translation>VIP视频解析器订阅：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1132"/>
-        <location filename="../ui/settings.ui" line="1146"/>
+        <location filename="../ui/settings.ui" line="1142"/>
+        <location filename="../ui/settings.ui" line="1156"/>
         <source>https://www...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1139"/>
+        <location filename="../ui/settings.ui" line="1149"/>
         <source>Shortcut subscription:</source>
         <translation>快捷方式订阅：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1167"/>
+        <location filename="../ui/settings.ui" line="1177"/>
         <source>Live TV</source>
         <translation>电视直播</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1185"/>
+        <location filename="../ui/settings.ui" line="1195"/>
         <source>Live TV subscription:</source>
         <translation>电视直播订阅列表：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1200"/>
+        <location filename="../ui/settings.ui" line="1210"/>
         <source>Add live TV subscription</source>
         <translation>添加电视直播订阅</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1210"/>
+        <location filename="../ui/settings.ui" line="1220"/>
         <source>Remove selected live TV subscription</source>
         <translation>删除选中的电视直播订阅</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1222"/>
+        <location filename="../ui/settings.ui" line="1232"/>
         <source>Custom Live TV items:</source>
         <translation>自定义电视直播项目</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1241"/>
+        <location filename="../ui/settings.ui" line="1251"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1251"/>
+        <location filename="../ui/settings.ui" line="1261"/>
         <source>URL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1272"/>
+        <location filename="../ui/settings.ui" line="1282"/>
         <source>Import Live TV items from file</source>
         <translation>从文件导入电视直播列表</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1275"/>
+        <location filename="../ui/settings.ui" line="1285"/>
         <source>Import...</source>
         <translation>导入…</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1213"/>
-        <location filename="../ui/settings.ui" line="1282"/>
+        <location filename="../ui/settings.ui" line="1223"/>
+        <location filename="../ui/settings.ui" line="1292"/>
         <source>-</source>
         <translation></translation>
     </message>
@@ -1428,12 +1433,12 @@ Do you wish to override the security check and continue ?   </source>
         <translation>外部播放器：</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1296"/>
+        <location filename="../ui/settings.ui" line="1306"/>
         <source>Export Live TV item to file.</source>
         <translation>将电视直播列表导出到文件。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.ui" line="1299"/>
+        <location filename="../ui/settings.ui" line="1309"/>
         <source>Export...</source>
         <translation>导出…</translation>
     </message>
@@ -1441,7 +1446,7 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../ui/settings.cpp" line="881"/>
+        <location filename="../ui/settings.cpp" line="889"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
@@ -1456,12 +1461,12 @@ Do you wish to override the security check and continue ?   </source>
         <translation>通用</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="730"/>
+        <location filename="../ui/settings.cpp" line="738"/>
         <source>Settings - General</source>
         <translation>设置 - 通用</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="731"/>
+        <location filename="../ui/settings.cpp" line="739"/>
         <source>Settings - Appearance</source>
         <translation>设置 - 外观</translation>
     </message>
@@ -1471,7 +1476,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>隐私</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="732"/>
+        <location filename="../ui/settings.cpp" line="740"/>
         <source>Settings - Privacy</source>
         <translation>设置 - 隐私</translation>
     </message>
@@ -1481,7 +1486,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>代理</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="733"/>
+        <location filename="../ui/settings.cpp" line="741"/>
         <source>Settings - Proxy</source>
         <translation>设置 - 代理</translation>
     </message>
@@ -1491,7 +1496,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="734"/>
+        <location filename="../ui/settings.cpp" line="742"/>
         <source>Settings - Advanced</source>
         <translation>设置 - 高级</translation>
     </message>
@@ -1501,7 +1506,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>存储</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="735"/>
+        <location filename="../ui/settings.cpp" line="743"/>
         <source>Settings - Storage</source>
         <translation>设置 - 存储</translation>
     </message>
@@ -1511,7 +1516,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>播放器</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="736"/>
+        <location filename="../ui/settings.cpp" line="744"/>
         <source>Settings - Player</source>
         <translation>设置 - 播放器</translation>
     </message>
@@ -1521,7 +1526,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>解析器</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="737"/>
+        <location filename="../ui/settings.cpp" line="745"/>
         <source>Settings - Resolver</source>
         <translation>设置 - 解析器</translation>
     </message>
@@ -1531,188 +1536,194 @@ Do you wish to override the security check and continue ?   </source>
         <translation>电视直播</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="738"/>
+        <location filename="../ui/settings.cpp" line="746"/>
         <source>Settings - Live TV</source>
         <translation>设置- 电视直播</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="433"/>
-        <location filename="../ui/settings.cpp" line="456"/>
-        <location filename="../ui/settings.cpp" line="576"/>
-        <location filename="../ui/settings.cpp" line="616"/>
+        <location filename="../ui/settings.cpp" line="438"/>
+        <location filename="../ui/settings.cpp" line="462"/>
+        <location filename="../ui/settings.cpp" line="584"/>
+        <location filename="../ui/settings.cpp" line="624"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="433"/>
+        <source>Please input player title.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/settings.cpp" line="438"/>
         <source>Please input player path.</source>
         <translation>请输入播放器路径。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="440"/>
-        <location filename="../ui/settings.cpp" line="581"/>
-        <location filename="../ui/settings.cpp" line="625"/>
+        <location filename="../ui/settings.cpp" line="446"/>
+        <location filename="../ui/settings.cpp" line="589"/>
+        <location filename="../ui/settings.cpp" line="633"/>
         <source>Duplicated</source>
         <translation>重复</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="440"/>
+        <location filename="../ui/settings.cpp" line="446"/>
         <source>This configuration item exists already.</source>
         <translation>此配置项已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="456"/>
+        <location filename="../ui/settings.cpp" line="462"/>
         <source>Please select an item in list to be removed.</source>
         <translation>请在列表中选中一项进行删除。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="490"/>
+        <location filename="../ui/settings.cpp" line="498"/>
         <source>Select you-get executable</source>
         <translation>选择you-get可执行文件路径</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="493"/>
+        <location filename="../ui/settings.cpp" line="501"/>
         <source>you-get executable (you-get.exe)</source>
         <translation>you-get可执行文件 (you-get.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="495"/>
+        <location filename="../ui/settings.cpp" line="503"/>
         <source>you-get executable (you-get)</source>
         <translation>you-get可执行文件 (you-get)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="507"/>
+        <location filename="../ui/settings.cpp" line="515"/>
         <source>Select ykdl executable</source>
         <translation>选择ykdl可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="510"/>
+        <location filename="../ui/settings.cpp" line="518"/>
         <source>ykdl executable (ykdl.exe)</source>
         <translation>ykdl可执行文件 (ykdl.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="512"/>
+        <location filename="../ui/settings.cpp" line="520"/>
         <source>ykdl executable (ykdl)</source>
         <translation>ykdl可执行文件 (ykdl)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="524"/>
+        <location filename="../ui/settings.cpp" line="532"/>
         <source>Select youtube-dl executable</source>
         <translation>选择youtube-dl可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="527"/>
+        <location filename="../ui/settings.cpp" line="535"/>
         <source>youtube-dl executable (youtube-dl.exe)</source>
         <translation>youtube-dl可执行文件 (youtube-dl.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="529"/>
+        <location filename="../ui/settings.cpp" line="537"/>
         <source>youtube-dl executable (youtube-dl)</source>
         <translation>youtube-dl可执行文件 (youtube-dl)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="541"/>
+        <location filename="../ui/settings.cpp" line="549"/>
         <source>Select annie executable</source>
         <translation>选择annie可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="544"/>
+        <location filename="../ui/settings.cpp" line="552"/>
         <source>annie executable (annie.exe)</source>
         <translation>annie可执行文件 (annie.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="546"/>
+        <location filename="../ui/settings.cpp" line="554"/>
         <source>annie executable (annie)</source>
         <translation>annie可执行文件 (annie)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="558"/>
+        <location filename="../ui/settings.cpp" line="566"/>
         <source>Select FFmpeg executable</source>
         <translation>选择FFmpeg可执行文件</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="561"/>
+        <location filename="../ui/settings.cpp" line="569"/>
         <source>FFmpeg executable (ffmpeg.exe)</source>
         <translation>FFmpeg可执行文件 (ffmpeg.exe)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="563"/>
+        <location filename="../ui/settings.cpp" line="571"/>
         <source>FFmpeg executable (ffmpeg)</source>
         <translation>FFmpeg可执行文件 (ffmpeg)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="576"/>
+        <location filename="../ui/settings.cpp" line="584"/>
         <source>Please input live TV subscription URL.</source>
         <translation>请输入电视直播订阅地址。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="581"/>
+        <location filename="../ui/settings.cpp" line="589"/>
         <source>This live TV subscription exists already.</source>
         <translation>此电视直播订阅项目已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="616"/>
+        <location filename="../ui/settings.cpp" line="624"/>
         <source>Please input Live TV name and URL.</source>
         <translation>请输入电视直播名称和URL。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="625"/>
+        <location filename="../ui/settings.cpp" line="633"/>
         <source>This Live TV item exists already.</source>
         <translation>此电视直播项已存在。</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="672"/>
+        <location filename="../ui/settings.cpp" line="680"/>
         <source>Select Live TV list to import</source>
         <translation>选择电视直播列表导入</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="674"/>
+        <location filename="../ui/settings.cpp" line="682"/>
         <source>Supported formats (*.json *.txt);;JSON format (*.json);;Plain text format (*.txt)</source>
         <translation>所有支持格式 (*.json *.txt);;JSON格式 (*.json);;纯文本格式 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="700"/>
+        <location filename="../ui/settings.cpp" line="708"/>
         <source>Export Live TV list to</source>
         <translation>导出电视直播列表到</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="702"/>
+        <location filename="../ui/settings.cpp" line="710"/>
         <source>JSON format (*.json);;Plain text format (*.txt)</source>
         <translation>JSON格式 (*.json);;纯文本格式 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="743"/>
+        <location filename="../ui/settings.cpp" line="751"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="834"/>
+        <location filename="../ui/settings.cpp" line="842"/>
         <source>Aria2 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="837"/>
+        <location filename="../ui/settings.cpp" line="845"/>
         <source>Aria2 executable (aria2c.exe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="839"/>
+        <location filename="../ui/settings.cpp" line="847"/>
         <source>Aria2 executable (aria2c)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="851"/>
+        <location filename="../ui/settings.cpp" line="859"/>
         <source>Select directory to save download files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="979"/>
-        <location filename="../ui/settings.cpp" line="983"/>
+        <location filename="../ui/settings.cpp" line="987"/>
+        <location filename="../ui/settings.cpp" line="991"/>
         <source>URL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="873"/>
+        <location filename="../ui/settings.cpp" line="881"/>
         <source>Error on importing live TV list as JSON</source>
         <translation>将电视直播列表以JSON格式导入错误</translation>
     </message>
@@ -1722,7 +1733,7 @@ Do you wish to override the security check and continue ?   </source>
         <translation>外观</translation>
     </message>
     <message>
-        <location filename="../ui/settings.cpp" line="979"/>
+        <location filename="../ui/settings.cpp" line="987"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>

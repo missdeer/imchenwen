@@ -178,7 +178,7 @@ void SettingsDialog::fillExternalPlayerTable()
 {
     for (const auto& p : m_players)
     {
-        listPlayer->addItem(p->name() + "\n" + p->arguments());
+        listPlayer->addItem(p->title());
     }
 }
 
@@ -428,19 +428,25 @@ void SettingsDialog::onSelectExternalPlayer()
 
 void SettingsDialog::onAddExternalPlayer()
 {
+    if (edtPlayerTitle->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Please input player title."), QMessageBox::Ok);
+        return;
+    }
     if (edtPlayerPath->text().isEmpty())
     {
         QMessageBox::warning(this, tr("Error"), tr("Please input player path."), QMessageBox::Ok);
         return;
     }
-    auto it = std::find_if(m_players.begin(), m_players.end(),
-                           [this](PlayerPtr t) { return t->name() == edtPlayerPath->text() && t->arguments() == edtPlayerArguments->text();});
+    auto it = std::find_if(m_players.begin(), m_players.end(), [this](PlayerPtr t) {
+        return t->path() == edtPlayerPath->text() && t->arguments() == edtPlayerArguments->text();
+    });
     if (m_players.end() != it)
     {
         QMessageBox::warning(this, tr("Duplicated"), tr("This configuration item exists already."), QMessageBox::Ok);
         return;
     }
-    PlayerPtr p(new Player(Player::PT_EXTERNAL, edtPlayerPath->text()));
+    PlayerPtr p(new Player(Player::PT_EXTERNAL, edtPlayerTitle->text(), edtPlayerPath->text()));
     p->setArguments(edtPlayerArguments->text());
     m_players.push_back(p);
     listPlayer->addItem(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
@@ -470,9 +476,10 @@ void SettingsDialog::onModifyExternalPlayer()
         return;
     }
     int currentRow = listPlayer->currentRow();
-    m_players[currentRow]->setName(edtPlayerPath->text());
+    m_players[currentRow]->setTitle(edtPlayerTitle->text());
+    m_players[currentRow]->setPath(edtPlayerPath->text());
     m_players[currentRow]->setArguments(edtPlayerArguments->text());
-    currentItem->setText(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
+    currentItem->setText(edtPlayerTitle->text() + "\n" + edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
 }
 
 void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
@@ -480,7 +487,8 @@ void SettingsDialog::onExternalPlayerListCurrentRowChanged(int currentRow)
     if (currentRow < 0 && currentRow >= m_players.size())
         return;
 
-    edtPlayerPath->setText(m_players[currentRow]->name());
+    edtPlayerTitle->setText(m_players[currentRow]->title());
+    edtPlayerPath->setText(m_players[currentRow]->path());
     edtPlayerArguments->setText(m_players[currentRow]->arguments());
 }
 

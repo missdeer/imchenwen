@@ -490,7 +490,7 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
         return;
     }
 #endif
-    m_playerProcess.setProgram(player->name());
+    m_playerProcess.setProgram(player->path());
     m_playerProcess.start();
 }
 
@@ -508,7 +508,7 @@ void Browser::playByDLNARenderer(PlayerPtr player, const QString &url, const QSt
     m_dlnaPlayer->title(title);
     m_dlnaPlayer->referrer(referrer);
     m_dlnaPlayer->userAgent(Config().read<QString>(QLatin1String("httpUserAgent")));
-    m_dlnaPlayer->setRenderer(player->name());
+    m_dlnaPlayer->setRenderer(player->title());
     m_dlnaPlayer->playMedia(url);
     m_dlnaPlayer->show();
 }
