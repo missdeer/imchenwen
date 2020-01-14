@@ -384,11 +384,11 @@ void Browser::playByExternalPlayer(PlayerPtr player, const QString &videoUrl, co
 {
     QStringList args;
 #if defined(Q_OS_MAC)
-    QFileInfo fi(player->name());
+    QFileInfo fi(player->path());
     if (fi.suffix() == "app")
     {
         m_playerProcess.setProgram("/usr/bin/open");
-        args << player->name() << "--args";
+        args << player->path() << "--args";
     }
 #endif
     QString arg = player->arguments();

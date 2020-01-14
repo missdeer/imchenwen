@@ -32,7 +32,10 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
+#if !defined(Q_OS_MAC)
     QtWebEngine::initialize();
+#endif
+
     QApplication a(argc, argv);
 
 #if defined(Q_OS_WIN)
