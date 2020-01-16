@@ -24,7 +24,9 @@ jobs:
         uses: jurplel/install-qt-action@v2.0.0
         with:
           version: ${{ matrix.qt_ver }}
-      
+      - name: Install mpv
+        run: |
+          brew install mpv
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
