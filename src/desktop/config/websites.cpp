@@ -147,7 +147,10 @@ void Websites::onNetworkSSLErrors(const QList<QSslError> &errors)
 void Websites::onReadyRead()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    m_data.append( reply->readAll());
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (statusCode >= 200 && statusCode < 300) {
+        m_data.append(reply->readAll());
+    }
 }
 
 void Websites::onReadFinished()
@@ -155,5 +158,13 @@ void Websites::onReadFinished()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
     onReadyRead();
+
+    if (m_data.isEmpty()) {
+        QFile f(":/websites.xml");
+        if (!f.open(QIODevice::ReadOnly))
+            return;
+        m_data = f.readAll();
+        f.close();
+    }
     doParse();
 }

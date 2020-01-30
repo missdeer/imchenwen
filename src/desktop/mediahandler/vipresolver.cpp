@@ -97,8 +97,11 @@ void VIPResolver::onNetworkSSLErrors(const QList<QSslError> &errors)
 
 void VIPResolver::onReadyRead()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    m_data.append( reply->readAll());
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (statusCode >= 200 && statusCode < 300) {
+        m_data.append(reply->readAll());
+    }
 }
 
 void VIPResolver::onReadFinished()

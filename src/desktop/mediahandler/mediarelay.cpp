@@ -159,7 +159,10 @@ void MediaRelay::onNetworkSSLErrors(const QList<QSslError> &errors)
 void MediaRelay::onReadyRead()
 {
     auto reply = qobject_cast<QNetworkReply*>(sender());
-    m_socketData.append(reply->readAll());
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (statusCode >= 200 && statusCode < 300) {
+        m_socketData.append(reply->readAll());
+    }
 }
 
 void MediaRelay::onMediaReadFinished()
