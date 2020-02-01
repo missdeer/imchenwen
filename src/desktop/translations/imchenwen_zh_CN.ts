@@ -577,105 +577,110 @@ Do you wish to override the security check and continue ?   </source>
         <translation>字幕：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="83"/>
+        <location filename="../ui/playdialog.cpp" line="84"/>
         <source> - by ykdl</source>
         <translation> - 由ykdl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="84"/>
+        <location filename="../ui/playdialog.cpp" line="85"/>
         <source> - by you-get</source>
         <translation> - 由you-get提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="85"/>
+        <location filename="../ui/playdialog.cpp" line="86"/>
         <source> - by annie</source>
         <translation> - 由annie提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="82"/>
+        <location filename="../ui/playdialog.cpp" line="83"/>
         <source> - by youtube_dl</source>
         <translation> - 由youtube-dl提供解析服务</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="187"/>
+        <location filename="../ui/playdialog.cpp" line="188"/>
         <source>Built-in player</source>
         <translation>内置播放器</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="205"/>
+        <location filename="../ui/playdialog.cpp" line="206"/>
         <source>DLNA: </source>
         <translation>DLNA投屏：</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="237"/>
-        <location filename="../ui/playdialog.cpp" line="283"/>
-        <location filename="../ui/playdialog.cpp" line="336"/>
+        <location filename="../ui/playdialog.cpp" line="238"/>
+        <location filename="../ui/playdialog.cpp" line="284"/>
+        <location filename="../ui/playdialog.cpp" line="338"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="238"/>
+        <location filename="../ui/playdialog.cpp" line="239"/>
         <source>Please select a media item in list to be played.</source>
         <translation>请在列表中选择一条媒体信息进行播放。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="249"/>
+        <location filename="../ui/playdialog.cpp" line="250"/>
         <source>This media item may be an audio track, continue anyway?</source>
         <translation>该媒体流可能是音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="272"/>
+        <location filename="../ui/playdialog.cpp" line="273"/>
         <source>Confirm</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="273"/>
+        <location filename="../ui/playdialog.cpp" line="274"/>
         <source>No stream is marked as audio track, continue anyway?</source>
         <translation>没有媒体流被标记为音频，继续吗？</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="315"/>
+        <location filename="../ui/playdialog.cpp" line="316"/>
         <source>Mark as Audio Track</source>
         <translation>标记为音频</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="316"/>
+        <location filename="../ui/playdialog.cpp" line="317"/>
         <source>Unmark as Audio Track</source>
         <translation>清除音频标记</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="323"/>
+        <location filename="../ui/playdialog.cpp" line="324"/>
         <source>Play &amp; Download</source>
         <translation>播放并下载</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="324"/>
+        <location filename="../ui/playdialog.cpp" line="325"/>
         <source>Download</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="326"/>
+        <location filename="../ui/playdialog.cpp" line="327"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="337"/>
+        <location filename="../ui/playdialog.cpp" line="328"/>
+        <source>Copy Address</source>
+        <translation>复制地址</translation>
+    </message>
+    <message>
+        <location filename="../ui/playdialog.cpp" line="339"/>
         <source>Please select a media item in list to be marked as audio track.</source>
         <translation>请在列表中选择一条媒体信息标记为音频。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="248"/>
-        <location filename="../ui/playdialog.cpp" line="346"/>
+        <location filename="../ui/playdialog.cpp" line="249"/>
+        <location filename="../ui/playdialog.cpp" line="348"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="283"/>
+        <location filename="../ui/playdialog.cpp" line="284"/>
         <source>Cannot find player &apos;%1&apos;, please reconfiguration it.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到%1播放器，请重新配置。</translation>
     </message>
     <message>
-        <location filename="../ui/playdialog.cpp" line="347"/>
+        <location filename="../ui/playdialog.cpp" line="349"/>
         <source>This media item may be not an audio track, continue anyway?</source>
         <translation>该媒体流可能不是音频，继续吗？</translation>
     </message>
@@ -1245,52 +1250,52 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../ui/settings.ui" line="642"/>
         <source>Apply To</source>
-        <translation type="unfinished"></translation>
+        <translation>应用到</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="648"/>
         <source>Web Views Only</source>
-        <translation type="unfinished"></translation>
+        <translation>只针对Web视图</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="658"/>
         <source>Resolvers Only</source>
-        <translation type="unfinished"></translation>
+        <translation>只针对解析器</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="668"/>
         <source>Both Web Views &amp; Resolvers</source>
-        <translation type="unfinished"></translation>
+        <translation>同时针对Web视图和解析器</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="792"/>
         <source>New Aria2 Process</source>
-        <translation type="unfinished"></translation>
+        <translation>新建Aria2进程</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="802"/>
         <source>Aria2 RPC</source>
-        <translation type="unfinished"></translation>
+        <translation>Aria2远程调用</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="812"/>
         <source>Aria2 RPC Address:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aria2远程调用地址：</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="826"/>
         <source>Aria2 Executable Path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aria2可执行文件路径：</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="847"/>
         <source>Download save to path:</source>
-        <translation type="unfinished"></translation>
+        <translation>下载保存到路径：</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="908"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>标题</translation>
     </message>
     <message>
         <location filename="../ui/settings.ui" line="939"/>
@@ -1552,7 +1557,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../ui/settings.cpp" line="433"/>
         <source>Please input player title.</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入播放器标题。</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="438"/>
@@ -1699,22 +1704,22 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <location filename="../ui/settings.cpp" line="842"/>
         <source>Aria2 executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Aria2可执行文件</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="845"/>
         <source>Aria2 executable (aria2c.exe)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aria2可执行文件（aria2c.exe）</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="847"/>
         <source>Aria2 executable (aria2c)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aria2可执行文件（aria2c）</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="859"/>
         <source>Select directory to save download files</source>
-        <translation type="unfinished"></translation>
+        <translation>选择目录保存下载的文件</translation>
     </message>
     <message>
         <location filename="../ui/settings.cpp" line="987"/>
