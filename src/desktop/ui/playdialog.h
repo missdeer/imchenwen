@@ -44,6 +44,7 @@ private slots:
     void onPlayAndDownload();
     void onDownload();
     void onPlay();
+    void onCopyAddress();
 
     void on_btnExternalPlayerConfiguration_clicked();
     void on_btnPlay_clicked();

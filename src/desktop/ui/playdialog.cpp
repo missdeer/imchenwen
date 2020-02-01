@@ -1,11 +1,12 @@
 #include "playdialog.h"
-#include "ui_playdialog.h"
-#include "settings.h"
 #include "browser.h"
-#include <QtCore>
-#include <QMessageBox>
+#include "settings.h"
+#include "ui_playdialog.h"
+#include <QClipboard>
 #include <QFile>
 #include <QMenu>
+#include <QMessageBox>
+#include <QtCore>
 
 PlayDialog::PlayDialog(QWidget *parent) :
     QDialog(parent),
@@ -291,11 +292,11 @@ QListWidgetItem * PlayDialog::addItem(const QIcon& icon, const QString& text, co
 #if defined(Q_OS_WIN)
     font.setFamily("Microsoft YaHei");
 #elif defined(Q_OS_MAC)
-    font.setFamily("Pingfang CS");
+    font.setFamily("Pingfang SC");
 #endif
     font.setPixelSize(14);
     item->setFont(font);
-    item->setBackgroundColor(backgroundColor);
+    item->setBackground(QBrush(backgroundColor));
     ui->listMedia->addItem(item);
     return item;
 }
@@ -324,6 +325,7 @@ void PlayDialog::onListMediaContextmenu(const QPoint &pos)
         menu.addAction(tr("Download"), this, SLOT(onDownload()));
     }
     menu.addAction(tr("Play"), this, SLOT(onPlay()));
+    menu.addAction(tr("Copy Address"), this, SLOT(onCopyAddress()));
     menu.exec(globalPos);
 }
 
@@ -377,6 +379,21 @@ void PlayDialog::onPlay()
     m_action = PlayDialog::PLAY;
     if (doOk())
         accept();
+}
+
+void PlayDialog::onCopyAddress()
+{
+    QListWidgetItem *currentItem = ui->listMedia->currentItem();
+    if (!currentItem) {
+        return;
+    }
+    int currentRow = ui->listMedia->currentRow();
+    if (m_complexUrlResources) {
+        auto stream = m_resultStreams[currentRow];
+        QApplication::clipboard()->setText(stream->urls.join('\n'));
+    } else {
+        QApplication::clipboard()->setText(m_resultUrls[currentRow]);
+    }
 }
 
 void PlayDialog::on_cbAutoSelectAudioTrack_stateChanged(int state)
