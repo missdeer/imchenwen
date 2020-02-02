@@ -178,7 +178,7 @@ void SettingsDialog::fillExternalPlayerTable()
 {
     for (const auto& p : m_players)
     {
-        listPlayer->addItem(p->title());
+        listPlayer->addItem(p->title() + "\n" + p->path() + "\n" + p->arguments());
     }
 }
 
@@ -453,7 +453,8 @@ void SettingsDialog::onAddExternalPlayer()
     PlayerPtr p(new Player(Player::PT_EXTERNAL, edtPlayerTitle->text(), edtPlayerPath->text()));
     p->setArguments(edtPlayerArguments->text());
     m_players.push_back(p);
-    listPlayer->addItem(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
+    listPlayer->addItem(edtPlayerTitle->text() + "\n" + edtPlayerPath->text() + "\n"
+                        + edtPlayerArguments->text());
     edtPlayerPath->setText("");
     edtPlayerArguments->setText("");
 }
