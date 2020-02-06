@@ -53,10 +53,14 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
             if (QUrl(video->urls.at(0)).isValid())
             {
                 QProcess::startDetached(aria2c,
-                                        QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
-                                        << "-d" << savePath
-                                        << "-o" << name % "." % video->container
-                                        << video->urls.at(0));
+                                        QStringList() << "-x"
+                                                      << "16"
+                                                      << "-s"
+                                                      << "16"
+                                                      << "--referer=" + referrer
+                                                      << "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
+                                                         "Gecko) Chrome/81.0.3994.0 Safari/537.36"
+                                                      << "-d" << savePath << "-o" << name % "." % video->container << video->urls.at(0));
             }
         }
         else
