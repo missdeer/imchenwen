@@ -55,13 +55,12 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
         {
             if (QUrl(video->urls.at(0)).isValid())
             {
-                QProcess::startDetached(aria2c,
-                                        QStringList() << "-x"
-                                                      << "16"
-                                                      << "-s"
-                                                      << "16"
-                                                      << "--referer=" + referrer << "--user-agent=" + Config().read<QString>("httpUserAgent") << "-d"
-                                                      << savePath << "-o" << name % "." % video->container << video->urls.at(0));
+                QStringList args = {
+                    "-x", "16", "-s", "16", "--referer=" + referrer, "--user-agent=" + cfg.read<QString>("httpUserAgent"), "-d", savePath};
+                if (cfg.read<bool>("renameStorageFile"))
+                    args << "-o" << name % "." % video->container;
+                args << video->urls.at(0);
+                QProcess::startDetached(aria2c, args);
             }
         }
         else
@@ -71,11 +70,11 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
                 const QString& videoUrl = video->urls.at(index);
                 if (QUrl(videoUrl).isValid())
                 {
-                    QProcess::startDetached(aria2c,
-                                            QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
-                                            << "-d" << savePath
-                                            << "-o" << QString("%1-%2.%3").arg(name).arg(index).arg(video->container)
-                                            << videoUrl);
+                    QStringList args = {"-x", "16", "-s", "16", "--referer=" + referrer, "-d", savePath};
+                    if (cfg.read<bool>("renameStorageFile"))
+                        args << "-o" << QString("%1-%2.%3").arg(name).arg(index).arg(video->container);
+                    args << videoUrl;
+                    QProcess::startDetached(aria2c, args);
                 }
             }
         }
@@ -125,12 +124,12 @@ void StorageService::submit(const QString &videoUrl, const QString &title)
     else 
     {
         QString aria2c = cfg.read<QString>("aria2ExecutablePath");
-        QString savePath = cfg.read<QString>("downloadSavePath");
-        QProcess::startDetached(aria2c,
-                                QStringList() << "-x" << "16" << "-s" << "16" 
-                                << "-d" << savePath
-                                << "-o" << baseName(title) % ".mp4"
-                                << videoUrl);
+        QString     savePath = cfg.read<QString>("downloadSavePath");
+        QStringList args     = {"-x", "16", "-s", "16", "-d", savePath};
+        if (cfg.read<bool>("renameStorageFile"))
+            args << "-o" << baseName(title) % ".mp4";
+        args << videoUrl;
+        QProcess::startDetached(aria2c, args);
     }
 }
 
@@ -160,9 +159,15 @@ QUuid StorageService::doSubmit(const QString &baseUrl, const QString &targetLink
     QUrl u(baseUrl);
     req.setUrl(u);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QString body = QString("[{\"jsonrpc\":\"2.0\",\"method\":\"aria2.addUri\",\"id\":\"%5\",\"params\":[[\"%1\"],{\"out\":\"%2\",\"referer\":\"%3\","
+    Config  cfg;
+    QString userAgent = cfg.read<QString>("httpUserAgent");
+    QString body      = QString("[{\"jsonrpc\":\"2.0\",\"method\":\"aria2.addUri\",\"id\":\"%1\",\"params\":[[\"%2\"],{\"referer\":\"%3\","
                            "\"user-agent\":\"%4\"}]}]")
-                       .arg(targetLink, saveAs, referrer, Config().read<QString>("httpUserAgent"), uuid.toString(QUuid::WithoutBraces));
+                       .arg(uuid.toString(QUuid::WithoutBraces), targetLink, referrer, userAgent);
+    if (cfg.read<bool>("renameStorageFile"))
+        body = QString("[{\"jsonrpc\":\"2.0\",\"method\":\"aria2.addUri\",\"id\":\"%1\",\"params\":[[\"%2\"],{\"out\":\"%3\",\"referer\":\"%4\","
+                       "\"user-agent\":\"%5\"}]}]")
+                   .arg(uuid.toString(QUuid::WithoutBraces), targetLink, saveAs, referrer, userAgent);
 
     auto reply  = Browser::instance().networkAccessManager().post(req, body.toUtf8());
     auto helper = new NetworkReplyHelper(reply);

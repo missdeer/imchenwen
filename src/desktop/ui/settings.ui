@@ -863,6 +863,13 @@
            </layout>
           </item>
           <item>
+           <widget class="QCheckBox" name="btnRenameStorageFile">
+            <property name="text">
+             <string>Rename Storage File(Leave unchecked if you want aria2 to determine the file name)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="btnEnableStorageTranscoding">
             <property name="text">
              <string>Enable Storage Transcoding</string>

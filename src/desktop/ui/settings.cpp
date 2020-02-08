@@ -284,6 +284,7 @@ void SettingsDialog::loadFromSettings()
     else
         rbNewAria2Process->setChecked(true);
     btnEnableStorageTranscoding->setChecked(cfg.read<bool>(QLatin1String("enableStorageTranscoding")));
+    btnRenameStorageFile->setChecked(cfg.read<bool>(QLatin1String("renameStorageFile")));
 }
 
 void SettingsDialog::saveToSettings()
@@ -372,6 +373,7 @@ void SettingsDialog::saveToSettings()
     cfg.write("aria2RPCAddress", edtAria2RPCAddress->text());
     cfg.write("downloadSavePath", edtDownloadSavePath->text());
     cfg.write("enableStorageTranscoding", btnEnableStorageTranscoding->isChecked());
+    cfg.write("renameStorageFile", btnRenameStorageFile->isChecked());
 
     Browser::instance().loadSettings();
 }
