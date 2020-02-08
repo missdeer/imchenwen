@@ -21,7 +21,10 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
     {
         QString baseUrl = cfg.read<QString>("aria2RPCAddress");
         if (!QUrl(baseUrl).isValid())
+        {
+            qDebug() << "invalid baseUrl:" << baseUrl;
             return;
+        }
         QString name = baseName(title);
         if (video->urls.length() == 1)
         {
@@ -99,15 +102,25 @@ void StorageService::submit(const QString &videoUrl, const QString &title)
 {
     Config cfg;
     if (!cfg.read<bool>("enableStorageService", false))
+    {
+        qDebug() << "enableStorageService == false";
         return;
-    
+    }
+
     if (cfg.read<QString>("aria2Type") == "rpc")
     {
         QString baseUrl = cfg.read<QString>("aria2RPCAddress");
         if (!QUrl(baseUrl).isValid())
+        {
+            qDebug() << "invalid baseUrl:" << baseUrl;
             return;
+        }
         if (!QUrl(videoUrl).isValid())
-            doSubmit(baseUrl, videoUrl, baseName(title) % ".mp4", videoUrl);        
+        {
+            qDebug() << "invalid videoUrl:" << videoUrl;
+            return;
+        }
+        doSubmit(baseUrl, videoUrl, baseName(title) % ".mp4", videoUrl);
     }
     else 
     {
@@ -142,29 +155,16 @@ QString StorageService::baseName(const QString &base)
 
 QUuid StorageService::doSubmit(const QString &baseUrl, const QString &targetLink, const QString &saveAs, const QString &referrer)
 {
+    QUuid           uuid = QUuid::createUuid();
     QNetworkRequest req;
     QUrl u(baseUrl);
-    QUrlQuery query;
-    query.addQueryItem("jsonrpc", "2");
-    QUuid uuid = QUuid::createUuid();
-    query.addQueryItem("id", uuid.toString());
-    query.addQueryItem("method", "system.multicall");
-    QString params = "[[{\"methodName\":\"aria2.addUri\",\"params\":[[\""
-            % targetLink
-            % "\"],{\"out\":\""
-            % saveAs
-            % "\", \"referer\": \""
-            % referrer
-            % "\", \"user-agent\":\""
-            % Config().read<QString>("httpUserAgent")
-            % "\", \"allow-overwrite\": \"true\", \"auto-file-renaming\": \"false\" }]}]]";
-    query.addQueryItem("params", QString(params.toUtf8().toBase64()));
-    u.setQuery(query);
     req.setUrl(u);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QString body = QString("[{\"jsonrpc\":\"2.0\",\"method\":\"aria2.addUri\",\"id\":\"%5\",\"params\":[[\"%1\"],{\"out\":\"%2\",\"referer\":\"%3\","
+                           "\"user-agent\":\"%4\"}]}]")
+                       .arg(targetLink, saveAs, referrer, Config().read<QString>("httpUserAgent"), uuid.toString(QUuid::WithoutBraces));
 
-    auto reply = Browser::instance().networkAccessManager().get(req);
+    auto reply  = Browser::instance().networkAccessManager().post(req, body.toUtf8());
     auto helper = new NetworkReplyHelper(reply);
     connect(helper, &NetworkReplyHelper::done, this, &StorageService::onSubmitted);
 
