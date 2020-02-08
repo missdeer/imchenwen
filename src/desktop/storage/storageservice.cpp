@@ -57,10 +57,8 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
                                                       << "16"
                                                       << "-s"
                                                       << "16"
-                                                      << "--referer=" + referrer
-                                                      << "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
-                                                         "Gecko) Chrome/81.0.3994.0 Safari/537.36"
-                                                      << "-d" << savePath << "-o" << name % "." % video->container << video->urls.at(0));
+                                                      << "--referer=" + referrer << "--user-agent=" + Config().read<QString>("httpUserAgent") << "-d"
+                                                      << savePath << "-o" << name % "." % video->container << video->urls.at(0));
             }
         }
         else
