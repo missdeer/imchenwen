@@ -1,7 +1,8 @@
-#include <QtCore>
-#include <QUrl>
-#include <QTextStream>
 #include <QProcess>
+#include <QTextStream>
+#include <QUrl>
+#include <QtCore>
+
 #include "urlrequestinterceptor.h"
 
 UrlRequestInterceptor::UrlRequestInterceptor(bool mpv, QObject *parent)
@@ -13,6 +14,7 @@ UrlRequestInterceptor::UrlRequestInterceptor(bool mpv, QObject *parent)
 void UrlRequestInterceptor::outputToStdout(const QString &output)
 {
     QTextStream ts(stdout);
+    ts.setCodec("UTF-8");
     ts << output;
 }
 
