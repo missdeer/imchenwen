@@ -273,6 +273,7 @@ void SettingsDialog::loadFromSettings()
     if (!cbEnableFFmpegHardwareAcceleration->isChecked())
         cbFFmpegHardwareAcceleration->setEnabled(false);
     cbFFmpegHardwareAcceleration->setCurrentText(cfg.read<QString>(QLatin1String("ffmpegHWAccel")));
+    edtResolvingTimeout->setValue(cfg.read<int>(QLatin1String("resolvingTimeout"), 15));
 
     // storage
     gbStorageService->setChecked(cfg.read<bool>(QLatin1String("enableStorageService")));
@@ -354,6 +355,7 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("shortcut"), edtShortcutSubscription->text());
     cfg.write(QLatin1String("enableFFmpegHWAccel"), cbEnableFFmpegHardwareAcceleration->isChecked());
     cfg.write(QLatin1String("ffmpegHWAccel"), cbFFmpegHardwareAcceleration->currentText());
+    cfg.write(QLatin1String("resolvingTimeout"), edtResolvingTimeout->value());
 
     // players
     cfg.write("externalPlayers", m_players);

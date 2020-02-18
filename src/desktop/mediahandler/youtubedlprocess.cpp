@@ -68,7 +68,6 @@ void YoutubeDLProcess::init()
     Config cfg;
 
     setProgram(cfg.read<QString>("youtube-dl"));
-    setTimeout(30 * 1000);
 }
 
 void YoutubeDLProcess::start(const QString &url)
