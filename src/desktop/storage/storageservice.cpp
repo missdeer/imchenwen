@@ -70,7 +70,8 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
                 const QString& videoUrl = video->urls.at(index);
                 if (QUrl(videoUrl).isValid())
                 {
-                    QStringList args = {"-x", "16", "-s", "16", "--referer=" + referrer, "-d", savePath};
+                    QStringList args = {
+                        "-x", "16", "-s", "16", "--referer=" + referrer, "--user-agent=" + cfg.read<QString>("httpUserAgent"), "-d", savePath};
                     if (cfg.read<bool>("renameStorageFile"))
                         args << "-o" << QString("%1-%2.%3").arg(name).arg(index).arg(video->container);
                     args << videoUrl;
@@ -81,18 +82,22 @@ void StorageService::submit(StreamInfoPtr video, StreamInfoPtr audio, const QStr
         if (audio && !audio->urls.isEmpty() && QUrl(audio->urls[0]).isValid())
         {
             QProcess::startDetached(aria2c,
-                                    QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
-                                    << "-d" << savePath
-                                    << "-o" << name % "." % audio->container
-                                    << audio->urls.at(0));
+                                    QStringList() << "-x"
+                                                  << "16"
+                                                  << "-s"
+                                                  << "16"
+                                                  << "--referer=" + referrer << "--user-agent=" + cfg.read<QString>("httpUserAgent") << "-d"
+                                                  << savePath << "-o" << name % "." % audio->container << audio->urls.at(0));
         }
         if (QUrl(subtitle).isValid())
         {
             QProcess::startDetached(aria2c,
-                                    QStringList() << "-x" << "16" << "-s" << "16" << "--referer=" + referrer
-                                    << "-d" << savePath
-                                    << "-o" << name % ".vtt"
-                                    << subtitle);
+                                    QStringList() << "-x"
+                                                  << "16"
+                                                  << "-s"
+                                                  << "16"
+                                                  << "--referer=" + referrer << "--user-agent=" + cfg.read<QString>("httpUserAgent") << "-d"
+                                                  << savePath << "-o" << name % ".vtt" << subtitle);
         }
     }
 }
