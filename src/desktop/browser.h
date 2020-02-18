@@ -53,7 +53,7 @@ public:
     void resolveUrl(const QString &u);
     void resolveUrlAsVIP(const QString &u);
     void play(const QString& originalUrl, const QStringList &results, const QString &title);
-    void init();
+    void                            init(bool withoutUI = false);
     OutOfChinaMainlandProxyFactory *outOfChinaMainlandProxyFactory() const;
     InGFWListProxyFactory *inGFWListProxyFactory() const;
 
@@ -92,6 +92,7 @@ private:
     OutOfChinaMainlandProxyFactory *m_outOfChinaMainlandProxyFactory;
     InGFWListProxyFactory *m_inGFWListProxyFactory;
     StorageService m_storageService;
+    bool                              m_withoutUI {false};
 
     explicit Browser(QObject *parent = nullptr);
     void resolveLink(const QString &u);

@@ -80,10 +80,22 @@ void Websites::doParse()
         emit ready();
 }
 
-void Websites::update()
+void Websites::update(bool withoutUI)
 {
     m_data.clear();
     m_websites.clear();
+
+    if (withoutUI)
+    {
+        QFile f(":/websites.xml");
+        if (!f.open(QIODevice::ReadOnly))
+            return;
+        m_data = f.readAll();
+        f.close();
+
+        doParse();
+    }
+
     QNetworkRequest req;
     Config cfg;
     QUrl u(cfg.read<QString>(QLatin1String("shortcut")));

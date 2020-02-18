@@ -113,14 +113,19 @@ int main(int argc, char **argv)
 
     Browser& browser = Browser::instance();
     browser.loadSettings();
-    browser.init();
-    BrowserWindow *window = browser.mainWindow();
-
     const QString url = getCommandLineUrlArgument();
+
     if (!url.isEmpty())
-        window->loadPage(url);
+    {
+        browser.init(true);
+        browser.resolveUrl(url);
+    }
     else
+    {
+        browser.init(false);
+        BrowserWindow *window = browser.mainWindow();
         window->loadHomePage();
+    }
 
     return QApplication::exec();
 }

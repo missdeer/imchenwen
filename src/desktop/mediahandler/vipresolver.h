@@ -14,7 +14,7 @@ public:
     explicit VIPResolver(QObject *parent = nullptr);
     ~VIPResolver();
 
-    void update();
+    void update(bool withoutUI = false);
     void resolve(const QString & url);
     void stop();
     bool ready() const { return m_ready; }

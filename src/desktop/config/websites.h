@@ -24,7 +24,7 @@ class Websites : public QObject
     Q_OBJECT
 public:
     explicit Websites(QObject *parent = nullptr);
-    void update();
+    void update(bool withoutUI = false);
 
     bool isIn(const QUrl &url, const QString &category = QString());
     const QString& findURL(const QString& name);

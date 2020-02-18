@@ -19,7 +19,7 @@ public:
     SubscriptionHelper(const QString& customKey, const QString& subscriptionKey, QObject *parent = nullptr);
     void setCustomKey(const QString& key);
     void setSubscriptionKey(const QString& key);
-    void update();
+    void                    update(bool withoutUI = false);
     SubscriptionContentMap& content() { return  m_content; }
 
     bool parseAsJSON(const QByteArray &data);

@@ -46,7 +46,7 @@ void SubscriptionHelper::requestSubscription(QStringList *subscriptItems, int in
     connect(reply, &QNetworkReply::sslErrors, this, &SubscriptionHelper::onNetworkSSLErrors);
 }
 
-void SubscriptionHelper::update()
+void SubscriptionHelper::update(bool withoutUI)
 {
     m_content.clear();
     Config cfg;

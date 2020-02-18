@@ -27,7 +27,7 @@ VIPResolver::~VIPResolver()
     qDeleteAll(m_sniffers);
 }
 
-void VIPResolver::update()
+void VIPResolver::update(bool withoutUI)
 {
     m_resolvers.clear();
     m_data.clear();

@@ -308,11 +308,12 @@ void Browser::doPlay(PlayerPtr player, QStringList &videoUrls, const QString &au
     minimizeWindows();
 }
 
-void Browser::init()
+void Browser::init(bool withoutUI)
 {
-    m_liveTVHelper.update();
-    m_websites.update();
-    m_vipResolver.update();
+    m_withoutUI = withoutUI;
+    m_websites.update(withoutUI);
+    m_liveTVHelper.update(withoutUI);
+    m_vipResolver.update(withoutUI);
 }
 
 void Browser::play(const QString &originalUrl, MediaInfoPtr mi)
@@ -551,7 +552,7 @@ void Browser::addWindow(BrowserWindow *mainWindow)
 BrowserWindow *Browser::mainWindow()
 {
     if (m_windows.isEmpty())
-        newMainWindow();
+        return m_withoutUI ? nullptr : newMainWindow();
     return m_windows[0];
 }
 
@@ -784,6 +785,8 @@ void Browser::playerStopped()
 void Browser::onPlayerFinished(int /*exitCode*/, QProcess::ExitStatus /*exitStatus*/)
 {
     playerStopped();
+    if (m_withoutUI)
+        QCoreApplication::quit();
 }
 
 void Browser::onNewM3U8Ready()
