@@ -113,7 +113,8 @@ int main(int argc, char **argv)
 
     Browser& browser = Browser::instance();
     browser.loadSettings();
-    const QString url = getCommandLineUrlArgument();
+    const QString  url    = getCommandLineUrlArgument();
+    BrowserWindow *window = browser.mainWindow();
 
     if (!url.isEmpty())
     {
@@ -123,7 +124,6 @@ int main(int argc, char **argv)
     else
     {
         browser.init(false);
-        BrowserWindow *window = browser.mainWindow();
         window->loadHomePage();
     }
 

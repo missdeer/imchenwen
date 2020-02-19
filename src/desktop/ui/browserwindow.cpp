@@ -91,7 +91,6 @@ BrowserWindow::BrowserWindow(QWidget *parent, Qt::WindowFlags flags)
     m_urlLineEdit->setFavIcon(QIcon(QStringLiteral(":defaulticon.png")));
 
     onWebViewTitleChanged(tr("imchenwen"));
-    m_tabWidget->onCreateTab();
 }
 
 QSize BrowserWindow::sizeHint() const
@@ -401,8 +400,13 @@ QString BrowserWindow::maybeVIPVideoTitle() const
 void BrowserWindow::center()
 {
     QRect available = QApplication::desktop()->availableGeometry(this);
-    move((available.width() - width())/2,
-         (available.height() - height())/2);
+    move((available.width() - width()) / 2, (available.height() - height()) / 2);
+}
+
+void BrowserWindow::newTab()
+{
+    Q_ASSERT(m_tabWidget);
+    m_tabWidget->onCreateTab();
 }
 
 QToolBar *BrowserWindow::createToolBar()

@@ -314,6 +314,8 @@ void Browser::init(bool withoutUI)
     m_websites.update(withoutUI);
     m_liveTVHelper.update(withoutUI);
     m_vipResolver.update(withoutUI);
+    if (!m_withoutUI)
+        mainWindow()->newTab();
 }
 
 void Browser::play(const QString &originalUrl, MediaInfoPtr mi)

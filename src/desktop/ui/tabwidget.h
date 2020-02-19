@@ -33,7 +33,7 @@ public:
     TabWidget& operator=(TabWidget &&) = delete;
     ~TabWidget() override = default;
 
-    ImWebView *currentWebView() const;
+    ImWebView *currentWebView();
     ImWebView *navigateInNewTab(const QUrl &url, bool makeCurrent = true);
     void closeAllTabs();
 signals:
@@ -72,7 +72,7 @@ private slots:
     void onReloadTab(int index);
 
 private:
-    ImWebView *webView(int index) const;
+    ImWebView *webView(int index);
     void setupView(ImWebView *webView);
 };
 

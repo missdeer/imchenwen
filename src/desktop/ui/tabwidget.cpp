@@ -94,7 +94,7 @@ void TabWidget::onContextMenuRequested(const QPoint &pos)
     menu.exec(QCursor::pos());
 }
 
-ImWebView *TabWidget::currentWebView() const
+ImWebView *TabWidget::currentWebView()
 {
     return webView(currentIndex());
 }
@@ -122,8 +122,10 @@ void TabWidget::closeAllTabs()
         onCreateTab();
 }
 
-ImWebView *TabWidget::webView(int index) const
+ImWebView *TabWidget::webView(int index)
 {
+    if (index < 0 || index >= count())
+        return onCreateTab(true);
     return qobject_cast<ImWebView*>(widget(index));
 }
 

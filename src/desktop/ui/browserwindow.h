@@ -34,6 +34,8 @@ public:
     void resetCurrentView();
     QString maybeVIPVideoTitle() const;
     void center();
+    void    newTab();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 public slots:
