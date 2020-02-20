@@ -1,15 +1,15 @@
+#include <QApplication>
+#include <QMessageBox>
+#include <QSplashScreen>
+#include <QThreadPool>
+#include <QTranslator>
+
 #include "browser.h"
 #include "browserwindow.h"
-#include <QApplication>
-#include <QTranslator>
-#include <QThreadPool>
 
-#if defined (Q_OS_MAC)
-
-#else
-
-#include <QtWebEngine>
-#include <QWebEngineSettings>
+#if !defined(Q_OS_MAC)
+#    include <QWebEngineSettings>
+#    include <QtWebEngine>
 #endif
 
 QString getCommandLineUrlArgument()
@@ -26,6 +26,14 @@ QString getCommandLineUrlArgument()
 
 int main(int argc, char **argv)
 {
+#if !defined(Q_OS_WIN)
+    // increase the number of file that can be opened.
+    struct rlimit rl;
+    getrlimit(RLIMIT_NOFILE, &rl);
+
+    rl.rlim_cur = qMin((rlim_t)OPEN_MAX, rl.rlim_max);
+    setrlimit(RLIMIT_NOFILE, &rl);
+#endif
     QCoreApplication::setOrganizationName(QLatin1String("DForD Software"));
     QCoreApplication::setApplicationName(QObject::tr("imchenwen"));
     QCoreApplication::setApplicationVersion(QLatin1String("1.0"));
@@ -37,6 +45,19 @@ int main(int argc, char **argv)
 #endif
 
     QApplication a(argc, argv);
+
+    if (!QSslSocket::supportsSsl())
+    {
+        QMessageBox::critical(nullptr, QObject::tr("Critical error"), QObject::tr("SSL not supported, exit now."), QMessageBox::Ok);
+        return -1;
+    }
+
+    QPixmap       pixmap(":/imchenwen256.png");
+    QSplashScreen splash(pixmap);
+    splash.show();
+    a.processEvents();
+
+    splash.showMessage("Detecting environment path...");
 
 #if defined(Q_OS_WIN)
     auto pathEnv = qgetenv("PATH");
@@ -59,6 +80,8 @@ int main(int argc, char **argv)
     qputenv("LD_LIBRARY_PATH", pathEnv);
 #endif
 
+    a.processEvents();
+    splash.showMessage("Loading translation file...");
     QString locale = QLocale::system().name();
     QTranslator translator;
     QTranslator qtTranslator;
@@ -111,21 +134,33 @@ int main(int argc, char **argv)
     QApplication::setWindowIcon(QIcon(":imchenwen.ico"));
 #endif
 
+    a.processEvents();
+    splash.showMessage("Loading settings...");
     Browser& browser = Browser::instance();
     browser.loadSettings();
-    const QString  url    = getCommandLineUrlArgument();
+
+    const QString url = getCommandLineUrlArgument();
+    a.processEvents();
+    splash.showMessage("Creating main window...");
     BrowserWindow *window = browser.mainWindow();
 
+    a.processEvents();
+    splash.showMessage("Initializing application...");
     if (!url.isEmpty())
     {
         browser.init(true);
+        a.processEvents();
+        splash.showMessage("Resolving video link...");
         browser.resolveUrl(url);
     }
     else
     {
         browser.init(false);
+        a.processEvents();
+        splash.showMessage("Loading home page...");
         window->loadHomePage();
     }
 
+    splash.finish(window);
     return QApplication::exec();
 }

@@ -907,9 +907,19 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="30"/>
+        <location filename="../main.cpp" line="38"/>
         <source>imchenwen</source>
         <translation>某橙</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="51"/>
+        <source>Critical error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="51"/>
+        <source>SSL not supported, exit now.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
