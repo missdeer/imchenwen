@@ -48,5 +48,6 @@
         <file>vip.txt</file>
         <file>vipmore.txt</file>
         <file>websites.xml</file>
+        <file>loader.gif</file>
     </qresource>
 </RCC>

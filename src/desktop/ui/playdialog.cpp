@@ -1,12 +1,15 @@
-#include "playdialog.h"
-#include "browser.h"
-#include "settings.h"
-#include "ui_playdialog.h"
 #include <QClipboard>
 #include <QFile>
 #include <QMenu>
 #include <QMessageBox>
+#include <QMovie>
 #include <QtCore>
+
+#include "playdialog.h"
+
+#include "browser.h"
+#include "settings.h"
+#include "ui_playdialog.h"
 
 PlayDialog::PlayDialog(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +18,22 @@ PlayDialog::PlayDialog(QWidget *parent) :
     m_demuxed(false)
 {
     ui->setupUi(this);
+
+    QMovie *annieMovie = new QMovie(":/loader.gif");
+    ui->annieLoader->setMovie(annieMovie);
+    annieMovie->start();
+
+    QMovie *ykdlMovie = new QMovie(":/loader.gif");
+    ui->ykdlLoader->setMovie(ykdlMovie);
+    ykdlMovie->start();
+
+    QMovie *yougetMovie = new QMovie(":/loader.gif");
+    ui->yougetLoader->setMovie(yougetMovie);
+    yougetMovie->start();
+
+    QMovie *ytdlMovie = new QMovie(":/loader.gif");
+    ui->youtubedlLoader->setMovie(ytdlMovie);
+    ytdlMovie->start();
 
     ui->listMedia->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listMedia, &QListWidget::customContextMenuRequested, this, &PlayDialog::onListMediaContextmenu);
@@ -75,15 +94,25 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     ui->cbSubtitles->setVisible(!m_subtitles.isEmpty());
     ui->cbSubtitleEnabled->setVisible(!m_subtitles.isEmpty());
 
-    struct {
+    if (!mi->you_get.empty())
+        ui->yougetLoader->setVisible(false);
+    if (!mi->youtube_dl.empty())
+        ui->youtubedlLoader->setVisible(false);
+    if (!mi->ykdl.empty())
+        ui->ykdlLoader->setVisible(false);
+    if (!mi->annie.empty())
+        ui->annieLoader->setVisible(false);
+
+    struct
+    {
         Streams& streams;
         QString tag;
         QIcon icon;
     } ss[] = {
-        { mi->youtube_dl, tr(" - by youtube_dl"), QIcon(":/youtube-dl.png")},
-        { mi->ykdl,       tr(" - by ykdl"),       QIcon(":/ykdl.png")},
-        { mi->you_get,    tr(" - by you-get"),    QIcon(":/you-get.png")},
-        { mi->annie,      tr(" - by annie"),      QIcon(":/annie.png")},
+        {mi->youtube_dl, tr(" - by youtube_dl"), QIcon(":/youtube-dl.png")},
+        {mi->ykdl, tr(" - by ykdl"), QIcon(":/ykdl.png")},
+        {mi->you_get, tr(" - by you-get"), QIcon(":/you-get.png")},
+        {mi->annie, tr(" - by annie"), QIcon(":/annie.png")},
     };
     for (auto & s : ss)
     {
@@ -149,6 +178,11 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
     ui->cbAutoSelectAudioTrack->setChecked(true);
     ui->cbAutoSelectHighestQualityVideoTrack->setEnabled(false);
     ui->cbAutoSelectHighestQualityVideoTrack->setChecked(true);
+
+    ui->yougetLoader->setVisible(false);
+    ui->youtubedlLoader->setVisible(false);
+    ui->ykdlLoader->setVisible(false);
+    ui->annieLoader->setVisible(false);
 }
 
 QString PlayDialog::audioUrl()
@@ -450,4 +484,44 @@ void PlayDialog::on_btnDownload_clicked()
     m_action = PlayDialog::DOWNLOAD;
     if (doOk())
         accept();
+}
+
+void PlayDialog::on_cbAnnieResult_stateChanged(int state)
+{
+    if (state == Qt::Checked)
+    {
+    }
+    else
+    {
+    }
+}
+
+void PlayDialog::on_cbYKDL_stateChanged(int state)
+{
+    if (state == Qt::Checked)
+    {
+    }
+    else
+    {
+    }
+}
+
+void PlayDialog::on_cbYouGet_stateChanged(int state)
+{
+    if (state == Qt::Checked)
+    {
+    }
+    else
+    {
+    }
+}
+
+void PlayDialog::on_cbYoutubeDL_stateChanged(int state)
+{
+    if (state == Qt::Checked)
+    {
+    }
+    else
+    {
+    }
 }

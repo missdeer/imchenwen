@@ -56,6 +56,14 @@ private slots:
     void on_cbSubtitles_currentIndexChanged(int);
     void on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state);
 
+    void on_cbAnnieResult_stateChanged(int state);
+
+    void on_cbYKDL_stateChanged(int state);
+
+    void on_cbYouGet_stateChanged(int state);
+
+    void on_cbYoutubeDL_stateChanged(int state);
+
 private:
     Ui::PlayDialog *ui;
     PlayerList m_players;
