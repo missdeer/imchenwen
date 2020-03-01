@@ -80,9 +80,10 @@
 		<website><name>花瓣</name><url>http://huaban.com/</url></website>
 		<website><name>芒果TV</name><url>http://www.mgtv.com/</url></website>
 		<website><name>火猫TV</name><url>http://www.huomao.com/</url></website>
-		<website><name>全民Tv</name><url>http://www.quanmin.tv/</url></website>
+		<website><name>全民TV</name><url>http://www.quanmin.tv/</url></website>
 	</china>
 	<film>
+		<website><name>韩剧TV网</name><url>https://www.hjtv5.com/</url></website>
 		<website><name>哔嘀影视</name><url>https://bde4.com/</url></website>
 		<website><name>1090影视</name><url>https://1090ys.com/</url></website>
 		<website><name>1090影视备用</name><url>https://1090ys1.com/</url></website>
