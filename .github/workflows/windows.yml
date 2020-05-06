@@ -20,10 +20,8 @@ jobs:
     strategy:
       # 矩阵配置
       matrix:
-        qt_ver: [5.14.1]
+        qt_ver: [5.14.2]
         qt_target: [desktop]
-        # mingw用不了
-        # qt_arch: [win64_msvc2017_64, win32_msvc2017, win32_mingw53,win32_mingw73]
         qt_arch: [win64_msvc2017_64, win32_msvc2017]
         # 额外设置msvc_arch
         include:
@@ -46,17 +44,12 @@ jobs:
           target: ${{ matrix.qt_target }}
           # Architecture for Windows/Android
           arch: ${{ matrix.qt_arch }}
-      # 拉取代码
-      - uses: actions/checkout@v1
+          
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - name: Checkout submodules
-        shell: cmd
-        env:
-          vc_arch: ${{ matrix.msvc_arch }}
-        run: |
-          git submodule update --init --recursive
-      # 编译msvc
+          submodules: true
+          
       - name: build-msvc
         shell: cmd
         env:
@@ -70,7 +63,6 @@ jobs:
           cd ..
       # tag 打包
       - name: package
-        if: startsWith(github.event.ref, 'refs/tags/')
         env:
           VCINSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC'
           archiveName: ${{ env.targetName }}-${{ matrix.qt_arch }}
@@ -80,8 +72,6 @@ jobs:
           New-Item -ItemType Directory ${env:archiveName}
           # 拷贝exe
           Copy-Item bin\Release\${env:targetName}'.exe' ${env:archiveName}\
-          Copy-Item bin\Release\Everything.exe ${env:archiveName}\
-          Copy-Item bin\Release\Everything*.dll ${env:archiveName}\
           # 拷贝依赖
           windeployqt --qmldir . ${env:archiveName}\${env:targetName}'.exe'
           # 打包zip
@@ -91,6 +81,12 @@ jobs:
           echo "::set-env name=packageName::$name"
           # 打印环境变量packageName
           Write-Host 'packageName:'${env:packageName}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: ${{ env.targetName }}-${{ matrix.qt_arch }}
+          path: ${{ env.targetName }}-${{ matrix.qt_arch }}
       # tag 查询github-Release
       - name: queryReleaseWin
         id: queryReleaseWin
