@@ -23,9 +23,10 @@ jobs:
       targetName: imchenwen
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v2.7.1
         with:
           version: ${{ matrix.qt_ver }}
+          modules: qtwebengine
           
       - name: Install mpv
         run: |
