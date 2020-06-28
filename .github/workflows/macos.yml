@@ -4,10 +4,12 @@ on:
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+      - '.github/workflows/windows.yml'
   pull_request:
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+      - '.github/workflows/windows.yml'
 jobs:
   build:
     name: Build
@@ -15,26 +17,25 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [5.14.1]
+        qt_ver: [5.15.0]
         qt_arch: [clang_64]
     env:
       targetName: imchenwen
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2.0.0
+        uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}
+          
       - name: Install mpv
         run: |
           brew install mpv
-      - uses: actions/checkout@v1
+          
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - name: Checkout submodules
-        env:
-          vc_arch: ${{ matrix.msvc_arch }}
-        run: |
-          git submodule update --init --recursive
+          submodules: true
+          
       - name: build macos
         run: |
           mkdir build
@@ -42,13 +43,12 @@ jobs:
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ../${{ env.targetName }}.pro
           make -j 2
           cd ..
-      # tag 打包
+
       - name: package
         if: startsWith(github.event.ref, 'refs/tags/')
         run: |
-          # 拷贝依赖
           macdeployqt "bin/x86_64/${targetName}.app" -qmldir=. -verbose=1 -dmg
-      # tag 查询github-Release
+          
       - name: queryRelease
         id: queryReleaseMacos
         if: startsWith(github.event.ref, 'refs/tags/')
@@ -75,7 +75,7 @@ jobs:
             # 没查到，输出
             echo "::set-output name=needCreateRelease::true"  
           }
-      # tag 创建github-Release
+          
       - name: createReleaseWin
         id: createReleaseWin
         if: startsWith(github.event.ref, 'refs/tags/') && steps.queryReleaseMacos.outputs.needCreateRelease == 'true'
@@ -88,9 +88,8 @@ jobs:
           body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-      # 重定向upload_url到环境变量uploadUrl。
+          
       - name: getLatestTagRelease
-        # tag 上一步无论成功还是失败都执行
         if: startsWith(github.event.ref, 'refs/tags/')
         shell: pwsh
         env:
@@ -98,7 +97,6 @@ jobs:
           upUrl: ${{ steps.queryReleaseMacos.outputs.upload_url }}
           ref: ${{ github.event.ref }}
         run: |
-          # upUrl不为空，导出就完事
           if (${env:upUrl}.Length -gt 0) {
               $v=${env:upUrl}
               echo "::set-env name=uploadUrl::$v"
@@ -111,7 +109,7 @@ jobs:
           Write-Host 'latestUpUrl:'$latestUpUrl
           echo "::set-env name=uploadUrl::$latestUpUrl"
           Write-Host 'env uploadUrl:'${env:uploadUrl}
-      # tag 上传Release
+          
       - name: uploadRelease
         id: uploadRelease
         if: startsWith(github.event.ref, 'refs/tags/')

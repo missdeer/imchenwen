@@ -1,29 +1,24 @@
 name: Windows
 on: 
-  # push代码时触发workflow
   push:
-    # 忽略README.md
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
-  # pull_request时触发workflow
+      - '.github/workflows/macos.yml'
   pull_request:
-    # 忽略README.md
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+      - '.github/workflows/macos.yml'
 jobs:
   build:
     name: Build
-    # 运行平台， windows-latest目前是windows server 2019
     runs-on: windows-latest
     strategy:
-      # 矩阵配置
       matrix:
         qt_ver: [5.15.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64, win32_msvc2019]
-        # 额外设置msvc_arch
         include:
           - qt_arch: win64_msvc2019_64
             msvc_arch: x64
@@ -33,7 +28,6 @@ jobs:
             qt_arch_install: msvc2019
     env:
       targetName: imchenwen
-    # 步骤
     steps:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2.7.1
