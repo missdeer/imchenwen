@@ -16,7 +16,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [5.15.0]
+        qt_ver: [5.15.1]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64, win32_msvc2019]
         include:
@@ -30,12 +30,11 @@ jobs:
       targetName: imchenwen
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2.7.1
+        uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          aqtversion: '>=0.9.0'
           modules: qtwebengine
           
       - uses: actions/checkout@v2
@@ -54,25 +53,19 @@ jobs:
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
           nmake
           cd ..
-      # tag 打包
+          
       - name: package
         env:
           VCINSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC'
           archiveName: ${{ env.targetName }}-${{ matrix.qt_arch }}
         shell: pwsh
         run: |
-          # 创建文件夹
           New-Item -ItemType Directory ${env:archiveName}
-          # 拷贝exe
           Copy-Item bin\Release\${env:targetName}'.exe' ${env:archiveName}\
-          # 拷贝依赖
           windeployqt --qmldir . ${env:archiveName}\${env:targetName}'.exe'
-          # 打包zip
           Compress-Archive -Path ${env:archiveName} ${env:archiveName}'.zip'
-          # 记录环境变量packageName给后续step
           $name = ${env:archiveName}
           echo "::set-env name=packageName::$name"
-          # 打印环境变量packageName
           Write-Host 'packageName:'${env:packageName}
 
       - name: Upload artifact
