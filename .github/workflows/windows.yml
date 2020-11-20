@@ -59,7 +59,7 @@ jobs:
       - name: package
         shell: cmd
         run: |
-          windeployqt bin\${{ matrix.output_arch }}\${env:targetName}'.exe' 
+          windeployqt bin\${{ matrix.output_arch }}\${{ env.targetName }}.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
