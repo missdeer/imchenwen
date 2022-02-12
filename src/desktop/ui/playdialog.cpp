@@ -483,7 +483,7 @@ void PlayDialog::on_btnDownload_clicked()
         accept();
 }
 
-void PlayDialog::on_cbAnnieResult_stateChanged(int state)
+void PlayDialog::on_cbLuxResult_stateChanged(int state)
 {
     if (state == Qt::Checked)
     {

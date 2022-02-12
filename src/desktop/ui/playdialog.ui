@@ -78,7 +78,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="cbAnnieResult">
+      <widget class="QCheckBox" name="cbLuxResult">
        <property name="text">
         <string>lux</string>
        </property>
