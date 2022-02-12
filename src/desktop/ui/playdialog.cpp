@@ -19,9 +19,9 @@ PlayDialog::PlayDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QMovie *annieMovie = new QMovie(":/loader.gif");
-    ui->annieLoader->setMovie(annieMovie);
-    annieMovie->start();
+    QMovie *luxMovie = new QMovie(":/loader.gif");
+    ui->luxLoader->setMovie(luxMovie);
+    luxMovie->start();
 
     QMovie *ykdlMovie = new QMovie(":/loader.gif");
     ui->ykdlLoader->setMovie(ykdlMovie);
@@ -98,7 +98,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     if (!mi->ykdl.empty())
         ui->ykdlLoader->setVisible(false);
     if (!mi->lux.empty())
-        ui->annieLoader->setVisible(false);
+        ui->luxLoader->setVisible(false);
 
     struct
     {
@@ -179,7 +179,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
     ui->yougetLoader->setVisible(false);
     ui->youtubedlLoader->setVisible(false);
     ui->ykdlLoader->setVisible(false);
-    ui->annieLoader->setVisible(false);
+    ui->luxLoader->setVisible(false);
 }
 
 QString PlayDialog::audioUrl()
