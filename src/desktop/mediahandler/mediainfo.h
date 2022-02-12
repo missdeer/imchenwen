@@ -13,7 +13,7 @@ struct MediaInfo
     Streams ykdl;
     Streams you_get;
     Streams youtube_dl;
-    Streams annie;
+    Streams lux;
     Subtitles subtitles;
     int resultCount;
 };

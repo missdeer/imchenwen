@@ -677,7 +677,7 @@ void Browser::onNormalLinkResolved(const QString& originalUrl, MediaInfoPtr resu
     Q_UNUSED(originalUrl);
     stopWaiting();
 
-    if (results->ykdl.isEmpty() && results->you_get.isEmpty() && results->youtube_dl.isEmpty() && results->annie.isEmpty())
+    if (results->ykdl.isEmpty() && results->you_get.isEmpty() && results->youtube_dl.isEmpty() && results->lux.isEmpty())
     {
         QMessageBox::warning(mainWindow(),
                              tr("Error"), tr("Resolving link address failed! Please try again."), QMessageBox::Ok);

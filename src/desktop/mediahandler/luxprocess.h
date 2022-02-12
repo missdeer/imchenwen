@@ -3,10 +3,10 @@
 
 #include "linkresolverprocess.h"
 
-class AnnieProcess : public LinkResolverProcess
+class LuxProcess : public LinkResolverProcess
 {
 public:
-    explicit AnnieProcess(QObject *parent = nullptr);
+    explicit LuxProcess(QObject *parent = nullptr);
     void parseNode(const QJsonObject& o, MediaInfoPtr mi);
     void init();
     void start(const QString& url);

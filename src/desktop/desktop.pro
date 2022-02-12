@@ -2,6 +2,7 @@ TEMPLATE = app
 TARGET = imchenwen
 QT += core gui widgets network xml concurrent gui-private
 CONFIG += c++17
+CONFIG += sdk_no_version_check
 
 contains(QMAKE_HOST.arch, x86_64): {
     DESTDIR = $$PWD/../../bin/x86_64
@@ -58,7 +59,7 @@ HEADERS += \
     $$PWD/upgrade/dependenciesupgrade.h \
     $$PWD/network/networkreplyhelper.h \
     $$PWD/mediahandler/yougetprocess.h \
-    $$PWD/mediahandler/annieprocess.h \
+    $$PWD/mediahandler/luxprocess.h \
     $$PWD/mediahandler/ykdlprocess.h \
     $$PWD/mediahandler/youtubedlprocess.h \
     $$PWD/network/proxyrule.h \
@@ -104,7 +105,7 @@ SOURCES += \
     $$PWD/upgrade/dependenciesupgrade.cpp \
     $$PWD/network/networkreplyhelper.cpp \
     $$PWD/mediahandler/yougetprocess.cpp \
-    $$PWD/mediahandler/annieprocess.cpp \
+    $$PWD/mediahandler/luxprocess.cpp \
     $$PWD/mediahandler/ykdlprocess.cpp \
     $$PWD/mediahandler/youtubedlprocess.cpp \
     $$PWD/network/proxyrule.cpp \
@@ -246,7 +247,7 @@ win32: {
     QMAKE_EXTRA_TARGETS += copy_mpv_dll copy_innosetup
     POST_TARGETDEPS += copy_mpv_dll copy_innosetup
 } else : {
-    INCLUDEPATH += /usr/local/include
+    INCLUDEPATH += $$PWD/../3rdparty/libmpv/include
     LIBS += -L/usr/local/lib
 }
 

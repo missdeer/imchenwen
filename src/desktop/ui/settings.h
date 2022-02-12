@@ -28,7 +28,7 @@ private slots:
     void onBrowseYouGetPath();
     void onBrowseYKDLPath();
     void onBrowseYoutubeDLPath();
-    void onBrowseAnniePath();
+    void onBrowseLuxPath();
     void onBrowseFFmpegPath();
 
     void onAddLiveTVSubscription();

@@ -97,7 +97,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
         ui->youtubedlLoader->setVisible(false);
     if (!mi->ykdl.empty())
         ui->ykdlLoader->setVisible(false);
-    if (!mi->annie.empty())
+    if (!mi->lux.empty())
         ui->annieLoader->setVisible(false);
 
     struct
@@ -109,7 +109,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
         {mi->youtube_dl, tr(" - by youtube_dl"), QIcon(":/youtube-dl.png")},
         {mi->ykdl, tr(" - by ykdl"), QIcon(":/ykdl.png")},
         {mi->you_get, tr(" - by you-get"), QIcon(":/you-get.png")},
-        {mi->annie, tr(" - by annie"), QIcon(":/annie.png")},
+        {mi->lux, tr(" - by lux"), QIcon(":/lux.png")},
     };
     for (auto & s : ss)
     {

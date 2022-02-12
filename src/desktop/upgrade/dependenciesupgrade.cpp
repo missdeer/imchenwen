@@ -81,19 +81,19 @@ void DependenciesUpgrade::upgradeForWin()
             cfg.write("youtube-dl", fi.absolutePath() + "/youtube-dl.exe");
     }
 
-    // get ffmpeg & annie via http link
+    // get ffmpeg & lux via http link
 #if defined(Q_OS_WIN64)
     QString ffmpegUrl = "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-latest-win64-static.zip";
     QString ffmpeg = appLocalDataPath + "/ffmpeg-latest-win64-static/bin/ffmpeg.exe";
 
-    // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_64-bit.zip
-    QRegularExpression reg("\\/iawia002\\/annie\\/releases\\/download\\/[0-9\\.]+\\/annie_[0-9\\.]+_Windows_64\\-bit.zip");
+    // https://github.com/iawia002/lux/releases/download/0.9.0/lux_0.9.0_Windows_64-bit.zip
+    QRegularExpression reg("\\/iawia002\\/lux\\/releases\\/download\\/[0-9\\.]+\\/lux_[0-9\\.]+_Windows_64\\-bit.zip");
 #else
     QString ffmpegUrl = "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-latest-win32-static.zip";
     QString ffmpeg = appLocalDataPath + "/ffmpeg-latest-win32-static/bin/ffmpeg.exe";
 
-    // https://github.com/iawia002/annie/releases/download/0.9.0/annie_0.9.0_Windows_32-bit.zip
-    QRegularExpression reg("\\/iawia002\\/annie\\/releases\\/download\\/[0-9\\.]+\\/annie_[0-9\\.]+_Windows_32\\-bit.zip");
+    // https://github.com/iawia002/lux/releases/download/0.9.0/lux_0.9.0_Windows_32-bit.zip
+    QRegularExpression reg("\\/iawia002\\/lux\\/releases\\/download\\/[0-9\\.]+\\/lux_[0-9\\.]+_Windows_32\\-bit.zip");
 #endif
     if (QFile::exists(ffmpeg) || !QFile::exists(cfg.read<QString>("ffmpeg")))
     {
@@ -103,21 +103,21 @@ void DependenciesUpgrade::upgradeForWin()
         cfg.write("ffmpeg", ffmpeg);
     }
 
-    QString annie = appLocalDataPath + "/annie.exe";
-    if (QFile::exists(annie) || !QFile::exists(cfg.read<QString>("annie")))
+    QString lux = appLocalDataPath + "/lux.exe";
+    if (QFile::exists(lux) || !QFile::exists(cfg.read<QString>("lux")))
     {
-        QString annieLatestReleasePageUrl = "https://github.com/iawia002/annie/releases/latest";
-        QByteArray data = getData(annieLatestReleasePageUrl);
+        QString luxLatestReleasePageUrl = "https://github.com/iawia002/lux/releases/latest";
+        QByteArray data = getData(luxLatestReleasePageUrl);
         reg.setPatternOptions(QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = reg.match(data);
         if (match.hasMatch())
         {
             QString matched = match.captured(0);
             QString packageUrl = "https://github.com" + matched;
-            getFile(packageUrl, appLocalDataPath + "/annie.zip");
-            extractZIP(appLocalDataPath + "/annie.zip");
-            QFile::remove(appLocalDataPath + "/annie.zip");
-            cfg.write("annie", annie);
+            getFile(packageUrl, appLocalDataPath + "/lux.zip");
+            extractZIP(appLocalDataPath + "/lux.zip");
+            QFile::remove(appLocalDataPath + "/lux.zip");
+            cfg.write("lux", lux);
         }
     }
 
@@ -128,7 +128,7 @@ void DependenciesUpgrade::upgradeForMac()
 {
     QStringList fromBrew{
         "/usr/local/bin/mpv",
-        "/usr/local/bin/annie",
+        "/usr/local/bin/lux",
         "/usr/local/bin/ffmpeg",
         "/usr/local/bin/youtube-dl",
         "/usr/local/bin/python3",
@@ -139,7 +139,7 @@ void DependenciesUpgrade::upgradeForMac()
     {
         if (!QFile::exists(p))
         {
-            // brew install mpv annie ffmpeg youtube-dl python3 pip3
+            // brew install mpv lux ffmpeg youtube-dl python3 pip3
             process.start("/usr/local/bin/brew install " + p.split(QChar('/'))[3]);
             process.waitForFinished();
         }
@@ -147,7 +147,7 @@ void DependenciesUpgrade::upgradeForMac()
     // brew update && brew upgrade
     process.start("/usr/local/bin/brew update");
     process.waitForFinished();
-    process.start("/usr/local/bin/brew upgrade mpv annie python3");
+    process.start("/usr/local/bin/brew upgrade mpv lux python3");
     process.waitForFinished();
     // pip3 install --upgrade ykdl you-get
     process.start("/usr/local/bin/pip3 install --upgrade ykdl you-get");
@@ -160,8 +160,8 @@ void DependenciesUpgrade::upgradeForMac()
         cfg.write("you-get", "/usr/local/bin/you-get");
     if (!QFile::exists(cfg.read<QString>("youtube-dl")))
         cfg.write("youtube-dl", "/usr/local/bin/youtube-dl");
-    if (!QFile::exists(cfg.read<QString>("annie")))
-        cfg.write("annie", "/usr/local/bin/annie");
+    if (!QFile::exists(cfg.read<QString>("lux")))
+        cfg.write("lux", "/usr/local/bin/lux");
     if (!QFile::exists(cfg.read<QString>("ffmpeg")))
         cfg.write("ffmpeg", "/usr/local/bin/ffmpeg");
 
