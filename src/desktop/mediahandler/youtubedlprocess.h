@@ -7,9 +7,11 @@ class YoutubeDLProcess : public LinkResolverProcess
 {
 public:
     explicit YoutubeDLProcess(QObject *parent = nullptr);
-    void parseNode(const QJsonObject& o, MediaInfoPtr mi);
-    void init();
-    void start(const QString& url);
+    void parseNode(const QJsonObject &o, MediaInfoPtr mi) override;
+    void init() override;
+    void start(const QString &url) override;
+    void resolved(MediaInfoPtr mi) override;
+
 private:
     void parseSubtitle(const QJsonValue& v, MediaInfoPtr mi, bool manual);
 };

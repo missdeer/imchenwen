@@ -5,7 +5,7 @@
 #include <QSharedPointer>
 #include <QTime>
 #include <QJsonValue>
-#include "annieprocess.h"
+#include "luxprocess.h"
 #include "yougetprocess.h"
 #include "youtubedlprocess.h"
 #include "ykdlprocess.h"
@@ -39,7 +39,7 @@ private:
     YouGetProcess m_yougetProcess;
     YKDLProcess m_ykdlProcess;
     YoutubeDLProcess m_youtubedlProcess;
-    AnnieProcess m_annieProcess;
+    LuxProcess m_luxProcess;
 };
 
 #endif // LINKRESOLVER_H

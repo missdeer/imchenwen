@@ -1076,17 +1076,17 @@
        <item>
         <widget class="QLabel" name="label_24">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;annie: &lt;a href=&quot;https://github.com/iawia002/annie&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iawia002/annie&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;lux: &lt;a href=&quot;https://github.com/iawia002/lux&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iawia002/lux&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="QLineEdit" name="edtAnniePath"/>
+          <widget class="QLineEdit" name="edtLuxPath"/>
          </item>
          <item>
-          <widget class="QPushButton" name="btnBrowseAnniePath">
+          <widget class="QPushButton" name="btnBrowseLuxPath">
            <property name="text">
             <string>...</string>
            </property>

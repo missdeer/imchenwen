@@ -1,20 +1,18 @@
-#include "annieprocess.h"
-#include "config.h"
 #include <QDebug>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
 #include <QJsonParseError>
-#include <QStandardPaths>
 #include <QNetworkProxy>
+#include <QStandardPaths>
 
-AnnieProcess::AnnieProcess(QObject *parent)
-    : LinkResolverProcess (parent)
-{
+#include "luxprocess.h"
 
-}
+#include "config.h"
 
-void AnnieProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
+LuxProcess::LuxProcess(QObject *parent) : LinkResolverProcess(parent) {}
+
+void LuxProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
 {
     if (mi->site.isEmpty())
     {
@@ -64,19 +62,19 @@ void AnnieProcess::parseNode(const QJsonObject &o, MediaInfoPtr mi)
             stream->container = urlObj["ext"].toString();
         }
         stream->quality = s["quality"].toString();
-        mi->annie.append(stream);
+        mi->lux.append(stream);
     }
 }
 
-void AnnieProcess::init()
+void LuxProcess::init()
 {
     m_args.clear();
     m_args << "-j";
     Config cfg;
-    setProgram(cfg.read<QString>("annie"));
+    setProgram(cfg.read<QString>("lux"));
 }
 
-void AnnieProcess::start(const QString &url)
+void LuxProcess::start(const QString &url)
 {
     QStringList args;
     args << m_args;
@@ -96,4 +94,9 @@ void AnnieProcess::start(const QString &url)
     m_process.setArguments(args);
 
     LinkResolverProcess::start(url);
+}
+
+void LuxProcess::resolved(MediaInfoPtr mi)
+{
+    mi->luxDone = true;
 }

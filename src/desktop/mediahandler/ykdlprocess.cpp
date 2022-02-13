@@ -1,14 +1,16 @@
-#include "ykdlprocess.h"
-#include "config.h"
 #include <QDebug>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
 #include <QJsonParseError>
-#include <QStandardPaths>
 #include <QNetworkProxy>
+#include <QStandardPaths>
+
+#include "ykdlprocess.h"
+
+#include "config.h"
 
 YKDLProcess::YKDLProcess(QObject *parent)
     :LinkResolverProcess (parent)
@@ -93,4 +95,9 @@ void YKDLProcess::start(const QString &url)
     m_process.setArguments(args);
 
     LinkResolverProcess::start(url);
+}
+
+void YKDLProcess::resolved(MediaInfoPtr mi)
+{
+    mi->ykdlDone = true;
 }

@@ -2,20 +2,25 @@
 #define MEDIAINFO_H
 
 #include <QSharedPointer>
+
 #include "streaminfo.h"
 #include "subtitleinfo.h"
 
 struct MediaInfo
 {
-    QString url;
-    QString site;
-    QString title;
-    Streams ykdl;
-    Streams you_get;
-    Streams youtube_dl;
-    Streams annie;
+    QString   url;
+    QString   site;
+    QString   title;
+    Streams   ykdl;
+    Streams   you_get;
+    Streams   youtube_dl;
+    Streams   lux;
+    bool      ykdlDone {false};
+    bool      you_getDone {false};
+    bool      youtube_dlDone {false};
+    bool      luxDone {false};
     Subtitles subtitles;
-    int resultCount;
+    int       resultCount;
 };
 
 typedef QSharedPointer<MediaInfo> MediaInfoPtr;

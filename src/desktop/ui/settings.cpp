@@ -78,7 +78,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(btnBrowseYouGetPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYouGetPath);
     connect(btnBrowseYKDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYKDLPath);
     connect(btnBrowseYoutubeDLPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseYoutubeDLPath);
-    connect(btnBrowseAnniePath, &QPushButton::clicked, this, &SettingsDialog::onBrowseAnniePath);
+    connect(btnBrowseLuxPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseLuxPath);
     connect(btnBrowseFFmpegPath, &QPushButton::clicked, this, &SettingsDialog::onBrowseFFmpegPath);
     connect(cbProxyScope, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SettingsDialog::onProxyScopeCurrentIndexChanged);
 
@@ -178,7 +178,7 @@ void SettingsDialog::fillExternalPlayerTable()
 {
     for (const auto& p : m_players)
     {
-        listPlayer->addItem(p->title());
+        listPlayer->addItem(p->title() + "\n" + p->path() + "\n" + p->arguments());
     }
 }
 
@@ -265,7 +265,7 @@ void SettingsDialog::loadFromSettings()
     edtYouGetPath->setText(cfg.read<QString>(QLatin1String("you-get")));
     edtYKDLPath->setText(cfg.read<QString>(QLatin1String("ykdl")));
     edtYoutubeDLPath->setText(cfg.read<QString>(QLatin1String("youtube-dl")));
-    edtAnniePath->setText(cfg.read<QString>(QLatin1String("annie")));
+    edtLuxPath->setText(cfg.read<QString>(QLatin1String("lux")));
     edtFFmpegPath->setText(cfg.read<QString>(QLatin1String("ffmpeg")));
     edtVIPResolverSubscription->setText(cfg.read<QString>(QLatin1String("vipResolvers")));
     edtShortcutSubscription->setText(cfg.read<QString>(QLatin1String("shortcut")));
@@ -349,7 +349,7 @@ void SettingsDialog::saveToSettings()
     cfg.write(QLatin1String("you-get"), edtYouGetPath->text());
     cfg.write(QLatin1String("ykdl"), edtYKDLPath->text());
     cfg.write(QLatin1String("youtube-dl"), edtYoutubeDLPath->text());
-    cfg.write(QLatin1String("annie"), edtAnniePath->text());
+    cfg.write(QLatin1String("lux"), edtLuxPath->text());
     cfg.write(QLatin1String("ffmpeg"), edtFFmpegPath->text());
     cfg.write(QLatin1String("vipResolvers"), edtVIPResolverSubscription->text());
     cfg.write(QLatin1String("shortcut"), edtShortcutSubscription->text());
@@ -453,7 +453,8 @@ void SettingsDialog::onAddExternalPlayer()
     PlayerPtr p(new Player(Player::PT_EXTERNAL, edtPlayerTitle->text(), edtPlayerPath->text()));
     p->setArguments(edtPlayerArguments->text());
     m_players.push_back(p);
-    listPlayer->addItem(edtPlayerPath->text() + "\n" + edtPlayerArguments->text());
+    listPlayer->addItem(edtPlayerTitle->text() + "\n" + edtPlayerPath->text() + "\n"
+                        + edtPlayerArguments->text());
     edtPlayerPath->setText("");
     edtPlayerArguments->setText("");
 }
@@ -547,20 +548,20 @@ void SettingsDialog::onBrowseYoutubeDLPath()
     }
 }
 
-void SettingsDialog::onBrowseAnniePath()
+void SettingsDialog::onBrowseLuxPath()
 {
     QString path = QFileDialog::getOpenFileName(this,
-                                 tr("Select annie executable"),
-                                                QDir(edtAnniePath->text()).absolutePath(),
+                                 tr("Select lux executable"),
+                                                QDir(edtLuxPath->text()).absolutePath(),
                                             #if defined(Q_OS_WIN)
-                                                tr("annie executable (annie.exe)")
+                                                tr("lux executable (lux.exe)")
                                             #else
-                                                tr("annie executable (annie)")
+                                                tr("lux executable (lux)")
                                             #endif
                                                 );
     if (!path.isEmpty())
     {
-        edtAnniePath->setText(path);
+        edtLuxPath->setText(path);
     }
 }
 

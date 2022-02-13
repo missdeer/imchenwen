@@ -56,7 +56,7 @@ private slots:
     void on_cbSubtitles_currentIndexChanged(int);
     void on_cbAutoSelectHighestQualityVideoTrack_stateChanged(int state);
 
-    void on_cbAnnieResult_stateChanged(int state);
+    void on_cbLuxResult_stateChanged(int state);
 
     void on_cbYKDL_stateChanged(int state);
 

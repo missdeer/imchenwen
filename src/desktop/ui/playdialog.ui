@@ -71,16 +71,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="annieLoader">
+      <widget class="QLabel" name="luxLoader">
        <property name="text">
         <string>P</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="cbAnnieResult">
+      <widget class="QCheckBox" name="cbLuxResult">
        <property name="text">
-        <string>annie</string>
+        <string>lux</string>
        </property>
        <property name="checked">
         <bool>true</bool>

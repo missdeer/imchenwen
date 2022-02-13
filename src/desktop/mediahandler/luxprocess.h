@@ -1,16 +1,16 @@
-#ifndef YKDLPROCESS_H
-#define YKDLPROCESS_H
+#ifndef ANNIEPROCESS_H
+#define ANNIEPROCESS_H
 
 #include "linkresolverprocess.h"
 
-class YKDLProcess : public LinkResolverProcess
+class LuxProcess : public LinkResolverProcess
 {
 public:
-    explicit YKDLProcess(QObject *parent = nullptr);
+    explicit LuxProcess(QObject *parent = nullptr);
     void parseNode(const QJsonObject &o, MediaInfoPtr mi) override;
     void init() override;
     void start(const QString &url) override;
     void resolved(MediaInfoPtr mi) override;
 };
 
-#endif // YKDLPROCESS_H
+#endif // ANNIEPROCESS_H

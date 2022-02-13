@@ -19,9 +19,9 @@ PlayDialog::PlayDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QMovie *annieMovie = new QMovie(":/loader.gif");
-    ui->annieLoader->setMovie(annieMovie);
-    annieMovie->start();
+    QMovie *luxMovie = new QMovie(":/loader.gif");
+    ui->luxLoader->setMovie(luxMovie);
+    luxMovie->start();
 
     QMovie *ykdlMovie = new QMovie(":/loader.gif");
     ui->ykdlLoader->setMovie(ykdlMovie);
@@ -40,14 +40,11 @@ PlayDialog::PlayDialog(QWidget *parent) :
 
     createExternalPlayerList();
     Config cfg;
-    ui->cbAutoSelectHighestQualityVideoTrack->setChecked(cfg.read<bool>("autoSelectHighestQualityVideoTrack", true));
+    ui->cbAutoSelectHighestQualityVideoTrack->setChecked(
+        cfg.read<bool>("autoSelectHighestQualityVideoTrack", true));
 
-    if (!cfg.read<bool>(QLatin1String("enableStorageService"))
-            || !QUrl(cfg.read<QString>(QLatin1String("storageServiceAddress"))).isValid())
-    {
-        ui->btnDownload->setEnabled(false);
-        ui->btnPlayDownload->setEnabled(false);
-    }
+    ui->btnDownload->setEnabled(cfg.read<bool>(QLatin1String("enableStorageService")));
+    ui->btnPlayDownload->setEnabled(cfg.read<bool>(QLatin1String("enableStorageService")));
 }
 
 PlayDialog::~PlayDialog()
@@ -94,14 +91,10 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     ui->cbSubtitles->setVisible(!m_subtitles.isEmpty());
     ui->cbSubtitleEnabled->setVisible(!m_subtitles.isEmpty());
 
-    if (!mi->you_get.empty())
-        ui->yougetLoader->setVisible(false);
-    if (!mi->youtube_dl.empty())
-        ui->youtubedlLoader->setVisible(false);
-    if (!mi->ykdl.empty())
-        ui->ykdlLoader->setVisible(false);
-    if (!mi->annie.empty())
-        ui->annieLoader->setVisible(false);
+    ui->yougetLoader->setVisible(!mi->you_getDone);
+    ui->youtubedlLoader->setVisible(!mi->youtube_dlDone);
+    ui->ykdlLoader->setVisible(!mi->ykdlDone);
+    ui->luxLoader->setVisible(!mi->luxDone);
 
     struct
     {
@@ -112,11 +105,11 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
         {mi->youtube_dl, tr(" - by youtube_dl"), QIcon(":/youtube-dl.png")},
         {mi->ykdl, tr(" - by ykdl"), QIcon(":/ykdl.png")},
         {mi->you_get, tr(" - by you-get"), QIcon(":/you-get.png")},
-        {mi->annie, tr(" - by annie"), QIcon(":/annie.png")},
+        {mi->lux, tr(" - by lux"), QIcon(":/lux.png")},
     };
     for (auto & s : ss)
     {
-        for (auto stream : s.streams)
+        for (auto stream : qAsConst(s.streams))
         {
             if (stream->urls.isEmpty())
                 continue;
@@ -182,14 +175,14 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, const QString &title, 
     ui->yougetLoader->setVisible(false);
     ui->youtubedlLoader->setVisible(false);
     ui->ykdlLoader->setVisible(false);
-    ui->annieLoader->setVisible(false);
+    ui->luxLoader->setVisible(false);
 }
 
 QString PlayDialog::audioUrl()
 {
     if (m_selectedAudio && !m_selectedAudio->urls.isEmpty())
         return m_selectedAudio->urls[0];
-    return "";
+    return {};
 }
 
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
@@ -486,7 +479,7 @@ void PlayDialog::on_btnDownload_clicked()
         accept();
 }
 
-void PlayDialog::on_cbAnnieResult_stateChanged(int state)
+void PlayDialog::on_cbLuxResult_stateChanged(int state)
 {
     if (state == Qt::Checked)
     {
