@@ -1,9 +1,11 @@
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QTextStream>
+
 #include "linkresolver.h"
+
 #include "browser.h"
 #include "config.h"
-#include <QNetworkRequest>
-#include <QNetworkAccessManager>
-#include <QTextStream>
 
 LinkResolver::LinkResolver(QObject *parent)
     : QObject(parent)
@@ -58,8 +60,8 @@ void LinkResolver::resolve(const QString& url)
 
 void LinkResolver::onReadResolverOutput(const QByteArray &data)
 {
-    LinkResolverProcess *p = qobject_cast<LinkResolverProcess*>(sender());
-
+    auto *p = qobject_cast<LinkResolverProcess *>(sender());
+    p->resolved(m_mediaInfo);
     QJsonParseError e;
     QJsonDocument doc = QJsonDocument::fromJson(data, &e);
     if (e.error == QJsonParseError::IllegalUTF8String)
@@ -69,7 +71,9 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
         doc = QJsonDocument::fromJson(d.toUtf8(), &e);
     }
     if (e.error != QJsonParseError::NoError)
-        qDebug() << __FUNCTION__ << e.errorString() << QString(data);
+    {
+        qDebug() << __FUNCTION__ << __LINE__ << e.errorString() << QString(data);
+    }
 
     if (doc.isObject())
     {
@@ -86,12 +90,14 @@ void LinkResolver::onReadResolverOutput(const QByteArray &data)
             emit error(m_lastUrl, tr("Resolving failed."));
             m_lastUrl.clear();
         }
-        return;
+        qDebug() << __FUNCTION__ << __LINE__ << m_lastUrl << "Resolving failed.";
     }
 
-    if (!m_stopped && (!m_mediaInfo->title.isEmpty() || !m_mediaInfo->site.isEmpty() || !m_mediaInfo->ykdl.isEmpty() ||
-                       !m_mediaInfo->you_get.isEmpty() || !m_mediaInfo->youtube_dl.isEmpty() || !m_mediaInfo->lux.isEmpty()))
+    if (!m_stopped)
+    {
+        qDebug() << __FUNCTION__ << __LINE__ << m_lastUrl << "Resolved.";
         emit done(m_lastUrl, m_mediaInfo);
+    }
 }
 
 void LinkResolver::setupResolvers()

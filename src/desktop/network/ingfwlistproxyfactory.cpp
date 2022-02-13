@@ -45,8 +45,8 @@ void InGFWListProxyFactory::init()
     QNetworkRequest req;
     QUrl u(cfg.read(QLatin1String("gfwList"), QString("https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt")));
     req.setUrl(u);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     auto reply = nam.get(req);

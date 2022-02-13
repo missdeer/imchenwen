@@ -70,13 +70,3 @@ bool LinkResolverProcess::needProxy(const QString &url)
     }
     return false;
 }
-
-void LinkResolverProcess::parseNode(const QJsonObject &, MediaInfoPtr )
-{
-    // implement in sub-class
-}
-
-void LinkResolverProcess::init()
-{
-    // implement in sub-class
-}

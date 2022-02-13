@@ -6,8 +6,9 @@
 #include <QNetworkProxy>
 #include <QStandardPaths>
 
-#include "config.h"
 #include "luxprocess.h"
+
+#include "config.h"
 
 LuxProcess::LuxProcess(QObject *parent) : LinkResolverProcess(parent) {}
 
@@ -93,4 +94,9 @@ void LuxProcess::start(const QString &url)
     m_process.setArguments(args);
 
     LinkResolverProcess::start(url);
+}
+
+void LuxProcess::resolved(MediaInfoPtr mi)
+{
+    mi->luxDone = true;
 }

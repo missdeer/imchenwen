@@ -1,15 +1,17 @@
-#include "youtubedlprocess.h"
-#include "config.h"
 #include <QDebug>
-#include <QFileInfo>
 #include <QDir>
-#include <QTimer>
+#include <QFileInfo>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
 #include <QJsonParseError>
-#include <QStandardPaths>
 #include <QNetworkProxy>
+#include <QStandardPaths>
+#include <QTimer>
+
+#include "youtubedlprocess.h"
+
+#include "config.h"
 
 YoutubeDLProcess::YoutubeDLProcess(QObject *parent)
     : LinkResolverProcess (parent)
@@ -90,6 +92,11 @@ void YoutubeDLProcess::start(const QString &url)
     m_process.setArguments(args);
 
     LinkResolverProcess::start(url);
+}
+
+void YoutubeDLProcess::resolved(MediaInfoPtr mi)
+{
+    mi->youtube_dlDone = true;
 }
 
 void YoutubeDLProcess::parseSubtitle(const QJsonValue &v, MediaInfoPtr mi, bool manual)

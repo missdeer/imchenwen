@@ -96,3 +96,8 @@ void YouGetProcess::start(const QString &url)
 
     LinkResolverProcess::start(url);
 }
+
+void YouGetProcess::resolved(MediaInfoPtr mi)
+{
+    mi->you_getDone = true;
+}

@@ -15,8 +15,9 @@ public:
     virtual ~LinkResolverProcess();
     virtual void setProgram(const QString& program);
     virtual void start(const QString &url);
-    virtual void parseNode(const QJsonObject&, MediaInfoPtr);
-    virtual void init();
+    virtual void parseNode(const QJsonObject &, MediaInfoPtr) = 0;
+    virtual void init()                                       = 0;
+    virtual void resolved(MediaInfoPtr)                       = 0;
 signals:
     void done(const QByteArray&);
 public slots:

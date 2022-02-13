@@ -91,14 +91,10 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     ui->cbSubtitles->setVisible(!m_subtitles.isEmpty());
     ui->cbSubtitleEnabled->setVisible(!m_subtitles.isEmpty());
 
-    if (!mi->you_get.empty())
-        ui->yougetLoader->setVisible(false);
-    if (!mi->youtube_dl.empty())
-        ui->youtubedlLoader->setVisible(false);
-    if (!mi->ykdl.empty())
-        ui->ykdlLoader->setVisible(false);
-    if (!mi->lux.empty())
-        ui->luxLoader->setVisible(false);
+    ui->yougetLoader->setVisible(!mi->you_getDone);
+    ui->youtubedlLoader->setVisible(!mi->youtube_dlDone);
+    ui->ykdlLoader->setVisible(!mi->ykdlDone);
+    ui->luxLoader->setVisible(!mi->luxDone);
 
     struct
     {
@@ -113,7 +109,7 @@ void PlayDialog::setMediaInfo(const QString &originalUrl, MediaInfoPtr mi)
     };
     for (auto & s : ss)
     {
-        for (auto stream : s.streams)
+        for (auto stream : qAsConst(s.streams))
         {
             if (stream->urls.isEmpty())
                 continue;
@@ -186,7 +182,7 @@ QString PlayDialog::audioUrl()
 {
     if (m_selectedAudio && !m_selectedAudio->urls.isEmpty())
         return m_selectedAudio->urls[0];
-    return "";
+    return {};
 }
 
 void PlayDialog::on_btnExternalPlayerConfiguration_clicked()
