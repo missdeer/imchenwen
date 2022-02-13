@@ -94,8 +94,8 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
         req.setRawHeader("User-Agent", m_userAgent);
     if (!m_referrer.isEmpty())
         req.setRawHeader("Referer", m_referrer);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
 
     qDebug() << __FUNCTION__ << url << QString(m_userAgent) << QString(m_referrer);
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
@@ -103,7 +103,7 @@ void InMemoryHandler::relayMedia(Socket *socket, const QString &url)
     m_replySocketMap.insert(reply, socket);
     connect(reply, &QIODevice::readyRead, this, &InMemoryHandler::onReadyRead);
     connect(reply, &QNetworkReply::finished, this, &InMemoryHandler::onMediaReadFinished);
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &InMemoryHandler::onNetworkError);
+    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred), this, &InMemoryHandler::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &InMemoryHandler::onNetworkSSLErrors);
 }
 

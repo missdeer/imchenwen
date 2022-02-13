@@ -182,8 +182,8 @@ void DependenciesUpgrade::getFile(const QString &u, const QString &saveToFile)
 QByteArray DependenciesUpgrade::getData(const QString &u)
 {
     QNetworkRequest req(u);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
     QNetworkReply* reply = nam.get(req);
     NetworkReplyHelper helper(reply);
     helper.waitForFinished();

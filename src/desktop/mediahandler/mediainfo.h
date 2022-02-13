@@ -21,6 +21,22 @@ struct MediaInfo
     bool      luxDone {false};
     Subtitles subtitles;
     int       resultCount;
+    void      Reset()
+    {
+        url.clear();
+        site.clear();
+        title.clear();
+        ykdl.clear();
+        you_get.clear();
+        youtube_dl.clear();
+        lux.clear();
+        ykdlDone       = false;
+        you_getDone    = false;
+        youtube_dlDone = false;
+        luxDone        = false;
+        subtitles.clear();
+        resultCount = 0;
+    }
 };
 
 typedef QSharedPointer<MediaInfo> MediaInfoPtr;
