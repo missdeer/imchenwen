@@ -39,14 +39,7 @@ void LinkResolver::resolve(const QString& url)
     {
         terminateResolvers();
         m_stopped = false;
-        m_mediaInfo->title.clear();
-        m_mediaInfo->site.clear();
-        m_mediaInfo->subtitles.clear();
-        m_mediaInfo->lux.clear();
-        m_mediaInfo->ykdl.clear();
-        m_mediaInfo->you_get.clear();
-        m_mediaInfo->youtube_dl.clear();
-        m_mediaInfo->resultCount = 0;
+        m_mediaInfo->Reset();
         m_mediaInfo->url = url;
 
         m_youtubedlProcess.start(url);

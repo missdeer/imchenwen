@@ -35,14 +35,14 @@ void VIPResolver::update(bool withoutUI)
     Config cfg;
     QUrl u(cfg.read<QString>(QLatin1String("vipResolvers")));
     req.setUrl(u);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
     connect(reply, &QIODevice::readyRead, this, &VIPResolver::onReadyRead);
     connect(reply, &QNetworkReply::finished, this, &VIPResolver::onReadFinished);
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &VIPResolver::onNetworkError);
+    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred), this, &VIPResolver::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &VIPResolver::onNetworkSSLErrors);
 }
 
@@ -70,7 +70,7 @@ void VIPResolver::resolve(const QString &url)
     m_resolverIndex = 0;
     m_lastResolveUrl = url;
     m_results.clear();
-    for (auto sniffer : m_sniffers)
+    for (auto sniffer : qAsConst(m_sniffers))
     {
         if (!doSniff(sniffer))
             break;
@@ -80,7 +80,7 @@ void VIPResolver::resolve(const QString &url)
 void VIPResolver::stop()
 {
     m_stopped = true;
-    for (auto sniffer : m_sniffers)
+    for (auto sniffer : qAsConst(m_sniffers))
         sniffer->stop();
 }
 

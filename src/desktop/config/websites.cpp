@@ -100,14 +100,14 @@ void Websites::update(bool withoutUI)
     Config cfg;
     QUrl u(cfg.read<QString>(QLatin1String("shortcut")));
     req.setUrl(u);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
     connect(reply, &QIODevice::readyRead, this, &Websites::onReadyRead);
     connect(reply, &QNetworkReply::finished, this, &Websites::onReadFinished);
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &Websites::onNetworkError);
+    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred), this, &Websites::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &Websites::onNetworkSSLErrors);
 }
 

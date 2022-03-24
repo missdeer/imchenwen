@@ -35,14 +35,14 @@ void SubscriptionHelper::requestSubscription(QStringList *subscriptItems, int in
     req.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), QVariant::fromValue(subscriptItems));
     QUrl u(subscriptItems->at(index));
     req.setUrl(u);
-    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    req.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
 
     QNetworkAccessManager &nam = Browser::instance().networkAccessManager();
     QNetworkReply *reply = nam.get(req);
     connect(reply, &QIODevice::readyRead, this, &SubscriptionHelper::onReadyRead);
     connect(reply, &QNetworkReply::finished, this, &SubscriptionHelper::onReadFinished);
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &SubscriptionHelper::onNetworkError);
+    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred), this, &SubscriptionHelper::onNetworkError);
     connect(reply, &QNetworkReply::sslErrors, this, &SubscriptionHelper::onNetworkSSLErrors);
 }
 

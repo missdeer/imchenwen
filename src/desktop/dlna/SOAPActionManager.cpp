@@ -51,7 +51,7 @@ void SOAPActionManager::doAction(const QString &action, const QMap<QString, QStr
     request.setUrl(controlUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "text/xml; charset=utf-8");
     request.setRawHeader("SOAPaction", actionHeader);
-    request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
     // To do not duplicate code, just check, is this action with needed data processing, or not.
     // If you want to add new action, which needs data processing, do it here.
 
