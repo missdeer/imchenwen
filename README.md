@@ -1,5 +1,5 @@
 # imchenwen
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmissdeer%2Fimchenwen.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmissdeer%2Fimchenwen?ref=badge_shield)
 
 
 imchenwen is an interesting player that lets you to enjoy videos. It can play the video online, download it or just open the local videos.
@@ -26,7 +26,7 @@ Download from [GitHub Releases](https://github.com/missdeer/imchenwen/releases) 
 
 #### Linux (Flatpak)
 
-Install from [Flathub](https://flathub.org/apps/details/com.github.coslyk.imchenwen): `flatpak install flathub com.github.coslyk.imchenwen`
+Install from [Flathub](https://flathub.org/apps/details/com.dfordsoft.imchenwen): `flatpak install flathub com.dfordsoft.imchenwen`
 
 #### Linux (Debian)
 
@@ -119,4 +119,4 @@ sudo make install
 
 [GPLv3+](https://github.com/missdeer/imchenwen/blob/develop/LICENSE)
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmissdeer%2Fimchenwen.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmissdeer%2Fimchenwen?ref=badge_large)
