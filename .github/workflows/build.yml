@@ -60,12 +60,14 @@ jobs:
 
       - name: Deploy
         shell: bash
+        if: matrix.os != 'ubuntu-20.04'
         env:
           RUNNING_OS: ${{ matrix.os }}
         run: ./scripts/deploy-${RUNNING_OS}.sh
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
+        if: matrix.os != 'ubuntu-20.04'
         with:
           name: my-artifact
           path: |
