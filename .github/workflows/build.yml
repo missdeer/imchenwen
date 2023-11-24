@@ -103,17 +103,17 @@ jobs:
             c: clang
             cxx: clang++
             qt: qt6
-          - mingw_prefix: mingw-w64-ucrt-x86_64-static
+          - mingw_prefix: mingw-w64-ucrt-x86_64
             mingw_arch: UCRT64
             c: gcc
             cxx: g++
             qt: qt6-static
-          - mingw_prefix: mingw-w64-x86_64-static
+          - mingw_prefix: mingw-w64-x86_64
             mingw_arch: MINGW64
             c: gcc
             cxx: g++
             qt: qt6-static
-          - mingw_prefix: mingw-w64-clang-x86_64-static
+          - mingw_prefix: mingw-w64-clang-x86_64
             mingw_arch: CLANG64
             c: clang
             cxx: clang++
@@ -198,4 +198,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           path: imchenwen-${{ matrix.mingw_prefix }}
-          name: imchenwen-${{ matrix.mingw_prefix }}
+          name: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}
