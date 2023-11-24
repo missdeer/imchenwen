@@ -3,7 +3,8 @@
 # Move compiled bundle here
 mv src/imchenwen.app .
 mv 3rdparty/imchenwen-hlsdl imchenwen.app/Contents/MacOS/
-cp /usr/local/opt/ffmpeg-imchenwen/bin/ffmpeg imchenwen.app/Contents/MacOS/
+if [ -f /usr/local/opt/ffmpeg/bin/ffmpeg ]; then  cp /usr/local/opt/ffmpeg/bin/ffmpeg imchenwen.app/Contents/MacOS/ ; fi
+if [ -f /opt/homebrew/opt/ffmpeg/bin/ffmpeg ]; then  cp /opt/homebrew/opt/ffmpeg/bin/ffmpeg imchenwen.app/Contents/MacOS/ ; fi
 
 # Bundle libraries
 macdeployqt imchenwen.app -qmldir=src/qml/ -executable=imchenwen.app/Contents/MacOS/imchenwen-hlsdl
@@ -14,7 +15,7 @@ chmod 755 imchenwen.app/Contents/MacOS/*
 
 # Fix dependencies of homebrewed libraries
 ls imchenwen.app/Contents/Frameworks/*.dylib imchenwen.app/Contents/MacOS/* | while read FILENAME; do
-    DEPLOYMENT=`otool -L "$FILENAME" | grep /usr/local`
+    DEPLOYMENT=`otool -L "$FILENAME" | grep -E "(/usr/local|homebrew)"`
     if [ -n "$DEPLOYMENT" ]; then
         echo "Parsing: $FILENAME"
         echo "$DEPLOYMENT" | while read OLD_PATH; do
