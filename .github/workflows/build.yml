@@ -93,36 +93,42 @@ jobs:
             c: gcc
             cxx: g++
             qt: qt6
+            qtprefix: ucrt64
             qtdir: lib/cmake/Qt6
           - mingw_prefix: mingw-w64-x86_64
             mingw_arch: MINGW64
             c: gcc
             cxx: g++
             qt: qt6
+            qtprefix: mingw64
             qtdir: lib/cmake/Qt6
           - mingw_prefix: mingw-w64-clang-x86_64
             mingw_arch: CLANG64
             c: clang
             cxx: clang++
             qt: qt6
+            qtprefix: clang64
             qtdir: lib/cmake/Qt6
           - mingw_prefix: mingw-w64-ucrt-x86_64
             mingw_arch: UCRT64
             c: gcc
             cxx: g++
             qt: qt6-static
+            qtprefix: ucrt64/qt6-static
             qtdir: qt6-static/lib/cmake/Qt6
           - mingw_prefix: mingw-w64-x86_64
             mingw_arch: MINGW64
             c: gcc
             cxx: g++
             qt: qt6-static
+            qtprefix: mingw64/qt6-static
             qtdir: qt6-static/lib/cmake/Qt6
           - mingw_prefix: mingw-w64-clang-x86_64
             mingw_arch: CLANG64
             c: clang
             cxx: clang++
             qt: qt6-static
+            qtprefix: clang64/qt6-static
             qtdir: qt6-static/lib/cmake/Qt6
     steps: 
       - uses: msys2/setup-msys2@v2
@@ -183,7 +189,7 @@ jobs:
           export MSYSTEM=${{ matrix.mingw_arch }}
           mkdir build-imchenwen-${{ matrix.mingw_arch }}
           cd build-imchenwen-${{ matrix.mingw_arch }}
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake "-DQT_DIR=D:/a/_temp/msys64/${{ matrix.qtdir }}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake "-DCMAKE_PREFIX_PATH=D:/a/_temp/msys64/${{ matrix.qtprefix }}" "-DQT_DIR=D:/a/_temp/msys64/${{ matrix.qtdir }}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
           ninja
           cd ..
           mkdir imchenwen-${{ matrix.mingw_prefix }}
