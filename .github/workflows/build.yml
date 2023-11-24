@@ -88,24 +88,42 @@ jobs:
     strategy:
       matrix:
         include:
-          - mingw_arch: UCRT64
+          - mingw_prefix: mingw-w64-ucrt-x86_64
+            mingw_arch: UCRT64
             c: gcc
             cxx: g++
-            mingw_prefix: mingw-w64-ucrt-x86_64
-          - mingw_arch: MINGW64
+            qt: qt6
+          - mingw_prefix: mingw-w64-x86_64
+            mingw_arch: MINGW64
             c: gcc
             cxx: g++
-            mingw_prefix: mingw-w64-x86_64
-          - mingw_arch: CLANG64
+            qt: qt6
+          - mingw_prefix: mingw-w64-clang-x86_64
+            mingw_arch: CLANG64
             c: clang
             cxx: clang++
-            mingw_prefix: mingw-w64-clang-x86_64
+            qt: qt6
+          - mingw_prefix: mingw-w64-ucrt-x86_64-static
+            mingw_arch: UCRT64
+            c: gcc
+            cxx: g++
+            qt: qt6-static
+          - mingw_prefix: mingw-w64-x86_64-static
+            mingw_arch: MINGW64
+            c: gcc
+            cxx: g++
+            qt: qt6-static
+          - mingw_prefix: mingw-w64-clang-x86_64-static
+            mingw_arch: CLANG64
+            c: clang
+            cxx: clang++
+            qt: qt6-static
     steps: 
       - uses: msys2/setup-msys2@v2
         with:
           update: true
           msystem: ${{ matrix.mingw_arch }}
-          install: python ${{ matrix.mingw_prefix }}-qt6 ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson 
+          install: python ${{ matrix.mingw_prefix }}-${{ matrix.qt }} ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson 
           
       - uses: actions/checkout@v3
         with:
