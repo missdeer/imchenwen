@@ -33,7 +33,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: |-
           sudo apt-get update
-          sudo apt-get install -y ffmpeg libmpv-dev libcurl4-openssl-dev libssl-dev libxkbcommon-x11-0 libxcb-cursor0
+          sudo apt-get install -y ffmpeg libmpv-dev libcurl4-openssl-dev libssl-dev libxkbcommon-x11-0 libxcb-cursor0 ninja
 
       - name: Install macOS dependencies
         if: matrix.os == 'macos-11'
@@ -43,7 +43,7 @@ jobs:
         run: |-
           brew tap coslyk/mpv
           brew update
-          brew install openssl mpv-moonplayer freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2
+          brew install openssl mpv-moonplayer freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
 
       - name: Build
         shell: bash
