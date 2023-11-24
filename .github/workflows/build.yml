@@ -44,7 +44,7 @@ jobs:
         run: |-
           brew tap coslyk/mpv
           brew update
-          brew install openssl mpv-imchenwen freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
+          brew install openssl mpv-moonplayer freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
 
       - name: Build
         shell: bash
