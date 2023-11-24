@@ -14,16 +14,18 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
+#include <clocale>
+
 #include <QCoreApplication>
 #include <QDir>
-#include <QTimer>
-#include <QTranslator>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QSettings>
-#include <clocale>
 #include <QQuickWindow>
 #include <QSGRendererInterface>
+#include <QSettings>
+#include <QTimer>
+#include <QTranslator>
+
 #include "accessManager.h"
 #include "application.h"
 #include "downloader.h"
@@ -36,12 +38,10 @@ int main(int argc, char *argv[])
     // Check Qt version
     if (strcmp(qVersion(), QT_VERSION_STR) != 0)
     {
-        qWarning(
-            "The program is compiled against Qt %s but running on Qt %s,"
-            "which may lead to unexpected behaviors.",
-            QT_VERSION_STR,
-            qVersion()
-        );
+        qWarning("The program is compiled against Qt %s but running on Qt %s,"
+                 "which may lead to unexpected behaviors.",
+                 QT_VERSION_STR,
+                 qVersion());
     }
 
     // Force to use OpenGL in Qt6
@@ -80,40 +80,40 @@ int main(int argc, char *argv[])
 
     // Translate
     QTranslator translator;
-    if (translator.load(QLocale::system().name(), QStringLiteral(":/l10n")))
+    if (translator.load(QStringLiteral("imchenwen_") + QLocale::system().name(), QStringLiteral(":/l10n")))
     {
         QCoreApplication::installTranslator(&translator);
     }
-    
+
     QQmlApplicationEngine engine;
     engine.addImportPath(QStringLiteral("qrc:/"));
 
     // Set UI style
     switch (QSettings().value(QStringLiteral("player/theme"), 1).toInt())
     {
-        case 0:  // Classic
+    case 0: // Classic
         break;
 
-        case 1:  // Material
+    case 1: // Material
         qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", QByteArrayLiteral("Dense"));
         qputenv("QT_QUICK_CONTROLS_STYLE", QByteArrayLiteral("Material"));
         break;
 
-        case 2:  // Win10
+    case 2: // Win10
         qputenv("QT_QUICK_CONTROLS_STYLE", QByteArrayLiteral("Universal"));
         break;
     }
 
-    QQmlContext* context = engine.rootContext();
-    Downloader* downloader = Downloader::instance();
+    QQmlContext *context    = engine.rootContext();
+    Downloader  *downloader = Downloader::instance();
 
     Q_ASSERT(context != nullptr);
     Q_ASSERT(downloader != nullptr);
-    
+
     context->setContextProperty(QStringLiteral("accessManager"), NetworkAccessManager::instance());
     context->setContextProperty(QStringLiteral("downloaderModel"), QVariant::fromValue(downloader->model()));
     context->setContextProperty(QStringLiteral("plugins"), QVariant::fromValue(Plugin::loadPlugins()));
-    
+
     // Update downloader model
     QObject::connect(downloader, &Downloader::modelUpdated, [=]() {
         context->setContextProperty(QStringLiteral("downloaderModel"), QVariant::fromValue(downloader->model()));

@@ -74,9 +74,10 @@ set(QML_FILES
 
 # Create translations
 set(TS_FILES
-    l10n/zh_CN.ts 
-    l10n/zh_TW.ts  
-    l10n/zh_HK.ts
+    l10n/imchenwen_en_US.ts 
+    l10n/imchenwen_zh_CN.ts 
+    l10n/imchenwen_zh_TW.ts  
+    l10n/imchenwen_zh_HK.ts
 )
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/l10n)
 qt6_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})

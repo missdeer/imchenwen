@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/l10n">
-        <file>zh_CN.qm</file>  
-        <file>zh_TW.qm</file>
-        <file>zh_HK.qm</file>
+        <file>imchenwen_zh_CN.qm</file>  
+        <file>imchenwen_zh_TW.qm</file>
+        <file>imchenwen_zh_HK.qm</file>
     </qresource>
 </RCC>
