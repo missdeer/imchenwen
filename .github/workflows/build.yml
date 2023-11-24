@@ -177,7 +177,7 @@ jobs:
           ls -l /${{ matrix.mingw_arch }}/bin/qml*.exe
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin mingwdeployqt.exe $PWD/imchenwen.exe
-          cp /${{ matrix.mingw_prefix }}/bin/ffmpeg.exe ./
+          cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cd ..
 
       - name: download hlsdl
