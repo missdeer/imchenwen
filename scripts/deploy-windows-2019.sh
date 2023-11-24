@@ -2,7 +2,7 @@
 
 # Copy binary files
 mkdir imchenwen
-cp src/Release/imchenwen.exe src/scripts/update-parsers.ps1 libmpv/libmpv-2.dll imchenwen/
+cp build/src/imchenwen.exe src/scripts/update-parsers.ps1 libmpv/libmpv-2.dll imchenwen/
 
 # Bundle Qt
 windeployqt imchenwen/imchenwen.exe --qmldir src/qml
