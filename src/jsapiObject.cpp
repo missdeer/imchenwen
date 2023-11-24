@@ -14,24 +14,22 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QSettings>
+
 #include "jsapiObject.h"
 #include "accessManager.h"
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QSettings>
 #include "dialogs.h"
 
-JSAPIObject::JSAPIObject(const QString &id, QObject *parent) : QObject(parent), m_id(id)
-{
-}
+JSAPIObject::JSAPIObject(const QString &id, QObject *parent) : QObject(parent), m_id(id) {}
 
-
-void JSAPIObject::get_post_content(const QString& url, const QByteArray &contentType, const QByteArray& postData, const QJSValue& callbackFunc)
+void JSAPIObject::get_post_content(const QString &url, const QByteArray &contentType, const QByteArray &postData, const QJSValue &callbackFunc)
 {
     Q_ASSERT(NetworkAccessManager::instance() != nullptr);
 
     QNetworkRequest request = QNetworkRequest(url);
-    QNetworkReply *reply;
+    QNetworkReply  *reply   = nullptr;
     if (postData.isEmpty())
     {
         reply = NetworkAccessManager::instance()->get(request);
@@ -42,7 +40,7 @@ void JSAPIObject::get_post_content(const QString& url, const QByteArray &content
         reply = NetworkAccessManager::instance()->post(request, postData);
     }
 
-    QObject::connect(reply, &QNetworkReply::finished, [=](){
+    QObject::connect(reply, &QNetworkReply::finished, [reply, this, contentType, postData, callbackFunc]() {
         reply->deleteLater();
         int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -63,14 +61,16 @@ void JSAPIObject::get_post_content(const QString& url, const QByteArray &content
         }
 
         // Call callback function
-        QJSValue func = callbackFunc;
-        QJSValue retVal = func.call({ QString::fromUtf8(reply->readAll()) });
+        const QJSValue &func   = callbackFunc;
+        QJSValue        retVal = func.call({QString::fromUtf8(reply->readAll())});
         if (retVal.isError())
+        {
             emit jsError(retVal);
+        }
     });
 }
 
-void JSAPIObject::get_content(const QString& url, const QJSValue& callbackFunc)
+void JSAPIObject::get_content(const QString &url, const QJSValue &callbackFunc)
 {
     get_post_content(url, QByteArray(), QByteArray(), callbackFunc);
 }
@@ -87,25 +87,29 @@ void JSAPIObject::information(const QString &msg)
     Dialogs::instance()->messageDialog(tr("Information"), msg);
 }
 
-void JSAPIObject::warning(const QString& msg)
+void JSAPIObject::warning(const QString &msg)
 {
     Q_ASSERT(Dialogs::instance() != nullptr);
     Dialogs::instance()->messageDialog(tr("Warning"), msg);
 }
 
-void JSAPIObject::get_text(const QString& msg, const QString& defaultValue, const QJSValue& callbackFunc)
+void JSAPIObject::get_text(const QString &msg, const QString &defaultValue, const QJSValue &callbackFunc)
 {
     Q_ASSERT(Dialogs::instance() != nullptr);
-    Dialogs::instance()->textInputDialog(msg, [=](const QString& text) {
-        QJSValue retVal = QJSValue(callbackFunc).call({ text });
-        if (retVal.isError()) {
-            emit jsError(retVal);
-        }
-    }, defaultValue);
+    Dialogs::instance()->textInputDialog(
+        msg,
+        [this, callbackFunc](const QString &text) {
+            QJSValue retVal = QJSValue(callbackFunc).call({text});
+            if (retVal.isError())
+            {
+                emit jsError(retVal);
+            }
+        },
+        defaultValue);
 }
 
 // Show result
-void JSAPIObject::show_result(const QVariant& result)
+void JSAPIObject::show_result(const QVariant &result)
 {
     emit showResultRequested(result);
 }

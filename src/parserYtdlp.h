@@ -17,27 +17,31 @@
 #ifndef ParserYtdlp_H
 #define ParserYtdlp_H
 
-#include "parserBase.h"
 #include <QProcess>
+
+#include "parserBase.h"
 
 class ParserYtdlp : public ParserBase
 {
     Q_OBJECT
 public:
-    inline static ParserYtdlp* instance() { return &s_instance; }
-    explicit ParserYtdlp(QObject *parent = 0);
-    ~ParserYtdlp();
+    inline static ParserYtdlp *instance()
+    {
+        return &s_instance;
+    }
+    explicit ParserYtdlp(QObject *parent = nullptr);
+    ~ParserYtdlp() override;
 
 protected:
-    void runParser(const QUrl &url);
+    void runParser(const QUrl &url) override;
 
 private slots:
     void parseOutput(void);
 
 private:
     QProcess m_process;
-    void convertToStream(const QJsonObject &item, Stream &stream);
-    
+    void     convertToStream(const QJsonObject &item, Stream &stream);
+
     static ParserYtdlp s_instance;
 };
 

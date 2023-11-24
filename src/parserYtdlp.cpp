@@ -14,14 +14,15 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "parserYtdlp.h"
-#include "accessManager.h"
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QProcess>
 #include <QSettings>
+
+#include "parserYtdlp.h"
+#include "accessManager.h"
 #include "dialogs.h"
 #include "platform/paths.h"
 
@@ -30,8 +31,7 @@ ParserYtdlp ParserYtdlp::s_instance;
 ParserYtdlp::ParserYtdlp(QObject *parent) : ParserBase(parent)
 {
     connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ParserYtdlp::parseOutput);
-    connect(&m_process, &QProcess::errorOccurred, [&]()
-            { showErrorDialog(m_process.errorString()); });
+    connect(&m_process, &QProcess::errorOccurred, [&]() { showErrorDialog(m_process.errorString()); });
 }
 
 ParserYtdlp::~ParserYtdlp()
@@ -53,8 +53,8 @@ void ParserYtdlp::runParser(const QUrl &url)
     }
 
     QSettings settings;
-    auto proxyType = (NetworkAccessManager::ProxyType)settings.value(QStringLiteral("network/proxy_type")).toInt();
-    auto proxy = settings.value(QStringLiteral("network/proxy")).toString();
+    auto      proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
+    auto      proxy     = settings.value(QStringLiteral("network/proxy")).toString();
 
     QStringList args;
     args << QStringLiteral("-j") << QStringLiteral("--user-agent") << QStringLiteral(DEFAULT_UA);
@@ -78,7 +78,7 @@ void ParserYtdlp::parseOutput()
 #endif
 
     QJsonParseError json_error;
-    QJsonObject root = QJsonDocument::fromJson(output, &json_error).object();
+    QJsonObject     root = QJsonDocument::fromJson(output, &json_error).object();
     if (json_error.error != QJsonParseError::NoError)
     {
         showErrorDialog(QString::fromUtf8(m_process.readAllStandardError()));
@@ -95,9 +95,10 @@ void ParserYtdlp::parseOutput()
     // Get all available videos
     QJsonArray formats = root[QStringLiteral("formats")].toArray();
     QJsonArray videos;
-    Stream bestMp4Audio, bestWebmAudio;
-    int bestMp4AudioAsr = 0;
-    int bestWebmAudioAsr = 0;
+    Stream     bestMp4Audio;
+    Stream     bestWebmAudio;
+    int        bestMp4AudioAsr  = 0;
+    int        bestWebmAudioAsr = 0;
 
     for (const auto &format : formats)
     {
@@ -130,7 +131,7 @@ void ParserYtdlp::parseOutput()
     for (const auto &video : videos)
     {
         QJsonObject item = video.toObject();
-        Stream stream;
+        Stream      stream;
         convertToStream(item, stream);
 
         // Video has no audio track? => Dash video, audio in seperate file
@@ -166,16 +167,19 @@ void ParserYtdlp::parseOutput()
         result.streams << bestMp4Audio;
     }
 
+    // !TODO: add subtitle info
+
     finishParsing();
 }
 
 void ParserYtdlp::convertToStream(const QJsonObject &item, Stream &stream)
 {
     // Basic stream infos
-    stream.container = item[QStringLiteral("protocol")].toString() == QStringLiteral("m3u8") ? QStringLiteral("m3u8") : item[QStringLiteral("ext")].toString();
-    stream.referer = item[QStringLiteral("http_headers")].toObject()[QStringLiteral("Referer")].toString();
+    stream.container =
+        item[QStringLiteral("protocol")].toString() == QStringLiteral("m3u8") ? QStringLiteral("m3u8") : item[QStringLiteral("ext")].toString();
+    stream.referer  = item[QStringLiteral("http_headers")].toObject()[QStringLiteral("Referer")].toString();
     stream.seekable = true;
-    stream.is_dash = false;
+    stream.is_dash  = false;
 
     QString ua = item[QStringLiteral("http_headers")].toObject()[QStringLiteral("User-Agent")].toString();
     if (ua != QStringLiteral(DEFAULT_UA))

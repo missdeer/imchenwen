@@ -25,10 +25,10 @@ class ParserBase : public QObject
     Q_OBJECT
 public:
     explicit ParserBase(QObject *parent = nullptr);
-    virtual ~ParserBase();
-    
+    ~ParserBase() override;
+
     void parse(const QUrl &url, bool download);
-    
+
 signals:
     // Emit it to show the Downloader
     void downloadTasksAdded(void);
@@ -47,20 +47,20 @@ protected:
     struct Stream
     {
         QList<QUrl> urls;
-        QString container;
-        QString referer;
-        QString ua;
-        bool seekable;
-        bool is_dash;
+        QString     container;
+        QString     referer;
+        QString     ua;
+        bool        seekable;
+        bool        is_dash;
     };
     struct Result
     {
-        QString title;
-        QStringList stream_types;
+        QString       title;
+        QStringList   stream_types;
         QList<Stream> streams;
-        QUrl danmaku_url;
+        QUrl          danmaku_url;
     } result;
-    
+
     QUrl m_url;
     bool m_download;
 

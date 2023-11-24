@@ -25,16 +25,16 @@ class Downloader : public QObject
     Q_OBJECT
 
 public:
-    static Downloader* instance(void);
-    Downloader(QObject* parent = nullptr);
-    ~Downloader();
-    
-    void addTasks(const QString& name, const QList<QUrl>& urls, const QUrl& danmakuUrl = QUrl(), bool isDash = false);
-    QObjectList model(void);
-    
+    static Downloader *instance();
+    explicit Downloader(QObject *parent = nullptr);
+    ~Downloader() override;
+
+    void        addTasks(const QString &name, const QList<QUrl> &urls, const QUrl &danmakuUrl = QUrl(), bool isDash = false);
+    QObjectList model();
+
 signals:
-    void modelUpdated(void);
-    
+    void modelUpdated();
+
 private:
     QObjectList m_model;
 };

@@ -14,15 +14,15 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "fileDownloader.h"
 #include <QDebug>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+
+#include "fileDownloader.h"
 #include "accessManager.h"
 
-
-FileDownloader::FileDownloader(const QString& filepath, const QUrl& url, QObject* parent) :
-    QObject(parent), m_file(filepath), m_url(url), m_lastPos(0)
+FileDownloader::FileDownloader(const QString &filepath, const QUrl &url, QObject *parent)
+    : QObject(parent), m_file(filepath), m_url(url), m_lastPos(0)
 {
     // Open file
     m_reply = nullptr;
@@ -38,13 +38,14 @@ FileDownloader::~FileDownloader()
     stop();
 }
 
-
-//start a request
+// start a request
 void FileDownloader::start()
 {
     if (m_reply != nullptr)
+    {
         return;
-    
+    }
+
     // Continue from the last position
     QNetworkRequest request(m_url);
     if (m_lastPos)
@@ -61,7 +62,6 @@ void FileDownloader::start()
     emit started();
 }
 
-
 // Pause
 void FileDownloader::pause()
 {
@@ -71,22 +71,22 @@ void FileDownloader::pause()
     }
 }
 
-
 // Stop
 void FileDownloader::stop()
 {
     if (m_reply == nullptr)
+    {
         return;
-    
+    }
+
     m_reply->disconnect();
     m_reply->abort();
     m_reply->deleteLater();
     m_reply = nullptr;
-    
+
     m_file.close();
     emit stopped();
 }
-
 
 void FileDownloader::onFinished()
 {
@@ -95,13 +95,13 @@ void FileDownloader::onFinished()
 
     // Redirect?
     int status = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (status == 301 || status == 302) //redirect
+    if (status == 301 || status == 302) // redirect
     {
         m_reply->deleteLater();
         m_file.seek(0);
         m_lastPos = 0;
-        m_url = QString::fromUtf8(m_reply->rawHeader(QByteArrayLiteral("Location")));
-        m_reply = nullptr;
+        m_url     = QString::fromUtf8(m_reply->rawHeader(QByteArrayLiteral("Location")));
+        m_reply   = nullptr;
         start();
     }
 
@@ -109,13 +109,13 @@ void FileDownloader::onFinished()
     else if (m_reply->error() != QNetworkReply::NoError)
     {
         QNetworkReply::NetworkError reason = m_reply->error();
-        
+
         // Error?
         if (reason != QNetworkReply::OperationCanceledError)
         {
             qDebug() << (QStringLiteral("Http status code: %1\n%2\n").arg(QString::number(status), m_reply->errorString()));
         }
-        
+
         m_lastPos = m_file.size();
         m_reply->deleteLater();
         m_reply = nullptr;
@@ -132,7 +132,6 @@ void FileDownloader::onFinished()
     }
 }
 
-
 void FileDownloader::onReadyRead()
 {
     m_file.write(m_reply->readAll());
@@ -142,14 +141,14 @@ void FileDownloader::onDownloadProgressChanged(qint64 received, qint64 total)
 {
     bool is_percentage = (total > 0);
 
-    if (is_percentage)  // Total size is known
+    if (is_percentage) // Total size is known
     {
         m_progress = (m_lastPos + received) * 100 / (m_lastPos + total);
     }
     else
     {
-        m_progress = (m_lastPos + received) >> 20; //to MB
+        m_progress = (m_lastPos + received) >> 20; // to MB
     }
-    
+
     emit progressChanged(m_progress);
 }

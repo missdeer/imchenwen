@@ -14,51 +14,47 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "downloaderItem.h"
-#include "fileDownloader.h"
 #include <QDebug>
 #include <QProcess>
 #include <QSettings>
+
+#include "downloaderItem.h"
 #include "dialogs.h"
+#include "fileDownloader.h"
 #include "platform/paths.h"
 
-QList <FileDownloader *> DownloaderItem::s_waiting;
-std::atomic<int> DownloaderItem::s_threadCount(0);
+QList<FileDownloader *> DownloaderItem::s_waiting;
+std::atomic<int>        DownloaderItem::s_threadCount(0);
 
-
-DownloaderItem::DownloaderItem(const QString& filepath, const QList<QUrl>& urls, const QUrl& danmkauUrl, bool isDash, QObject* parent) :
-    DownloaderAbstractItem(filepath, danmkauUrl, parent),
-    m_process(nullptr),
-    m_finished(0),
-    m_total(urls.length()),
-    m_isDash(isDash)
+DownloaderItem::DownloaderItem(const QString &filepath, const QList<QUrl> &urls, const QUrl &danmkauUrl, bool isDash, QObject *parent)
+    : DownloaderAbstractItem(filepath, danmkauUrl, parent), m_process(nullptr), m_finished(0), m_total(urls.length()), m_isDash(isDash)
 {
     // Create tempdir
-    QString tempPath = QDir::tempPath() + QLatin1Char('/')  + name();
-    m_tempDir = QDir(tempPath);
+    QString tempPath = QDir::tempPath() + QLatin1Char('/') + name();
+    m_tempDir        = QDir(tempPath);
     if (!m_tempDir.exists())
     {
         m_tempDir.mkpath(tempPath);
     }
-    
+
     // Start task
     QString fileSuffix = filepath.section(QLatin1Char('.'), -1);
-    int maxThreads = QSettings().value(QStringLiteral("downloader/max_threads"), 5).toInt();
+    int     maxThreads = QSettings().value(QStringLiteral("downloader/max_threads"), 5).toInt();
 
     for (int i = 0; i < m_total; i++)
     {
         QString itemFilePath;
-        if (m_total == 1)  // Single item
+        if (m_total == 1) // Single item
         {
             itemFilePath = filepath;
         }
-        else   // Multiple items, download them to temp first, then concat them later
+        else // Multiple items, download them to temp first, then concat them later
         {
             itemFilePath = m_tempDir.filePath(QString::number(i).rightJustified(3, QLatin1Char('0'))) + QLatin1Char('.') + fileSuffix;
         }
-        
+
         // Create downloader object
-        FileDownloader* item = new FileDownloader(itemFilePath, urls[i], this);
+        auto *item = new FileDownloader(itemFilePath, urls[i], this);
 
         // Finish
         connect(item, &FileDownloader::finished, [this, item]() {
@@ -80,19 +76,17 @@ DownloaderItem::DownloaderItem(const QString& filepath, const QList<QUrl>& urls,
                 else
                 {
                     setState(FINISHED);
-                }   
+                }
             }
         });
 
         // Pause all items when one emits paused()
-        connect(item, &FileDownloader::paused, [this]() {
-            pause();
-        });
+        connect(item, &FileDownloader::paused, [this]() { pause(); });
 
         // Update download progress
         connect(item, &FileDownloader::progressChanged, [this](int) {
             int progress = m_finished * 100;
-            for (const auto& item : m_downloading)
+            for (const auto &item : m_downloading)
             {
                 progress += item->progress();
             }
@@ -119,10 +113,12 @@ DownloaderItem::DownloaderItem(const QString& filepath, const QList<QUrl>& urls,
 void DownloaderItem::start()
 {
     if (state() != PAUSED)
+    {
         return;
+    }
     setState(DOWNLOADING);
-    
-    for (const auto& item : m_downloading)
+
+    for (auto *item : m_downloading)
     {
         item->start();
     }
@@ -132,10 +128,12 @@ void DownloaderItem::start()
 void DownloaderItem::pause()
 {
     if (state() != DOWNLOADING)
+    {
         return;
+    }
     setState(PAUSED);
 
-    for (const auto &item : m_downloading)
+    for (auto *item : m_downloading)
     {
         item->pause();
     }
@@ -143,15 +141,17 @@ void DownloaderItem::pause()
 
 // Stop
 void DownloaderItem::stop()
-{   
+{
     if (state() != DOWNLOADING && state() != PAUSED)
+    {
         return;
-    
+    }
+
     // Remove all downloading items
     int numDownloading = m_downloading.count();
     while (!m_downloading.isEmpty())
     {
-        FileDownloader* item = m_downloading.takeFirst();
+        FileDownloader *item = m_downloading.takeFirst();
         item->disconnect();
         item->stop();
         item->deleteLater();
@@ -159,7 +159,7 @@ void DownloaderItem::stop()
 
     // Remove waiting items from waiting list
     auto waitings = children();
-    for (const auto& waitingItem : waitings)
+    for (const auto &waitingItem : waitings)
     {
         s_waiting.removeOne(reinterpret_cast<FileDownloader *>(waitingItem));
         waitingItem->disconnect();
@@ -173,7 +173,6 @@ void DownloaderItem::stop()
     continueWaitingItems();
 }
 
-
 // Continue waiting tasks
 void DownloaderItem::continueWaitingItems()
 {
@@ -181,30 +180,33 @@ void DownloaderItem::continueWaitingItems()
     while (s_threadCount < maxThreads && !s_waiting.isEmpty())
     {
         s_threadCount++;
-        FileDownloader* item = s_waiting.takeFirst();
+        FileDownloader *item = s_waiting.takeFirst();
         item->start();
 
-        DownloaderItem* belonging = reinterpret_cast<DownloaderItem *>(item->parent());
+        DownloaderItem *belonging = reinterpret_cast<DownloaderItem *>(item->parent());
         belonging->m_downloading << item;
     }
 }
-
 
 // Concat videos
 void DownloaderItem::concatVideos()
 {
     QStringList filelist = m_tempDir.entryList(QDir::Files, QDir::Name);
     QStringList args;
-    
+
     // Youtube's dash videos?
     if (m_isDash)
     {
         args << QStringLiteral("-y") << QStringLiteral("-i") << filelist[0] << QStringLiteral("-i") << filelist[1];
         args << QStringLiteral("-c:v") << QStringLiteral("copy");
         if (filelist[0].endsWith(QStringLiteral(".mp4")))
+        {
             args << QStringLiteral("-c:a") << QStringLiteral("aac");
+        }
         else if (filelist[0].endsWith(QStringLiteral(".webm")))
+        {
             args << QStringLiteral("-c:a") << QStringLiteral("vorbis");
+        }
         args << QStringLiteral("-strict") << QStringLiteral("experimental") << filePath();
     }
 
@@ -220,12 +222,12 @@ void DownloaderItem::concatVideos()
             Dialogs::instance()->messageDialog(tr("Error"), tr("Failed to write: ") + file.fileName());
             return;
         }
-        for (const auto& filename : filelist)
+        for (const auto &filename : filelist)
         {
             file.write(QStringLiteral("file '%1'\n").arg(filename).toUtf8());
         }
         file.close();
-    
+
         // Set mode to concat
         args << QStringLiteral("-y") << QStringLiteral("-f") << QStringLiteral("concat");
 
@@ -234,7 +236,7 @@ void DownloaderItem::concatVideos()
 
         // Set input
         args << QStringLiteral("-i") << QStringLiteral("filelist.txt");
-        
+
         // Set output
         args << QStringLiteral("-c") << QStringLiteral("copy") << filePath();
     }
@@ -249,11 +251,11 @@ void DownloaderItem::concatVideos()
 
 void DownloaderItem::onConcatFinished(int status)
 {
-    if (status == 0)  // Success, remove temp file
+    if (status == 0) // Success, remove temp file
     {
         setState(FINISHED);
         QStringList filelist = m_tempDir.entryList(QDir::Files, QDir::Name);
-        for (const auto& file : filelist)
+        for (const auto &file : filelist)
         {
             m_tempDir.remove(file);
         }
@@ -270,4 +272,3 @@ void DownloaderItem::onConcatFinished(int status)
     m_process->deleteLater();
     m_process = nullptr;
 }
-

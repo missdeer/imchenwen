@@ -5,7 +5,7 @@
     <name>Downloader</name>
     <message>
         <location filename="../qml/Downloader.qml" line="26"/>
-        <location filename="../downloader.cpp" line="62"/>
+        <location filename="../downloader.cpp" line="56"/>
         <source>Downloader</source>
         <translation type="unfinished"></translation>
     </message>
@@ -64,7 +64,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../downloader.cpp" line="62"/>
+        <location filename="../downloader.cpp" line="56"/>
         <source>Added task successfully.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,12 +72,12 @@
 <context>
     <name>DownloaderHlsItem</name>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="111"/>
+        <location filename="../downloaderHlsItem.cpp" line="110"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="111"/>
+        <location filename="../downloaderHlsItem.cpp" line="110"/>
         <source>Cannot pause the download of HLS streams.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -85,18 +85,18 @@
 <context>
     <name>DownloaderItem</name>
     <message>
-        <location filename="../downloaderItem.cpp" line="220"/>
-        <location filename="../downloaderItem.cpp" line="267"/>
+        <location filename="../downloaderItem.cpp" line="222"/>
+        <location filename="../downloaderItem.cpp" line="269"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="220"/>
+        <location filename="../downloaderItem.cpp" line="222"/>
         <source>Failed to write: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="267"/>
+        <location filename="../downloaderItem.cpp" line="269"/>
         <source>Failed to concat: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -127,7 +127,7 @@
 <context>
     <name>JSAPIObject</name>
     <message>
-        <location filename="../jsapiObject.cpp" line="61"/>
+        <location filename="../jsapiObject.cpp" line="59"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -145,8 +145,8 @@
 <context>
     <name>MpvObject</name>
     <message>
-        <location filename="../mpvObject.cpp" line="579"/>
-        <location filename="../mpvObject.cpp" line="604"/>
+        <location filename="../mpvObject.cpp" line="578"/>
+        <location filename="../mpvObject.cpp" line="605"/>
         <source>Untitled </source>
         <translation type="unfinished"></translation>
     </message>
@@ -232,12 +232,12 @@ Please try updating plugins.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="160"/>
+        <location filename="../parserYtdlp.cpp" line="161"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="165"/>
+        <location filename="../parserYtdlp.cpp" line="166"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished"></translation>
     </message>
