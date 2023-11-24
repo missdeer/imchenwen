@@ -14,7 +14,7 @@ if (UNIX)
     find_package(CURL REQUIRED)
     find_package(Threads REQUIRED)
 
-    add_executable(moonplayer-hlsdl
+    add_executable(imchenwen-hlsdl
         hlsdl/src/main.c
         hlsdl/src/aes_openssl.c
         hlsdl/src/curl.c
@@ -23,10 +23,10 @@ if (UNIX)
         hlsdl/src/msg.c
         hlsdl/src/mpegts.c)
 
-    target_include_directories(moonplayer-hlsdl PRIVATE ${OPENSSL_INCLUDE_DIR} ${CURL_INCLUDE_DIRS})
-    target_link_libraries(moonplayer-hlsdl PRIVATE ${OPENSSL_CRYPTO_LIBRARY} ${CURL_LIBRARIES} Threads::Threads)
+    target_include_directories(imchenwen-hlsdl PRIVATE ${OPENSSL_INCLUDE_DIR} ${CURL_INCLUDE_DIRS})
+    target_link_libraries(imchenwen-hlsdl PRIVATE ${OPENSSL_CRYPTO_LIBRARY} ${CURL_LIBRARIES} Threads::Threads)
 
     if (NOT APPLE)
-        install(TARGETS moonplayer-hlsdl RUNTIME DESTINATION bin)
+        install(TARGETS imchenwen-hlsdl RUNTIME DESTINATION bin)
     endif()
 endif()
