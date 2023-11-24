@@ -99,3 +99,89 @@ jobs:
           set -e
           curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
           bash upload.sh imchenwen*
+
+  Windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - mingw_arch: UCRT64
+            c: gcc
+            cxx: g++
+            mingw_prefix: mingw-w64-ucrt-x86_64
+          - mingw_arch: MINGW64
+            c: gcc
+            cxx: g++
+            mingw_prefix: mingw-w64-x86_64
+          - mingw_arch: CLANG64
+            c: clang
+            cxx: clang++
+            mingw_prefix: mingw-w64-clang-x86_64
+    steps: 
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: ${{ matrix.mingw_arch }}
+          install: python ${{ matrix.mingw_prefix }}-qt6 ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson 
+          
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - run: |
+          git clone https://github.com/missdeer/mingwdeployqt.git
+          
+      - name: Build mingwdeployqt
+        shell: msys2 {0}
+        run: |
+          cd mingwdeployqt
+          mkdir build
+          cd build
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          ninja
+          cp mingwdeployqt.exe /${{ matrix.mingw_arch }}/bin/
+          cd ../..
+
+      - run: |
+          git clone --recursive https://code.videolan.org/videolan/libplacebo
+          
+      - name: Build libplacebo
+        shell: msys2 {0}
+        run: |
+          cd libplacebo
+          DIR=./build
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson setup build --prefix=/${{ matrix.mingw_arch }}
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson compile -C build
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson install -C build
+          
+      - name: checkout mpv
+        run: |
+          git clone --depth=1 https://github.com/mpv-player/mpv.git
+
+      - name: build mpv
+        shell: msys2 {0}
+        run: |
+          cd mpv
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson setup build --prefix=/${{ matrix.mingw_arch }} -Dlibmpv=true
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson compile -C build
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson install -C build
+          cd ..
+
+      - name: build imchenwen
+        shell: msys2 {0}
+        run: |
+          mkdir build-imchenwen-${{ matrix.mingw_arch }}
+          cd build-imchenwen-${{ matrix.mingw_arch }}
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          ninja
+          cd ..
+          mkdir imchenwen-${{ matrix.mingw_arch }}
+          cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_arch }}/
+          cd imchenwen-${{ matrix.mingw_arch }}
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe
+          
+      - name: upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          path: imchenwen-${{ matrix.mingw_arch }}
+          name: imchenwen-${{ matrix.mingw_arch }}
