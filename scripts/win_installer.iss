@@ -3,7 +3,7 @@
 
 #define MyAppName "imchenwen"
 #define MyAppVersion "4.3"
-#define MyAppPublisher "coslyk"
+#define MyAppPublisher "DForD Software"
 #define MyAppURL "https://www.dfordsoft.com/imchenwen.html"
 #define MyAppExeName "imchenwen.exe"
 
