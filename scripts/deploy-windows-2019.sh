@@ -16,7 +16,7 @@ curl -Lo ffmpeg.7z https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-5.1.2-esse
 7z e ffmpeg.7z -oimchenwen ffmpeg-5.1.2-essentials_build/bin/ffmpeg.exe
 
 # Bundle hlsdl
-curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-883acbd-win32-static-xpmod-sse.7z
+curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-dff8a57-win32-static-xpmod-sse.7z
 7z e hlsdl.7z -oimchenwen hlsdl.exe
 
 # Create installer

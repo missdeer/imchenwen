@@ -161,6 +161,12 @@ jobs:
           cd imchenwen-${{ matrix.mingw_arch }}
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe imchenwen-${{ matrix.mingw_arch }}/
+
+      - name: download hlsdl
+        shell: cmd
+        run: |
+          curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-dff8a57-win32-static-xpmod-sse.7z
+          7z e hlsdl.7z -oimchenwen-${{ matrix.mingw_arch }} hlsdl.exe
           
       - name: upload artifact
         uses: actions/upload-artifact@v1
