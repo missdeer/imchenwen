@@ -11,4 +11,6 @@ rename mpv.def mpv.def.bak
 echo EXPORTS > mpv.def
 type mpv.def.bak >> mpv.def
 lib /def:mpv.def /name:libmpv-2.dll /out:mpv.lib /MACHINE:X64
+del /q mpv.def
+rename mpv.def.bak mpv.def
 cd ..
