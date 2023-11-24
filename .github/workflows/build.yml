@@ -117,6 +117,7 @@ jobs:
       - name: Build mingwdeployqt
         shell: msys2 {0}
         run: |
+          export MSYSTEM=${{ matrix.mingw_arch }}
           cd mingwdeployqt
           mkdir build
           cd build
@@ -131,6 +132,7 @@ jobs:
       - name: Build libplacebo
         shell: msys2 {0}
         run: |
+          export MSYSTEM=${{ matrix.mingw_arch }}
           cd libplacebo
           DIR=./build
           env PATH=/${{ matrix.mingw_arch }}/bin/ meson setup build --prefix=/${{ matrix.mingw_arch }}
@@ -144,6 +146,7 @@ jobs:
       - name: build mpv
         shell: msys2 {0}
         run: |
+          export MSYSTEM=${{ matrix.mingw_arch }}
           cd mpv
           env PATH=/${{ matrix.mingw_arch }}/bin/ meson setup build --prefix=/${{ matrix.mingw_arch }} -Dlibmpv=true
           env PATH=/${{ matrix.mingw_arch }}/bin/ meson compile -C build
@@ -153,27 +156,28 @@ jobs:
       - name: build imchenwen
         shell: msys2 {0}
         run: |
+          export MSYSTEM=${{ matrix.mingw_arch }}
           mkdir build-imchenwen-${{ matrix.mingw_arch }}
           cd build-imchenwen-${{ matrix.mingw_arch }}
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
           ninja
           cd ..
-          mkdir imchenwen-${{ matrix.mingw_arch }}
-          cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_arch }}/
-          cd imchenwen-${{ matrix.mingw_arch }}
+          mkdir imchenwen-${{ matrix.mingw_prefix }}
+          cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/
+          cd imchenwen-${{ matrix.mingw_prefix }}
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/windeployqt-qt6.exe --qmldir ../src/qml $PWD/imchenwen.exe
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/windeployqt.exe  --qmldir ../src/qml $PWD/imchenwen.exe
-          cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
+          cp /${{ matrix.mingw_prefix }}/bin/ffmpeg.exe ./
           cd ..
 
       - name: download hlsdl
         shell: cmd
         run: |
           curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-dff8a57-win32-static-xpmod-sse.7z
-          7z e hlsdl.7z -oimchenwen-${{ matrix.mingw_arch }} hlsdl.exe
+          7z e hlsdl.7z -oimchenwen-${{ matrix.mingw_prefix }} hlsdl.exe
           
       - name: upload artifact
         uses: actions/upload-artifact@v1
         with:
-          path: imchenwen-${{ matrix.mingw_arch }}
+          path: imchenwen-${{ matrix.mingw_prefix }}
           name: imchenwen-${{ matrix.mingw_prefix }}
