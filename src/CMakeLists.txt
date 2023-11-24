@@ -72,15 +72,18 @@ set(QML_FILES
     qml_singletons/SkinColor.qml
 )
 
-# Create translations
-set(TS_FILES
-    l10n/imchenwen_en_US.ts 
-    l10n/imchenwen_zh_CN.ts 
-    l10n/imchenwen_zh_TW.ts  
-    l10n/imchenwen_zh_HK.ts
-)
-set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/l10n)
-qt6_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
+if (NOT MINGW)
+    # Create translations
+    set(TS_FILES
+        l10n/imchenwen_en_US.ts 
+        l10n/imchenwen_zh_CN.ts 
+        l10n/imchenwen_zh_TW.ts  
+        l10n/imchenwen_zh_HK.ts
+    )
+    set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/l10n)
+    qt6_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
+    list(APPEND SOURCE_FILES ${QM_FILES})
+endif()
 
 # Add MacOS bundle files
 add_project_meta(META_FILES_TO_INCLUDE)
@@ -94,7 +97,6 @@ endif()
 # Create excutable
 qt_add_executable(${PROJECT_NAME}
     ${SOURCE_FILES}
-    ${QM_FILES}
     resources_qt6.qrc
     l10n/l10n.qrc
     ${META_FILES_TO_INCLUDE})
