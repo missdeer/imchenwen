@@ -160,6 +160,7 @@ jobs:
           cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_arch }}/
           cd imchenwen-${{ matrix.mingw_arch }}
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe
+          cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe imchenwen-${{ matrix.mingw_arch }}/
           
       - name: upload artifact
         uses: actions/upload-artifact@v1
