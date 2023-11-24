@@ -14,12 +14,13 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "application.h"
-#include "playlistModel.h"
-#include <QFileOpenEvent>
-#include <QUrl>
 #include <stdexcept>
 
+#include <QFileOpenEvent>
+#include <QUrl>
+
+#include "application.h"
+#include "playlistModel.h"
 
 Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
 {
@@ -46,7 +47,6 @@ Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
     }
 }
 
-
 bool Application::connectAnotherInstance()
 {
     m_client = std::make_unique<QLocalSocket>();
@@ -54,7 +54,6 @@ bool Application::connectAnotherInstance()
     m_client->waitForConnected();
     return m_client->state() == QLocalSocket::ConnectedState;
 }
-
 
 void Application::sendFileLists()
 {
@@ -70,16 +69,14 @@ void Application::sendFileLists()
     m_client->flush();
 }
 
-
 void Application::createServer()
 {
     // If the previous instance crashes the pipe will remain in the filesystem
-    QLocalServer::removeServer(QStringLiteral("imchenwen_0817"));
+    QLocalServer::removeServer(QStringLiteral("imchenwen_0517"));
 
-    // His birthday 1926.08.17
     // +1s
     m_server = std::make_unique<QLocalServer>();
-    if (m_server->listen(QStringLiteral("imchenwen_0817")))
+    if (m_server->listen(QStringLiteral("imchenwen_0517")))
     {
         connect(m_server.get(), &QLocalServer::newConnection, this, &Application::onNewConnection);
     }
@@ -87,17 +84,14 @@ void Application::createServer()
     {
         throw std::runtime_error("Fails to create server.");
     }
-    
 }
-
 
 void Application::processFileLists()
 {
     processFileLists(m_fileList);
 }
 
-
-void Application::processFileLists(const QByteArrayList& fileList)
+void Application::processFileLists(const QByteArrayList &fileList)
 {
     Q_ASSERT(PlaylistModel::instance() != nullptr);
 
@@ -105,7 +99,7 @@ void Application::processFileLists(const QByteArrayList& fileList)
     {
         QList<QUrl> localFileUrls;
 
-        for (const auto& item : fileList)
+        for (const auto &item : fileList)
         {
             if (item.startsWith("http://") || item.startsWith("https://"))
             {
@@ -124,7 +118,6 @@ void Application::processFileLists(const QByteArrayList& fileList)
     }
 }
 
-
 // File opened from another instance
 void Application::onNewConnection()
 {
@@ -132,7 +125,7 @@ void Application::onNewConnection()
 
     QLocalSocket *client = m_server->nextPendingConnection();
 
-    connect(client, &QLocalSocket::readChannelFinished, [=]() {
+    connect(client, &QLocalSocket::readChannelFinished, [client, this]() {
         QByteArrayList fileList = client->readAll().split('\n');
         client->close();
         client->deleteLater();
@@ -146,20 +139,24 @@ bool Application::event(QEvent *e)
     if (e->type() == QEvent::FileOpen)
     {
         Q_ASSERT(PlaylistModel::instance() != nullptr);
-        QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(e);
-        QString file = openEvent->file();
-        if (file.isEmpty()) //url
+        auto   *openEvent = dynamic_cast<QFileOpenEvent *>(e);
+        QString file      = openEvent->file();
+        if (file.isEmpty()) // url
         {
             QUrl url = openEvent->url();
             if (url.scheme() == QStringLiteral("imchenwen"))
+            {
                 url.setScheme(QStringLiteral("http"));
+            }
             else if (url.scheme() == QStringLiteral("imchenwens"))
+            {
                 url.setScheme(QStringLiteral("https"));
+            }
             PlaylistModel::instance()->addUrl(url);
         }
         else
         {
-            PlaylistModel::instance()->addLocalFiles({ QUrl::fromLocalFile(file) });
+            PlaylistModel::instance()->addLocalFiles({QUrl::fromLocalFile(file)});
         }
     }
     return QGuiApplication::event(e);

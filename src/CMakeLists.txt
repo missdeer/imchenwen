@@ -38,15 +38,15 @@ if (APPLE)
         platform/graphics_mac.cpp
         platform/paths_mac.cpp
     )
-elseif (UNIX AND NOT APPLE)
-    list(APPEND SOURCE_FILES
-        platform/graphics_linux.cpp
-        platform/paths_linux.cpp
-    )
 elseif (WIN32)
     list(APPEND SOURCE_FILES
         platform/graphics_win.cpp
         platform/paths_win.cpp
+    )
+else ()
+    list(APPEND SOURCE_FILES
+        platform/graphics_linux.cpp
+        platform/paths_linux.cpp
     )
 endif()
 
@@ -149,12 +149,12 @@ qt_add_qml_module(${PROJECT_NAME}
 
 # Link
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    Qt6::Core
-    Qt6::Qml
-    Qt6::Quick
-    Qt6::Gui
-    Qt6::Network
-    Qt6::OpenGL
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Qml
+    Qt${QT_VERSION_MAJOR}::Quick
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Network
+    Qt${QT_VERSION_MAJOR}::OpenGL
     ${MPV_LIBRARY}
     Danmaku2AssCPP)
 

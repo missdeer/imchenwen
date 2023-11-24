@@ -31,35 +31,57 @@ class NetworkAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
 public:
-    enum ProxyType {NO_PROXY, HTTP_PROXY, SOCKS5_PROXY};
+    enum ProxyType
+    {
+        NO_PROXY,
+        HTTP_PROXY,
+        SOCKS5_PROXY
+    };
     Q_ENUM(ProxyType)
-    
-    NetworkAccessManager(QObject *parent = nullptr);
-    
-    static NetworkAccessManager *instance(void); // Singleton
-    
+
+    explicit NetworkAccessManager(QObject *parent = nullptr);
+
+    static NetworkAccessManager *instance(); // Singleton
+
     QNetworkReply *get(const QNetworkRequest &request);
     QNetworkReply *post(const QNetworkRequest &request, const QByteArray &data);
 
-    Q_INVOKABLE void setupProxy(ProxyType proxyType, const QString& proxy = QString(), bool proxyOnlyForParsing = false);
-    
-    inline void addUnseekableHost(const QString& host) { m_unseekableHosts << host; }
-    inline bool urlIsUnseekable(const QUrl& url) { return m_unseekableHosts.contains(url.host()); }
-    
-    inline void addReferer(const QUrl& url, const QByteArray& referer) { m_refererTable[url.host()] = referer; }
-    inline QByteArray refererOf(const QUrl& url) { return m_refererTable[url.host()]; }
-    
-    inline void addUserAgent(const QUrl& url, const QByteArray& ua) { m_ua_table[url.host()] = ua; }
-    inline QByteArray userAgentOf(const QUrl& url) { return m_ua_table[url.host()].isEmpty() ? s_defaultUA : m_ua_table[url.host()]; }
-    
+    Q_INVOKABLE void setupProxy(ProxyType proxyType, const QString &proxy = QString(), bool proxyOnlyForParsing = false);
+
+    inline void addUnseekableHost(const QString &host)
+    {
+        m_unseekableHosts << host;
+    }
+    inline bool urlIsUnseekable(const QUrl &url)
+    {
+        return m_unseekableHosts.contains(url.host());
+    }
+
+    inline void addReferer(const QUrl &url, const QByteArray &referer)
+    {
+        m_refererTable[url.host()] = referer;
+    }
+    inline QByteArray refererOf(const QUrl &url)
+    {
+        return m_refererTable[url.host()];
+    }
+
+    inline void addUserAgent(const QUrl &url, const QByteArray &ua)
+    {
+        m_ua_table[url.host()] = ua;
+    }
+    inline QByteArray userAgentOf(const QUrl &url)
+    {
+        return m_ua_table[url.host()].isEmpty() ? s_defaultUA : m_ua_table[url.host()];
+    }
+
 private:
-    ProxyFactory *m_proxyFactory;
-    QStringList m_unseekableHosts;
-    QHash<QString,QByteArray> m_refererTable;
-    QHash<QString,QByteArray> m_ua_table;
+    ProxyFactory              *m_proxyFactory;
+    QStringList                m_unseekableHosts;
+    QHash<QString, QByteArray> m_refererTable;
+    QHash<QString, QByteArray> m_ua_table;
 
     static QByteArray s_defaultUA;
 };
-
 
 #endif // NETWORKMANAGER_H
