@@ -18,7 +18,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.5.*'
+          version: '6.6.*'
 
       - name: Enable MSVC commands
         if: matrix.os == 'windows-2019'
@@ -51,11 +51,11 @@ jobs:
           RUNNING_OS: ${{ matrix.os }}
         run: |-
           if [ "$RUNNING_OS" -eq "windows-2019" ]; then
-            cmake -A x64 .
+            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja .
           else
-            cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
+            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr .
           fi
-          cmake --build . --config Release
+          cmake --build . --config Release --parallel --verbose
 
       - name: Deploy
         shell: bash
