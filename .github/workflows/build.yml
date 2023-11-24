@@ -183,6 +183,7 @@ jobs:
           mkdir imchenwen-${{ matrix.mingw_prefix }}
           cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/
           cd imchenwen-${{ matrix.mingw_prefix }}
+          ls -l /${{ matrix.mingw_arch }}/bin/qml*.exe
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe
           cp /${{ matrix.mingw_prefix }}/bin/ffmpeg.exe ./
