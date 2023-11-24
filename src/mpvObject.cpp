@@ -343,7 +343,7 @@ void MpvObject::addDanmaku(const Danmaku2ASS::AssBuilder::Ptr& danmakuAss)
     m_danmakuAss = danmakuAss;
     if (danmakuAss != nullptr)
     {
-        QString outputFile = QDir::temp().filePath(QStringLiteral("moonplayer_danmaku.ass"));
+        QString outputFile = QDir::temp().filePath(QStringLiteral("imchenwen_danmaku.ass"));
         danmakuAss->setDisallowMode(m_danmakuDisallowMode);
         danmakuAss->setBlockWords(m_blockWords);
         danmakuAss->setReservedArea(m_reservedArea);
@@ -388,7 +388,7 @@ void MpvObject::reloadDanmaku(bool top, bool bottom, bool scrolling, double rese
         m_danmakuAss->setReservedArea(m_reservedArea);
 
         // Export ass file
-        QString outputFile = QDir::temp().filePath(QStringLiteral("moonplayer_danmaku.ass"));
+        QString outputFile = QDir::temp().filePath(QStringLiteral("imchenwen_danmaku.ass"));
         m_danmakuAss->exportAssToFile(outputFile.toStdString());
 
         // Reload ass file

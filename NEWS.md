@@ -55,11 +55,11 @@
 
 ### version 3.5.2 (2020.10.25)
 
-1. Remove built-in youtube-dl due to DCMA takedown ([#100](https://github.com/coslyk/moonplayer/issues/100))
+1. Remove built-in youtube-dl due to DCMA takedown ([#100](https://github.com/missdeer/imchenwen/issues/100))
 
 ### version 3.5 (2020.10.15)
 
-1. Make titlebar larger ([#98](https://github.com/coslyk/moonplayer/issues/98))
+1. Make titlebar larger ([#98](https://github.com/missdeer/imchenwen/issues/98))
 2. Modern UI now fully supports Wayland (Requires Qt >= 5.15)
 3. Classic UI now supports macOS
 4. Support nvdec hardware decoding
@@ -83,7 +83,7 @@
 
 1. Add Classic UI mode
 2. Fix false video resolution when using a custom video aspect
-3. Fix taskbar icon on Linux ([#88](https://github.com/coslyk/moonplayer/pull/88))
+3. Fix taskbar icon on Linux ([#88](https://github.com/missdeer/imchenwen/pull/88))
 4. Update MPV's opengl-cb to render-api
 5. AppImage: Fix ffmpeg not bundled
 
@@ -132,7 +132,7 @@
 ### version 2.5.2 (2019.02.09)
 
 1. Fix: Cannot open files in some cases, e.g. files out of the Flatpak's sandbox
-2. Don't download plugins before MoonPlayer window is shown (seems to cause crash on some platform)
+2. Don't download plugins before imchenwen window is shown (seems to cause crash on some platform)
 3. Use Python3 on Linux
 4. Don't quit when failing to loading plugins
 5. Better wayland support
@@ -140,7 +140,7 @@
 
 ### version 2.5 (2019.01.27)
 
-1. Remind users to relaunch MoonPlayer after updating plugins
+1. Remind users to relaunch imchenwen after updating plugins
 2. Replace the unmaintained QWebkit with QWebEngine
 3. Fix: Cannot play video from dilidili
 
@@ -164,7 +164,7 @@
 1. Add ARM platform support
 2. Change the default paths for downloading and screenshot
 3. Close downloader window after opening videos from downloader
-4. Handle "moonplayer" and "moonplayers" scheme
+4. Handle "imchenwen" and "imchenwens" scheme
 5. Fix: Error dialog may be shown twice after parsing video fails
 
 ### version 2.1 (2018.11.06)

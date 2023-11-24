@@ -23,7 +23,7 @@ QString userResourcesPath()
 {
     static QString path;
     if (path.isNull())
-        path = QDir::homePath() + QStringLiteral("/AppData/Local/MoonPlayer");
+        path = QDir::homePath() + QStringLiteral("/AppData/Local/imchenwen");
     return path;
 }
 

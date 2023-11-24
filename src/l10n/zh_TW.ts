@@ -60,7 +60,7 @@
 
             &lt;p&gt;Add some urls to start download!&lt;/p&gt;
 
-            &lt;p&gt;Try our &lt;a href=&quot;https://coslyk.github.io/moonplayer.html#browser_extension&quot;&gt;Browser extensions&lt;/a&gt;&lt;/p&gt;</source>
+            &lt;p&gt;Try our &lt;a href=&quot;https://www.dfordsoft.com/imchenwen.html#browser_extension&quot;&gt;Browser extensions&lt;/a&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -120,7 +120,7 @@
     </message>
     <message>
         <location filename="../qml/Explorer.qml" line="143"/>
-        <source>&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;moonplayer:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</source>
+        <source>&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -379,7 +379,7 @@ Please try updating plugins.</source>
     </message>
     <message>
         <location filename="../qml/Settings.qml" line="195"/>
-        <source>Set to 0 to let MoonPlayer choose automatically.</source>
+        <source>Set to 0 to let imchenwen choose automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

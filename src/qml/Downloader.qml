@@ -128,7 +128,7 @@ ColumnLayout {
 
             <p>Add some urls to start download!</p>
 
-            <p>Try our <a href=\"https://coslyk.github.io/moonplayer.html#browser_extension\">Browser extensions</a></p>")
+            <p>Try our <a href=\"https://www.dfordsoft.com/imchenwen.html#browser_extension\">Browser extensions</a></p>")
 
         visible: downloaderModel.length === 0
         onLinkActivated: Qt.openUrlExternally(link)

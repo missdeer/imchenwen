@@ -397,11 +397,11 @@
     <array>
         <dict>
             <key>CFBundleURLName</key>
-            <string>MoonPlayer URL</string>
+            <string>imchenwen URL</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>moonplayer</string>
-                <string>moonplayers</string>
+                <string>imchenwen</string>
+                <string>imchenwens</string>
             </array>
         </dict>
     </array>

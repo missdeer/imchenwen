@@ -22,19 +22,14 @@
 #include <QQmlContext>
 #include <QSettings>
 #include <clocale>
+#include <QQuickWindow>
+#include <QSGRendererInterface>
 #include "accessManager.h"
 #include "application.h"
-#include "clipboard.h"
-#include "dialogs.h"
 #include "downloader.h"
-#include "downloaderAbstractItem.h"
-#include "mpvObject.h"
-#include "playlistModel.h"
 #include "platform/graphics.h"
 #include "platform/paths.h"
 #include "plugin.h"
-#include "utils.h"
-#include "websiteSettings.h"
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +51,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName(QStringLiteral("DForD Software"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("dfordsoft.com"));
     QCoreApplication::setApplicationName(QStringLiteral("imchenwen"));
-    QCoreApplication::setApplicationVersion(QStringLiteral(MOONPLAYER_VERSION));
+    QCoreApplication::setApplicationVersion(QStringLiteral(IMCHENWEN_VERSION));
 
     // Detect OpenGL, stage 1
     Graphics::detectOpenGLEarly();
@@ -87,7 +82,7 @@ int main(int argc, char *argv[])
     QTranslator translator;
     if (translator.load(QLocale::system().name(), QStringLiteral(":/l10n")))
     {
-        app.installTranslator(&translator);
+        QCoreApplication::installTranslator(&translator);
     }
     
     QQmlApplicationEngine engine;
@@ -125,16 +120,16 @@ int main(int argc, char *argv[])
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/com/dfordsoft/imchenwen/qml/main.qml")));
-    
+
     // Create user resources dir
     if (!QDir(userResourcesPath()).exists())
+    {
         QDir().mkpath(userResourcesPath());
+    }
 
     // Open files from arguments
     // Wait 0.5s to ensure OpenGL is loaded
-    QTimer::singleShot(500, [&]() {
-        app.processFileLists();
-    });
-    
-    return app.exec();
+    QTimer::singleShot(500, [&]() { app.processFileLists(); });
+
+    return QCoreApplication::exec();
 }

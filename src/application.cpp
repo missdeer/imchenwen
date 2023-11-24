@@ -29,13 +29,13 @@ Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
         QByteArray f = argv[i];
 
         // Opened from browser extension
-        if (f.startsWith("moonplayer://"))
+        if (f.startsWith("imchenwen://"))
         {
-            f.replace("moonplayer://", "http://");
+            f.replace("imchenwen://", "http://");
         }
-        else if (f.startsWith("moonplayers://"))
+        else if (f.startsWith("imchenwens://"))
         {
-            f.replace("moonplayers://", "https://");
+            f.replace("imchenwens://", "https://");
         }
         else if (f.startsWith("file://"))
         {
@@ -50,7 +50,7 @@ Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
 bool Application::connectAnotherInstance()
 {
     m_client = std::make_unique<QLocalSocket>();
-    m_client->connectToServer(QStringLiteral("MoonPlayer_0817"), QLocalSocket::WriteOnly);
+    m_client->connectToServer(QStringLiteral("imchenwen_0817"), QLocalSocket::WriteOnly);
     m_client->waitForConnected();
     return m_client->state() == QLocalSocket::ConnectedState;
 }
@@ -74,12 +74,12 @@ void Application::sendFileLists()
 void Application::createServer()
 {
     // If the previous instance crashes the pipe will remain in the filesystem
-    QLocalServer::removeServer(QStringLiteral("MoonPlayer_0817"));
+    QLocalServer::removeServer(QStringLiteral("imchenwen_0817"));
 
     // His birthday 1926.08.17
     // +1s
     m_server = std::make_unique<QLocalServer>();
-    if (m_server->listen(QStringLiteral("MoonPlayer_0817")))
+    if (m_server->listen(QStringLiteral("imchenwen_0817")))
     {
         connect(m_server.get(), &QLocalServer::newConnection, this, &Application::onNewConnection);
     }
@@ -151,9 +151,9 @@ bool Application::event(QEvent *e)
         if (file.isEmpty()) //url
         {
             QUrl url = openEvent->url();
-            if (url.scheme() == QStringLiteral("moonplayer"))
+            if (url.scheme() == QStringLiteral("imchenwen"))
                 url.setScheme(QStringLiteral("http"));
-            else if (url.scheme() == QStringLiteral("moonplayers"))
+            else if (url.scheme() == QStringLiteral("imchenwens"))
                 url.setScheme(QStringLiteral("https"));
             PlaylistModel::instance()->addUrl(url);
         }

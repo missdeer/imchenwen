@@ -23,7 +23,7 @@ QString userResourcesPath()
 {
     static QString path;
     if (path.isNull())
-        path = QDir::homePath() + QStringLiteral("/Library/Application Support/MoonPlayer");
+        path = QDir::homePath() + QStringLiteral("/Library/Application Support/imchenwen");
     return path;
 }
 
@@ -41,6 +41,6 @@ QString hlsdlFilePath()
 {
     static QString filename;
     if (filename.isNull())
-        filename = QCoreApplication::applicationDirPath() + QStringLiteral("/moonplayer-hlsdl");
+        filename = QCoreApplication::applicationDirPath() + QStringLiteral("/imchenwen-hlsdl");
     return filename;
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component type="desktop">
-  <id>com.github.coslyk.MoonPlayer</id>
-  <launchable type="desktop-id">com.github.coslyk.MoonPlayer.desktop</launchable>
+  <id>com.dfordsoft.imchenwen</id>
+  <launchable type="desktop-id">com.dfordsoft.imchenwen.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
-  <name>MoonPlayer</name>
-  <name xml:lang="zh-CN">MoonPlayer</name>
+  <name>imchenwen</name>
+  <name xml:lang="zh-CN">imchenwen</name>
   <summary>Video player for playing and downloading online videos from YouTube, Youku etc.</summary>
   <summary xml:lang="zh-CN">可以在线播放或下载来自YouTube、Youku等网站的视频的播放器。</summary>
   <description>
-    <p>MoonPlayer is an interesting player that lets you to enjoy videos. It can play the video online, download it or just open the local videos.</p>
-    <p xml:lang="zh-CN">Moon Player 是一个有趣的播放器，让您轻松享受观看视频的乐趣。配合浏览器扩展，可以轻松在线观看或下载来自Youtube、B站、优酷等诸多网站的视频。</p>
+    <p>imchenwen is an interesting player that lets you to enjoy videos. It can play the video online, download it or just open the local videos.</p>
+    <p xml:lang="zh-CN">imchenwen 是一个有趣的播放器，让您轻松享受观看视频的乐趣。配合浏览器扩展，可以轻松在线观看或下载来自Youtube、B站、优酷等诸多网站的视频。</p>
   </description>
   <releases>
     <release version="4.3" date="2023-08-12"/>
@@ -29,16 +29,16 @@
   </releases>
   <screenshots>
     <screenshot type="default">
-      <image type="source">https://coslyk.github.io/files/moonplayer-play.png</image>
-      <image type="source">https://coslyk.github.io/files/moonplayer-explorer.png</image>
-      <image type="source">https://coslyk.github.io/files/moonplayer-url.png</image>
-      <image type="source">https://coslyk.github.io/files/moonplayer-danmaku.png</image>
-      <image type="source">https://coslyk.github.io/files/moonplayer-download.png</image>
-      <image type="source">https://coslyk.github.io/files/moonplayer-hwdec.png</image>
+      <image type="source">https://coslyk.github.io/files/imchenwen-play.png</image>
+      <image type="source">https://coslyk.github.io/files/imchenwen-explorer.png</image>
+      <image type="source">https://coslyk.github.io/files/imchenwen-url.png</image>
+      <image type="source">https://coslyk.github.io/files/imchenwen-danmaku.png</image>
+      <image type="source">https://coslyk.github.io/files/imchenwen-download.png</image>
+      <image type="source">https://coslyk.github.io/files/imchenwen-hwdec.png</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://coslyk.github.io/moonplayer.html</url>
-  <url type="bugtracker">https://github.com/coslyk/moonplayer/issues</url>
+  <url type="homepage">https://coslyk.github.io/imchenwen.html</url>
+  <url type="bugtracker">https://github.com/coslyk/imchenwen/issues</url>
   <url type="donation">https://coslyk.github.io/donate.html</url>
   <project_group>coslyk</project_group>
   <update_contact>cos.lyk_AT_gmail.com</update_contact>

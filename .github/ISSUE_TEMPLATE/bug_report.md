@@ -9,11 +9,11 @@ assignees: ''
 <!-- IMPORTANT: Please submit the issue in the following format! -->
 
 <!-- Before submitting an issue, please check the following points!
- 1. The video can be played in web browser or in phone apps, but can't be played in MoonPlayer.
+ 1. The video can be played in web browser or in phone apps, but can't be played in imchenwen.
  2. The video parser is upgraded to the newest version. (In right-click menu, choose "Upgrade parsers")
  3. If the error occurs after you add a plugin manually, try removing it and relaunch.
  4. If someone has submitted the same issue, please report in the old one instead of opening a new issue.
- 5. The issue is related to MoonPlayer, not to other projects.
+ 5. The issue is related to imchenwen, not to other projects.
  -->
 
 **Describe the bug**

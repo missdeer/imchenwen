@@ -140,7 +140,7 @@ Item {
     }
     
     Label {
-        text: qsTr("<p>No plugins found.</p><p><a href=\"moonplayer:plugin\">Download plugins</a></p>")
+        text: qsTr("<p>No plugins found.</p><p><a href=\"imchenwen:plugin\">Download plugins</a></p>")
         visible: plugins.length === 0
         anchors.centerIn: parent
         onLinkActivated: Utils.updateParser()

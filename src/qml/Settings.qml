@@ -192,7 +192,7 @@ Item {
             Label { text: qsTr("Duration of still comment:"); Layout.columnSpan: 2 }
             SpinBox { id: dsSpinBox; from: 0; to: 100; value: 6; Layout.columnSpan: 2 }
             
-            Label { text: "(*): " + qsTr("Set to 0 to let MoonPlayer choose automatically."); Layout.columnSpan: 2 }
+            Label { text: "(*): " + qsTr("Set to 0 to let imchenwen choose automatically."); Layout.columnSpan: 2 }
 
             // Cache
             Label {

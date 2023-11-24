@@ -1,24 +1,24 @@
-# MoonPlayer
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcoslyk%2Fmoonplayer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcoslyk%2Fmoonplayer?ref=badge_shield)
+# imchenwen
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen?ref=badge_shield)
 
 
-MoonPlayer is an interesting player that lets you to enjoy videos. It can play the video online, download it or just open the local videos.
+imchenwen is an interesting player that lets you to enjoy videos. It can play the video online, download it or just open the local videos.
 
 ***
 
 ## Homepage
 
-The homepage of MoonPlayer is here: https://coslyk.github.io/moonplayer.html
+The homepage of imchenwen is here: https://www.dfordsoft.com/imchenwen.html
 
 Here is the development page of this project. For the introduction and usage information, please visit the homepage.
 
-[Update log](https://github.com/coslyk/moonplayer/blob/develop/NEWS.md)
+[Update log](https://github.com/missdeer/imchenwen/blob/develop/NEWS.md)
 
 ## Installation
 
 #### Windows / macOS / Linux (AppImage)
 
-Download from [GitHub Releases](https://github.com/coslyk/MoonPlayer/releases) and install it.
+Download from [GitHub Releases](https://github.com/missdeer/imchenwen/releases) and install it.
 
 **Note:**
 1. Windows version only support x64.
@@ -26,23 +26,23 @@ Download from [GitHub Releases](https://github.com/coslyk/MoonPlayer/releases) a
 
 #### Linux (Flatpak)
 
-Install from [Flathub](https://flathub.org/apps/details/com.github.coslyk.MoonPlayer): `flatpak install flathub com.github.coslyk.MoonPlayer`
+Install from [Flathub](https://flathub.org/apps/details/com.github.coslyk.imchenwen): `flatpak install flathub com.github.coslyk.imchenwen`
 
 #### Linux (Debian)
 
-Add [DebianOpt](https://github.com/coslyk/debianopt-repo) repository, then install with `sudo apt install moonplayer`.
+Add [DebianOpt](https://github.com/missdeer/debianopt-repo) repository, then install with `sudo apt install imchenwen`.
 
 #### Linux (ArchLinux, Manjaro)
 
-Add [ArchLinuxCN](https://www.archlinuxcn.org/archlinux-cn-repo-and-mirror/) repository, then install with `pacman -S moonplayer`.
+Add [ArchLinuxCN](https://www.archlinuxcn.org/archlinux-cn-repo-and-mirror/) repository, then install with `pacman -S imchenwen`.
 
 ## Screenshot
 
-![](https://coslyk.github.io/files/moonplayer-play.png)
+![](https://www.dfordsoft.com/files/imchenwen-play.png)
 
 ## Development
 
-Following packages are essential for compiling MoonPlayer.
+Following packages are essential for compiling imchenwen.
 
 On ArchLinux:
 
@@ -97,7 +97,7 @@ make
 sudo make install
 ```
 
-**Note:** MoonPlayer uses Qt's private API, so you may need to re-compile MoonPlayer after Qt is upgraded.
+**Note:** imchenwen uses Qt's private API, so you may need to re-compile imchenwen after Qt is upgraded.
 
 ## Technology stack
 
@@ -113,10 +113,10 @@ sudo make install
 
 - [hlsdl](https://github.com/selsta/hlsdl) (License: MIT)
 
-- [Danmaku2Ass-Cpp](https://github.com/coslyk/danmaku2ass_cpp) (License: WTFPL)
+- [Danmaku2Ass-Cpp](https://github.com/missdeer/danmaku2ass_cpp) (License: WTFPL)
 
 ## License
 
-[GPLv3+](https://github.com/coslyk/moonplayer/blob/develop/LICENSE)
+[GPLv3+](https://github.com/missdeer/imchenwen/blob/develop/LICENSE)
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcoslyk%2Fmoonplayer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcoslyk%2Fmoonplayer?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcoslyk%2Fimchenwen?ref=badge_large)

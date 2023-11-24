@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.0)
 
 # Basic information about project
 project(imchenwen VERSION 4.3)
-add_definitions(-DMOONPLAYER_VERSION="${PROJECT_VERSION}")
+add_definitions(-DIMCHENWEN_VERSION="${PROJECT_VERSION}")
 
 
 # Set additional project information

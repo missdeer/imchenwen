@@ -54,7 +54,7 @@ Plugin::Plugin(const QString& filepath, QObject* parent) :
     connect(apiObject, &JSAPIObject::showResultRequested, this, &Plugin::updateResult);
     connect(apiObject, &JSAPIObject::jsError, this, &Plugin::printJSError);
     QJSValue api = m_engine.newQObject(apiObject);
-    m_engine.globalObject().setProperty(QStringLiteral("moonplayer"), api);
+    m_engine.globalObject().setProperty(QStringLiteral("imchenwen"), api);
     m_engine.installExtensions(QJSEngine::ConsoleExtension);
     
     // open file

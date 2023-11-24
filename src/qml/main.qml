@@ -220,8 +220,8 @@ Window
         MenuSeparator { padding: 0 }
         Action { text: qsTr("Update plugins"); onTriggered: Utils.updateParser() }
         Action { text: qsTr("Shortcuts"); onTriggered: shortcutsDialog.visible = true }
-        Action { text: qsTr("Browser Ext."); onTriggered: Qt.openUrlExternally("https://www.dfordsoft.com/moonplayer.html#browser_extension") }
-        Action { text: qsTr("Homepage"); onTriggered: Qt.openUrlExternally("https://www.dfordsoft.com/moonplayer.html") }
+        Action { text: qsTr("Browser Ext."); onTriggered: Qt.openUrlExternally("https://www.dfordsoft.com/imchenwen.html#browser_extension") }
+        Action { text: qsTr("Homepage"); onTriggered: Qt.openUrlExternally("https://www.dfordsoft.com/imchenwen.html") }
         
         delegate: MenuItem { height: 25 }
     }

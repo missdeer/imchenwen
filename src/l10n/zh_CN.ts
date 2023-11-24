@@ -55,12 +55,20 @@
 
             &lt;p&gt;Add some urls to start download!&lt;/p&gt;
 
-            &lt;p&gt;Try our &lt;a href=&quot;https://coslyk.github.io/moonplayer.html#browser_extension&quot;&gt;Browser extensions&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;当前没有正在下载的视频 -_-&lt;/p&gt;
+            &lt;p&gt;Try our &lt;a href=&quot;https://www.dfordsoft.com/imchenwen.html#browser_extension&quot;&gt;Browser extensions&lt;/a&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;There is no files being downloaded now -_-&lt;/p&gt;
+
+            &lt;p&gt;Add some urls to start download!&lt;/p&gt;
+
+            &lt;p&gt;Try our &lt;a href=&quot;https://coslyk.github.io/imchenwen.html#browser_extension&quot;&gt;Browser extensions&lt;/a&gt;&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;当前没有正在下载的视频 -_-&lt;/p&gt;
         
         &lt;p&gt;添加些URL开始下载吧！&lt;/p&gt;
         
-        &lt;p&gt;欢迎尝试 &lt;a href=&quot;https://coslyk.github.io/moonplayer.html#browser_extension&quot;&gt;浏览器扩展&lt;/a&gt;&lt;/p&gt;</translation>
+        &lt;p&gt;欢迎尝试 &lt;a href=&quot;https://coslyk.github.io/imchenwen.html#browser_extension&quot;&gt;浏览器扩展&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../qml/Downloader.qml" line="112"/>
@@ -124,8 +132,8 @@
     </message>
     <message>
         <location filename="../qml/Explorer.qml" line="143"/>
-        <source>&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;moonplayer:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;未找到插件。&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;moonplayer:plugin&quot;&gt;下载插件&lt;/a&gt;&lt;/p&gt;</translation>
+        <source>&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</source>
+        <translation type="unfinished">&lt;p&gt;未找到插件。&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;下载插件&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -375,8 +383,8 @@ URL: %1
     </message>
     <message>
         <location filename="../qml/Settings.qml" line="195"/>
-        <source>Set to 0 to let MoonPlayer choose automatically.</source>
-        <translation type="unfinished">设置为0让MoonPlayer自动选择。</translation>
+        <source>Set to 0 to let imchenwen choose automatically.</source>
+        <translation type="unfinished">设置为0让imchenwen自动选择。</translation>
     </message>
     <message>
         <location filename="../qml/Settings.qml" line="208"/>

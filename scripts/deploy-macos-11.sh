@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Move compiled bundle here
-mv src/MoonPlayer.app .
-mv 3rdparty/moonplayer-hlsdl MoonPlayer.app/Contents/MacOS/
-cp /usr/local/opt/ffmpeg-moonplayer/bin/ffmpeg MoonPlayer.app/Contents/MacOS/
+mv src/imchenwen.app .
+mv 3rdparty/imchenwen-hlsdl imchenwen.app/Contents/MacOS/
+cp /usr/local/opt/ffmpeg-imchenwen/bin/ffmpeg imchenwen.app/Contents/MacOS/
 
 # Bundle libraries
-macdeployqt MoonPlayer.app -qmldir=src/qml/ -executable=MoonPlayer.app/Contents/MacOS/moonplayer-hlsdl
+macdeployqt imchenwen.app -qmldir=src/qml/ -executable=imchenwen.app/Contents/MacOS/imchenwen-hlsdl
 
 # Fix permissions
-chown $USER MoonPlayer.app/Contents/MacOS/*
-chmod 755 MoonPlayer.app/Contents/MacOS/*
+chown $USER imchenwen.app/Contents/MacOS/*
+chmod 755 imchenwen.app/Contents/MacOS/*
 
 # Fix dependencies of homebrewed libraries
-ls MoonPlayer.app/Contents/Frameworks/*.dylib MoonPlayer.app/Contents/MacOS/* | while read FILENAME; do
+ls imchenwen.app/Contents/Frameworks/*.dylib imchenwen.app/Contents/MacOS/* | while read FILENAME; do
     DEPLOYMENT=`otool -L "$FILENAME" | grep /usr/local`
     if [ -n "$DEPLOYMENT" ]; then
         echo "Parsing: $FILENAME"
@@ -22,7 +22,7 @@ ls MoonPlayer.app/Contents/Frameworks/*.dylib MoonPlayer.app/Contents/MacOS/* | 
             OLD_PATH=${OLD_PATH%% *}
             OLD_NAME=${OLD_PATH##*/}
             NEW_PATH="@executable_path/../Frameworks/$OLD_NAME"
-            REAL_PATH="MoonPlayer.app/Contents/Frameworks/$OLD_NAME"
+            REAL_PATH="imchenwen.app/Contents/Frameworks/$OLD_NAME"
             echo "  Old path: $OLD_PATH"
             echo "  New path: $NEW_PATH"
             if [ -e "$REAL_PATH" ]; then
@@ -38,4 +38,4 @@ ls MoonPlayer.app/Contents/Frameworks/*.dylib MoonPlayer.app/Contents/MacOS/* | 
 done
 
 # Compress to zip file
-zip -9 -r MoonPlayer_${TRAVIS_TAG#v}_macOS.zip MoonPlayer.app
+zip -9 -r imchenwen_${TRAVIS_TAG#v}_macOS.zip imchenwen.app

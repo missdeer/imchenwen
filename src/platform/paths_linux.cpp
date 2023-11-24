@@ -26,7 +26,7 @@ QString userResourcesPath()
     if (path.isNull())
     {
         const char *dataPath = getenv("XDG_DATA_HOME");
-        path = dataPath ? QString::fromUtf8(dataPath) + QStringLiteral("/moonplayer") : QDir::homePath() + QStringLiteral("/.local/share/moonplayer");
+        path = dataPath ? QString::fromUtf8(dataPath) + QStringLiteral("/imchenwen") : QDir::homePath() + QStringLiteral("/.local/share/imchenwen");
     }
     return path;
 }
@@ -50,7 +50,7 @@ QString hlsdlFilePath()
     if (filename.isNull())
     {
         QString appPath = QCoreApplication::applicationDirPath();
-        filename = appPath.endsWith(QStringLiteral("/bin")) ? appPath + QStringLiteral("/moonplayer-hlsdl") : QStringLiteral("moonplayer-hlsdl");
+        filename = appPath.endsWith(QStringLiteral("/bin")) ? appPath + QStringLiteral("/imchenwen-hlsdl") : QStringLiteral("imchenwen-hlsdl");
     }
     return filename;
 }

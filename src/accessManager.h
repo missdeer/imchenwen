@@ -17,7 +17,7 @@
 #ifndef ACCESSMANAGER_H
 #define ACCESSMANAGER_H
 
-// Manage network access of MoonPlayer
+// Manage network access of imchenwen
 
 #include <QHash>
 #include <QNetworkAccessManager>

@@ -34,7 +34,7 @@ function Get-Current-Version {
     param (
         $plugin_name
     )
-    $path = "$env:LOCALAPPDATA\MoonPlayer\version-$plugin_name.txt"
+    $path = "$env:LOCALAPPDATA\imchenwen\version-$plugin_name.txt"
     if (Test-Path $path) {
         return Get-Content -Path "$path"
     } else {
@@ -47,7 +47,7 @@ function Save-Version-Info {
         $plugin_name,
         $version
     )
-    $version > "$env:LOCALAPPDATA\MoonPlayer\version-$plugin_name.txt"
+    $version > "$env:LOCALAPPDATA\imchenwen\version-$plugin_name.txt"
 }
 
 ### Set Github Mirror
@@ -81,12 +81,12 @@ if ($latest_version -eq $current_version) {
     $version_no_v = $latest_version.Substring(1)
     $url = "$github_mirror/iawia002/lux/releases/download/$latest_version/lux_${version_no_v}_Windows_x86_64.zip"
     Write-Output $url
-    $output = "$env:LOCALAPPDATA\MoonPlayer\lux.zip"
+    $output = "$env:LOCALAPPDATA\imchenwen\lux.zip"
     (New-Object System.Net.WebClient).DownloadFile($url, $output)
 
     # Extract
     Write-Output "Extracting lux..."
-    Expand-Archive "$output" -DestinationPath "$env:LOCALAPPDATA\MoonPlayer" -Force
+    Expand-Archive "$output" -DestinationPath "$env:LOCALAPPDATA\imchenwen" -Force
     Save-Version-Info "lux" $latest_version
 }
 
@@ -111,7 +111,7 @@ if ($latest_version -eq $current_version) {
     Write-Output "Downloading latest version..."
     $url = "$github_mirror/yt-dlp/yt-dlp/releases/download/$latest_version/yt-dlp.exe"
     Write-Output $url
-    $output = "$env:LOCALAPPDATA\MoonPlayer\yt-dlp.exe"
+    $output = "$env:LOCALAPPDATA\imchenwen\yt-dlp.exe"
     (New-Object System.Net.WebClient).DownloadFile($url, $output)
     Save-Version-Info "yt-dlp" $latest_version
 }
@@ -127,7 +127,7 @@ $current_version = Get-Current-Version "plugins"
 Write-Output "Current version: $current_version"
 
 # Get latest plugins version
-$latest_version = Get-Latest-Version-Github "coslyk/moonplayer-plugins"
+$latest_version = Get-Latest-Version-Github "coslyk/imchenwen-plugins"
 Write-Output "Latest version: $latest_version"
 
 # Check if the version is latest
@@ -138,14 +138,14 @@ if ($latest_version -eq $current_version) {
 
     # Download
     Write-Output "Downloading plugins..."
-    $url = "$github_mirror/coslyk/moonplayer-plugins/releases/download/$latest_version/plugins.zip"
+    $url = "$github_mirror/coslyk/imchenwen-plugins/releases/download/$latest_version/plugins.zip"
     Write-Output $url
-    $output = "$env:LOCALAPPDATA\MoonPlayer\plugins.zip"
+    $output = "$env:LOCALAPPDATA\imchenwen\plugins.zip"
     (New-Object System.Net.WebClient).DownloadFile($url, $output)
 
     # Extract
     Write-Output "Extracting plugins..."
-    Expand-Archive "$output" -DestinationPath "$env:LOCALAPPDATA\MoonPlayer\plugins" -Force
+    Expand-Archive "$output" -DestinationPath "$env:LOCALAPPDATA\imchenwen\plugins" -Force
     Save-Version-Info "plugins" $latest_version
-    Write-Output "Finished. You need to restart MoonPlayer to load plugins."
+    Write-Output "Finished. You need to restart imchenwen to load plugins."
 }

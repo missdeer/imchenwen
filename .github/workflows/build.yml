@@ -44,7 +44,7 @@ jobs:
         run: |-
           brew tap coslyk/mpv
           brew update
-          brew install openssl mpv-moonplayer freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
+          brew install openssl mpv-imchenwen freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
 
       - name: Build
         shell: bash
@@ -71,9 +71,9 @@ jobs:
         with:
           name: my-artifact
           path: |
-            MoonPlayer_*.exe
-            MoonPlayer-*.AppImage
-            MoonPlayer_*.zip
+            imchenwen_*.exe
+            imchenwen-*.AppImage
+            imchenwen_*.zip
 
   publish:
     runs-on: ubuntu-latest
@@ -92,4 +92,4 @@ jobs:
         run: |
           set -e
           curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
-          bash upload.sh MoonPlayer*
+          bash upload.sh imchenwen*

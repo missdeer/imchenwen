@@ -22,7 +22,7 @@ OS_NAME=`uname -s`
 CPU_ARCH=`uname -m`
 
 if [ "$OS_NAME" = 'Darwin' ]; then       ### macOS
-    DEST_DIR="$HOME/Library/Application Support/MoonPlayer"
+    DEST_DIR="$HOME/Library/Application Support/imchenwen"
     if [ "$CPU_ARCH" = "x86_64" ]; then  ## Intel
         LUX_SUFFIX="macOS_64-bit.tar.gz"
     else
@@ -31,7 +31,7 @@ if [ "$OS_NAME" = 'Darwin' ]; then       ### macOS
 
 elif [ "$OS_NAME" = 'Linux' ]; then      ### Linux
     XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
-    DEST_DIR="$XDG_DATA_HOME/moonplayer"
+    DEST_DIR="$XDG_DATA_HOME/imchenwen"
     case "$CPU_ARCH" in
         i?86)
             LUX_SUFFIX="Linux_i386.tar.gz" ;;
@@ -163,7 +163,7 @@ CURRENT_VERSION=$(get_current_version "plugins")
 echo "Current version: $CURRENT_VERSION"
 
 # Get latest plugins' version
-LATEST_VERSION=$(get_latest_version_github "coslyk/moonplayer-plugins")
+LATEST_VERSION=$(get_latest_version_github "coslyk/imchenwen-plugins")
 if [ -n "$LATEST_VERSION" ]; then
     echo "Latest version: $LATEST_VERSION"
 else
@@ -177,12 +177,12 @@ else
     # Download latest version
     echo "\n-------------- Updating plugins --------------"
     echo "Downloading latest version..."
-    URL="$GITHUB_MIRROR/coslyk/moonplayer-plugins/releases/download/$LATEST_VERSION/plugins.zip"
+    URL="$GITHUB_MIRROR/coslyk/imchenwen-plugins/releases/download/$LATEST_VERSION/plugins.zip"
     echo "$URL"
     downloader plugins.zip "$URL" || exit 1
     unzip -o plugins.zip -d plugins
     rm -f plugins.zip
     save_version_info "plugins" "$LATEST_VERSION"
-    echo "Finished. You need to restart MoonPlayer to load plugins."
+    echo "Finished. You need to restart imchenwen to load plugins."
 fi
 

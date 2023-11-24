@@ -25,7 +25,7 @@ find_path(
   NAMES mpv/client.h
   PATHS
       ${PROJECT_SOURCE_DIR}/libmpv/include   # Windows
-      /usr/local/opt/mpv-moonplayer/include  # macOS
+      /usr/local/opt/mpv-imchenwen/include  # macOS
   DOC "MPV include directory"
 )
 
@@ -43,7 +43,7 @@ foreach(l ${_MPV_LIBRARY_NAMES})
     NAMES ${l}
     PATHS
         ${PROJECT_SOURCE_DIR}/libmpv       # Windows
-        /usr/local/opt/mpv-moonplayer/lib  # macOS
+        /usr/local/opt/mpv-imchenwen/lib  # macOS
   )
   list(APPEND MPV_LIBRARY ${MPV_LIBRARY_${l}})
 endforeach()
