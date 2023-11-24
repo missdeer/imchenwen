@@ -39,7 +39,7 @@ public:
 private:
     static QList<FileDownloader *> s_waiting;
     static std::atomic<int>        s_threadCount;
-    static void                    continueWaitingItems(void);
+    static void                    continueWaitingItems();
 
     QList<FileDownloader *> m_downloading;
     QDir                    m_tempDir;

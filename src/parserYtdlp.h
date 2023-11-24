@@ -36,7 +36,7 @@ protected:
     void runParser(const QUrl &url) override;
 
 private slots:
-    void parseOutput(void);
+    void parseOutput();
 
 private:
     QProcess m_process;

@@ -57,8 +57,8 @@ public:
 
 signals:
     void consoleStarted(const QString& title);
-    void consoleFinished(void);
-    void consoleOutputsChanged(void);
+    void consoleFinished();
+    void consoleOutputsChanged();
     void messageStarted(const QString& title, const QString& message);
     void openUrlStarted(const QUrl& url);
     void selectionStarted(const QString& title, const QStringList& items, const QString& checkboxText);

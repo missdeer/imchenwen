@@ -16,6 +16,7 @@
 
 // C++ Wrapper for libmpv
 
+#include <cassert>
 #include <cstring>
 #include <stdexcept>
 #include <mpv/client.h>

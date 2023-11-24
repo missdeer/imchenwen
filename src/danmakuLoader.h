@@ -30,7 +30,7 @@ public:
     void start(const QUrl& srcUrl, int width, int height);
 
 private slots:
-    void onXmlDownloaded(void);
+    void onXmlDownloaded();
 
 private:
     QNetworkReply *m_reply;

@@ -34,7 +34,7 @@ class Clipboard : public QObject
 
 public:
     explicit Clipboard(QObject *parent = nullptr);
-    QString text(void);
+    QString text();
 
 public slots:
     void setText(const QString &text);

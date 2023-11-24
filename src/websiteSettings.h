@@ -31,23 +31,29 @@ class WebsiteSettings : public QObject
     Q_PROPERTY(QStringList websites READ getWebsites NOTIFY websitesChanged)
 
 public:
-    inline static WebsiteSettings* instance(void) { return s_instance; };
-    
-    WebsiteSettings(QObject* parent = nullptr);
-    ~WebsiteSettings();
+    inline static WebsiteSettings *instance()
+    {
+        return s_instance;
+    };
 
-    void set(const QString& website, const QString& profile);
-    QString get(const QString& website) const;
-    Q_INVOKABLE void remove(const QString& website);
+    explicit WebsiteSettings(QObject *parent = nullptr);
+    ~WebsiteSettings() override;
 
-    inline QStringList getWebsites() const { return m_settings.keys(); }
+    void                  set(const QString &website, const QString &profile);
+    [[nodiscard]] QString get(const QString &website) const;
+    Q_INVOKABLE void      remove(const QString &website);
+
+    [[nodiscard]] QStringList getWebsites() const
+    {
+        return m_settings.keys();
+    }
 
 signals:
-    void websitesChanged(void);
+    void websitesChanged();
 
 private:
-    QMap<QString, QString> m_settings;    // website, profile
-    bool m_changed = false;
+    QMap<QString, QString> m_settings; // website, profile
+    bool                   m_changed = false;
 
     static WebsiteSettings *s_instance;
 };

@@ -29,17 +29,17 @@ class Utils : public QObject
     
 public:
     // Update video parsers
-    Q_INVOKABLE static void updateParser(void);
+    Q_INVOKABLE static void updateParser();
     
     // Get environment variable
     Q_INVOKABLE static QString environmentVariable(const QString& env);
 
     // Paths
-    Q_INVOKABLE static QUrl homeLocation(void);
-    Q_INVOKABLE static QUrl movieLocation(void);
-    Q_INVOKABLE static QUrl musicLocation(void);
-    Q_INVOKABLE static QUrl desktopLocation(void);
-    Q_INVOKABLE static QUrl downloadLocation(void);
+    Q_INVOKABLE static QUrl homeLocation();
+    Q_INVOKABLE static QUrl movieLocation();
+    Q_INVOKABLE static QUrl musicLocation();
+    Q_INVOKABLE static QUrl desktopLocation();
+    Q_INVOKABLE static QUrl downloadLocation();
 };
 
 #endif  // UTILS_H

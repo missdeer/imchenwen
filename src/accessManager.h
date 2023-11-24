@@ -48,29 +48,29 @@ public:
 
     Q_INVOKABLE void setupProxy(ProxyType proxyType, const QString &proxy = QString(), bool proxyOnlyForParsing = false);
 
-    inline void addUnseekableHost(const QString &host)
+    void addUnseekableHost(const QString &host)
     {
         m_unseekableHosts << host;
     }
-    inline bool urlIsUnseekable(const QUrl &url)
+    bool urlIsUnseekable(const QUrl &url)
     {
         return m_unseekableHosts.contains(url.host());
     }
 
-    inline void addReferer(const QUrl &url, const QByteArray &referer)
+    void addReferer(const QUrl &url, const QByteArray &referer)
     {
         m_refererTable[url.host()] = referer;
     }
-    inline QByteArray refererOf(const QUrl &url)
+    QByteArray refererOf(const QUrl &url)
     {
         return m_refererTable[url.host()];
     }
 
-    inline void addUserAgent(const QUrl &url, const QByteArray &ua)
+    void addUserAgent(const QUrl &url, const QByteArray &ua)
     {
         m_ua_table[url.host()] = ua;
     }
-    inline QByteArray userAgentOf(const QUrl &url)
+    QByteArray userAgentOf(const QUrl &url)
     {
         return m_ua_table[url.host()].isEmpty() ? s_defaultUA : m_ua_table[url.host()];
     }

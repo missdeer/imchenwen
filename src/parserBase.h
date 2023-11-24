@@ -31,14 +31,14 @@ public:
 
 signals:
     // Emit it to show the Downloader
-    void downloadTasksAdded(void);
+    void downloadTasksAdded();
 
 protected:
     // Implemented in child class to run the parser
     virtual void runParser(const QUrl &url) = 0;
 
     // Call it after "result" is filled
-    void finishParsing(void);
+    void finishParsing();
 
     // Show error dialog
     void showErrorDialog(const QString &errMsg);

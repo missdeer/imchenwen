@@ -31,17 +31,17 @@ class Application : public QGuiApplication
 public:
     Application(int &argc, char **argv);
 
-    bool connectAnotherInstance(void);
-    void sendFileLists(void);
-    void createServer(void);
-    void processFileLists(void);
+    bool connectAnotherInstance();
+    void sendFileLists();
+    void createServer();
+    void processFileLists();
     void processFileLists(const QByteArrayList& fileList);
 
 protected:
     bool event(QEvent *e);
 
 private slots:
-    void onNewConnection(void);
+    void onNewConnection();
 
 private:
     QByteArrayList m_fileList;

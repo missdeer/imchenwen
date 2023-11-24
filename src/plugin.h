@@ -33,20 +33,20 @@ class Plugin : public QObject
 
 public:
     explicit Plugin(const QString &filepath, QObject *parent = nullptr);
-    static QObjectList loadPlugins(void);
+    static QObjectList loadPlugins();
 
     Q_INVOKABLE void openItem(int index);
 
     // Access properties
-    QString name()
+    [[nodiscard]] QString name() const
     {
         return m_name;
     }
-    QString description()
+    [[nodiscard]] QString description() const
     {
         return m_description;
     }
-    QString keyword()
+    [[nodiscard]] QString keyword() const
     {
         return m_keyword;
     }
@@ -54,7 +54,7 @@ public:
     {
         return m_page;
     }
-    QStringList resultModel()
+    [[nodiscard]] QStringList resultModel() const
     {
         return m_titles;
     }
@@ -63,11 +63,11 @@ public:
     void setPage(int page);
 
 signals:
-    void nameChanged(void);
-    void descriptionChanged(void);
-    void keywordChanged(void);
-    void pageChanged(void);
-    void resultModelChanged(void);
+    void nameChanged();
+    void descriptionChanged();
+    void keywordChanged();
+    void pageChanged();
+    void resultModelChanged();
 
 private slots:
     void updateResult(const QVariant &result);
