@@ -51,10 +51,12 @@ jobs:
         env:
           RUNNING_OS: ${{ matrix.os }}
         run: |-
+          mkdir build
+          cd build
           if [ "$RUNNING_OS" -eq "windows-2019" ]; then
-            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja .
+            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
           else
-            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr .
+            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr ..
           fi
           cmake --build . --config Release --parallel --verbose
 
