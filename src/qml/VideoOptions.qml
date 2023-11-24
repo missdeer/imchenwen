@@ -17,7 +17,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import com.github.coslyk.moonplayer
+import com.dfordsoft.imchenwen
 
 ScrollView {
     id: videoOptionsDialog

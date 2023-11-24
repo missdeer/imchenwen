@@ -74,10 +74,12 @@ set(QML_FILES
 
 # Create translations
 set(TS_FILES
-    l10n/zh_CN.ts
+    l10n/zh_CN.ts 
+    l10n/zh_TW.ts  
+    l10n/zh_HK.ts
 )
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/l10n)
-qt6_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} l10n/zh_CN.ts)
+qt6_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
 
 # Add MacOS bundle files
 add_project_meta(META_FILES_TO_INCLUDE)
@@ -110,7 +112,7 @@ set_source_files_properties(qml_singletons/SkinColor.qml PROPERTIES
 )
 
 qt_add_qml_module(${PROJECT_NAME}
-    URI com.github.coslyk.moonplayer
+    URI com.dfordsoft.imchenwen
     VERSION 1.0
     QML_FILES
         ${QML_FILES}
@@ -169,6 +171,6 @@ endif()
 if (UNIX AND NOT APPLE)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
     install(DIRECTORY ../res/icons/ DESTINATION share/icons)
-    install(FILES ../res/com.github.coslyk.MoonPlayer.appdata.xml DESTINATION share/metainfo)
-    install(FILES ../res/com.github.coslyk.MoonPlayer.desktop DESTINATION share/applications)
+    install(FILES ../res/com.dfordsoft.imchenwen.appdata.xml DESTINATION share/metainfo)
+    install(FILES ../res/com.dfordsoft.imchenwen.desktop DESTINATION share/applications)
 endif()

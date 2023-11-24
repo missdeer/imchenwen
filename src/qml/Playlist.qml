@@ -18,7 +18,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import com.github.coslyk.moonplayer
+import com.dfordsoft.imchenwen
 
 Item {
     id: playlist

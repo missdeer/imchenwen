@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
 
     // Set application attributes
-    QCoreApplication::setOrganizationName(QStringLiteral("coslyk"));
-    QCoreApplication::setOrganizationDomain(QStringLiteral("coslyk.github.io"));
-    QCoreApplication::setApplicationName(QStringLiteral("MoonPlayer"));
+    QCoreApplication::setOrganizationName(QStringLiteral("DForD Software"));
+    QCoreApplication::setOrganizationDomain(QStringLiteral("dfordsoft.com"));
+    QCoreApplication::setApplicationName(QStringLiteral("imchenwen"));
     QCoreApplication::setApplicationVersion(QStringLiteral(MOONPLAYER_VERSION));
 
     // Detect OpenGL, stage 1
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
         context->setContextProperty(QStringLiteral("downloaderModel"), QVariant::fromValue(downloader->model()));
     });
 
-    engine.load(QUrl(QStringLiteral("qrc:/com/github/coslyk/moonplayer/qml/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/com/dfordsoft/imchenwen/qml/main.qml")));
     
     // Create user resources dir
     if (!QDir(userResourcesPath()).exists())

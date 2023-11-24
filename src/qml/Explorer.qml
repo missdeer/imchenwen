@@ -18,7 +18,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.settings as QSettings
-import com.github.coslyk.moonplayer
+import com.dfordsoft.imchenwen
 
 Item {
     id: explorer

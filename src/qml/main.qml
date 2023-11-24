@@ -22,7 +22,7 @@ import QtQuick.Window
 import QtQuick.Controls.Material
 import QtQuick.Controls.Universal
 import Qt.labs.settings 1.0 as QSettings
-import com.github.coslyk.moonplayer
+import com.dfordsoft.imchenwen
 
 Window
 {
@@ -32,7 +32,7 @@ Window
     minimumHeight: 450
     width: 1024
     height: 600
-    title: "MoonPlayer"
+    title: "imchenwen"
 
     // Hide system titlebar when using material UI
     property bool isMaterialUI: Utils.environmentVariable("QT_QUICK_CONTROLS_STYLE") == "Material"
@@ -220,8 +220,8 @@ Window
         MenuSeparator { padding: 0 }
         Action { text: qsTr("Update plugins"); onTriggered: Utils.updateParser() }
         Action { text: qsTr("Shortcuts"); onTriggered: shortcutsDialog.visible = true }
-        Action { text: qsTr("Browser Ext."); onTriggered: Qt.openUrlExternally("https://coslyk.github.io/moonplayer.html#browser_extension") }
-        Action { text: qsTr("Homepage"); onTriggered: Qt.openUrlExternally("https://coslyk.github.io/moonplayer.html") }
+        Action { text: qsTr("Browser Ext."); onTriggered: Qt.openUrlExternally("https://www.dfordsoft.com/moonplayer.html#browser_extension") }
+        Action { text: qsTr("Homepage"); onTriggered: Qt.openUrlExternally("https://www.dfordsoft.com/moonplayer.html") }
         
         delegate: MenuItem { height: 25 }
     }

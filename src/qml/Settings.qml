@@ -19,7 +19,7 @@ import Qt.labs.settings 1.0 as QSettings
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
-import com.github.coslyk.moonplayer
+import com.dfordsoft.imchenwen
 
 Item {
     
