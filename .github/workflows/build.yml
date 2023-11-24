@@ -81,25 +81,6 @@ jobs:
           path: |
             imchenwen_*.exe
             
-  publish:
-    runs-on: ubuntu-latest
-    needs: builds
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          
-      - name: Upload packages
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          UPLOADTOOL_ISPRERELEASE: true
-        run: |
-          set -e
-          curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
-          bash upload.sh imchenwen*
-
   Windows:
     runs-on: windows-latest
     strategy:
