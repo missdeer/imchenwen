@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
+    engine.addImportPath(QCoreApplication::applicationDirPath()+QStringLiteral("/qml"));
     engine.addImportPath(QStringLiteral("qrc:/"));
 
     // Set UI style
