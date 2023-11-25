@@ -97,12 +97,12 @@
     <message>
         <location filename="../downloaderItem.cpp" line="222"/>
         <source>Failed to write: </source>
-        <translation type="unfinished">Failed to write: </translation>
+        <translation type="unfinished">Failed to write:</translation>
     </message>
     <message>
         <location filename="../downloaderItem.cpp" line="269"/>
         <source>Failed to concat: </source>
-        <translation type="unfinished">Failed to concat: </translation>
+        <translation type="unfinished">Failed to concat:</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
         <location filename="../mpvObject.cpp" line="578"/>
         <location filename="../mpvObject.cpp" line="605"/>
         <source>Untitled </source>
-        <translation type="unfinished">Untitled </translation>
+        <translation type="unfinished">Untitled</translation>
     </message>
 </context>
 <context>
@@ -338,6 +338,11 @@ Please try updating plugins.</translation>
         <location filename="../qml/Settings.qml" line="135"/>
         <source>Parse URL with:</source>
         <translation type="unfinished">Parse URL with:</translation>
+    </message>
+    <message>
+        <location filename="../qml/Settings.qml" line="138"/>
+        <source>Auto</source>
+        <translation type="unfinished">Auto</translation>
     </message>
     <message>
         <location filename="../qml/Settings.qml" line="143"/>
@@ -714,7 +719,7 @@ Please try updating plugins.</translation>
     <message>
         <location filename="../qml/main.qml" line="35"/>
         <source>imchenwen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">imchenwen</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="180"/>

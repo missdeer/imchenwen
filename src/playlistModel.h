@@ -28,15 +28,16 @@ class PlaylistModel : public QAbstractListModel
     QML_SINGLETON
     Q_PROPERTY(int playingIndex MEMBER m_playingIndex NOTIFY playingIndexChanged)
 
-    enum OpenUrlAction
+    enum class OpenUrlAction
     {
         QUESTION,
         PLAY,
         DOWNLOAD
     };
 
-    enum Parser
+    enum class Parser
     {
+        AUTO,
         LUX,
         YT_DLP
     };

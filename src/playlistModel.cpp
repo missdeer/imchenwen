@@ -14,26 +14,50 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "playlistModel.h"
 #include <QFileInfo>
 #include <QSettings>
+
+#include "playlistModel.h"
 #include "dialogs.h"
 #include "mpvObject.h"
 #include "parserLux.h"
 #include "parserYtdlp.h"
 
-PlaylistModel* PlaylistModel::s_instance = nullptr;
+namespace
+{
+    bool isSupportedByLux(const QString &domain)
+    {
+        static QSet<QString> domains {
+            QStringLiteral("www.bilibili.com"),  QStringLiteral("www.douyin.com"),
+            QStringLiteral("bcy.net"),           QStringLiteral("www.pixivision.net"),
+            QStringLiteral("www.youku.com"),     QStringLiteral("m.toutiao.com"),
+            QStringLiteral("v.ixigua.com"),      QStringLiteral("www.ixigua.com"),
+            QStringLiteral("www.iqiyi.com"),     QStringLiteral("www.xinpianchang.com"),
+            QStringLiteral("www.mgtv.com"),      QStringLiteral("www.tangdou.com"),
+            QStringLiteral("v.douyu.com"),       QStringLiteral("www.miaopai.com"),
+            QStringLiteral("weibo.com"),         QStringLiteral("v.qq.com"),
+            QStringLiteral("music.163.com"),     QStringLiteral("yinyuetai.com"),
+            QStringLiteral("time.geekbang.org"), QStringLiteral("haokan.baidu.com"),
+            QStringLiteral("www.acfun.cn"),      QStringLiteral("hupu.com"),
+            QStringLiteral("v.huya.com"),        QStringLiteral("www.kuaishou.com"),
+            QStringLiteral("zhihu.com"),         QStringLiteral("xiaohongshu.com"),
+        };
 
-PlaylistModel::PlaylistModel(QObject* parent) :
-    QAbstractListModel(parent), m_playingIndex(-1)
+        auto iter = domains.find(domain);
+        return iter != domains.end();
+    }
+} // namespace
+
+PlaylistModel *PlaylistModel::s_instance = nullptr;
+
+PlaylistModel::PlaylistModel(QObject *parent) : QAbstractListModel(parent), m_playingIndex(-1)
 {
     Q_ASSERT(s_instance == nullptr);
     s_instance = this;
 }
 
-
 // Add item to playlist
-void PlaylistModel::addItem(const QString& title, const QUrl& fileUrl, const QUrl& danmakuUrl, const QUrl& audioTrackUrl)
+void PlaylistModel::addItem(const QString &title, const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &audioTrackUrl)
 {
     int index = m_titles.count();
     beginInsertRows(QModelIndex(), index, index);
@@ -45,21 +69,20 @@ void PlaylistModel::addItem(const QString& title, const QUrl& fileUrl, const QUr
     playItem(index);
 }
 
-
-void PlaylistModel::addItems(const QString& title, const QList<QUrl>& fileUrls, const QUrl& danmakuUrl, bool isDash)
+void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, const QUrl &danmakuUrl, bool isDash)
 {
     int start = m_titles.count();
-    
-    if (isDash)  // Youtube's dash videos
+
+    if (isDash) // Youtube's dash videos
     {
         beginInsertRows(QModelIndex(), start, start);
         m_titles << title;
-        m_fileUrls << fileUrls[0];   // First url is the video stream
+        m_fileUrls << fileUrls[0]; // First url is the video stream
         m_danmakuUrls << danmakuUrl;
-        m_audioTrackUrls << fileUrls[1];  // Second url is the audio stream
+        m_audioTrackUrls << fileUrls[1]; // Second url is the audio stream
         endInsertRows();
     }
-    else    // Normal videos
+    else // Normal videos
     {
         int count = fileUrls.count();
         beginInsertRows(QModelIndex(), start, start + count - 1);
@@ -75,13 +98,13 @@ void PlaylistModel::addItems(const QString& title, const QList<QUrl>& fileUrls, 
     playItem(start);
 }
 
-void PlaylistModel::addLocalFiles(const QList<QUrl>& fileUrls)
+void PlaylistModel::addLocalFiles(const QList<QUrl> &fileUrls)
 {
     int start = m_titles.count();
     int count = fileUrls.count();
 
     beginInsertRows(QModelIndex(), start, start + count - 1);
-    for (const auto& fileUrl : fileUrls)
+    for (const auto &fileUrl : fileUrls)
     {
         m_titles << QFileInfo(fileUrl.toLocalFile()).fileName();
         m_fileUrls << fileUrl;
@@ -110,17 +133,15 @@ void PlaylistModel::addLocalFiles(const QList<QUrl>& fileUrls)
     }
 }
 
-
-
-void PlaylistModel::addUrl ( const QUrl& url, bool download )
+void PlaylistModel::addUrl(const QUrl &url, bool download)
 {
     Q_ASSERT(ParserLux::instance() != nullptr);
     Q_ASSERT(ParserYtdlp::instance() != nullptr);
 
     // Select parser
     QSettings settings;
-    Parser parser = static_cast<Parser>(settings.value(QStringLiteral("player/parser")).toInt());
-    if (parser == LUX)
+    Parser    parser = static_cast<Parser>(settings.value(QStringLiteral("player/parser")).toInt());
+    if (parser == Parser::LUX || (parser == Parser::AUTO && isSupportedByLux(url.host())))
     {
         ParserLux::instance()->parse(url, download);
     }
@@ -130,23 +151,27 @@ void PlaylistModel::addUrl ( const QUrl& url, bool download )
     }
 }
 
-
-void PlaylistModel::addUrl(const QUrl& url)
+void PlaylistModel::addUrl(const QUrl &url)
 {
     Q_ASSERT(Dialogs::instance() != nullptr);
-    QSettings settings;
+    QSettings     settings;
     OpenUrlAction action = static_cast<OpenUrlAction>(settings.value(QStringLiteral("player/url_open_mode")).toInt());
-    if (action == QUESTION)
+    if (action == OpenUrlAction::QUESTION)
+    {
         Dialogs::instance()->openUrlDialog(url);
+    }
     else
-        addUrl(url, action == DOWNLOAD);
+    {
+        addUrl(url, action == OpenUrlAction::DOWNLOAD);
+    }
 }
-
 
 void PlaylistModel::removeItem(int index)
 {
     if (index < 0 || index >= m_titles.length())
+    {
         return;
+    }
     beginRemoveRows(QModelIndex(), index, index);
     m_titles.removeAt(index);
     m_fileUrls.removeAt(index);
@@ -157,8 +182,10 @@ void PlaylistModel::removeItem(int index)
 
 void PlaylistModel::clear()
 {
-    if (m_titles.count() == 0)
+    if (m_titles.isEmpty())
+    {
         return;
+    }
     beginRemoveRows(QModelIndex(), 0, m_titles.count() - 1);
     m_titles.clear();
     m_fileUrls.clear();
@@ -166,7 +193,6 @@ void PlaylistModel::clear()
     m_audioTrackUrls.clear();
     endRemoveRows();
 }
-
 
 void PlaylistModel::playItem(int index)
 {
@@ -183,29 +209,26 @@ void PlaylistModel::playItem(int index)
     }
 }
 
-
 void PlaylistModel::playNextItem()
 {
     playItem(m_playingIndex + 1);
 }
 
-
-
-int PlaylistModel::rowCount(const QModelIndex& parent) const
+int PlaylistModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_titles.count();
 }
 
-QVariant PlaylistModel::data(const QModelIndex& index, int role) const
+QVariant PlaylistModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    switch (role) {
-        case TitleRole:
-            return m_titles[row];
-        default:
-            return QVariant();
+    switch (role)
+    {
+    case TitleRole:
+        return m_titles[row];
     }
+    return {};
 }
 
 QHash<int, QByteArray> PlaylistModel::roleNames() const
@@ -214,5 +237,3 @@ QHash<int, QByteArray> PlaylistModel::roleNames() const
     roles[TitleRole] = QByteArrayLiteral("title");
     return roles;
 }
-
-

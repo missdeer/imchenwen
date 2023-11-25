@@ -336,6 +336,11 @@ URL: %1
         <translation>URL解析工具：</translation>
     </message>
     <message>
+        <location filename="../qml/Settings.qml" line="138"/>
+        <source>Auto</source>
+        <translation type="unfinished">自動</translation>
+    </message>
+    <message>
         <location filename="../qml/Settings.qml" line="143"/>
         <source>Play videos after being added to playlist</source>
         <translation>新增影片至播放列表後立即播放</translation>
@@ -710,7 +715,7 @@ URL: %1
     <message>
         <location filename="../qml/main.qml" line="35"/>
         <source>imchenwen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">某橙</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="180"/>

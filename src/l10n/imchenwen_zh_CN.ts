@@ -356,6 +356,11 @@ URL: %1
         <translation>下载</translation>
     </message>
     <message>
+        <location filename="../qml/Settings.qml" line="138"/>
+        <source>Auto</source>
+        <translation type="unfinished">自动</translation>
+    </message>
+    <message>
         <location filename="../qml/Settings.qml" line="143"/>
         <source>Play videos after being added to playlist</source>
         <translation>添加视频至播放列表后立即播放</translation>
@@ -761,7 +766,7 @@ URL: %1
     <message>
         <location filename="../qml/main.qml" line="35"/>
         <source>imchenwen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">某橙</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="215"/>
