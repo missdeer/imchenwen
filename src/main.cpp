@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 
     // Open files from arguments
     // Wait 0.5s to ensure OpenGL is loaded
-    QTimer::singleShot(500, [&]() { app.processFileLists(); });
+    QTimer::singleShot(500, [&app]() { app.processFileLists(); });
 
     return QCoreApplication::exec();
 }
