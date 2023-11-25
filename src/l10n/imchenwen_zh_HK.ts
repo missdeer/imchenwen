@@ -708,6 +708,11 @@ URL: %1
 <context>
     <name>main</name>
     <message>
+        <location filename="../qml/main.qml" line="35"/>
+        <source>imchenwen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/main.qml" line="180"/>
         <source>Please choose a file</source>
         <translation>請選擇文件</translation>

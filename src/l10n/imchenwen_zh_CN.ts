@@ -759,6 +759,11 @@ URL: %1
         <translation>截图</translation>
     </message>
     <message>
+        <location filename="../qml/main.qml" line="35"/>
+        <source>imchenwen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/main.qml" line="215"/>
         <source>Downloader</source>
         <translation>下载管理</translation>

@@ -712,6 +712,11 @@ Please try updating plugins.</translation>
 <context>
     <name>main</name>
     <message>
+        <location filename="../qml/main.qml" line="35"/>
+        <source>imchenwen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/main.qml" line="180"/>
         <source>Please choose a file</source>
         <translation type="unfinished">Please choose a file</translation>
