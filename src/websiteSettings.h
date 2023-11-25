@@ -31,7 +31,7 @@ class WebsiteSettings : public QObject
     Q_PROPERTY(QStringList websites READ getWebsites NOTIFY websitesChanged)
 
 public:
-    inline static WebsiteSettings *instance()
+    static WebsiteSettings *instance()
     {
         return s_instance;
     };

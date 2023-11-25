@@ -29,8 +29,8 @@ Downloader::~Downloader() {}
 
 Downloader *Downloader::instance()
 {
-    static Downloader c_instance(qApp);
-    return &c_instance;
+    static auto *c_instance = new Downloader(qApp);
+    return c_instance;
 }
 
 void Downloader::addTasks(const QString &filename, const QList<QUrl> &urls, const QUrl &danmakuUrl, bool isDash)
@@ -40,7 +40,7 @@ void Downloader::addTasks(const QString &filename, const QList<QUrl> &urls, cons
     QString                 filepath = dir.filePath(filename);
     DownloaderAbstractItem *item     = nullptr;
 
-    if (urls[0].path().endsWith(QStringLiteral(".m3u8")))
+    if (urls[0].path().endsWith(QStringLiteral(".m3u8"), Qt::CaseInsensitive))
     {
         item = new DownloaderHlsItem(filepath, urls[0], danmakuUrl, this);
     }

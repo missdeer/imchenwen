@@ -1,8 +1,6 @@
 #ifndef PARSERLUX_H
 #define PARSERLUX_H
 
-#include <QProcess>
-
 #include "parserBase.h"
 
 class ParserLux : public ParserBase
@@ -25,7 +23,6 @@ private slots:
 private:
     void parseEpisode(QJsonObject episode);
 
-    QProcess         m_process;
     static ParserLux s_instance;
 };
 

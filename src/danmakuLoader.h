@@ -25,7 +25,7 @@ class DanmakuLoader : public QObject
     Q_OBJECT
 public:
     explicit DanmakuLoader(QObject *parent = nullptr);
-    inline static DanmakuLoader* instance() { return &s_instance; }
+    static DanmakuLoader* instance() { return &s_instance; }
     
     void start(const QUrl& srcUrl, int width, int height);
 

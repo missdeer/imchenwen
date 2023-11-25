@@ -19,6 +19,7 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QProcess>
 
 class ParserBase : public QObject
 {
@@ -61,8 +62,9 @@ protected:
         QUrl          danmaku_url;
     } result;
 
-    QUrl m_url;
-    bool m_download;
+    QProcess m_process;
+    QUrl     m_url;
+    bool     m_download;
 
 private:
     void finishStreamSelection(int index);

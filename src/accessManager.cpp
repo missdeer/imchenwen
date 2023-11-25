@@ -57,8 +57,8 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent) : QNetworkAccessMana
 
 NetworkAccessManager *NetworkAccessManager::instance()
 {
-    static NetworkAccessManager singleton;
-    return &singleton;
+    static auto *singleton = new NetworkAccessManager;
+    return singleton;
 }
 
 QNetworkReply *NetworkAccessManager::get(const QNetworkRequest &req)

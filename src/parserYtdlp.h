@@ -17,15 +17,13 @@
 #ifndef ParserYtdlp_H
 #define ParserYtdlp_H
 
-#include <QProcess>
-
 #include "parserBase.h"
 
 class ParserYtdlp : public ParserBase
 {
     Q_OBJECT
 public:
-    inline static ParserYtdlp *instance()
+    static ParserYtdlp *instance()
     {
         return &s_instance;
     }
@@ -39,8 +37,7 @@ private slots:
     void parseOutput();
 
 private:
-    QProcess m_process;
-    void     convertToStream(const QJsonObject &item, Stream &stream);
+    void convertToStream(const QJsonObject &item, Stream &stream);
 
     static ParserYtdlp s_instance;
 };
