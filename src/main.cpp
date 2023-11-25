@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-    engine.addImportPath(QCoreApplication::applicationDirPath()+QStringLiteral("/qml"));
+    engine.addImportPath(QCoreApplication::applicationDirPath() + QStringLiteral("/qml"));
     engine.addImportPath(QStringLiteral("qrc:/"));
 
     // Set UI style
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     context->setContextProperty(QStringLiteral("plugins"), QVariant::fromValue(Plugin::loadPlugins()));
 
     // Update downloader model
-    QObject::connect(downloader, &Downloader::modelUpdated, [=]() {
+    QObject::connect(downloader, &Downloader::modelUpdated, [context, downloader]() {
         context->setContextProperty(QStringLiteral("downloaderModel"), QVariant::fromValue(downloader->model()));
     });
 
