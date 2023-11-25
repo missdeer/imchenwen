@@ -84,6 +84,11 @@ int main(int argc, char *argv[])
     {
         QCoreApplication::installTranslator(&translator);
     }
+    QTranslator qttranslator;
+    if (qttranslator.load(QStringLiteral("qt_") + QLocale::system().name(), QCoreApplication::applicationDirPath() + QStringLiteral("/translations")))
+    {
+        QCoreApplication::installTranslator(&qttranslator);
+    }
 
     QQmlApplicationEngine engine;
     engine.addImportPath(QCoreApplication::applicationDirPath() + QStringLiteral("/qml"));
