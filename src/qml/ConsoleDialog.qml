@@ -58,7 +58,7 @@ Dialog {
             delegate: Label {
                 text: modelData
                 height: 25
-                width: parent.width
+                width: listView.width
             }
         }
     }

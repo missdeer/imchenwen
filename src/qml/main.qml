@@ -32,7 +32,7 @@ Window
     minimumHeight: 450
     width: 1024
     height: 600
-    title: "imchenwen"
+    title: qsTr("imchenwen")
 
     // Hide system titlebar when using material UI
     property bool isMaterialUI: Utils.environmentVariable("QT_QUICK_CONTROLS_STYLE") == "Material"

@@ -99,10 +99,11 @@ Item {
             ScrollView {
                 clip: true
                 ListView {
+                    id: listView
                     model: currentPlugin.resultModel
                     delegate: Rectangle {
                         height: 30
-                        width: parent.width
+                        width: listView.width
                         color: "transparent"
                 
                         Label { text: modelData; anchors.fill: parent; verticalAlignment: Text.AlignVCenter }

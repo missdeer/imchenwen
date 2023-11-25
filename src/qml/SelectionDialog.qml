@@ -51,7 +51,7 @@ Dialog {
                 delegate: Rectangle {
                     property bool hovered: false
                     height: 25
-                    width: parent.width
+                    width: listView.width
                     color: index == listView.currentIndex ? SkinColor.listItemSelected : hovered ? SkinColor.listItemHovered : "transparent"
                 
                     Label {

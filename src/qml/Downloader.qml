@@ -37,7 +37,7 @@ ColumnLayout {
 
         delegate: Rectangle {
             height: 30
-            width: parent.width
+            width: listView.width
             color: "transparent"
 
             Label {
