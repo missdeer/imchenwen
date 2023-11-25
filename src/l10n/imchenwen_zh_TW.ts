@@ -114,12 +114,12 @@
         <translation>搜尋</translation>
     </message>
     <message>
-        <location filename="../qml/Explorer.qml" line="123"/>
+        <location filename="../qml/Explorer.qml" line="124"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../qml/Explorer.qml" line="143"/>
+        <location filename="../qml/Explorer.qml" line="144"/>
         <source>&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;未找到外掛。&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;下載外掛&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -202,7 +202,7 @@ URL: %1
     <name>ParserLux</name>
     <message>
         <location filename="../parserLux.cpp" line="38"/>
-        <location filename="../parserLux.cpp" line="87"/>
+        <location filename="../parserLux.cpp" line="95"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
@@ -212,12 +212,12 @@ URL: %1
         <translation>其他影片正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="87"/>
+        <location filename="../parserLux.cpp" line="95"/>
         <source>The given url has no video item.</source>
         <translation>該URL沒有影片條目。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="99"/>
+        <location filename="../parserLux.cpp" line="108"/>
         <source>Select episode</source>
         <translation>選集</translation>
     </message>

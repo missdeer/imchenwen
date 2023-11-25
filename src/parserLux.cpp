@@ -1,12 +1,14 @@
-#include "parserLux.h"
-#include "accessManager.h"
-#include "dialogs.h"
-#include "platform/paths.h"
+#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QSettings>
+
+#include "parserLux.h"
+#include "accessManager.h"
+#include "dialogs.h"
+#include "platform/paths.h"
 
 ParserLux ParserLux::s_instance;
 
@@ -14,9 +16,8 @@ ParserLux::ParserLux(QObject *parent) : ParserBase(parent)
 {
     // Connect
     connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ParserLux::parseOutput);
-    connect(&m_process, &QProcess::errorOccurred, [&](){ showErrorDialog(m_process.errorString()); });
+    connect(&m_process, &QProcess::errorOccurred, [&]() { showErrorDialog(m_process.errorString()); });
 }
-
 
 ParserLux::~ParserLux()
 {
@@ -27,7 +28,6 @@ ParserLux::~ParserLux()
         m_process.waitForFinished();
     }
 }
-
 
 void ParserLux::runParser(const QUrl &url)
 {
@@ -40,9 +40,9 @@ void ParserLux::runParser(const QUrl &url)
     }
 
     // Get and apply proxy settings
-    QSettings settings;
-    NetworkAccessManager::ProxyType proxyType = (NetworkAccessManager::ProxyType) settings.value(QStringLiteral("network/proxy_type")).toInt();
-    QString proxy = settings.value(QStringLiteral("network/proxy")).toString();
+    QSettings                       settings;
+    NetworkAccessManager::ProxyType proxyType = (NetworkAccessManager::ProxyType)settings.value(QStringLiteral("network/proxy_type")).toInt();
+    QString                         proxy     = settings.value(QStringLiteral("network/proxy")).toString();
 
     if (!proxy.isEmpty() && proxyType == NetworkAccessManager::HTTP_PROXY)
     {
@@ -59,20 +59,28 @@ void ParserLux::runParser(const QUrl &url)
 
     // Set user-agent
     QStringList args;
-    args << QStringLiteral("-j") << QStringLiteral("-p") << QStringLiteral("-u") << QStringLiteral(DEFAULT_UA);
-
+    args << QStringLiteral("-j"); //<< QStringLiteral("-p") << QStringLiteral("-u") << QStringLiteral(DEFAULT_UA);
+    if (QFile::exists(userResourcesPath() + QStringLiteral("/cookie.txt")))
+    {
+        args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/cookie.txt");
+    }
+    else if (QFile::exists(userResourcesPath() + QStringLiteral("/bilibili_cookie.txt")))
+    {
+        args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/bilibili_cookie.txt");
+    }
     args << url.toString();
+    m_process.setWorkingDirectory(userResourcesPath());
     m_process.start(userResourcesPath() + QStringLiteral("/lux"), args, QProcess::ReadOnly);
 }
-
 
 void ParserLux::parseOutput()
 {
     QByteArray output = m_process.readAllStandardOutput();
 
+    qDebug() << output.toStdString() << "\n";
     // Parse JSON
     QJsonParseError json_error;
-    QJsonDocument document = QJsonDocument::fromJson(output, &json_error);
+    QJsonDocument   document = QJsonDocument::fromJson(output, &json_error);
 
     if (json_error.error != QJsonParseError::NoError)
     {
@@ -96,13 +104,11 @@ void ParserLux::parseOutput()
         for (auto episode : episodes)
         {
             titles << episode.toObject()[QStringLiteral("title")].toString();
-            Dialogs::instance()->selectionDialog(tr("Select episode"), titles, [=](int index, bool) {
-                parseEpisode(episodes[index].toObject());
-            }, QString());
+            Dialogs::instance()->selectionDialog(
+                tr("Select episode"), titles, [=](int index, bool) { parseEpisode(episodes[index].toObject()); }, QString());
         }
     }
 }
-
 
 void ParserLux::parseEpisode(QJsonObject episode)
 {
@@ -128,25 +134,26 @@ void ParserLux::parseEpisode(QJsonObject episode)
 
     // get all available streams
     QJsonObject streams = episode[QStringLiteral("streams")].toObject();
-    for (auto i = streams.constBegin(); i != streams.constEnd(); i++)
+    for (auto iter = streams.constBegin(); iter != streams.constEnd(); iter++)
     {
-        QJsonObject item = i.value().toObject();
+        QJsonObject item = iter.value().toObject();
 
         // Basic stream infos
         Stream stream;
         stream.container = item[QStringLiteral("ext")].toString();
-        stream.is_dash = item[QStringLiteral("NeedMux")].toBool();
-        stream.referer = episode[QStringLiteral("url")].toString();
-        stream.seekable = true;
+        stream.is_dash   = item[QStringLiteral("NeedMux")].toBool();
+        stream.referer   = episode[QStringLiteral("url")].toString();
+        stream.seekable  = true;
 
+        qDebug() << iter.key() << " : " << item[QStringLiteral("quality")].toString();
         // Write urls list
         QJsonArray parts = item[QStringLiteral("parts")].toArray();
-        if (parts.count() == 0)   // this stream is not available, skip it
+        if (parts.count() == 0) // this stream is not available, skip it
         {
             continue;
         }
 
-        for (const auto& part : parts)
+        for (const auto &part : parts)
         {
             stream.urls << QUrl(part.toObject()[QStringLiteral("url")].toString());
         }

@@ -118,12 +118,12 @@
         <translation type="unfinished">Search</translation>
     </message>
     <message>
-        <location filename="../qml/Explorer.qml" line="123"/>
+        <location filename="../qml/Explorer.qml" line="124"/>
         <source>Back</source>
         <translation type="unfinished">Back</translation>
     </message>
     <message>
-        <location filename="../qml/Explorer.qml" line="143"/>
+        <location filename="../qml/Explorer.qml" line="144"/>
         <source>&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p&gt;No plugins found.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;imchenwen:plugin&quot;&gt;Download plugins&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -206,7 +206,7 @@ Please try updating plugins.</translation>
     <name>ParserLux</name>
     <message>
         <location filename="../parserLux.cpp" line="38"/>
-        <location filename="../parserLux.cpp" line="87"/>
+        <location filename="../parserLux.cpp" line="95"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
@@ -216,12 +216,12 @@ Please try updating plugins.</translation>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="87"/>
+        <location filename="../parserLux.cpp" line="95"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">The given url has no video item.</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="99"/>
+        <location filename="../parserLux.cpp" line="108"/>
         <source>Select episode</source>
         <translation type="unfinished">Select episode</translation>
     </message>
