@@ -185,15 +185,33 @@ jobs:
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cp ../qt.conf ./
           cd ..
+          mv imchenwen-${{ matrix.mingw_prefix }} imchenwen
 
       - name: download hlsdl
         shell: cmd
         run: |
           curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-dff8a57-win32-static-xpmod-sse.7z
-          7z e hlsdl.7z -oimchenwen-${{ matrix.mingw_prefix }} hlsdl.exe
+          7z e hlsdl.7z -oimchenwen hlsdl.exe
+          
+      - name: make installer
+        shell: cmd
+        run: |
+          iscc scripts\win_installer.iss
+
+      - name: make installer
+        shell: msys2 {0}
+        run: |
+          mv scripts/Output/mysetup.exe ./imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup.exe
           
       - name: upload artifact
         uses: actions/upload-artifact@v1
         with:
-          path: imchenwen-${{ matrix.mingw_prefix }}
+          path: imchenwen
           name: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}
+
+      - name: upload artifact setup
+        uses: actions/upload-artifact@v1
+        with:
+          path: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup.exe
+          name: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup
+  
