@@ -76,12 +76,12 @@
 <context>
     <name>DownloaderHlsItem</name>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="110"/>
+        <location filename="../downloaderHlsItem.cpp" line="109"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="110"/>
+        <location filename="../downloaderHlsItem.cpp" line="109"/>
         <source>Cannot pause the download of HLS streams.</source>
         <translation type="unfinished">Cannot pause the download of HLS streams.</translation>
     </message>
@@ -89,18 +89,18 @@
 <context>
     <name>DownloaderItem</name>
     <message>
-        <location filename="../downloaderItem.cpp" line="222"/>
-        <location filename="../downloaderItem.cpp" line="269"/>
+        <location filename="../downloaderItem.cpp" line="223"/>
+        <location filename="../downloaderItem.cpp" line="270"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="222"/>
+        <location filename="../downloaderItem.cpp" line="223"/>
         <source>Failed to write: </source>
         <translation type="unfinished">Failed to write:</translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="269"/>
+        <location filename="../downloaderItem.cpp" line="270"/>
         <source>Failed to concat: </source>
         <translation type="unfinished">Failed to concat:</translation>
     </message>
@@ -149,8 +149,8 @@
 <context>
     <name>MpvObject</name>
     <message>
-        <location filename="../mpvObject.cpp" line="578"/>
-        <location filename="../mpvObject.cpp" line="605"/>
+        <location filename="../mpvObject.cpp" line="592"/>
+        <location filename="../mpvObject.cpp" line="619"/>
         <source>Untitled </source>
         <translation type="unfinished">Untitled</translation>
     </message>
@@ -171,22 +171,22 @@
 <context>
     <name>ParserBase</name>
     <message>
-        <location filename="../parserBase.cpp" line="57"/>
+        <location filename="../parserBase.cpp" line="51"/>
         <source>The video has no streams. Maybe it is a VIP video and requires login.</source>
         <translation type="unfinished">The video has no streams. Maybe it is a VIP video and requires login.</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="79"/>
+        <location filename="../parserBase.cpp" line="74"/>
         <source>Select streams</source>
         <translation type="unfinished">Select streams</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="85"/>
+        <location filename="../parserBase.cpp" line="83"/>
         <source>Remember my choice</source>
         <translation type="unfinished">Remember my choice</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="139"/>
+        <location filename="../parserBase.cpp" line="136"/>
         <source>Parse failed!
 URL: %1
 
@@ -197,7 +197,7 @@ URL: %1
 Please try updating plugins.</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="140"/>
+        <location filename="../parserBase.cpp" line="137"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>

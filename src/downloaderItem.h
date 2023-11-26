@@ -31,7 +31,12 @@ class DownloaderItem : public DownloaderAbstractItem
     Q_OBJECT
 
 public:
-    DownloaderItem(const QString &filepath, const QList<QUrl> &urls, const QUrl &danmakuUrl = QUrl(), bool isDash = false, QObject *parent = nullptr);
+    DownloaderItem(const QString     &filepath,
+                   const QList<QUrl> &urls,
+                   const QUrl        &danmakuUrl  = QUrl(),
+                   const QUrl        &subtitleUrl = QUrl(),
+                   bool               isDash      = false,
+                   QObject           *parent      = nullptr);
     void pause() override;
     void start() override;
     void stop() override;

@@ -29,7 +29,7 @@ public:
     explicit Downloader(QObject *parent = nullptr);
     ~Downloader() override;
 
-    void        addTasks(const QString &name, const QList<QUrl> &urls, const QUrl &danmakuUrl = QUrl(), bool isDash = false);
+    void        addTasks(const QString &name, const QList<QUrl> &urls, const QUrl &danmakuUrl = QUrl(), const QUrl& subtitle = QUrl(), bool isDash = false);
     QObjectList model();
 
 signals:

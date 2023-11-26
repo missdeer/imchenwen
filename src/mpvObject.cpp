@@ -24,6 +24,7 @@
 #include <QQuickOpenGLUtils>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QTimer>
 #include <QtOpenGL/QOpenGLFramebufferObject>
 
 #include "mpvObject.h"
@@ -117,6 +118,9 @@ MpvObject::MpvObject(QQuickItem *parent) : QQuickFramebufferObject(parent)
     m_mpv.set_option("pause", false);  // Always play when a new file is opened
     m_mpv.set_option("softvol", true); // mpv handles the volume
     m_mpv.set_option("vo", "libmpv");  // Force to use libmpv
+    m_mpv.set_option("osc", false);
+    m_mpv.set_option("cache-secs", 300.0);
+    m_mpv.set_option("merge-files", true);
     m_mpv.set_option("screenshot-directory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation).toUtf8().constData());
     m_mpv.set_option("reset-on-next-file", "speed,video-aspect,af,sub-visibility,audio-delay,pause");
 
@@ -193,7 +197,7 @@ MpvObject::MpvObject(QQuickItem *parent) : QQuickFramebufferObject(parent)
 }
 
 // Open file
-void MpvObject::open(const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &audioTrack)
+void MpvObject::open(const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &audioTrack, const QUrl &subtitleUrl)
 {
     Q_ASSERT(NetworkAccessManager::instance() != nullptr);
     QSettings settings;
@@ -246,6 +250,7 @@ void MpvObject::open(const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &au
     const char *args[]      = {"loadfile", fileuri_str.constData(), nullptr};
     m_mpv.command_async(args);
     m_danmakuUrl     = danmakuUrl;
+    m_subtitleUrl    = subtitleUrl;
     m_audioToBeAdded = audioTrack;
 }
 
@@ -331,9 +336,12 @@ void MpvObject::addSubtitle(const QUrl &url)
     {
         return;
     }
-    QByteArray  uri_str = (url.isLocalFile() ? url.toLocalFile() : url.toString()).toUtf8();
-    const char *args[]  = {"sub-add", uri_str.constData(), "select", nullptr};
-    m_mpv.command_async(args);
+    QByteArray uri_str = (url.isLocalFile() ? url.toLocalFile() : url.toString()).toUtf8();
+    // workaround force to show subtitle, add a delay
+    // QTimer::singleShot(200, [uri_str, this]() {
+    const char *args[] = {"sub-add", uri_str.constData(), "select", nullptr};
+    handleMpvError(m_mpv.command_async(args));
+    //});
 }
 
 // Add danmaku
@@ -412,7 +420,7 @@ void MpvObject::onMpvEvent()
     while (true)
     {
         const mpv_event *event = m_mpv.wait_event();
-        if (event == NULL)
+        if (event == nullptr)
         {
             break;
         }
@@ -474,12 +482,18 @@ void MpvObject::onMpvEvent()
                     m_audioToBeAdded = QUrl();
                 }
 
-                // Load danmaku
-                if (!m_danmakuUrl.isEmpty())
+                if (!m_subtitleUrl.isEmpty())
                 {
-                    Q_ASSERT(DanmakuLoader::instance() != nullptr);
-                    DanmakuLoader::instance()->start(m_danmakuUrl, m_videoWidth, m_videoHeight);
+                    addSubtitle(m_subtitleUrl);
+                    m_subtitleUrl = QUrl();
                 }
+
+                // Load danmaku
+                // if (!m_danmakuUrl.isEmpty())
+                //{
+                //    Q_ASSERT(DanmakuLoader::instance() != nullptr);
+                //    DanmakuLoader::instance()->start(m_danmakuUrl, m_videoWidth, m_videoHeight);
+                //}
             }
             break;
         }

@@ -25,7 +25,7 @@ class DownloaderHlsItem : public DownloaderAbstractItem
     Q_OBJECT
     
 public:
-    DownloaderHlsItem(const QString& filepath, const QUrl& url, const QUrl& danmakuUrl = QUrl(), QObject* parent = nullptr);
+    DownloaderHlsItem(const QString& filepath, const QUrl& url, const QUrl& danmakuUrl = QUrl(), const QUrl& subtitleUrl = QUrl(), QObject* parent = nullptr);
     ~DownloaderHlsItem();
     virtual void pause() override;
     virtual void start() override;

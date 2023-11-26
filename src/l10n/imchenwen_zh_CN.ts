@@ -88,12 +88,12 @@
 <context>
     <name>DownloaderHlsItem</name>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="110"/>
+        <location filename="../downloaderHlsItem.cpp" line="109"/>
         <source>Cannot pause the download of HLS streams.</source>
         <translation>无法暂停HLS视频流的下载。</translation>
     </message>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="110"/>
+        <location filename="../downloaderHlsItem.cpp" line="109"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -101,18 +101,18 @@
 <context>
     <name>DownloaderItem</name>
     <message>
-        <location filename="../downloaderItem.cpp" line="222"/>
-        <location filename="../downloaderItem.cpp" line="269"/>
+        <location filename="../downloaderItem.cpp" line="223"/>
+        <location filename="../downloaderItem.cpp" line="270"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="222"/>
+        <location filename="../downloaderItem.cpp" line="223"/>
         <source>Failed to write: </source>
         <translation>无法写入：</translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="269"/>
+        <location filename="../downloaderItem.cpp" line="270"/>
         <source>Failed to concat: </source>
         <translation>无法合并：</translation>
     </message>
@@ -161,8 +161,8 @@
 <context>
     <name>MpvObject</name>
     <message>
-        <location filename="../mpvObject.cpp" line="578"/>
-        <location filename="../mpvObject.cpp" line="605"/>
+        <location filename="../mpvObject.cpp" line="592"/>
+        <location filename="../mpvObject.cpp" line="619"/>
         <source>Untitled </source>
         <translation>无标题</translation>
     </message>
@@ -183,22 +183,22 @@
 <context>
     <name>ParserBase</name>
     <message>
-        <location filename="../parserBase.cpp" line="57"/>
+        <location filename="../parserBase.cpp" line="51"/>
         <source>The video has no streams. Maybe it is a VIP video and requires login.</source>
         <translation>未找到该视频的播放地址。可能这是一个VIP视频，需要登录。</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="79"/>
+        <location filename="../parserBase.cpp" line="74"/>
         <source>Select streams</source>
         <translation>选择视频流</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="85"/>
+        <location filename="../parserBase.cpp" line="83"/>
         <source>Remember my choice</source>
         <translation>记住我的选择</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="139"/>
+        <location filename="../parserBase.cpp" line="136"/>
         <source>Parse failed!
 URL: %1
 
@@ -209,7 +209,7 @@ URL: %1
 请尝试更新插件。</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="140"/>
+        <location filename="../parserBase.cpp" line="137"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -358,7 +358,7 @@ URL: %1
     <message>
         <location filename="../qml/Settings.qml" line="138"/>
         <source>Auto</source>
-        <translation type="unfinished">自动</translation>
+        <translation>自动</translation>
     </message>
     <message>
         <location filename="../qml/Settings.qml" line="143"/>
@@ -766,7 +766,7 @@ URL: %1
     <message>
         <location filename="../qml/main.qml" line="35"/>
         <source>imchenwen</source>
-        <translation type="unfinished">某橙</translation>
+        <translation>某橙</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="215"/>

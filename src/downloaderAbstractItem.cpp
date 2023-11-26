@@ -14,25 +14,24 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "downloaderAbstractItem.h"
 #include <QFileInfo>
 
-DownloaderAbstractItem::DownloaderAbstractItem(const QString& filepath, const QUrl &danmakuUrl, QObject* parent) :
-    QObject(parent),
-    m_name(QFileInfo(filepath).fileName()),
-    m_filePath(filepath),
-    m_danmakuUrl(danmakuUrl),
-    m_state(WAITING),
-    m_progress(0)
+#include "downloaderAbstractItem.h"
+
+DownloaderAbstractItem::DownloaderAbstractItem(const QString &filepath, const QUrl &danmakuUrl, const QUrl &subtitleUrl, QObject *parent)
+    : QObject(parent),
+      m_name(QFileInfo(filepath).fileName()),
+      m_filePath(filepath),
+      m_danmakuUrl(danmakuUrl),
+      m_subtitleUrl(subtitleUrl),
+      m_state(WAITING),
+      m_progress(0)
 {
 }
 
-DownloaderAbstractItem::~DownloaderAbstractItem()
-{
-}
+DownloaderAbstractItem::~DownloaderAbstractItem() {}
 
-
-void DownloaderAbstractItem::setName(const QString& name)
+void DownloaderAbstractItem::setName(const QString &name)
 {
     if (m_name != name)
     {
@@ -41,7 +40,7 @@ void DownloaderAbstractItem::setName(const QString& name)
     }
 }
 
-void DownloaderAbstractItem::setFilePath(const QString& filePath)
+void DownloaderAbstractItem::setFilePath(const QString &filePath)
 {
     if (m_filePath != filePath)
     {
@@ -49,7 +48,6 @@ void DownloaderAbstractItem::setFilePath(const QString& filePath)
         emit filePathChanged();
     }
 }
-
 
 void DownloaderAbstractItem::setProgress(int progress)
 {

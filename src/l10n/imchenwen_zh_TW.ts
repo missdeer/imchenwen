@@ -61,7 +61,11 @@
             &lt;p&gt;Add some urls to start download!&lt;/p&gt;
 
             &lt;p&gt;Try our &lt;a href=&quot;https://www.dfordsoft.com/imchenwen.html#browser_extension&quot;&gt;Browser extensions&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;p&gt;現在沒有下載檔案-_-&lt;/p&gt;...</translation>
+        <translation>&lt;p&gt;現在沒有下載檔案 -_-&lt;/p&gt;
+
+            &lt;p&gt;新增網址開始下載！&lt;/p&gt;
+
+            &lt;p&gt;試用&lt;a href=&quot;https://www.dfordsoft.com/imchenwen.html#browser_extension&quot;&gt;瀏覽器擴充套件&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../downloader.cpp" line="56"/>
@@ -72,12 +76,12 @@
 <context>
     <name>DownloaderHlsItem</name>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="110"/>
+        <location filename="../downloaderHlsItem.cpp" line="109"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../downloaderHlsItem.cpp" line="110"/>
+        <location filename="../downloaderHlsItem.cpp" line="109"/>
         <source>Cannot pause the download of HLS streams.</source>
         <translation>無法暫停HLS影片流的下載。</translation>
     </message>
@@ -85,18 +89,18 @@
 <context>
     <name>DownloaderItem</name>
     <message>
-        <location filename="../downloaderItem.cpp" line="222"/>
-        <location filename="../downloaderItem.cpp" line="269"/>
+        <location filename="../downloaderItem.cpp" line="223"/>
+        <location filename="../downloaderItem.cpp" line="270"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="222"/>
+        <location filename="../downloaderItem.cpp" line="223"/>
         <source>Failed to write: </source>
         <translation>無法寫入：</translation>
     </message>
     <message>
-        <location filename="../downloaderItem.cpp" line="269"/>
+        <location filename="../downloaderItem.cpp" line="270"/>
         <source>Failed to concat: </source>
         <translation>無法合併：</translation>
     </message>
@@ -145,8 +149,8 @@
 <context>
     <name>MpvObject</name>
     <message>
-        <location filename="../mpvObject.cpp" line="578"/>
-        <location filename="../mpvObject.cpp" line="605"/>
+        <location filename="../mpvObject.cpp" line="592"/>
+        <location filename="../mpvObject.cpp" line="619"/>
         <source>Untitled </source>
         <translation>無標題</translation>
     </message>
@@ -167,22 +171,22 @@
 <context>
     <name>ParserBase</name>
     <message>
-        <location filename="../parserBase.cpp" line="57"/>
+        <location filename="../parserBase.cpp" line="51"/>
         <source>The video has no streams. Maybe it is a VIP video and requires login.</source>
         <translation>未找到該影片的播放地址。可能這是一個VIP影片，需要登入。</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="79"/>
+        <location filename="../parserBase.cpp" line="74"/>
         <source>Select streams</source>
         <translation>選擇影片流</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="85"/>
+        <location filename="../parserBase.cpp" line="83"/>
         <source>Remember my choice</source>
         <translation>記住我的選擇</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="139"/>
+        <location filename="../parserBase.cpp" line="136"/>
         <source>Parse failed!
 URL: %1
 
@@ -193,7 +197,7 @@ URL: %1
 請嘗試更新外掛。</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="140"/>
+        <location filename="../parserBase.cpp" line="137"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
@@ -338,7 +342,7 @@ URL: %1
     <message>
         <location filename="../qml/Settings.qml" line="138"/>
         <source>Auto</source>
-        <translation type="unfinished">自動</translation>
+        <translation>自動</translation>
     </message>
     <message>
         <location filename="../qml/Settings.qml" line="143"/>
@@ -715,7 +719,7 @@ URL: %1
     <message>
         <location filename="../qml/main.qml" line="35"/>
         <source>imchenwen</source>
-        <translation type="unfinished">某橙</translation>
+        <translation>某橙</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="180"/>

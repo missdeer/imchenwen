@@ -107,7 +107,7 @@ public:
     void setSubVisible(bool subVisible);
 
 public slots:
-    void open(const QUrl &fileUrl, const QUrl &danmakuUrl = QUrl(), const QUrl &audioTrackUrl = QUrl());
+    void open(const QUrl &fileUrl, const QUrl &danmakuUrl = QUrl(), const QUrl &audioTrackUrl = QUrl(), const QUrl &subtitleUrl = QUrl());
     void play();
     void pause();
     void stop();
@@ -148,6 +148,7 @@ private:
     int64_t                      m_videoHeight  = 0;
     double                       m_reservedArea = 0;
     QUrl                         m_danmakuUrl;
+    QUrl                         m_subtitleUrl;
     QUrl                         m_audioToBeAdded;
     QStringList                  m_audioTracks;
     QStringList                  m_subtitles;

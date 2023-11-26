@@ -33,7 +33,7 @@ Downloader *Downloader::instance()
     return c_instance;
 }
 
-void Downloader::addTasks(const QString &filename, const QList<QUrl> &urls, const QUrl &danmakuUrl, bool isDash)
+void Downloader::addTasks(const QString &filename, const QList<QUrl> &urls, const QUrl &danmakuUrl, const QUrl &subtitleUrl, bool isDash)
 {
     QSettings               settings;
     QDir                    dir(settings.value(QStringLiteral("downloader/save_to")).toUrl().toLocalFile());
@@ -42,11 +42,11 @@ void Downloader::addTasks(const QString &filename, const QList<QUrl> &urls, cons
 
     if (urls[0].path().endsWith(QStringLiteral(".m3u8"), Qt::CaseInsensitive))
     {
-        item = new DownloaderHlsItem(filepath, urls[0], danmakuUrl, this);
+        item = new DownloaderHlsItem(filepath, urls[0], danmakuUrl, subtitleUrl, this);
     }
     else
     {
-        item = new DownloaderItem(filepath, urls, danmakuUrl, isDash, this);
+        item = new DownloaderItem(filepath, urls, danmakuUrl, subtitleUrl, isDash, this);
     }
     m_model << item;
     emit modelUpdated();

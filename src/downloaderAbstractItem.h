@@ -29,6 +29,7 @@ class DownloaderAbstractItem : public QObject
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString filePath READ filePath NOTIFY filePathChanged)
     Q_PROPERTY(QUrl danmakuUrl READ danmakuUrl NOTIFY danmakuUrlChanged)
+    Q_PROPERTY(QUrl subtitleUrl READ subtitleUrl NOTIFY subtitleUrlChanged)
     Q_PROPERTY(State state READ state NOTIFY stateChanged)
     Q_PROPERTY(int progress READ progress NOTIFY progressChanged)
 
@@ -44,7 +45,10 @@ public:
     };
     Q_ENUM(State);
 
-    explicit DownloaderAbstractItem(const QString &filepath, const QUrl &danmakuUrl = QUrl(), QObject *parent = nullptr);
+    explicit DownloaderAbstractItem(const QString &filepath,
+                                    const QUrl    &danmakuUrl  = QUrl(),
+                                    const QUrl    &subtitleUrl = QUrl(),
+                                    QObject       *parent      = nullptr);
     ~DownloaderAbstractItem() override;
     Q_INVOKABLE virtual void pause() = 0;
     Q_INVOKABLE virtual void start() = 0;
@@ -61,6 +65,10 @@ public:
     [[nodiscard]] QUrl danmakuUrl() const
     {
         return m_danmakuUrl;
+    }
+    [[nodiscard]] QUrl subtitleUrl() const
+    {
+        return m_subtitleUrl;
     }
     [[nodiscard]] State state() const
     {
@@ -79,6 +87,7 @@ protected:
 
 signals:
     void danmakuUrlChanged();
+    void subtitleUrlChanged();
     void nameChanged();
     void filePathChanged();
     void stateChanged();
@@ -88,6 +97,7 @@ private:
     QString m_name;
     QString m_filePath;
     QUrl    m_danmakuUrl;
+    QUrl    m_subtitleUrl;
     State   m_state;
     int     m_progress;
 };

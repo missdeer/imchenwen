@@ -60,6 +60,7 @@ protected:
         QStringList   stream_types;
         QList<Stream> streams;
         QUrl          danmaku_url;
+        QUrl          subtitle_url;
     } result;
 
     QProcess m_process;

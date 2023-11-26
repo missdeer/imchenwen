@@ -81,7 +81,7 @@ if (NOT MINGW)
         l10n/imchenwen_zh_HK.ts
     )
     set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/l10n)
-    qt6_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
+    qt_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
     list(APPEND SOURCE_FILES ${QM_FILES})
 endif()
 

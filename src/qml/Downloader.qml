@@ -90,7 +90,7 @@ ColumnLayout {
                 onDoubleClicked: {
                     if (modelData.state === DownloaderItem.FINISHED)
                     {
-                        PlaylistModel.addItem(name, filePath, danmakuUrl);
+                        PlaylistModel.addItem(name, filePath, danmakuUrl, subtitleUrl);
                     }
                 }
 
@@ -100,7 +100,7 @@ ColumnLayout {
                         text: qsTr("Play")
                         enabled: modelData.state === DownloaderItem.FINISHED
                         onTriggered: {
-                            PlaylistModel.addItem(name, filePath, danmakuUrl);
+                            PlaylistModel.addItem(name, filePath, danmakuUrl, subtitleUrl);
                         }
                     }
                     MenuItem {

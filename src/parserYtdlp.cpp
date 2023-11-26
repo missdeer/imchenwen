@@ -168,6 +168,44 @@ void ParserYtdlp::parseOutput()
     }
 
     // !TODO: add subtitle info
+    QJsonValue subtitles = root[QStringLiteral("subtitles")].toObject();
+    if (subtitles.isObject())
+    {
+        auto        obj       = subtitles.toObject();
+        QStringList languages = obj.keys();
+        if (languages.isEmpty())
+        {
+            subtitles = root[QStringLiteral("automatic_captions")].toObject();
+
+            if (subtitles.isObject())
+            {
+                obj       = subtitles.toObject();
+                languages = obj.keys();
+            }
+        }
+
+        static QStringList languagesPriorityList {QStringLiteral("zh-Hans"), QStringLiteral("en-orig"), QStringLiteral("en")};
+        auto               iter = std::find_if(
+            languagesPriorityList.begin(), languagesPriorityList.end(), [&languages](const auto &language) { return languages.contains(language); });
+        if (iter != languagesPriorityList.end())
+        {
+            const auto &lang     = *iter;
+            auto        langNode = obj[lang].toArray();
+            auto        iterNode = std::find_if(langNode.begin(), langNode.end(), [](QJsonValueRef langFile) {
+                if (!langFile.isObject())
+                {
+                    return false;
+                }
+                auto langFileObj = langFile.toObject();
+                return (langFileObj[QStringLiteral("ext")].isString() && langFileObj[QStringLiteral("ext")].toString() == QStringLiteral("vtt"));
+            });
+            if (langNode.end() != iterNode)
+            {
+                auto langFileObj    = iterNode->toObject();
+                result.subtitle_url = langFileObj[QStringLiteral("url")].toString();
+            }
+        }
+    }
 
     finishParsing();
 }

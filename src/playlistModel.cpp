@@ -57,7 +57,7 @@ PlaylistModel::PlaylistModel(QObject *parent) : QAbstractListModel(parent), m_pl
 }
 
 // Add item to playlist
-void PlaylistModel::addItem(const QString &title, const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &audioTrackUrl)
+void PlaylistModel::addItem(const QString &title, const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &audioTrackUrl, const QUrl &subtitleUrl)
 {
     int index = m_titles.count();
     beginInsertRows(QModelIndex(), index, index);
@@ -65,11 +65,12 @@ void PlaylistModel::addItem(const QString &title, const QUrl &fileUrl, const QUr
     m_fileUrls << fileUrl;
     m_danmakuUrls << danmakuUrl;
     m_audioTrackUrls << audioTrackUrl;
+    m_subtitleUrls << subtitleUrl;
     endInsertRows();
     playItem(index);
 }
 
-void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, const QUrl &danmakuUrl, bool isDash)
+void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, const QUrl &danmakuUrl, const QUrl &subtitleUrl, bool isDash)
 {
     int start = m_titles.count();
 
@@ -79,6 +80,7 @@ void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, 
         m_titles << title;
         m_fileUrls << fileUrls[0]; // First url is the video stream
         m_danmakuUrls << danmakuUrl;
+        m_subtitleUrls << subtitleUrl;
         m_audioTrackUrls << fileUrls[1]; // Second url is the audio stream
         endInsertRows();
     }
@@ -91,7 +93,9 @@ void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, 
             m_titles << (title + QLatin1Char('_') + QString::number(i));
             m_fileUrls << fileUrls[i];
             m_danmakuUrls << (i == 0 ? danmakuUrl : QUrl());
+            m_subtitleUrls << (i == 0 ? subtitleUrl : QUrl());
             m_audioTrackUrls << QUrl();
+            m_subtitleUrls << QUrl();
         }
         endInsertRows();
     }
@@ -119,6 +123,7 @@ void PlaylistModel::addLocalFiles(const QList<QUrl> &fileUrls)
         {
             m_danmakuUrls << QUrl();
         }
+        m_subtitleUrls << QUrl();
     }
     endInsertRows();
 
@@ -177,6 +182,7 @@ void PlaylistModel::removeItem(int index)
     m_fileUrls.removeAt(index);
     m_danmakuUrls.removeAt(index);
     m_audioTrackUrls.removeAt(index);
+    m_subtitleUrls.removeAt(index);
     endRemoveRows();
 }
 
@@ -191,6 +197,7 @@ void PlaylistModel::clear()
     m_fileUrls.clear();
     m_danmakuUrls.clear();
     m_audioTrackUrls.clear();
+    m_subtitleUrls.clear();
     endRemoveRows();
 }
 
@@ -200,7 +207,7 @@ void PlaylistModel::playItem(int index)
 
     if (index >= 0 && index < m_titles.count())
     {
-        MpvObject::instance()->open(m_fileUrls[index], m_danmakuUrls[index], m_audioTrackUrls[index]);
+        MpvObject::instance()->open(m_fileUrls[index], m_danmakuUrls[index], m_audioTrackUrls[index], m_subtitleUrls[index]);
     }
     if (m_playingIndex != index)
     {

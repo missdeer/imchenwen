@@ -64,9 +64,9 @@ void ParserLux::runParser(const QUrl &url)
     {
         args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/cookie.txt");
     }
-    else if (QFile::exists(userResourcesPath() + QStringLiteral("/bilibili_cookie.txt")))
+    else if (QFile::exists(userResourcesPath() + QStringLiteral("/") + url.host() + QStringLiteral("_cookie.txt")))
     {
-        args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/bilibili_cookie.txt");
+        args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/") + url.host() + QStringLiteral("_cookie.txt");
     }
     args << url.toString();
     m_process.setWorkingDirectory(userResourcesPath());
@@ -130,6 +130,10 @@ void ParserLux::parseEpisode(QJsonObject episode)
         {
             result.danmaku_url = caption[QStringLiteral("danmaku")].toObject()[QStringLiteral("url")].toString();
         }
+        if (!caption[QStringLiteral("subtitle")].isNull())
+        {
+            result.subtitle_url = caption[QStringLiteral("subtitle")].toObject()[QStringLiteral("url")].toString();
+        }
     }
 
     // get all available streams
@@ -145,7 +149,6 @@ void ParserLux::parseEpisode(QJsonObject episode)
         stream.referer   = episode[QStringLiteral("url")].toString();
         stream.seekable  = true;
 
-        qDebug() << iter.key() << " : " << item[QStringLiteral("quality")].toString();
         // Write urls list
         QJsonArray parts = item[QStringLiteral("parts")].toArray();
         if (parts.count() == 0) // this stream is not available, skip it
