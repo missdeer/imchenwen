@@ -41,6 +41,6 @@ QString hlsdlFilePath()
 {
     static QString filename;
     if (filename.isNull())
-        filename = QCoreApplication::applicationDirPath() + QStringLiteral("/imchenwen-hlsdl");
+        filename = QCoreApplication::applicationDirPath() + QStringLiteral("/hlsdl");
     return filename;
 }

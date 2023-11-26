@@ -2,12 +2,12 @@
 
 # Move compiled bundle here
 mv build/src/imchenwen.app .
-mv build/3rdparty/imchenwen-hlsdl imchenwen.app/Contents/MacOS/
+mv build/3rdparty/hlsdl imchenwen.app/Contents/MacOS/
 if [ -f /usr/local/opt/ffmpeg/bin/ffmpeg ]; then  cp /usr/local/opt/ffmpeg/bin/ffmpeg imchenwen.app/Contents/MacOS/ ; fi
 if [ -f /opt/homebrew/opt/ffmpeg/bin/ffmpeg ]; then  cp /opt/homebrew/opt/ffmpeg/bin/ffmpeg imchenwen.app/Contents/MacOS/ ; fi
 
 # Bundle libraries
-macdeployqt imchenwen.app -qmldir=src/qml/ -executable=imchenwen.app/Contents/MacOS/imchenwen-hlsdl
+macdeployqt imchenwen.app -qmldir=src/qml/ -executable=imchenwen.app/Contents/MacOS/hlsdl
 
 # Fix permissions
 chown $USER imchenwen.app/Contents/MacOS/*

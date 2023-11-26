@@ -50,7 +50,7 @@ QString hlsdlFilePath()
     if (filename.isNull())
     {
         QString appPath = QCoreApplication::applicationDirPath();
-        filename = appPath.endsWith(QStringLiteral("/bin")) ? appPath + QStringLiteral("/imchenwen-hlsdl") : QStringLiteral("imchenwen-hlsdl");
+        filename = appPath.endsWith(QStringLiteral("/bin")) ? appPath + QStringLiteral("/hlsdl") : QStringLiteral("hlsdl");
     }
     return filename;
 }
