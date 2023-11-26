@@ -21,4 +21,4 @@ curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-dff8a57
 
 # Create installer
 iscc scripts/win_installer.iss
-mv scripts/Output/mysetup.exe ./imchenwen_win_x64.exe
+mv scripts/Output/mysetup.exe ./imchenwen-msvc-x86_64-setup.exe

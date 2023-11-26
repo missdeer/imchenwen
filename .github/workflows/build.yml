@@ -66,7 +66,7 @@ jobs:
           RUNNING_OS: ${{ matrix.os }}
         run: ./scripts/deploy-${RUNNING_OS}.sh
 
-      - name: Upload artifacts
+      - name: Upload artifacts mac app bundle
         uses: actions/upload-artifact@v3
         if: matrix.os == 'macos-11'
         with:
@@ -74,15 +74,14 @@ jobs:
           path: |
             imchenwen_*.zip
 
-      - name: Upload artifacts
+      - name: Upload artifacts windows installer
         uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-2019'
         with:
-          name: imchenwen_win_x86_64_setup
-          path: |
-            imchenwen_*.exe
+          name: imchenwen-msvc-x86_64-setup
+          path: imchenwen-msvc-x86_64-setup.exe
             
-      - name: Upload artifacts imchenwen_win_x86_64_msvc
+      - name: Upload artifacts windows archive
         uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-2019'
         with:
@@ -198,7 +197,7 @@ jobs:
         run: |
           iscc scripts\win_installer.iss
 
-      - name: make installer
+      - name: rename installer
         shell: msys2 {0}
         run: |
           mv scripts/Output/mysetup.exe ./imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup.exe
