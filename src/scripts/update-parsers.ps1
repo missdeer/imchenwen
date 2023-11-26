@@ -51,12 +51,7 @@ function Save-Version-Info {
 }
 
 ### Set Github Mirror
-if ((Get-TimeZone).Id -eq "China Standard Time") {
-    $github_mirror = "https://download.fastgit.org"
-} else {
-    $github_mirror = "https://github.com"
-}
-
+$github_mirror = "https://github.com"
 
 ### Update lux
 Write-Output "-------- Checking lux's updates -------"
