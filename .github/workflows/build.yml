@@ -78,10 +78,17 @@ jobs:
         uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-2019'
         with:
-          name: imchenwen_win_x86_64
+          name: imchenwen_win_x86_64_setup
           path: |
             imchenwen_*.exe
             
+      - name: Upload artifacts imchenwen_win_x86_64_msvc
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'windows-2019'
+        with:
+          name: imchenwen-msvc-x86_64-qt6
+          path: imchenwen
+
   Windows:
     runs-on: windows-latest
     strategy:
