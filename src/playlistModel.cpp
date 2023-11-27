@@ -144,9 +144,7 @@ void PlaylistModel::addUrl(const QUrl &url, bool download)
     Q_ASSERT(ParserYtdlp::instance() != nullptr);
 
     // Select parser
-    QSettings settings;
-    Parser    parser = static_cast<Parser>(settings.value(QStringLiteral("player/parser")).toInt());
-    if (parser == Parser::LUX || (parser == Parser::AUTO && isSupportedByLux(url.host())))
+    if (isSupportedByLux(url.host()))
     {
         ParserLux::instance()->parse(url, download);
     }

@@ -293,69 +293,67 @@ URL: %1
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../qml/Settings.qml" line="85"/>
+        <location filename="../qml/Settings.qml" line="84"/>
         <source>Interface</source>
         <translation>介面</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="91"/>
+        <location filename="../qml/Settings.qml" line="90"/>
         <source>Theme</source>
         <translation>主題</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="100"/>
+        <location filename="../qml/Settings.qml" line="99"/>
         <source>Dark mode</source>
         <translation>深色模式</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="107"/>
-        <location filename="../qml/Settings.qml" line="152"/>
+        <location filename="../qml/Settings.qml" line="106"/>
+        <location filename="../qml/Settings.qml" line="145"/>
         <source>(*): Restart needed</source>
         <translation>(*): 需要重啟</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="111"/>
-        <location filename="../qml/Settings.qml" line="121"/>
+        <location filename="../qml/Settings.qml" line="110"/>
+        <location filename="../qml/Settings.qml" line="120"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="118"/>
+        <location filename="../qml/Settings.qml" line="117"/>
         <source>Open URL:</source>
         <translation>開啟URL：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="121"/>
+        <location filename="../qml/Settings.qml" line="120"/>
         <source>Question</source>
         <translation>詢問</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="121"/>
+        <location filename="../qml/Settings.qml" line="120"/>
         <source>Download</source>
         <translation>下載</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="124"/>
         <source>Parse URL with:</source>
-        <translation>URL解析工具：</translation>
+        <translation type="vanished">URL解析工具：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="127"/>
         <source>Auto</source>
-        <translation>自動</translation>
+        <translation type="vanished">自動</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="125"/>
         <source>Play videos after being added to playlist</source>
         <translation>新增影片至播放列表後立即播放</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="139"/>
+        <location filename="../qml/Settings.qml" line="132"/>
         <source>Video</source>
         <translation>影片</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="146"/>
+        <location filename="../qml/Settings.qml" line="139"/>
         <source>Decode</source>
         <translation>解碼</translation>
     </message>
@@ -388,77 +386,77 @@ URL: %1
         <translation type="vanished">設定為0讓imchenwen自動選擇。</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="156"/>
+        <location filename="../qml/Settings.qml" line="149"/>
         <source>Cache</source>
         <translation>快取</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="165"/>
+        <location filename="../qml/Settings.qml" line="158"/>
         <source>Limit cache size (Restart needed)</source>
         <translation>限制快取大小（需要重啟）</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="169"/>
+        <location filename="../qml/Settings.qml" line="162"/>
         <source>Forward (MB):</source>
         <translation>向前 (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="179"/>
+        <location filename="../qml/Settings.qml" line="172"/>
         <source>Backward (MB):</source>
         <translation>向後 (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="191"/>
+        <location filename="../qml/Settings.qml" line="184"/>
         <source>Proxy</source>
         <translation>代理</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="198"/>
+        <location filename="../qml/Settings.qml" line="191"/>
         <source>Proxy mode:</source>
         <translation>代理模式：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="205"/>
+        <location filename="../qml/Settings.qml" line="198"/>
         <source>Proxy:</source>
         <translation>代理：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="215"/>
+        <location filename="../qml/Settings.qml" line="208"/>
         <source>Note: Socks5 is not supported by online videos.</source>
         <translation>注意：線上播放不支援Socks5。</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="222"/>
+        <location filename="../qml/Settings.qml" line="215"/>
         <source>Use proxy only for parsing videos</source>
         <translation>只在解析影片時使用代理</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="228"/>
+        <location filename="../qml/Settings.qml" line="221"/>
         <source>Downloader</source>
         <translation>下載管理</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="235"/>
+        <location filename="../qml/Settings.qml" line="228"/>
         <source>Maximum number of threads:</source>
         <translation>最大執行緒數：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="238"/>
+        <location filename="../qml/Settings.qml" line="231"/>
         <source>Save to:</source>
         <translation>儲存至：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="260"/>
+        <location filename="../qml/Settings.qml" line="253"/>
         <source>Website settings</source>
         <translation>網頁選項</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="266"/>
+        <location filename="../qml/Settings.qml" line="259"/>
         <source>Quality choice:</source>
         <translation>影片質量：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="274"/>
+        <location filename="../qml/Settings.qml" line="267"/>
         <source>Remove</source>
         <translation>刪除</translation>
     </message>
