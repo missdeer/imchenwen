@@ -214,8 +214,8 @@ Window
         Action { text: qsTr("Explorer"); onTriggered: sidebar.openExplorer() }
         Action { text: qsTr("Downloader"); onTriggered: sidebar.openDownloader() }
         MenuSeparator { padding: 0 }
-        Action { text: qsTr("Video options"); onTriggered: sidebar.openVideoOptions() }
-        Action { text: qsTr("Subtitle and danmaku"); onTriggered: sidebar.openSubtitles() }
+        Action { text: qsTr("Video"); onTriggered: sidebar.openVideoOptions() }
+        Action { text: qsTr("Subtitle"); onTriggered: sidebar.openSubtitles() }
         Action { text: qsTr("Settings"); onTriggered: sidebar.openSettings() }
         MenuSeparator { padding: 0 }
         Action { text: qsTr("Update plugins"); onTriggered: Utils.updateParser() }

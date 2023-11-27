@@ -42,18 +42,7 @@ Item {
         category: "video"
         property alias hwdec: hwdecComboBox.currentIndex
     }
-    
-    // Danmaku settings
-    QSettings.Settings {
-        id: danmakuSettings
-        category: "danmaku"
-        property alias alpha: alphaSpinBox.value
-        property alias dm: dmSpinBox.value
-        property alias ds: dsSpinBox.value
-        property alias font_family: fontDialog.selectedFont.family
-        property alias font_size: fontDialog.selectedFont.pointSize
-    }
-    
+        
     // Network settings
     QSettings.Settings {
         id: networkSettings
@@ -162,38 +151,6 @@ Item {
             
             Label { text: qsTr("(*): Restart needed"); Layout.columnSpan: 2 }
 
-            // Danmaku
-            Label {
-                text: qsTr("Danmaku")
-                font.bold: true
-                font.pointSize: 16
-                Layout.columnSpan: 2
-                Layout.topMargin: 20
-            }
-            
-            Label { text: qsTr("Font:"); Layout.columnSpan: 2 }
-            Button {
-                id: fontButton
-                text: fontDialog.selectedFont.family + "," + fontDialog.selectedFont.pointSize
-                Layout.columnSpan: 2
-                onClicked: fontDialog.open()
-            }
-            FontDialog {
-                id: fontDialog
-                title: qsTr("Please choose a font for Danmaku")
-            }
-            
-            Label { text: qsTr("Alpha (%):"); Layout.columnSpan: 2 }
-            SpinBox { id: alphaSpinBox; from: 0; to: 100; value: 100; Layout.columnSpan: 2 }
-            
-            Label { text: qsTr("Duration of scrolling comment:") + " (*)"; Layout.columnSpan: 2 }
-            SpinBox { id: dmSpinBox; from: 0; to: 100; value: 0; Layout.columnSpan: 2 }
-            
-            Label { text: qsTr("Duration of still comment:"); Layout.columnSpan: 2 }
-            SpinBox { id: dsSpinBox; from: 0; to: 100; value: 6; Layout.columnSpan: 2 }
-            
-            Label { text: "(*): " + qsTr("Set to 0 to let imchenwen choose automatically."); Layout.columnSpan: 2 }
-
             // Cache
             Label {
                 text: qsTr("Cache")
@@ -281,7 +238,11 @@ Item {
             Label { text: qsTr("Save to:"); Layout.columnSpan: 2 }
             Button {
                 id: saveToButton
-                text: downloaderSettings.save_to.toString().replace("file://", "")
+                text: if (Qt.platform.os === "windows" ) {
+                    downloaderSettings.save_to.toString().replace("file:///", "").replace(/\//g, '\\')
+                } else {
+                    downloaderSettings.save_to.toString().replace("file://", "")
+                }
                 Layout.columnSpan: 2
                 onClicked: folderDialog.open()
                 // Flatpak version is sandboxed and has no permission to access other folders

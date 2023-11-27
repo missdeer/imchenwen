@@ -293,179 +293,172 @@ URL: %1
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../qml/Settings.qml" line="96"/>
+        <location filename="../qml/Settings.qml" line="85"/>
         <source>Interface</source>
         <translation>介面</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="102"/>
+        <location filename="../qml/Settings.qml" line="91"/>
         <source>Theme</source>
         <translation>主題</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="111"/>
+        <location filename="../qml/Settings.qml" line="100"/>
         <source>Dark mode</source>
         <translation>深色模式</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="118"/>
-        <location filename="../qml/Settings.qml" line="163"/>
+        <location filename="../qml/Settings.qml" line="107"/>
+        <location filename="../qml/Settings.qml" line="152"/>
         <source>(*): Restart needed</source>
         <translation>(*): 需要重啟</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="122"/>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="111"/>
+        <location filename="../qml/Settings.qml" line="121"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="129"/>
+        <location filename="../qml/Settings.qml" line="118"/>
         <source>Open URL:</source>
         <translation>開啟URL：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="121"/>
         <source>Question</source>
         <translation>詢問</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="121"/>
         <source>Download</source>
         <translation>下載</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="135"/>
+        <location filename="../qml/Settings.qml" line="124"/>
         <source>Parse URL with:</source>
         <translation>URL解析工具：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="138"/>
+        <location filename="../qml/Settings.qml" line="127"/>
         <source>Auto</source>
         <translation>自動</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="143"/>
+        <location filename="../qml/Settings.qml" line="132"/>
         <source>Play videos after being added to playlist</source>
         <translation>新增影片至播放列表後立即播放</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="150"/>
+        <location filename="../qml/Settings.qml" line="139"/>
         <source>Video</source>
         <translation>影片</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="157"/>
+        <location filename="../qml/Settings.qml" line="146"/>
         <source>Decode</source>
         <translation>解碼</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="167"/>
         <source>Danmaku</source>
-        <translation>彈幕</translation>
+        <translation type="vanished">彈幕</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="174"/>
         <source>Font:</source>
-        <translation>字型：</translation>
+        <translation type="vanished">字型：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="183"/>
         <source>Please choose a font for Danmaku</source>
-        <translation>選擇彈幕字型</translation>
+        <translation type="vanished">選擇彈幕字型</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="186"/>
         <source>Alpha (%):</source>
-        <translation>透明度 (%)：</translation>
+        <translation type="vanished">透明度 (%)：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="189"/>
         <source>Duration of scrolling comment:</source>
-        <translation>滾動彈幕持續時間：</translation>
+        <translation type="vanished">滾動彈幕持續時間：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="192"/>
         <source>Duration of still comment:</source>
-        <translation>靜止彈幕持續時間：</translation>
+        <translation type="vanished">靜止彈幕持續時間：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="195"/>
         <source>Set to 0 to let imchenwen choose automatically.</source>
-        <translation>設定為0讓imchenwen自動選擇。</translation>
+        <translation type="vanished">設定為0讓imchenwen自動選擇。</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="199"/>
+        <location filename="../qml/Settings.qml" line="156"/>
         <source>Cache</source>
         <translation>快取</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="208"/>
+        <location filename="../qml/Settings.qml" line="165"/>
         <source>Limit cache size (Restart needed)</source>
         <translation>限制快取大小（需要重啟）</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="212"/>
+        <location filename="../qml/Settings.qml" line="169"/>
         <source>Forward (MB):</source>
         <translation>向前 (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="222"/>
+        <location filename="../qml/Settings.qml" line="179"/>
         <source>Backward (MB):</source>
         <translation>向後 (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="234"/>
+        <location filename="../qml/Settings.qml" line="191"/>
         <source>Proxy</source>
         <translation>代理</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="241"/>
+        <location filename="../qml/Settings.qml" line="198"/>
         <source>Proxy mode:</source>
         <translation>代理模式：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="248"/>
+        <location filename="../qml/Settings.qml" line="205"/>
         <source>Proxy:</source>
         <translation>代理：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="258"/>
+        <location filename="../qml/Settings.qml" line="215"/>
         <source>Note: Socks5 is not supported by online videos.</source>
         <translation>注意：線上播放不支援Socks5。</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="265"/>
+        <location filename="../qml/Settings.qml" line="222"/>
         <source>Use proxy only for parsing videos</source>
         <translation>只在解析影片時使用代理</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="271"/>
+        <location filename="../qml/Settings.qml" line="228"/>
         <source>Downloader</source>
         <translation>下載管理</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="278"/>
+        <location filename="../qml/Settings.qml" line="235"/>
         <source>Maximum number of threads:</source>
         <translation>最大執行緒數：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="281"/>
+        <location filename="../qml/Settings.qml" line="238"/>
         <source>Save to:</source>
         <translation>儲存至：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="299"/>
+        <location filename="../qml/Settings.qml" line="260"/>
         <source>Website settings</source>
         <translation>網頁選項</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="305"/>
+        <location filename="../qml/Settings.qml" line="266"/>
         <source>Quality choice:</source>
         <translation>影片質量：</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="313"/>
+        <location filename="../qml/Settings.qml" line="274"/>
         <source>Remove</source>
         <translation>刪除</translation>
     </message>
@@ -577,7 +570,6 @@ URL: %1
     </message>
     <message>
         <location filename="../qml/SubtitlesAndDanmaku.qml" line="52"/>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="132"/>
         <source>Add</source>
         <translation>新增</translation>
     </message>
@@ -587,44 +579,36 @@ URL: %1
         <translation>請選擇檔案</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="65"/>
         <source>Danmaku</source>
-        <translation>彈幕</translation>
+        <translation type="vanished">彈幕</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="72"/>
         <source>Shown comment type</source>
-        <translation>顯示彈幕型別</translation>
+        <translation type="vanished">顯示彈幕型別</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="78"/>
         <source>Top</source>
-        <translation>頂部</translation>
+        <translation type="vanished">頂部</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="85"/>
         <source>Bottom</source>
-        <translation>底部</translation>
+        <translation type="vanished">底部</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="92"/>
         <source>Scrolling</source>
-        <translation>滾動</translation>
+        <translation type="vanished">滾動</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="99"/>
         <source>Bottom reserved area</source>
-        <translation>底部保留空間</translation>
+        <translation type="vanished">底部保留空間</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="110"/>
         <source>Blocked words</source>
-        <translation>遮蔽詞</translation>
+        <translation type="vanished">遮蔽詞</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="151"/>
         <source>Remove</source>
-        <translation>刪除</translation>
+        <translation type="vanished">刪除</translation>
     </message>
 </context>
 <context>
@@ -753,13 +737,21 @@ URL: %1
     </message>
     <message>
         <location filename="../qml/main.qml" line="217"/>
+        <source>Video</source>
+        <translation type="unfinished">影片</translation>
+    </message>
+    <message>
         <source>Video options</source>
-        <translation>影片選項</translation>
+        <translation type="vanished">影片選項</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="218"/>
+        <source>Subtitle</source>
+        <translation type="unfinished">字幕</translation>
+    </message>
+    <message>
         <source>Subtitle and danmaku</source>
-        <translation>字幕和彈幕</translation>
+        <translation type="vanished">字幕和彈幕</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="219"/>

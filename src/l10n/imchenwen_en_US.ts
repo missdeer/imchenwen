@@ -293,179 +293,172 @@ Please try updating plugins.</translation>
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../qml/Settings.qml" line="96"/>
+        <location filename="../qml/Settings.qml" line="85"/>
         <source>Interface</source>
         <translation type="unfinished">Interface</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="102"/>
+        <location filename="../qml/Settings.qml" line="91"/>
         <source>Theme</source>
         <translation type="unfinished">Theme</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="111"/>
+        <location filename="../qml/Settings.qml" line="100"/>
         <source>Dark mode</source>
         <translation type="unfinished">Dark mode</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="118"/>
-        <location filename="../qml/Settings.qml" line="163"/>
+        <location filename="../qml/Settings.qml" line="107"/>
+        <location filename="../qml/Settings.qml" line="152"/>
         <source>(*): Restart needed</source>
         <translation type="unfinished">(*): Restart needed</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="122"/>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="111"/>
+        <location filename="../qml/Settings.qml" line="121"/>
         <source>Play</source>
         <translation type="unfinished">Play</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="129"/>
+        <location filename="../qml/Settings.qml" line="118"/>
         <source>Open URL:</source>
         <translation type="unfinished">Open URL:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="121"/>
         <source>Question</source>
         <translation type="unfinished">Question</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="132"/>
+        <location filename="../qml/Settings.qml" line="121"/>
         <source>Download</source>
         <translation type="unfinished">Download</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="135"/>
+        <location filename="../qml/Settings.qml" line="124"/>
         <source>Parse URL with:</source>
         <translation type="unfinished">Parse URL with:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="138"/>
+        <location filename="../qml/Settings.qml" line="127"/>
         <source>Auto</source>
         <translation type="unfinished">Auto</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="143"/>
+        <location filename="../qml/Settings.qml" line="132"/>
         <source>Play videos after being added to playlist</source>
         <translation type="unfinished">Play videos after being added to playlist</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="150"/>
+        <location filename="../qml/Settings.qml" line="139"/>
         <source>Video</source>
         <translation type="unfinished">Video</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="157"/>
+        <location filename="../qml/Settings.qml" line="146"/>
         <source>Decode</source>
         <translation type="unfinished">Decode</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="167"/>
         <source>Danmaku</source>
-        <translation type="unfinished">Danmaku</translation>
+        <translation type="obsolete">Danmaku</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="174"/>
         <source>Font:</source>
-        <translation type="unfinished">Font:</translation>
+        <translation type="obsolete">Font:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="183"/>
         <source>Please choose a font for Danmaku</source>
-        <translation type="unfinished">Please choose a font for Danmaku</translation>
+        <translation type="obsolete">Please choose a font for Danmaku</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="186"/>
         <source>Alpha (%):</source>
-        <translation type="unfinished">Alpha (%):</translation>
+        <translation type="obsolete">Alpha (%):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="189"/>
         <source>Duration of scrolling comment:</source>
-        <translation type="unfinished">Duration of scrolling comment:</translation>
+        <translation type="obsolete">Duration of scrolling comment:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="192"/>
         <source>Duration of still comment:</source>
-        <translation type="unfinished">Duration of still comment:</translation>
+        <translation type="obsolete">Duration of still comment:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="195"/>
         <source>Set to 0 to let imchenwen choose automatically.</source>
-        <translation type="unfinished">Set to 0 to let imchenwen choose automatically.</translation>
+        <translation type="obsolete">Set to 0 to let imchenwen choose automatically.</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="199"/>
+        <location filename="../qml/Settings.qml" line="156"/>
         <source>Cache</source>
         <translation type="unfinished">Cache</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="208"/>
+        <location filename="../qml/Settings.qml" line="165"/>
         <source>Limit cache size (Restart needed)</source>
         <translation type="unfinished">Limit cache size (Restart needed)</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="212"/>
+        <location filename="../qml/Settings.qml" line="169"/>
         <source>Forward (MB):</source>
         <translation type="unfinished">Forward (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="222"/>
+        <location filename="../qml/Settings.qml" line="179"/>
         <source>Backward (MB):</source>
         <translation type="unfinished">Backward (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="234"/>
+        <location filename="../qml/Settings.qml" line="191"/>
         <source>Proxy</source>
         <translation type="unfinished">Proxy</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="241"/>
+        <location filename="../qml/Settings.qml" line="198"/>
         <source>Proxy mode:</source>
         <translation type="unfinished">Proxy mode:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="248"/>
+        <location filename="../qml/Settings.qml" line="205"/>
         <source>Proxy:</source>
         <translation type="unfinished">Proxy:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="258"/>
+        <location filename="../qml/Settings.qml" line="215"/>
         <source>Note: Socks5 is not supported by online videos.</source>
         <translation type="unfinished">Note: Socks5 is not supported by online videos.</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="265"/>
+        <location filename="../qml/Settings.qml" line="222"/>
         <source>Use proxy only for parsing videos</source>
         <translation type="unfinished">Use proxy only for parsing videos</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="271"/>
+        <location filename="../qml/Settings.qml" line="228"/>
         <source>Downloader</source>
         <translation type="unfinished">Downloader</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="278"/>
+        <location filename="../qml/Settings.qml" line="235"/>
         <source>Maximum number of threads:</source>
         <translation type="unfinished">Maximum number of threads:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="281"/>
+        <location filename="../qml/Settings.qml" line="238"/>
         <source>Save to:</source>
         <translation type="unfinished">Save to:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="299"/>
+        <location filename="../qml/Settings.qml" line="260"/>
         <source>Website settings</source>
         <translation type="unfinished">Website settings</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="305"/>
+        <location filename="../qml/Settings.qml" line="266"/>
         <source>Quality choice:</source>
         <translation type="unfinished">Quality choice:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="313"/>
+        <location filename="../qml/Settings.qml" line="274"/>
         <source>Remove</source>
         <translation type="unfinished">Remove</translation>
     </message>
@@ -577,7 +570,6 @@ Please try updating plugins.</translation>
     </message>
     <message>
         <location filename="../qml/SubtitlesAndDanmaku.qml" line="52"/>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="132"/>
         <source>Add</source>
         <translation type="unfinished">Add</translation>
     </message>
@@ -587,44 +579,36 @@ Please try updating plugins.</translation>
         <translation type="unfinished">Please choose a file</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="65"/>
         <source>Danmaku</source>
-        <translation type="unfinished">Danmaku</translation>
+        <translation type="obsolete">Danmaku</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="72"/>
         <source>Shown comment type</source>
-        <translation type="unfinished">Shown comment type</translation>
+        <translation type="obsolete">Shown comment type</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="78"/>
         <source>Top</source>
-        <translation type="unfinished">Top</translation>
+        <translation type="obsolete">Top</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="85"/>
         <source>Bottom</source>
-        <translation type="unfinished">Bottom</translation>
+        <translation type="obsolete">Bottom</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="92"/>
         <source>Scrolling</source>
-        <translation type="unfinished">Scrolling</translation>
+        <translation type="obsolete">Scrolling</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="99"/>
         <source>Bottom reserved area</source>
-        <translation type="unfinished">Bottom reserved area</translation>
+        <translation type="obsolete">Bottom reserved area</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="110"/>
         <source>Blocked words</source>
-        <translation type="unfinished">Blocked words</translation>
+        <translation type="obsolete">Blocked words</translation>
     </message>
     <message>
-        <location filename="../qml/SubtitlesAndDanmaku.qml" line="151"/>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation type="obsolete">Remove</translation>
     </message>
 </context>
 <context>
@@ -753,13 +737,21 @@ Please try updating plugins.</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="217"/>
+        <source>Video</source>
+        <translation type="unfinished">Video</translation>
+    </message>
+    <message>
         <source>Video options</source>
-        <translation type="unfinished">Video options</translation>
+        <translation type="obsolete">Video options</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="218"/>
+        <source>Subtitle</source>
+        <translation type="unfinished">Subtitle</translation>
+    </message>
+    <message>
         <source>Subtitle and danmaku</source>
-        <translation type="unfinished">Subtitle and danmaku</translation>
+        <translation type="obsolete">Subtitle and danmaku</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="219"/>
