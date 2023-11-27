@@ -90,7 +90,8 @@ Item {
             Label { text: qsTr("Theme") + " (*):" }
             ComboBox {
                 id: themeComboBox
-                model: [ "Classic", "Material", "Win10" ]
+                model: if (Qt.platform.os === "windows") { [ "Classic", "Material", "Win10" ] }
+                else { [ "Classic", "Material"] }
                 currentIndex: 1
             }
 
