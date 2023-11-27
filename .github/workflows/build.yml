@@ -177,6 +177,7 @@ jobs:
           ninja
           cd ..
           mkdir imchenwen-${{ matrix.mingw_prefix }}
+          cp src/scripts/update-parsers.ps1 imchenwen-${{ matrix.mingw_prefix }}/
           cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/
           cd imchenwen-${{ matrix.mingw_prefix }}
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe
