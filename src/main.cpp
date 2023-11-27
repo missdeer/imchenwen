@@ -85,7 +85,11 @@ int main(int argc, char *argv[])
         QCoreApplication::installTranslator(&translator);
     }
     QTranslator qttranslator;
+    #if defined(Q_OS_MAC)
+    if (qttranslator.load(QStringLiteral("qt_") + QLocale::system().name(), QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources/translations")))
+    #else
     if (qttranslator.load(QStringLiteral("qt_") + QLocale::system().name(), QCoreApplication::applicationDirPath() + QStringLiteral("/translations")))
+    #endif
     {
         QCoreApplication::installTranslator(&qttranslator);
     }
@@ -95,7 +99,12 @@ int main(int argc, char *argv[])
     engine.addImportPath(QStringLiteral("qrc:/"));
 
     // Set UI style
-    switch (QSettings().value(QStringLiteral("player/theme"), 1).toInt())
+    #if defined(Q_OS_WIN)
+    const int defaultTheme = 2;
+    #else
+    const int defaultTheme = 0;
+    #endif
+    switch (QSettings().value(QStringLiteral("player/theme"), defaultTheme).toInt())
     {
     case 0: // Classic
         break;
