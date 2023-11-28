@@ -16,7 +16,7 @@
  
 pragma Singleton
 
-import QtQuick 2.7
+import QtQuick
 
 QtObject {
     // Palette object
