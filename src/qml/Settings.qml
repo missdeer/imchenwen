@@ -15,7 +15,7 @@
  */
  
 import QtQuick
-import Qt.labs.settings 1.0 as QSettings
+import Qt.labs.settings as QSettings
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts

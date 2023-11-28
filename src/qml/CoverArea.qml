@@ -15,7 +15,7 @@
  */
  
 import QtQuick
-import QtQuick.Window
+import QtQuick.Window 2.15
 import com.dfordsoft.imchenwen
 
 // Area to receive mouse events

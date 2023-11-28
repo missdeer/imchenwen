@@ -21,7 +21,7 @@ import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Controls.Material
 import QtQuick.Controls.Universal
-import Qt.labs.settings 1.0 as QSettings
+import Qt.labs.settings as QSettings
 import com.dfordsoft.imchenwen
 
 Window

@@ -14,10 +14,10 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
  
-import QtQuick 2.7
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.3
-import com.dfordsoft.imchenwen 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import com.dfordsoft.imchenwen
 
 Control {
     id: sideBar
