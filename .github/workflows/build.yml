@@ -150,14 +150,14 @@ jobs:
         uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-latest'
         with:
-          name: imchenwen-msvc-x86_64-setup
+          name: imchenwen-msvc-${{ matrix.toolset }}-x86_64-setup
           path: imchenwen-msvc-x86_64-setup.exe
             
       - name: Upload artifacts windows archive
         uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-latest'
         with:
-          name: imchenwen-msvc-x86_64-qt6
+          name: imchenwen-msvc-${{ matrix.toolset }}-x86_64-qt6
           path: imchenwen
 
   Windows:
