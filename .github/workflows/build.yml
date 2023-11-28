@@ -4,11 +4,31 @@ on:
   push:
     branches: [ player ]
 
+env:
+  WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/f96c71db-2c6c-45d9-8c1f-0348ef5885cf/w_BaseKit_p_2023.2.0.49396_offline.exe
+  WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/438527fc-7140-422c-a851-389f2791816b/w_HPCKit_p_2023.2.0.49441_offline.exe
+  WINDOWS_CPP_COMPONENTS: intel.oneapi.win.cpp-compiler
+  WINDOWS_DPCPP_COMPONENTS: intel.oneapi.win.dpcpp-compiler
+  SAMPLES_TAG: 2023.2.0
+  COMPILER_VERSION: 2023.2.0
+  TBB_VERSION: 2021.10.0
+  VS_VER: vs2022
+                
 jobs:
   builds:
     strategy:
       matrix:
-        os: [windows-2019, ubuntu-20.04]
+        toolset: [cl, icx, clang-cl, gcc]
+        include:
+          - toolset: cl
+            os: windows-latest
+          - toolset: icx
+            os: windows-latest
+          - toolset: clang-cl
+            os: windows-latest
+            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/LLVM-17.0.5-win64.exe
+          - toolset: gcc
+            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -18,19 +38,53 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.5.*'
+          version: '6.6.*'
 
+      - name: Set up clang for Windows
+        if: matrix.toolset == 'clang-cl'
+        shell: cmd
+        run: |
+          mkdir llvm
+          cd llvm
+          curl.exe -o LLVM.exe -L ${{ matrix.clang_link }}
+          7z.exe x LLVM.exe
+          cd ..
+
+      - name: cache intel install
+        if: matrix.toolset == 'icx'
+        id: cache-install
+        uses: actions/cache@v2
+        with:
+          path: |
+              C:\Program Files (x86)\Intel\oneAPI\setvars-vcvarsall.bat
+              C:\Program Files (x86)\Intel\oneAPI\compiler
+          key: install-${{ env.CACHE_NUMBER }}-${{ env.WINDOWS_HPCKIT_URL }}-${{ env.WINDOWS_CPP_COMPONENTS }}-compiler-${{ hashFiles('**/scripts/cache_exclude_windows.sh') }}
+
+      - name: install intel
+        if: steps.cache-install.outputs.cache-hit != 'true' && matrix.toolset == 'icx'
+        run: |
+          git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
+          cd oneapi-ci
+          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}
+
+      - name: restore registry on cache hit
+        if: steps.cache-install.outputs.cache-hit == 'true' && matrix.toolset == 'icx'
+        run:  |
+          git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
+          cd oneapi-ci
+          scripts/restore_registry.bat ${{ env.COMPILER_VERSION }}
+  
       - name: Enable MSVC commands
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install MPV on Windows
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         shell: cmd
         run: scripts\win-install-mpv.bat
 
       - name: Install Linux dependencies
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-latest'
         run: |-
           sudo apt-get update
           sudo apt-get install -y ffmpeg libmpv-dev libcurl4-openssl-dev libssl-dev libxkbcommon-x11-0 libxcb-cursor0
@@ -45,23 +99,44 @@ jobs:
           brew update
           brew install openssl@1.1 mpv freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
 
-      - name: Build
+      - name: Build on non-Windows
         shell: bash
+        if: matrix.os != 'windows-latest'
         env:
           RUNNING_OS: ${{ matrix.os }}
         run: |-
           mkdir build
           cd build
-          if [ "$RUNNING_OS" -eq "windows-2019" ]; then
+          if [ "$RUNNING_OS" -eq "windows-latest" ]; then
             cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
           else
             cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr ..
           fi
           cmake --build . --config Release --parallel --verbose
 
+      - name: Build on Windows
+        shell: cmd
+        if: matrix.os == 'windows-latest'
+        env:
+          RUNNING_OS: ${{ matrix.os }}
+          vc_arch: x64
+        run: |-
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          call "C:\Program Files (x86)\Intel\oneAPI\compiler\${{ env.COMPILER_VERSION }}\env\vars.bat"
+          set PATH="C:\Program Files (x86)\Intel\oneAPI\compiler\${{ env.COMPILER_VERSION }}\windows\bin-llvm\";%CD%\llvm\bin;%PATH%
+          mkdir build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.toolset }} -DCMAKE_CXX_COMPILER=${{ matrix.toolset }} -G Ninja -S . -B build
+          cmake --build . --config Release --parallel --verbose
+
+      - name: copy libmmd.dll
+        if: matrix.toolset == 'icx'
+        shell: cmd
+        run: |
+          copy "C:\Program Files (x86)\Intel\oneAPI\compiler\${{ env.COMPILER_VERSION }}\windows\redist\intel64_win\compiler\libmmd.dll" imchenwen\
+          
       - name: Deploy
         shell: bash
-        if: matrix.os != 'ubuntu-20.04'
+        if: matrix.os != 'ubuntu-latest'
         env:
           RUNNING_OS: ${{ matrix.os }}
         run: ./scripts/deploy-${RUNNING_OS}.sh
@@ -76,14 +151,14 @@ jobs:
 
       - name: Upload artifacts windows installer
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         with:
           name: imchenwen-msvc-x86_64-setup
           path: imchenwen-msvc-x86_64-setup.exe
             
       - name: Upload artifacts windows archive
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-latest'
         with:
           name: imchenwen-msvc-x86_64-qt6
           path: imchenwen
