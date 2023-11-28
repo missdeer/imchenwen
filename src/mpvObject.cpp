@@ -26,10 +26,6 @@
 #include <QStandardPaths>
 #include <QTimer>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#    include <QQuickOpenGLUtils>
-#endif
-
 #include "accessManager.h"
 #include "danmakuLoader.h"
 #include "mpvObject.h"
@@ -91,9 +87,6 @@ public:
         Q_ASSERT(m_obj != nullptr);
         Q_ASSERT(m_obj->window() != nullptr);
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        QQuickOpenGLUtils::resetOpenGLState();
-#endif
         QOpenGLFramebufferObject *fbo = framebufferObject();
         Q_ASSERT(fbo != nullptr);
 
@@ -102,9 +95,6 @@ public:
 
         mpv_render_param params[] = {{MPV_RENDER_PARAM_OPENGL_FBO, &mpfbo}, {MPV_RENDER_PARAM_FLIP_Y, &flip_y}, {MPV_RENDER_PARAM_INVALID, nullptr}};
         m_obj->m_mpv.render(params);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        QQuickOpenGLUtils::resetOpenGLState();
-#endif
     }
 };
 

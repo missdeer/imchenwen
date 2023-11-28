@@ -161,8 +161,8 @@
 <context>
     <name>MpvObject</name>
     <message>
-        <location filename="../mpvObject.cpp" line="601"/>
-        <location filename="../mpvObject.cpp" line="628"/>
+        <location filename="../mpvObject.cpp" line="591"/>
+        <location filename="../mpvObject.cpp" line="618"/>
         <source>Untitled </source>
         <translation>无标题</translation>
     </message>
