@@ -107,11 +107,7 @@ jobs:
         run: |-
           mkdir build
           cd build
-          if [ "$RUNNING_OS" -eq "windows-latest" ]; then
-            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
-          else
-            cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr ..
-          fi
+          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr ..
           cmake --build . --config Release --parallel --verbose
 
       - name: Build on Windows
@@ -126,12 +122,13 @@ jobs:
           set PATH="C:\Program Files (x86)\Intel\oneAPI\compiler\${{ env.COMPILER_VERSION }}\windows\bin-llvm\";%CD%\llvm\bin;%PATH%
           mkdir build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.toolset }} -DCMAKE_CXX_COMPILER=${{ matrix.toolset }} -G Ninja -S . -B build
-          cmake --build . --config Release --parallel --verbose
+          cmake --build build --config Release --parallel --verbose
 
       - name: copy libmmd.dll
         if: matrix.toolset == 'icx'
         shell: cmd
         run: |
+          mkdir imchenwen
           copy "C:\Program Files (x86)\Intel\oneAPI\compiler\${{ env.COMPILER_VERSION }}\windows\redist\intel64_win\compiler\libmmd.dll" imchenwen\
           
       - name: Deploy
