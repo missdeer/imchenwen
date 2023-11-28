@@ -5,13 +5,13 @@ cmake_minimum_required(VERSION 3.0)
 
 
 # Basic information about project
-project(imchenwen VERSION 4.3)
+project(imchenwen VERSION 2.0)
 add_definitions(-DIMCHENWEN_VERSION="${PROJECT_VERSION}")
 
 
 # Set additional project information
 set(COMPANY "DForD Software")
-set(COPYRIGHT "Copyright (c) 2019 - 2023 DForD Software. All rights reserved.")
+set(COPYRIGHT "Copyright (c) 2019 - 2024 DForD Software. All rights reserved.")
 set(IDENTIFIER "com.dfordsoft.imchenwen")
 
 
