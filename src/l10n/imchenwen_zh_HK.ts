@@ -136,12 +136,12 @@
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../jsapiObject.cpp" line="87"/>
+        <location filename="../jsapiObject.cpp" line="91"/>
         <source>Information</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../jsapiObject.cpp" line="93"/>
+        <location filename="../jsapiObject.cpp" line="97"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
@@ -149,8 +149,8 @@
 <context>
     <name>MpvObject</name>
     <message>
-        <location filename="../mpvObject.cpp" line="592"/>
-        <location filename="../mpvObject.cpp" line="619"/>
+        <location filename="../mpvObject.cpp" line="601"/>
+        <location filename="../mpvObject.cpp" line="628"/>
         <source>Untitled </source>
         <translation>無標題</translation>
     </message>
@@ -206,7 +206,7 @@ URL: %1
     <name>ParserLux</name>
     <message>
         <location filename="../parserLux.cpp" line="38"/>
-        <location filename="../parserLux.cpp" line="95"/>
+        <location filename="../parserLux.cpp" line="94"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
@@ -216,12 +216,12 @@ URL: %1
         <translation>其他視頻正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="95"/>
+        <location filename="../parserLux.cpp" line="94"/>
         <source>The given url has no video item.</source>
         <translation>該URL沒有視頻條目。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="108"/>
+        <location filename="../parserLux.cpp" line="107"/>
         <source>Select episode</source>
         <translation>選集</translation>
     </message>

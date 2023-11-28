@@ -43,9 +43,10 @@ int main(int argc, char *argv[])
                  QT_VERSION_STR,
                  qVersion());
     }
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // Force to use OpenGL in Qt6
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
+#endif 
 
     // Set application attributes
     QCoreApplication::setOrganizationName(QStringLiteral("DForD Software"));

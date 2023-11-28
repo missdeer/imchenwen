@@ -20,7 +20,7 @@
 #include <QMap>
 #include <QObject>
 #include <QUrl>
-#include <QtQml/qqmlregistration.h>
+#include <QQmlEngine>
 
 // Store website settings
 class WebsiteSettings : public QObject

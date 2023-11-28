@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QProcess>
-#include <QtQml/qqmlregistration.h>
+#include <QQmlEngine>
 
 // Show dialogs in QML
 class Dialogs : public QObject

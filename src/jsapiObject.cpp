@@ -61,8 +61,12 @@ void JSAPIObject::get_post_content(const QString &url, const QByteArray &content
         }
 
         // Call callback function
-        const QJSValue &func   = callbackFunc;
-        QJSValue        retVal = func.call({QString::fromUtf8(reply->readAll())});
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const QJSValue &func = callbackFunc;
+#else
+        QJSValue &func   = const_cast<QJSValue&>(callbackFunc);
+#endif
+        QJSValue retVal = func.call({QString::fromUtf8(reply->readAll())});
         if (retVal.isError())
         {
             emit jsError(retVal);

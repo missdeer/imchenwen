@@ -18,7 +18,7 @@
 #define CLIPBOARD_H
 
 #include <QObject>
-#include <QtQml/qqmlregistration.h>
+#include <QQmlEngine>
 
 class QClipboard;
 

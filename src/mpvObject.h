@@ -21,8 +21,8 @@
 
 #include <QObject>
 #include <QQuickWindow>
-#include <QtQml/qqmlregistration.h>
-#include <QtQuick/QQuickFramebufferObject>
+#include <QQmlEngine>
+#include <QQuickFramebufferObject>
 
 #include "mpv.hpp"
 

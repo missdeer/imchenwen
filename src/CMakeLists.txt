@@ -1,4 +1,7 @@
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 # Include Qt Gui private headers
 include_directories(${Qt${QT_VERSION_MAJOR}Gui_PRIVATE_INCLUDE_DIRS})
 
@@ -81,8 +84,6 @@ if (NOT MINGW)
         l10n/imchenwen_zh_HK.ts
     )
     set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/l10n)
-    qt_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
-    list(APPEND SOURCE_FILES ${QM_FILES})
 endif()
 
 # Add MacOS bundle files
@@ -93,68 +94,75 @@ if (APPLE)
         COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_NAME}.app/Contents/Resources/zh_CN.lproj")
 endif()
 
+# Add qml files and resources
+set_source_files_properties(qml_singletons/SkinColor.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+)
 # Create excutable
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    if (NOT MINGW)
+        qt_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
+        list(APPEND SOURCE_FILES ${QM_FILES})
+    endif()
     qt_add_executable(${PROJECT_NAME}
         ${SOURCE_FILES}
         resources_qt6.qrc
         l10n/l10n.qrc
         ${META_FILES_TO_INCLUDE})
+
+    qt_add_qml_module(${PROJECT_NAME}
+        URI com.dfordsoft.imchenwen
+        VERSION 1.0
+        QML_FILES
+            ${QML_FILES}
+        RESOURCES
+            images/net_grey.png
+            images/net_grey_on.png
+            images/net_lightgrey.png
+            images/net_lightgrey_on.png
+            images/pause_grey.png
+            images/pause_grey_on.png
+            images/pause_lightgrey.png
+            images/pause_lightgrey_on.png
+            images/play_grey.png
+            images/play_grey_on.png
+            images/play_lightgrey.png
+            images/play_lightgrey_on.png
+            images/playlist_grey.png
+            images/playlist_grey_on.png
+            images/playlist_lightgrey.png
+            images/playlist_lightgrey_on.png
+            images/settings_grey.png
+            images/settings_grey_on.png
+            images/settings_lightgrey.png
+            images/settings_lightgrey_on.png
+            images/stop_grey.png
+            images/stop_grey_on.png
+            images/stop_lightgrey.png
+            images/stop_lightgrey_on.png
+            images/volume_grey.png
+            images/volume_grey_on.png
+            images/volume_lightgrey.png
+            images/volume_lightgrey_on.png
+    )
+        
 else()
+    if (NOT MINGW)
+        qt5_create_translation(QM_FILES ${SOURCE_FILES} ${QML_FILES} ${TS_FILES})
+        list(APPEND SOURCE_FILES ${QM_FILES})
+    endif()
     add_executable(${PROJECT_NAME}
         ${SOURCE_FILES}
         resources_qt6.qrc
         l10n/l10n.qrc
+        qml_qt5.qrc
         ${META_FILES_TO_INCLUDE})
 endif()
 
 # Enable Automoc and Autorcc for Qt
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    AUTOMOC ON
-    AUTORCC ON
     MACOSX_BUNDLE ON
     WIN32_EXECUTABLE TRUE
-)
-
-# Add qml files and resources
-set_source_files_properties(qml_singletons/SkinColor.qml PROPERTIES
-    QT_QML_SINGLETON_TYPE TRUE
-)
-
-qt_add_qml_module(${PROJECT_NAME}
-    URI com.dfordsoft.imchenwen
-    VERSION 1.0
-    QML_FILES
-        ${QML_FILES}
-    RESOURCES
-        images/net_grey.png
-        images/net_grey_on.png
-        images/net_lightgrey.png
-        images/net_lightgrey_on.png
-        images/pause_grey.png
-        images/pause_grey_on.png
-        images/pause_lightgrey.png
-        images/pause_lightgrey_on.png
-        images/play_grey.png
-        images/play_grey_on.png
-        images/play_lightgrey.png
-        images/play_lightgrey_on.png
-        images/playlist_grey.png
-        images/playlist_grey_on.png
-        images/playlist_lightgrey.png
-        images/playlist_lightgrey_on.png
-        images/settings_grey.png
-        images/settings_grey_on.png
-        images/settings_lightgrey.png
-        images/settings_lightgrey_on.png
-        images/stop_grey.png
-        images/stop_grey_on.png
-        images/stop_lightgrey.png
-        images/stop_lightgrey_on.png
-        images/volume_grey.png
-        images/volume_grey_on.png
-        images/volume_lightgrey.png
-        images/volume_lightgrey_on.png
 )
 
 # Link

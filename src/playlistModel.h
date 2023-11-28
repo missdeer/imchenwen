@@ -19,7 +19,7 @@
 
 #include <QAbstractListModel>
 #include <QUrl>
-#include <QtQml/qqmlregistration.h>
+#include <QQmlEngine>
 
 class PlaylistModel : public QAbstractListModel
 {

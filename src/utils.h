@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QUrl>
-#include <QtQml/qqmlregistration.h>
+#include <QQmlEngine>
 
 class Utils : public QObject
 {

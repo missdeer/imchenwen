@@ -77,7 +77,6 @@ void ParserLux::parseOutput()
 {
     QByteArray output = m_process.readAllStandardOutput();
 
-    qDebug() << output.toStdString() << "\n";
     // Parse JSON
     QJsonParseError json_error;
     QJsonDocument   document = QJsonDocument::fromJson(output, &json_error);

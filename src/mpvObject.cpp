@@ -21,17 +21,21 @@
 #include <QDir>
 #include <QMetaType>
 #include <QOpenGLContext>
-#include <QQuickOpenGLUtils>
+#include <QOpenGLFramebufferObject>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTimer>
-#include <QtOpenGL/QOpenGLFramebufferObject>
 
-#include "mpvObject.h"
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#    include <QQuickOpenGLUtils>
+#endif
+
 #include "accessManager.h"
 #include "danmakuLoader.h"
+#include "mpvObject.h"
 #include "platform/graphics.h"
 #include "playlistModel.h"
+
 
 /* MPV Renderer */
 class MpvRenderer : public QQuickFramebufferObject::Renderer
@@ -87,7 +91,9 @@ public:
         Q_ASSERT(m_obj != nullptr);
         Q_ASSERT(m_obj->window() != nullptr);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QQuickOpenGLUtils::resetOpenGLState();
+#endif
         QOpenGLFramebufferObject *fbo = framebufferObject();
         Q_ASSERT(fbo != nullptr);
 
@@ -96,7 +102,9 @@ public:
 
         mpv_render_param params[] = {{MPV_RENDER_PARAM_OPENGL_FBO, &mpfbo}, {MPV_RENDER_PARAM_FLIP_Y, &flip_y}, {MPV_RENDER_PARAM_INVALID, nullptr}};
         m_obj->m_mpv.render(params);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QQuickOpenGLUtils::resetOpenGLState();
+#endif
     }
 };
 
@@ -212,11 +220,12 @@ void MpvObject::open(const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &au
         m_mpv.set_option("user-agent", NetworkAccessManager::instance()->userAgentOf(fileUrl).constData());
 
         // set proxy
-        NetworkAccessManager::ProxyType proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value("network/proxy_type").toInt());
-        bool                            proxyForParseOnly = settings.value(QStringLiteral("network/proxy_only_for_parsing"), false).toBool();
+        NetworkAccessManager::ProxyType proxyType =
+            static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
+        bool proxyForParseOnly = settings.value(QStringLiteral("network/proxy_only_for_parsing"), false).toBool();
         if (!proxyForParseOnly && proxyType == NetworkAccessManager::HTTP_PROXY)
         {
-            QByteArray proxy = QByteArrayLiteral("http://") + settings.value("network/proxy").toByteArray();
+            QByteArray proxy = QByteArrayLiteral("http://") + settings.value(QStringLiteral("network/proxy")).toByteArray();
             m_mpv.set_option("http-proxy", proxy.constData());
         }
         else
@@ -653,7 +662,11 @@ void MpvObject::onMpvEvent()
 // setProperty() exposed to QML
 void MpvObject::setProperty(const QString &name, const QVariant &value)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     switch (value.typeId())
+#else
+    switch ((int)value.type())
+#endif
     {
     case static_cast<int>(QMetaType::Bool): {
         bool v = value.toBool();
@@ -704,7 +717,9 @@ QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
 {
     QQuickWindow *win = window();
     Q_ASSERT(win != nullptr);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     win->setPersistentGraphics(true);
+#endif
     win->setPersistentSceneGraph(true);
     return new MpvRenderer(const_cast<MpvObject *>(this));
 }
