@@ -232,8 +232,8 @@ jobs:
           export MSYSTEM=${{ matrix.mingw_arch }}
           mkdir build-imchenwen-${{ matrix.mingw_arch }}
           cd build-imchenwen-${{ matrix.mingw_arch }}
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake "-DCMAKE_PREFIX_PATH=D:/a/_temp/msys64/${{ matrix.qtprefix }}" "-DQT_DIR=D:/a/_temp/msys64/${{ matrix.qtdir }}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
-          ninja
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake "-DCMAKE_PREFIX_PATH=D:/a/_temp/msys64/${{ matrix.qtprefix }}" "-DQT_DIR=D:/a/_temp/msys64/${{ matrix.qtprefix }}/${{ matrix.qtdir }}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake --build . --parallel --verbose
           cd ..
           mkdir imchenwen-${{ matrix.mingw_prefix }}
           cp src/scripts/update-parsers.ps1 imchenwen-${{ matrix.mingw_prefix }}/
