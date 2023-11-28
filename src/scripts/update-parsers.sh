@@ -49,6 +49,7 @@ else
 	exit 0
 fi
 
+if [ ! -d "$DEST_DIR" ]; then mkdir -p "$DEST_DIR"; fi
 cd "$DEST_DIR"
 
 # Set network tool
