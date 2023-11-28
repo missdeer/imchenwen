@@ -32,12 +32,18 @@ include(QtCommon)
 # Disables automatic conversions from 8-bit strings to unicode QStrings
 add_definitions(-DQT_NO_CAST_FROM_ASCII)
 
+if(NOT DEFINED CMAKE_OSX_ARCHITECTURES)
+  set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+endif()
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Set PROJECT_VERSION_PATCH and PROJECT_VERSION_TWEAK to 0 if not present, needed by add_project_meta
 fix_project_version()
 
-find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick OpenGL Network LinguistTools)
-find_package(Qt6Gui REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Gui LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui Qml Quick OpenGL Network LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR}Gui REQUIRED)
 find_package(MPV REQUIRED)
 
 add_subdirectory(3rdparty)

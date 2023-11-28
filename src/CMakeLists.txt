@@ -1,6 +1,6 @@
 
 # Include Qt Gui private headers
-include_directories(${Qt6Gui_PRIVATE_INCLUDE_DIRS})
+include_directories(${Qt${QT_VERSION_MAJOR}Gui_PRIVATE_INCLUDE_DIRS})
 
 # Include MPV
 include_directories(${MPV_INCLUDE_DIRS})
@@ -93,13 +93,20 @@ if (APPLE)
         COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_NAME}.app/Contents/Resources/zh_CN.lproj")
 endif()
 
-
 # Create excutable
-qt_add_executable(${PROJECT_NAME}
-    ${SOURCE_FILES}
-    resources_qt6.qrc
-    l10n/l10n.qrc
-    ${META_FILES_TO_INCLUDE})
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(${PROJECT_NAME}
+        ${SOURCE_FILES}
+        resources_qt6.qrc
+        l10n/l10n.qrc
+        ${META_FILES_TO_INCLUDE})
+else()
+    add_executable(${PROJECT_NAME}
+        ${SOURCE_FILES}
+        resources_qt6.qrc
+        l10n/l10n.qrc
+        ${META_FILES_TO_INCLUDE})
+endif()
 
 # Enable Automoc and Autorcc for Qt
 set_target_properties(${PROJECT_NAME} PROPERTIES
