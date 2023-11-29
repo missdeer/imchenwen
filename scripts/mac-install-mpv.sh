@@ -4,10 +4,10 @@ location="https://iina.io/dylibs/universal"
 IFS=$'\n' read -r -d '' -a files < <(curl "${location}/filelist.txt" && printf '\0')
 for file in "${files[@]}"; do
 	set -x
-	curl "${location}/${file}" >libmpv/$file
+	curl -L "${location}/${file}" -o libmpv/$file
 	{ set +x; } 2>/dev/null
+	install_name_tool -add_rpath @executable_path/../Libs libmpv/$file
+	install_name_tool -add_rpath $PWD/libmpv libmpv/$file
 done
 
-# Use https://iina.io/dylibs/youtube-dl to get the binary included in the latest release.
-curl -L 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_macos' -o libmpv/youtube-dl
-chmod +x libmpv/youtube-dl
+ln -sf $PWD/libmpv/libmpv.2.dylib $PWD/libmpv/libmpv.dylib
