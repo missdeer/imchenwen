@@ -53,11 +53,6 @@ else ()
     )
 endif()
 
-if(POLICY CMP0071)
-  cmake_policy(SET CMP0071 NEW)
-endif()
-qt_policy(SET QTP0001 NEW)
-
 # QML files
 set(QML_FILES
     qml/main.qml
