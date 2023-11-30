@@ -48,7 +48,9 @@ foreach(l ${_MPV_LIBRARY_NAMES})
   list(APPEND MPV_LIBRARY ${MPV_LIBRARY_${l}})
 endforeach()
 
+if (APPLE OR MSVC)
 file(GLOB MPV_LIBRARY ${PROJECT_SOURCE_DIR}/libmpv/*.a ${PROJECT_SOURCE_DIR}/libmpv/*.lib)
+endif()
 get_filename_component(_MPV_LIBRARY_DIR ${MPV_LIBRARY_mpv} PATH)
 mark_as_advanced(MPV_LIBRARY)
 
