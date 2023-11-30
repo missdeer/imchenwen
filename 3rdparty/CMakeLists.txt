@@ -29,7 +29,7 @@ if (UNIX)
 
     target_include_directories(hlsdl PRIVATE ${OPENSSL_INCLUDE_DIR} ${CURL_INCLUDE_DIRS})
     target_link_libraries(hlsdl PRIVATE ${OPENSSL_CRYPTO_LIBRARY} ${CURL_LIBRARIES} Threads::Threads)
-    set_target_properties($hlsdl PROPERTIES LINK_FLAGS_RELEASE -s)
+    set_target_properties(hlsdl PROPERTIES LINK_FLAGS_RELEASE -s)
 
     if (NOT APPLE)
         install(TARGETS hlsdl RUNTIME DESTINATION bin)
