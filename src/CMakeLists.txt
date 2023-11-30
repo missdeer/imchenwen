@@ -218,3 +218,5 @@ if (APPLE)
   target_link_libraries(${PROJECT_NAME} PRIVATE "-framework CoreMedia -framework CoreAudio -framework AVFoundation -framework AudioToolBox -framework VideoToolbox")
   target_link_libraries(${PROJECT_NAME} PRIVATE ${MPV_LIBRARIES} iconv xml2 z)
 endif()
+
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE -s)
