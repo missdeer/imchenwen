@@ -1,8 +1,6 @@
-: Download libmpv
-curl -Lo libmpv.7z https://versaweb.dl.sourceforge.net/project/mpv-player-windows/libmpv/mpv-dev-x86_64-v3-20231126-git-6898d57.7z
-
-: Extract libmpv
-"C:\Program Files\7-Zip\7z.exe" x -y -olibmpv libmpv.7z
+cd scripts
+powershell.exe "-Command" "if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'H:\Shareware\imchenwen\scripts\win-install-mpv.ps1'"
+cd ..
 
 : Produce .lib file
 cd libmpv
