@@ -1,5 +1,5 @@
 cd scripts
-powershell.exe "-Command" "if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'H:\Shareware\imchenwen\scripts\win-install-mpv.ps1'"
+powershell.exe "-Command" "if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & '%~dp0win-install-mpv.ps1'"
 cd ..
 
 : Produce .lib file
