@@ -196,8 +196,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-
-      - run: |
+                             
+      - name: patch hlsdl 
+        run: |
+          cd 3rdparty\hlsdl
+          git apply ..\hlsdl.patch
+          
+      - name: clone mingwdeployqt
+        run: |
           git clone https://github.com/missdeer/mingwdeployqt.git
           
       - name: Build mingwdeployqt
@@ -237,20 +243,16 @@ jobs:
           cd ..
           mkdir imchenwen-${{ matrix.mingw_prefix }}
           cp src/scripts/update-parsers.ps1 imchenwen-${{ matrix.mingw_prefix }}/
-          cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/
+          cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/ 
+          cp build-imchenwen-${{ matrix.mingw_arch }}/3rdparty/hlsdl.exe imchenwen-${{ matrix.mingw_prefix }}/
           cd imchenwen-${{ matrix.mingw_prefix }}
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin mingwdeployqt.exe $PWD/imchenwen.exe
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin mingwdeployqt.exe $PWD/hlsdl.exe
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cp ../qt.conf ./
           cd ..
           mv imchenwen-${{ matrix.mingw_prefix }} imchenwen
-
-      - name: download hlsdl
-        shell: cmd
-        run: |
-          curl -Lo hlsdl.7z https://rwijnsma.home.xs4all.nl/files/hlsdl/hlsdl-0.27-dff8a57-win32-static-xpmod-sse.7z
-          7z e hlsdl.7z -oimchenwen hlsdl.exe
           
       - name: make installer
         shell: cmd

@@ -3,7 +3,7 @@
 add_subdirectory(danmaku2ass_cpp)
 
 #### hlsdl ####
-if (UNIX)
+if (UNIX OR MINGW)
     if(APPLE)
         # Fix CMake's search for OpenSSL, see https://stackoverflow.com/a/62063357
         IF(EXISTS /opt/homebrew/opt/)
@@ -17,15 +17,22 @@ if (UNIX)
     find_package(OpenSSL REQUIRED)
     find_package(CURL REQUIRED)
     find_package(Threads REQUIRED)
-
-    add_executable(hlsdl
+	set(SOURCES   
         hlsdl/src/main.c
         hlsdl/src/aes_openssl.c
         hlsdl/src/curl.c
         hlsdl/src/hls.c
         hlsdl/src/misc.c
         hlsdl/src/msg.c
-        hlsdl/src/mpegts.c)
+        hlsdl/src/mpegts.c
+		)
+	if (MINGW)                                          
+		list(APPEND SOURCES 
+			hlsdl/msvc/win/memmem.c 
+			hlsdl/msvc/win/getopt.c
+			)
+	endif()
+    add_executable(hlsdl ${SOURCES})
 
     target_include_directories(hlsdl PRIVATE ${OPENSSL_INCLUDE_DIR} ${CURL_INCLUDE_DIRS})
     target_link_libraries(hlsdl PRIVATE ${OPENSSL_CRYPTO_LIBRARY} ${CURL_LIBRARIES} Threads::Threads)

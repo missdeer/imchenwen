@@ -1,0 +1,13 @@
+diff --git a/src/mpegts.c b/src/mpegts.c
+index 757b145..d507054 100644
+--- a/src/mpegts.c
++++ b/src/mpegts.c
+@@ -5,7 +5,7 @@
+ 
+ #include "mpegts.h"
+ 
+-#ifndef _MSC_VER
++#ifndef WIN32
+ #include "msg.h"
+ #else
+ #define MSG_ERROR printf
