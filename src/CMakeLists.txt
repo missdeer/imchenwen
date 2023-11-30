@@ -194,27 +194,6 @@ if (UNIX AND NOT APPLE)
 endif()
 
 if (APPLE)
-  set(MPV_DEPS 
-    libass.a 
-    libavcodec.a
-    libavdevice.a 
-    libavfilter.a
-    libavformat.a
-    libavutil.a
-    libcrypto.a
-    libfreetype.a
-    libfribidi.a
-    libharfbuzz.a
-    libharfbuzz-subset.a
-    libssl.a
-    libswresample.a
-    libswscale.a
-    libuchardet.a
-    )
-  foreach(l ${MPV_DEPS})
-    find_library(MPV_LIB_${l} NAMES ${l} PATHS ${PROJECT_SOURCE_DIR}/libmpv)
-    list(APPEND MPV_LIBRARIES ${MPV_LIB_${l}})
-  endforeach()
   target_link_libraries(${PROJECT_NAME} PRIVATE "-framework CoreMedia -framework CoreAudio -framework AVFoundation -framework AudioToolBox -framework VideoToolbox")
   target_link_libraries(${PROJECT_NAME} PRIVATE ${MPV_LIBRARIES} iconv xml2 z)
 endif()

@@ -44,12 +44,11 @@ foreach(l ${_MPV_LIBRARY_NAMES})
     NAMES ${l}
     PATHS
         ${PROJECT_SOURCE_DIR}/libmpv       # Windows
-        /usr/local/opt/mpv/lib  # macOS
-        /opt/homebrew/opt/mpv/lib  # macOS
   )
   list(APPEND MPV_LIBRARY ${MPV_LIBRARY_${l}})
 endforeach()
 
+file(GLOB MPV_LIBRARY ${PROJECT_SOURCE_DIR}/libmpv/*.a ${PROJECT_SOURCE_DIR}/libmpv/*.lib)
 get_filename_component(_MPV_LIBRARY_DIR ${MPV_LIBRARY_mpv} PATH)
 mark_as_advanced(MPV_LIBRARY)
 
