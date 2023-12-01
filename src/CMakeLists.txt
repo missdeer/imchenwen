@@ -194,8 +194,12 @@ if (UNIX AND NOT APPLE)
 endif()
 
 if (APPLE)
-  target_link_libraries(${PROJECT_NAME} PRIVATE "-framework CoreMedia -framework CoreAudio -framework AVFoundation -framework AudioToolBox -framework VideoToolbox")
-  target_link_libraries(${PROJECT_NAME} PRIVATE ${MPV_LIBRARIES} iconv xml2 z)
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-framework CoreMedia -framework CoreAudio -framework CoreFoundation -framework AudioToolBox -framework VideoToolbox -framework Metal")
+  target_link_libraries(${PROJECT_NAME} PRIVATE iconv xml2 z bz2
+    /Applications/Xcode.app/Contents/Developer//Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/${APPLEOS}/libswiftCompatibility56.a
+    /Applications/Xcode.app/Contents/Developer//Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/${APPLEOS}/libswiftCompatibility51.a
+    /Applications/Xcode.app/Contents/Developer//Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/${APPLEOS}/libswiftCompatibilityConcurrency.a
+    )
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE -s)
