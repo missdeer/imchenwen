@@ -52,9 +52,19 @@ jobs:
         with:
           submodules: true
 
+      - name: Cache qt static build
+        id: cache-qt-static-build
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-qt-static-build-macos
+        with:
+          path: ./Qt/${{ env.QT_VERSION }}/macos_static
+          key: qt-${{ env.QT_VERSION }}-static-${{ matrix.os }}
+
       - name: build qt static
+        if: ${{ steps.cache-qt-static-build.outputs.cache-hit != 'true' }}
         run: |
-          wget https://download.qt.io/official_releases/qt/6.6/${{ env.QT_VERSION }}/single/qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
+          curl -sLO https://download.qt.io/official_releases/qt/6.6/${{ env.QT_VERSION }}/single/qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
           tar xf qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
           cd qt-everywhere-src-${{ env.QT_VERSION }}
           QtVer=${{ env.QT_VERSION }}
@@ -67,7 +77,7 @@ jobs:
           cd ..
           cd ..
 
-      - name: build MPV
+      - name: Install MPV
         shell: bash
         run: |
           git clone --recursive --depth=1 https://github.com/cxfksword/MPVKit.git
@@ -84,6 +94,7 @@ jobs:
           cd ..
           cp libmpv/*.a ../libmpv/
           cp -r Sources/Libmpv.xcframework/macos-arm64_x86_64/Libmpv.framework/Headers ../libmpv/include
+          cd ..
 
       - name: Install macOS dependencies
         env:
@@ -98,7 +109,7 @@ jobs:
         run: |-
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
+          cmake -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
           cmake --build . --config Release --parallel --verbose
 
       - name: Deploy
@@ -108,8 +119,8 @@ jobs:
       - name: Upload artifacts mac app bundle
         uses: actions/upload-artifact@v3
         with:
-          name: imchenwen_${{ matrix.os }}
-          path: imchenwen_*.zip
+          name: imchenwen_${{ matrix.os }}.zip
+          path: imchenwen.app
 
   MSVC:
     strategy:
