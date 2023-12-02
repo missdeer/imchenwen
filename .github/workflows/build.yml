@@ -13,9 +13,104 @@ env:
   COMPILER_VERSION: 2023.2.0
   TBB_VERSION: 2021.10.0
   VS_VER: vs2022
+  QT_VERSION: 6.6.1
                 
 jobs:
-  builds:
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: ${{ env.QT_VERSION }}
+
+      - name: Install Linux dependencies
+        run: |-
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libmpv-dev libcurl4-openssl-dev libssl-dev libxkbcommon-x11-0 libxcb-cursor0
+          sudo pip install ninja
+
+      - name: Build on non-Windows
+        shell: bash
+        run: |-
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr ..
+          cmake --build . --config Release --parallel --verbose
+
+  macOS:
+    strategy:
+      matrix:
+        os: [macos-11, macos-12, macos-13]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: build qt static
+        run: |
+          wget https://download.qt.io/official_releases/qt/6.6/${{ env.QT_VERSION }}/single/qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
+          tar xvf qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
+          cd qt-everywhere-src-${{ env.QT_VERSION }}
+          QtVer=${{ env.QT_VERSION }}
+          rm -rf $PWD/../Qt/${{ env.QT_VERSION }}/macos_static
+          mkdir build_static
+          cd build_static
+          ../configure -prefix $PWD/../../Qt/${{ env.QT_VERSION }}/macos_static -opensource -confirm-license -release -skip qtwebengine -skip qtwebchannel -skip qtwebglplugin -skip qtwebview -skip qt3d -skip qtlocation -nomake examples -nomake tests -appstore-compliant -no-openssl -securetransport -static -- -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+          cmake --build . --parallel 
+          cmake --install .
+          cd ..
+          cd ..
+
+      - name: build MPV
+        run: |
+          git clone --recursive --depth=1 https://github.com/cxfksword/MPVKit.git
+          cd MPVKit
+          if [ ! -d libmpv ]; then mkdir libmpv; fi
+          find Sources -name 'Lib*' -type f | grep $platform | while read file; do
+	          cp "$file" libmpv/
+          done
+          cd libmpv
+          for file in Lib*; do
+          	name=${file#Lib}
+          	mv "$file" "lib${name}.a"
+          done
+          cd ..
+          cp libmpv/*.a ../libmpv/
+          cp -r Sources/Libmpv.xcframework/macos-arm64_x86_64/Libmpv.framework/Headers ../libmpv/include
+
+      - name: Install macOS dependencies
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
+        run: |-
+          brew update
+          brew install openssl@3 sdl2 nasm ninja
+
+      - name: Build on macOS
+        shell: bash
+        run: |-
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
+          cmake --build . --config Release --parallel --verbose
+
+      - name: Deploy
+        shell: bash
+        run: ./scripts/deploy-macos-11.sh
+
+      - name: Upload artifacts mac app bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: imchenwen_${{ matrix.os }}
+          path: imchenwen_*.zip
+
+  MSVC:
     strategy:
       matrix:
         toolset: [cl, icx, clang-cl, gcc]
@@ -27,8 +122,6 @@ jobs:
           - toolset: clang-cl
             os: windows-latest
             clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/LLVM-17.0.5-win64.exe
-          - toolset: gcc
-            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -38,7 +131,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.6.*'
+          version: ${{ env.QT_VERSION }}
 
       - name: Set up clang for Windows
         if: matrix.toolset == 'clang-cl'
@@ -83,33 +176,6 @@ jobs:
         shell: cmd
         run: scripts\win-install-mpv.bat
 
-      - name: Install Linux dependencies
-        if: matrix.os == 'ubuntu-latest'
-        run: |-
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg libmpv-dev libcurl4-openssl-dev libssl-dev libxkbcommon-x11-0 libxcb-cursor0
-          sudo pip install ninja
-
-      - name: Install macOS dependencies
-        if: matrix.os == 'macos-11'
-        env:
-          HOMEBREW_NO_AUTO_UPDATE: 1
-          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
-        run: |-
-          brew update
-          brew install openssl@1.1 mpv freetype double-conversion icu4c jasper jpeg libb2 libtiff pcre2 ninja
-
-      - name: Build on non-Windows
-        shell: bash
-        if: matrix.os != 'windows-latest'
-        env:
-          RUNNING_OS: ${{ matrix.os }}
-        run: |-
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_INSTALL_PREFIX=/usr ..
-          cmake --build . --config Release --parallel --verbose
-
       - name: Build on Windows
         shell: cmd
         if: matrix.os == 'windows-latest'
@@ -133,34 +199,21 @@ jobs:
           
       - name: Deploy
         shell: bash
-        if: matrix.os != 'ubuntu-latest'
-        env:
-          RUNNING_OS: ${{ matrix.os }}
-        run: ./scripts/deploy-${RUNNING_OS}.sh
-
-      - name: Upload artifacts mac app bundle
-        uses: actions/upload-artifact@v3
-        if: matrix.os == 'macos-11'
-        with:
-          name: imchenwen_macOS_x86_64
-          path: |
-            imchenwen_*.zip
+        run: ./scripts/deploy-windows-latest.sh
 
       - name: Upload artifacts windows installer
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'windows-latest'
         with:
           name: imchenwen-msvc-${{ matrix.toolset }}-x86_64-setup
           path: imchenwen-msvc-x86_64-setup.exe
             
       - name: Upload artifacts windows archive
         uses: actions/upload-artifact@v3
-        if: matrix.os == 'windows-latest'
         with:
           name: imchenwen-msvc-${{ matrix.toolset }}-x86_64-qt6
           path: imchenwen
 
-  Windows:
+  MinGW:
     runs-on: windows-latest
     strategy:
       matrix:
