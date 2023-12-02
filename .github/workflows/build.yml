@@ -114,10 +114,8 @@ jobs:
   MSVC:
     strategy:
       matrix:
-        toolset: [cl, icx, clang-cl, gcc]
+        toolset: [cl, icx, clang-cl]
         include:
-          - toolset: cl
-          - toolset: icx
           - toolset: clang-cl
             clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/LLVM-17.0.5-win64.exe
     runs-on: windows-latest
