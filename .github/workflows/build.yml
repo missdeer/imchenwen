@@ -277,7 +277,7 @@ jobs:
           
       - name: checkout mpv
         run: |
-          git clone --depth=1 https://github.com/mpv-player/mpv.git
+          git clone --depth=1 --branch v0.37.0 https://github.com/mpv-player/mpv.git
 
       - name: build mpv
         shell: msys2 {0}
