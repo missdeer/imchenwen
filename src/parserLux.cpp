@@ -41,7 +41,7 @@ void ParserLux::runParser(const QUrl &url)
 
     // Get and apply proxy settings
     QSettings                       settings;
-    NetworkAccessManager::ProxyType proxyType = (NetworkAccessManager::ProxyType)settings.value(QStringLiteral("network/proxy_type")).toInt();
+    NetworkAccessManager::ProxyType proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
     QString                         proxy     = settings.value(QStringLiteral("network/proxy")).toString();
 
     if (!proxy.isEmpty() && proxyType == NetworkAccessManager::HTTP_PROXY)
