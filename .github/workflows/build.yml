@@ -68,17 +68,18 @@ jobs:
           cd ..
 
       - name: build MPV
+        shell: bash
         run: |
           git clone --recursive --depth=1 https://github.com/cxfksword/MPVKit.git
           cd MPVKit
           if [ ! -d libmpv ]; then mkdir libmpv; fi
           find Sources -name 'Lib*' -type f | grep $platform | while read file; do
-	          cp "$file" libmpv/
+            cp "$file" libmpv/
           done
           cd libmpv
           for file in Lib*; do
-          	name=${file#Lib}
-          	mv "$file" "lib${name}.a"
+            name=${file#Lib}
+            mv "$file" "lib${name}.a"
           done
           cd ..
           cp libmpv/*.a ../libmpv/
