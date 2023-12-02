@@ -283,8 +283,10 @@ jobs:
         shell: msys2 {0}
         run: |
           export MSYSTEM=${{ matrix.mingw_arch }}
+          export CC=${{ matrix.c }}
+          export CXX=${{ matrix.cxx }}
           cd mpv
-          env PATH=/${{ matrix.mingw_arch }}/bin/ meson setup build --prefix=/${{ matrix.mingw_arch }} -Dlibmpv=true
+          env PATH=/${{ matrix.mingw_arch }}/bin/ meson setup build --prefix=/${{ matrix.mingw_arch }} -Dlibmpv=true 
           env PATH=/${{ matrix.mingw_arch }}/bin/ meson compile -C build
           env PATH=/${{ matrix.mingw_arch }}/bin/ meson install -C build
           cd ..
