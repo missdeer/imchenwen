@@ -71,7 +71,7 @@ jobs:
           rm -rf $PWD/../Qt/${{ env.QT_VERSION }}/macos_static
           mkdir build_static
           cd build_static
-          ../configure -prefix $PWD/../../Qt/${{ env.QT_VERSION }}/macos_static -opensource -confirm-license -release -skip qtwebengine -skip qtwebchannel -skip qtwebglplugin -skip qtwebview -skip qt3d -skip qtlocation -skip qtspeech -skip qtmultimedia -skip qtnetworkauth -skip qtquick3d -skip qtquicktimeline -skip qtremoteobjects -skip qtserialport -skip qtsql -skip qtscxml -skip qtsensors -skip qtgamepad -nomake examples -nomake tests -appstore-compliant -no-openssl -securetransport -static -- -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+          ../configure -prefix $PWD/../../Qt/${{ env.QT_VERSION }}/macos_static -opensource -confirm-license -release -skip qtwebengine -skip qtwebchannel -skip qtwebglplugin -skip qtwebview -skip qtgraphs -skip qt3d -skip qtlocation -skip qtspeech -skip qtmultimedia -skip qtnetworkauth -skip qtquick3d -skip qtquicktimeline -skip qtremoteobjects -skip qtserialport -skip qtsql -skip qtscxml -skip qtsensors -skip qtgamepad -nomake examples -nomake tests -appstore-compliant -no-openssl -securetransport -static -- -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
           cmake --build . --parallel 
           cmake --install .
           cd ..
