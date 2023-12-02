@@ -55,7 +55,7 @@ jobs:
       - name: build qt static
         run: |
           wget https://download.qt.io/official_releases/qt/6.6/${{ env.QT_VERSION }}/single/qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
-          tar xvf qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
+          tar xf qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
           cd qt-everywhere-src-${{ env.QT_VERSION }}
           QtVer=${{ env.QT_VERSION }}
           rm -rf $PWD/../Qt/${{ env.QT_VERSION }}/macos_static
