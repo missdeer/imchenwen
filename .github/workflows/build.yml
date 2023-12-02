@@ -286,7 +286,7 @@ jobs:
         shell: msys2 {0}
         run: |
           curl -sL -o mingw-w64-x86_64-headers-git-any.pkg.tar.zst ${{ matrix.oldpkg }}
-          pacman -U mingw-w64-x86_64-headers-git-any.pkg.tar.zst
+          pacman -U mingw-w64-x86_64-headers-git-any.pkg.tar.zst  --noconfirm
           export MSYSTEM=${{ matrix.mingw_arch }}
           export CC=${{ matrix.c }}
           export CXX=${{ matrix.cxx }}
