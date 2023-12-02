@@ -166,17 +166,14 @@ jobs:
           scripts/restore_registry.bat ${{ env.COMPILER_VERSION }}
   
       - name: Enable MSVC commands
-        if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install MPV on Windows
-        if: matrix.os == 'windows-latest'
         shell: cmd
         run: scripts\win-install-mpv.bat
 
       - name: Build on Windows
         shell: cmd
-        if: matrix.os == 'windows-latest'
         env:
           RUNNING_OS: ${{ matrix.os }}
           vc_arch: x64
