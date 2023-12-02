@@ -229,6 +229,7 @@ jobs:
             qt: qt6
             qtprefix: ucrt64
             qtdir: lib/cmake/Qt6
+            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/ucrt64/mingw-w64-ucrt-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
           - mingw_prefix: mingw-w64-x86_64
             mingw_arch: MINGW64
             c: gcc
@@ -236,6 +237,7 @@ jobs:
             qt: qt6
             qtprefix: mingw64
             qtdir: lib/cmake/Qt6
+            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/mingw64/mingw-w64-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
           - mingw_prefix: mingw-w64-clang-x86_64
             mingw_arch: CLANG64
             c: clang
@@ -243,6 +245,7 @@ jobs:
             qt: qt6
             qtprefix: clang64
             qtdir: lib/cmake/Qt6
+            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/clang64/mingw-w64-clang-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
     steps: 
       - uses: msys2/setup-msys2@v2
         with:
@@ -282,6 +285,8 @@ jobs:
       - name: build mpv
         shell: msys2 {0}
         run: |
+          curl -sL -o mingw-w64-x86_64-headers-git-any.pkg.tar.zst ${{ matrix.oldpkg }}
+          pacman -U mingw-w64-x86_64-headers-git-any.pkg.tar.zst
           export MSYSTEM=${{ matrix.mingw_arch }}
           export CC=${{ matrix.c }}
           export CXX=${{ matrix.cxx }}
