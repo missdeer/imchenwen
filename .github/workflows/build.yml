@@ -91,7 +91,6 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE: 1
           HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
         run: |-
-          brew update
           brew install openssl@3 sdl2 nasm ninja
 
       - name: Build on macOS
