@@ -58,24 +58,14 @@ jobs:
         env:
           cache-name: cache-qt-static-build-macos
         with:
-          path: ./Qt/${{ env.QT_VERSION }}/macos_static
+          path: ./Qt
           key: qt-${{ env.QT_VERSION }}-static-${{ matrix.os }}
 
-      - name: build qt static
+      - name: download qt static
         if: ${{ steps.cache-qt-static-build.outputs.cache-hit != 'true' }}
         run: |
-          curl -sLO https://download.qt.io/official_releases/qt/6.6/${{ env.QT_VERSION }}/single/qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
-          tar xf qt-everywhere-src-${{ env.QT_VERSION }}.tar.xz
-          cd qt-everywhere-src-${{ env.QT_VERSION }}
-          QtVer=${{ env.QT_VERSION }}
-          rm -rf $PWD/../Qt/${{ env.QT_VERSION }}/macos_static
-          mkdir build_static
-          cd build_static
-          ../configure -prefix $PWD/../../Qt/${{ env.QT_VERSION }}/macos_static -opensource -confirm-license -release -skip qtquick3dphysics -skip qtwebengine -skip qtwebchannel -skip qtwebglplugin -skip qtwebview -skip qtgraphs -skip qt3d -skip qtlocation -skip qtspeech -skip qtmultimedia -skip qtnetworkauth -skip qtquick3d -skip qtquicktimeline -skip qtremoteobjects -skip qtserialport -skip qtsql -skip qtscxml -skip qtsensors -skip qtgamepad -nomake examples -nomake tests -appstore-compliant -no-openssl -securetransport -static -- -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
-          cmake --build . --parallel 
-          cmake --install .
-          cd ..
-          cd ..
+          curl -sLO https://sg.yii.li:8443/Qt6.6.1macos_static.tar.xz
+          tar xf Qt6.6.1macos_static.tar.xz
 
       - name: Install MPV
         shell: bash
