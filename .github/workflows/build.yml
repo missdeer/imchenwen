@@ -73,7 +73,7 @@ jobs:
           git clone --recursive --depth=1 https://github.com/cxfksword/MPVKit.git
           cd MPVKit
           if [ ! -d libmpv ]; then mkdir libmpv; fi
-          find Sources -name 'Lib*' -type f | grep $platform | while read file; do
+          find Sources -name 'Lib*' -type f | grep macos | while read file; do
             cp "$file" libmpv/
           done
           cd libmpv
