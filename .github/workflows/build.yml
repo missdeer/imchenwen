@@ -322,7 +322,7 @@ jobs:
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin mingwdeployqt.exe $PWD/hlsdl.exe
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cp ../qt.conf ./
-          ../scripts/copy_filelist.sh ${{ matrix.qtprefix }}
+          env PATH=/${{ matrix.mingw_arch}}/bin:$PATH ../scripts/copy_filelist.sh ${{ matrix.qtprefix }}
           cd ..
           mv imchenwen-${{ matrix.mingw_prefix }} imchenwen
           
