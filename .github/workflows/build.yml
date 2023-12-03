@@ -95,11 +95,21 @@ jobs:
           brew install openssl@3 sdl2 nasm ninja
 
       - name: Build on macOS
+        if: matrix.os == 'macos-13'
         shell: bash
         run: |-
           mkdir build
           cd build
           cmake -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
+          cmake --build . --config Release --parallel --verbose
+
+      - name: Build on macOS
+        if: matrix.os == 'macos-11'
+        shell: bash
+        run: |-
+          mkdir build
+          cd build
+          cmake -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
           cmake --build . --config Release --parallel --verbose
 
       - name: Deploy
@@ -108,8 +118,16 @@ jobs:
 
       - name: Upload artifacts mac app bundle
         uses: actions/upload-artifact@v3
+        if: matrix.os == 'macos-11'
         with:
-          name: imchenwen_${{ matrix.os }}.zip
+          name: imchenwen-x86_64-${{ matrix.os }}.zip
+          path: imchenwen.app
+
+      - name: Upload artifacts mac app bundle
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'macos-13'
+        with:
+          name: imchenwen-universal-${{ matrix.os }}.zip
           path: imchenwen.app
 
   MSVC:
