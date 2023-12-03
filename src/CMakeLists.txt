@@ -196,7 +196,7 @@ endif()
 if (APPLE)
   file(GLOB SWIFT_LIBRARIES /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/${APPLEOS}/libswiftCompatibility*.a)
   target_link_libraries(${PROJECT_NAME} PRIVATE "-framework IOSurface -framework CoreMedia -framework CoreAudio -framework CoreVideo -framework CoreFoundation -framework AudioToolBox -framework VideoToolbox -framework Metal")
-  target_link_libraries(${PROJECT_NAME} PRIVATE iconv xml2 z bz2
+  target_link_libraries(${PROJECT_NAME} PRIVATE iconv xml2 z bz2 objc
     ${SWIFT_LIBRARIES}
     )
 endif()
