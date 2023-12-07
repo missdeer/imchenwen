@@ -21,7 +21,11 @@
 #include "dialogs.h"
 #include "mpvObject.h"
 #include "parserLux.h"
+#include "parserYKDL.h"
+#include "parserYouGet.h"
 #include "parserYtdlp.h"
+#include "parserYtdlPatch.h"
+#include "parserYoutubeDL.h"
 
 namespace
 {
@@ -141,7 +145,11 @@ void PlaylistModel::addLocalFiles(const QList<QUrl> &fileUrls)
 void PlaylistModel::addUrl(const QUrl &url, bool download)
 {
     Q_ASSERT(ParserLux::instance() != nullptr);
+    Q_ASSERT(ParserYKDL::instance() != nullptr);
+    Q_ASSERT(ParserYouGet::instance() != nullptr);
     Q_ASSERT(ParserYtdlp::instance() != nullptr);
+    Q_ASSERT(ParserYtdlPatch::instance() != nullptr);
+    Q_ASSERT(ParserYoutubeDL::instance() != nullptr);
 
     // Select parser
     if (isSupportedByLux(url.host()))
