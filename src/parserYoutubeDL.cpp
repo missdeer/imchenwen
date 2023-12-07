@@ -14,26 +14,11 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#ifndef ParserYtdlp_H
-#define ParserYtdlp_H
+#include "parserYoutubeDL.h"
 
-#include "parserYoutubeDLBase.h"
+ParserYoutubeDL ParserYoutubeDL::s_instance;
 
-class ParserYtdlp : public ParserYoutubeDLBase
+ParserYoutubeDL::ParserYoutubeDL(QObject *parent) : ParserYoutubeDLBase(parent)
 {
-    Q_OBJECT
-public:
-    static ParserYtdlp *instance()
-    {
-        return &s_instance;
-    }
-    explicit ParserYtdlp(QObject *parent = nullptr);
-    ~ParserYtdlp() override = default;
-
-
-private:
-
-    static ParserYtdlp s_instance;
-};
-
-#endif // ParserYtdlp_H
+    m_parserFileName = QStringLiteral("youtube-dl");
+}

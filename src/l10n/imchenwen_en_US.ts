@@ -227,26 +227,93 @@ Please try updating plugins.</translation>
     </message>
 </context>
 <context>
-    <name>ParserYtdlp</name>
+    <name>ParserYKDL</name>
     <message>
-        <location filename="../parserYtdlp.cpp" line="51"/>
+        <location filename="../parserYKDL.cpp" line="38"/>
+        <location filename="../parserYKDL.cpp" line="94"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="51"/>
+        <location filename="../parserYKDL.cpp" line="38"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="161"/>
+        <location filename="../parserYKDL.cpp" line="94"/>
+        <source>The given url has no video item.</source>
+        <translation type="unfinished">The given url has no video item.</translation>
+    </message>
+    <message>
+        <location filename="../parserYKDL.cpp" line="107"/>
+        <source>Select episode</source>
+        <translation type="unfinished">Select episode</translation>
+    </message>
+</context>
+<context>
+    <name>ParserYouGet</name>
+    <message>
+        <location filename="../parserYouGet.cpp" line="38"/>
+        <location filename="../parserYouGet.cpp" line="94"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../parserYouGet.cpp" line="38"/>
+        <source>Another file is being parsed.</source>
+        <translation type="unfinished">Another file is being parsed.</translation>
+    </message>
+    <message>
+        <location filename="../parserYouGet.cpp" line="94"/>
+        <source>The given url has no video item.</source>
+        <translation type="unfinished">The given url has no video item.</translation>
+    </message>
+    <message>
+        <location filename="../parserYouGet.cpp" line="107"/>
+        <source>Select episode</source>
+        <translation type="unfinished">Select episode</translation>
+    </message>
+</context>
+<context>
+    <name>ParserYoutubeDLBase</name>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <source>Another file is being parsed.</source>
+        <translation type="unfinished">Another file is being parsed.</translation>
+    </message>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="162"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">Audio only (webm)</translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="166"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="167"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">Audio only (m4a)</translation>
+    </message>
+</context>
+<context>
+    <name>ParserYtdlp</name>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">Error</translation>
+    </message>
+    <message>
+        <source>Another file is being parsed.</source>
+        <translation type="obsolete">Another file is being parsed.</translation>
+    </message>
+    <message>
+        <source>Audio only (webm)</source>
+        <translation type="obsolete">Audio only (webm)</translation>
+    </message>
+    <message>
+        <source>Audio only (m4a)</source>
+        <translation type="obsolete">Audio only (m4a)</translation>
     </message>
 </context>
 <context>

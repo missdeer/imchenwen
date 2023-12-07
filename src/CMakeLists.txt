@@ -28,6 +28,11 @@ set(SOURCE_FILES
     mpvObject.cpp
     parserBase.cpp
     parserLux.cpp
+    parserYouGet.cpp
+    parserYKDL.cpp
+    parserYoutubeDLBase.cpp
+    parserYoutubeDL.cpp
+    parserYtdlPatch.cpp
     parserYtdlp.cpp
     playlistModel.cpp
     plugin.cpp

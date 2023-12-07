@@ -239,26 +239,93 @@ URL: %1
     </message>
 </context>
 <context>
+    <name>ParserYKDL</name>
+    <message>
+        <location filename="../parserYKDL.cpp" line="38"/>
+        <location filename="../parserYKDL.cpp" line="94"/>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <location filename="../parserYKDL.cpp" line="38"/>
+        <source>Another file is being parsed.</source>
+        <translation type="unfinished">其他视频正在解析中。</translation>
+    </message>
+    <message>
+        <location filename="../parserYKDL.cpp" line="94"/>
+        <source>The given url has no video item.</source>
+        <translation type="unfinished">该URL没有视频条目。</translation>
+    </message>
+    <message>
+        <location filename="../parserYKDL.cpp" line="107"/>
+        <source>Select episode</source>
+        <translation type="unfinished">选集</translation>
+    </message>
+</context>
+<context>
+    <name>ParserYouGet</name>
+    <message>
+        <location filename="../parserYouGet.cpp" line="38"/>
+        <location filename="../parserYouGet.cpp" line="94"/>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <location filename="../parserYouGet.cpp" line="38"/>
+        <source>Another file is being parsed.</source>
+        <translation type="unfinished">其他视频正在解析中。</translation>
+    </message>
+    <message>
+        <location filename="../parserYouGet.cpp" line="94"/>
+        <source>The given url has no video item.</source>
+        <translation type="unfinished">该URL没有视频条目。</translation>
+    </message>
+    <message>
+        <location filename="../parserYouGet.cpp" line="107"/>
+        <source>Select episode</source>
+        <translation type="unfinished">选集</translation>
+    </message>
+</context>
+<context>
+    <name>ParserYoutubeDLBase</name>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <source>Another file is being parsed.</source>
+        <translation type="unfinished">其他视频正在解析中。</translation>
+    </message>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="162"/>
+        <source>Audio only (webm)</source>
+        <translation type="unfinished">仅音频（webm）</translation>
+    </message>
+    <message>
+        <location filename="../parserYoutubeDLBase.cpp" line="167"/>
+        <source>Audio only (m4a)</source>
+        <translation type="unfinished">仅音频（m4a）</translation>
+    </message>
+</context>
+<context>
     <name>ParserYtdlp</name>
     <message>
-        <location filename="../parserYtdlp.cpp" line="51"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="51"/>
         <source>Another file is being parsed.</source>
-        <translation>其他视频正在解析中。</translation>
+        <translation type="vanished">其他视频正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="161"/>
         <source>Audio only (webm)</source>
-        <translation>仅音频（webm）</translation>
+        <translation type="vanished">仅音频（webm）</translation>
     </message>
     <message>
-        <location filename="../parserYtdlp.cpp" line="166"/>
         <source>Audio only (m4a)</source>
-        <translation>仅音频（m4a）</translation>
+        <translation type="vanished">仅音频（m4a）</translation>
     </message>
 </context>
 <context>

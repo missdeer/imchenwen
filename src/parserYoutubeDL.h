@@ -14,26 +14,25 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#ifndef ParserYtdlp_H
-#define ParserYtdlp_H
+#ifndef ParserYoutubeDL_H
+#define ParserYoutubeDL_H
 
 #include "parserYoutubeDLBase.h"
 
-class ParserYtdlp : public ParserYoutubeDLBase
+class ParserYoutubeDL : public ParserYoutubeDLBase
 {
     Q_OBJECT
 public:
-    static ParserYtdlp *instance()
+    static ParserYoutubeDL *instance()
     {
         return &s_instance;
     }
-    explicit ParserYtdlp(QObject *parent = nullptr);
-    ~ParserYtdlp() override = default;
-
+    explicit ParserYoutubeDL(QObject *parent = nullptr);
+    ~ParserYoutubeDL() override = default;
 
 private:
 
-    static ParserYtdlp s_instance;
+    static ParserYoutubeDL s_instance;
 };
 
-#endif // ParserYtdlp_H
+#endif // ParserYoutubeDL_H
