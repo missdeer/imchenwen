@@ -179,6 +179,93 @@ else
 	save_version_info "ytdl-patched" "$LATEST_VERSION"
 fi
 
+### Update youtube-dl
+echo "\n-------- Checking youtube-dl's updates -------"
+
+# Get latest youtube-dl version
+CURRENT_VERSION=$(get_current_version "youtube-dl")
+echo "Current version: $CURRENT_VERSION"
+
+LATEST_VERSION=$(get_latest_version_github "missdeer/daily-weekly-build")
+if [ -n "$LATEST_VERSION" ]; then
+	echo "Latest version: $LATEST_VERSION"
+else
+	echo 'Error: Cannot get the latest version of youtube-dl. Please try again later.'
+	exit 0
+fi
+
+if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+	echo "youtube-dl already up-to-date."
+else
+	# Download latest version
+	echo "\n ------------ Updating youtube-dl -------------"
+	echo "Downloading latest version..."
+	rm -f youtube-dl
+	URL="$GITHUB_MIRROR/missdeer/daily-weekly-build/releases/download/$LATEST_VERSION/youtube-dl"
+	echo "$URL"
+	downloader youtube-dl "$URL" || exit 1
+	chmod a+x youtube-dl
+	save_version_info "youtube-dl" "$LATEST_VERSION"
+fi
+
+### Update you-get
+echo "\n-------- Checking you-get's updates -------"
+
+# Get latest you-get version
+CURRENT_VERSION=$(get_current_version "you-get")
+echo "Current version: $CURRENT_VERSION"
+
+LATEST_VERSION=$(get_latest_version_github "missdeer/daily-weekly-build")
+if [ -n "$LATEST_VERSION" ]; then
+	echo "Latest version: $LATEST_VERSION"
+else
+	echo 'Error: Cannot get the latest version of you-get. Please try again later.'
+	exit 0
+fi
+
+if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+	echo "you-get already up-to-date."
+else
+	# Download latest version
+	echo "\n ------------ Updating you-get -------------"
+	echo "Downloading latest version..."
+	rm -f you-get
+	URL="$GITHUB_MIRROR/missdeer/daily-weekly-build/releases/download/$LATEST_VERSION/you-get"
+	echo "$URL"
+	downloader you-get "$URL" || exit 1
+	chmod a+x you-get
+	save_version_info "you-get" "$LATEST_VERSION"
+fi
+
+### Update ykdl
+echo "\n-------- Checking ykdl's updates -------"
+
+# Get latest ykdl version
+CURRENT_VERSION=$(get_current_version "ykdl")
+echo "Current version: $CURRENT_VERSION"
+
+LATEST_VERSION=$(get_latest_version_github "missdeer/daily-weekly-build")
+if [ -n "$LATEST_VERSION" ]; then
+	echo "Latest version: $LATEST_VERSION"
+else
+	echo 'Error: Cannot get the latest version of ykdl. Please try again later.'
+	exit 0
+fi
+
+if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+	echo "ykdl already up-to-date."
+else
+	# Download latest version
+	echo "\n ------------ Updating ykdl -------------"
+	echo "Downloading latest version..."
+	rm -f ykdl
+	URL="$GITHUB_MIRROR/missdeer/daily-weekly-build/releases/download/$LATEST_VERSION/ykdl"
+	echo "$URL"
+	downloader ykdl "$URL" || exit 1
+	chmod a+x ykdl
+	save_version_info "ykdl" "$LATEST_VERSION"
+fi
+
 ### Update plugins
 echo "\n----------- Checking plugin's updates ----------"
 

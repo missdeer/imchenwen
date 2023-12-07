@@ -138,6 +138,84 @@ if ($latest_version -eq $current_version) {
 }
 
 
+### Update ykdl
+Write-Output "-------- Checking ykdl's updates -------"
+
+# Get latest ykdl version
+$latest_version = Get-Latest-Version-Github "missdeer/daily-weekly-build"
+Write-Output "Latest version: $latest_version"
+
+# Get current ykdl version
+$current_version = Get-Current-Version "ykdl"
+Write-Output "Current version: $current_version"
+
+# Check if the version is latest
+if ($latest_version -eq $current_version) {
+    Write-Output "ykdl already up-to-date."
+} else {
+    Write-Output ""
+    Write-Output "------------ Updating ykdl -------------"
+    Write-Output "Downloading latest version..."
+    $url = "$github_mirror/missdeer/daily-weekly-build/releases/download/$latest_version/ykdl.exe"
+    Write-Output $url
+    $output = "$env:LOCALAPPDATA\imchenwen\ykdl.exe"
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Save-Version-Info "ykdl" $latest_version
+}
+
+
+### Update you-get
+Write-Output "-------- Checking you-get's updates -------"
+
+# Get latest you-get version
+$latest_version = Get-Latest-Version-Github "missdeer/daily-weekly-build"
+Write-Output "Latest version: $latest_version"
+
+# Get current you-get version
+$current_version = Get-Current-Version "you-get"
+Write-Output "Current version: $current_version"
+
+# Check if the version is latest
+if ($latest_version -eq $current_version) {
+    Write-Output "you-get already up-to-date."
+} else {
+    Write-Output ""
+    Write-Output "------------ Updating you-get -------------"
+    Write-Output "Downloading latest version..."
+    $url = "$github_mirror/missdeer/daily-weekly-build/releases/download/$latest_version/you-get.exe"
+    Write-Output $url
+    $output = "$env:LOCALAPPDATA\imchenwen\you-get.exe"
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Save-Version-Info "you-get" $latest_version
+}
+
+
+### Update youtube-dl
+Write-Output "-------- Checking youtube-dl's updates -------"
+
+# Get latest youtube-dl version
+$latest_version = Get-Latest-Version-Github "missdeer/daily-weekly-build"
+Write-Output "Latest version: $latest_version"
+
+# Get current youtube-dl version
+$current_version = Get-Current-Version "youtube-dl"
+Write-Output "Current version: $current_version"
+
+# Check if the version is latest
+if ($latest_version -eq $current_version) {
+    Write-Output "youtube-dl already up-to-date."
+} else {
+    Write-Output ""
+    Write-Output "------------ Updating youtube-dl -------------"
+    Write-Output "Downloading latest version..."
+    $url = "$github_mirror/missdeer/daily-weekly-build/releases/download/$latest_version/youtube-dl.exe"
+    Write-Output $url
+    $output = "$env:LOCALAPPDATA\imchenwen\youtube-dl.exe"
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Save-Version-Info "youtube-dl" $latest_version
+}
+
+
 
 ### Update plugins
 Write-Output ""
