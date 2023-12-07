@@ -150,6 +150,35 @@ else
 	save_version_info "yt-dlp" "$LATEST_VERSION"
 fi
 
+### Update ytdl-patched
+echo "\n-------- Checking ytdl-patched's updates -------"
+
+# Get latest ytdl-patched version
+CURRENT_VERSION=$(get_current_version "ytdl-patched")
+echo "Current version: $CURRENT_VERSION"
+
+LATEST_VERSION=$(get_latest_version_github "ytdl-patched/ytdl-patched")
+if [ -n "$LATEST_VERSION" ]; then
+	echo "Latest version: $LATEST_VERSION"
+else
+	echo 'Error: Cannot get the latest version of ytdl-patched. Please try again later.'
+	exit 0
+fi
+
+if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+	echo "ytdl-patched already up-to-date."
+else
+	# Download latest version
+	echo "\n ------------ Updating ytdl-patched -------------"
+	echo "Downloading latest version..."
+	rm -f ytdl-patched
+	URL="$GITHUB_MIRROR/ytdl-patched/ytdl-patched/releases/download/$LATEST_VERSION/ytdl-patched"
+	echo "$URL"
+	downloader ytdl-patched "$URL" || exit 1
+	chmod a+x ytdl-patched
+	save_version_info "ytdl-patched" "$LATEST_VERSION"
+fi
+
 ### Update plugins
 echo "\n----------- Checking plugin's updates ----------"
 

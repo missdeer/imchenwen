@@ -112,6 +112,32 @@ if ($latest_version -eq $current_version) {
 }
 
 
+### Update ytdl-patched
+Write-Output "-------- Checking ytdl-patched's updates -------"
+
+# Get latest ytdl-patched version
+$latest_version = Get-Latest-Version-Github "ytdl-patched/ytdl-patched"
+Write-Output "Latest version: $latest_version"
+
+# Get current ytdl-patched version
+$current_version = Get-Current-Version "ytdl-patched"
+Write-Output "Current version: $current_version"
+
+# Check if the version is latest
+if ($latest_version -eq $current_version) {
+    Write-Output "ytdl-patched already up-to-date."
+} else {
+    Write-Output ""
+    Write-Output "------------ Updating ytdl-patched -------------"
+    Write-Output "Downloading latest version..."
+    $url = "$github_mirror/ytdl-patched/ytdl-patched/releases/download/$latest_version/ytdl-patched-white.exe"
+    Write-Output $url
+    $output = "$env:LOCALAPPDATA\imchenwen\ytdl-patched.exe"
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
+    Save-Version-Info "ytdl-patched" $latest_version
+}
+
+
 
 ### Update plugins
 Write-Output ""
