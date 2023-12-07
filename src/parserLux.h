@@ -7,20 +7,18 @@ class ParserLux : public ParserBase
 {
     Q_OBJECT
 public:
-    explicit ParserLux(QObject *parent = nullptr);
-    ~ParserLux() override;
     static ParserLux *instance()
     {
         return &s_instance;
     }
 
-protected:
-    void runParser(const QUrl &url) override;
-
 private slots:
     void parseOutput();
 
 private:
+    explicit ParserLux(QObject *parent = nullptr);
+    ~ParserLux() override;
+    void runParser(const QUrl &url) override;
     void parseEpisode(QJsonObject episode);
 
     static ParserLux s_instance;

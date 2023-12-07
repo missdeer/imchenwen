@@ -16,18 +16,9 @@ ParserYKDL::ParserYKDL(QObject *parent) : ParserBase(parent)
 {
     // Connect
     connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ParserYKDL::parseOutput);
-    connect(&m_process, &QProcess::errorOccurred, [&]() { showErrorDialog(m_process.errorString()); });
 }
 
-ParserYKDL::~ParserYKDL()
-{
-    // Kill ykdl process
-    if (m_process.state() == QProcess::Running)
-    {
-        m_process.kill();
-        m_process.waitForFinished();
-    }
-}
+ParserYKDL::~ParserYKDL() = default;
 
 void ParserYKDL::runParser(const QUrl &url)
 {
@@ -119,7 +110,7 @@ void ParserYKDL::parseEpisode(QJsonObject episode)
     }
 
     // Get title
-    result.title = episode[QStringLiteral("title")].toString();
+    m_result.title = episode[QStringLiteral("title")].toString();
 
     // Get danmaku
     if (!episode[QStringLiteral("caption")].isNull())
@@ -127,11 +118,11 @@ void ParserYKDL::parseEpisode(QJsonObject episode)
         QJsonObject caption = episode[QStringLiteral("caption")].toObject();
         if (!caption[QStringLiteral("danmaku")].isNull())
         {
-            result.danmaku_url = caption[QStringLiteral("danmaku")].toObject()[QStringLiteral("url")].toString();
+            m_result.danmaku_url = caption[QStringLiteral("danmaku")].toObject()[QStringLiteral("url")].toString();
         }
         if (!caption[QStringLiteral("subtitle")].isNull())
         {
-            result.subtitle_url = caption[QStringLiteral("subtitle")].toObject()[QStringLiteral("url")].toString();
+            m_result.subtitle_url = caption[QStringLiteral("subtitle")].toObject()[QStringLiteral("url")].toString();
         }
     }
 
@@ -161,8 +152,8 @@ void ParserYKDL::parseEpisode(QJsonObject episode)
         }
 
         // Add stream to list
-        result.stream_types << item[QStringLiteral("quality")].toString();
-        result.streams << stream;
+        m_result.stream_types << item[QStringLiteral("quality")].toString();
+        m_result.streams << stream;
     }
     finishParsing();
 }

@@ -171,22 +171,22 @@
 <context>
     <name>ParserBase</name>
     <message>
-        <location filename="../parserBase.cpp" line="51"/>
+        <location filename="../parserBase.cpp" line="61"/>
         <source>The video has no streams. Maybe it is a VIP video and requires login.</source>
         <translation type="unfinished">The video has no streams. Maybe it is a VIP video and requires login.</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="74"/>
+        <location filename="../parserBase.cpp" line="84"/>
         <source>Select streams</source>
         <translation type="unfinished">Select streams</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="83"/>
+        <location filename="../parserBase.cpp" line="93"/>
         <source>Remember my choice</source>
         <translation type="unfinished">Remember my choice</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="136"/>
+        <location filename="../parserBase.cpp" line="146"/>
         <source>Parse failed!
 URL: %1
 
@@ -197,7 +197,7 @@ URL: %1
 Please try updating plugins.</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="137"/>
+        <location filename="../parserBase.cpp" line="147"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
@@ -205,23 +205,23 @@ Please try updating plugins.</translation>
 <context>
     <name>ParserLux</name>
     <message>
-        <location filename="../parserLux.cpp" line="38"/>
-        <location filename="../parserLux.cpp" line="94"/>
+        <location filename="../parserLux.cpp" line="29"/>
+        <location filename="../parserLux.cpp" line="85"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="38"/>
+        <location filename="../parserLux.cpp" line="29"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="94"/>
+        <location filename="../parserLux.cpp" line="85"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">The given url has no video item.</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="107"/>
+        <location filename="../parserLux.cpp" line="98"/>
         <source>Select episode</source>
         <translation type="unfinished">Select episode</translation>
     </message>
@@ -229,23 +229,23 @@ Please try updating plugins.</translation>
 <context>
     <name>ParserYKDL</name>
     <message>
-        <location filename="../parserYKDL.cpp" line="38"/>
-        <location filename="../parserYKDL.cpp" line="94"/>
+        <location filename="../parserYKDL.cpp" line="29"/>
+        <location filename="../parserYKDL.cpp" line="85"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../parserYKDL.cpp" line="38"/>
+        <location filename="../parserYKDL.cpp" line="29"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserYKDL.cpp" line="94"/>
+        <location filename="../parserYKDL.cpp" line="85"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">The given url has no video item.</translation>
     </message>
     <message>
-        <location filename="../parserYKDL.cpp" line="107"/>
+        <location filename="../parserYKDL.cpp" line="98"/>
         <source>Select episode</source>
         <translation type="unfinished">Select episode</translation>
     </message>
@@ -253,23 +253,23 @@ Please try updating plugins.</translation>
 <context>
     <name>ParserYouGet</name>
     <message>
-        <location filename="../parserYouGet.cpp" line="38"/>
-        <location filename="../parserYouGet.cpp" line="94"/>
+        <location filename="../parserYouGet.cpp" line="29"/>
+        <location filename="../parserYouGet.cpp" line="85"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../parserYouGet.cpp" line="38"/>
+        <location filename="../parserYouGet.cpp" line="29"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserYouGet.cpp" line="94"/>
+        <location filename="../parserYouGet.cpp" line="85"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">The given url has no video item.</translation>
     </message>
     <message>
-        <location filename="../parserYouGet.cpp" line="107"/>
+        <location filename="../parserYouGet.cpp" line="98"/>
         <source>Select episode</source>
         <translation type="unfinished">Select episode</translation>
     </message>
@@ -277,22 +277,22 @@ Please try updating plugins.</translation>
 <context>
     <name>ParserYoutubeDLBase</name>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="44"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="44"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="162"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="154"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">Audio only (webm)</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="167"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="159"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">Audio only (m4a)</translation>
     </message>

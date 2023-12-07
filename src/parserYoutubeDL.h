@@ -27,10 +27,10 @@ public:
     {
         return &s_instance;
     }
-    explicit ParserYoutubeDL(QObject *parent = nullptr);
-    ~ParserYoutubeDL() override = default;
 
 private:
+    explicit ParserYoutubeDL(QObject *parent = nullptr);
+    ~ParserYoutubeDL() override = default;
 
     static ParserYoutubeDL s_instance;
 };

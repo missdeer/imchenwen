@@ -27,10 +27,10 @@ public:
     {
         return &s_instance;
     }
-    explicit ParserYtdlPatch(QObject *parent = nullptr);
-    ~ParserYtdlPatch() override {}
 
 private:
+    explicit ParserYtdlPatch(QObject *parent = nullptr);
+    ~ParserYtdlPatch() override {}
 
     static ParserYtdlPatch s_instance;
 };

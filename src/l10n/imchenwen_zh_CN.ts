@@ -183,22 +183,22 @@
 <context>
     <name>ParserBase</name>
     <message>
-        <location filename="../parserBase.cpp" line="51"/>
+        <location filename="../parserBase.cpp" line="61"/>
         <source>The video has no streams. Maybe it is a VIP video and requires login.</source>
         <translation>未找到该视频的播放地址。可能这是一个VIP视频，需要登录。</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="74"/>
+        <location filename="../parserBase.cpp" line="84"/>
         <source>Select streams</source>
         <translation>选择视频流</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="83"/>
+        <location filename="../parserBase.cpp" line="93"/>
         <source>Remember my choice</source>
         <translation>记住我的选择</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="136"/>
+        <location filename="../parserBase.cpp" line="146"/>
         <source>Parse failed!
 URL: %1
 
@@ -209,7 +209,7 @@ URL: %1
 请尝试更新插件。</translation>
     </message>
     <message>
-        <location filename="../parserBase.cpp" line="137"/>
+        <location filename="../parserBase.cpp" line="147"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -217,23 +217,23 @@ URL: %1
 <context>
     <name>ParserLux</name>
     <message>
-        <location filename="../parserLux.cpp" line="38"/>
-        <location filename="../parserLux.cpp" line="94"/>
+        <location filename="../parserLux.cpp" line="29"/>
+        <location filename="../parserLux.cpp" line="85"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="38"/>
+        <location filename="../parserLux.cpp" line="29"/>
         <source>Another file is being parsed.</source>
         <translation>其他视频正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="94"/>
+        <location filename="../parserLux.cpp" line="85"/>
         <source>The given url has no video item.</source>
         <translation>该URL没有视频条目。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="107"/>
+        <location filename="../parserLux.cpp" line="98"/>
         <source>Select episode</source>
         <translation>选集</translation>
     </message>
@@ -241,23 +241,23 @@ URL: %1
 <context>
     <name>ParserYKDL</name>
     <message>
-        <location filename="../parserYKDL.cpp" line="38"/>
-        <location filename="../parserYKDL.cpp" line="94"/>
+        <location filename="../parserYKDL.cpp" line="29"/>
+        <location filename="../parserYKDL.cpp" line="85"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../parserYKDL.cpp" line="38"/>
+        <location filename="../parserYKDL.cpp" line="29"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">其他视频正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserYKDL.cpp" line="94"/>
+        <location filename="../parserYKDL.cpp" line="85"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">该URL没有视频条目。</translation>
     </message>
     <message>
-        <location filename="../parserYKDL.cpp" line="107"/>
+        <location filename="../parserYKDL.cpp" line="98"/>
         <source>Select episode</source>
         <translation type="unfinished">选集</translation>
     </message>
@@ -265,23 +265,23 @@ URL: %1
 <context>
     <name>ParserYouGet</name>
     <message>
-        <location filename="../parserYouGet.cpp" line="38"/>
-        <location filename="../parserYouGet.cpp" line="94"/>
+        <location filename="../parserYouGet.cpp" line="29"/>
+        <location filename="../parserYouGet.cpp" line="85"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../parserYouGet.cpp" line="38"/>
+        <location filename="../parserYouGet.cpp" line="29"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">其他视频正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserYouGet.cpp" line="94"/>
+        <location filename="../parserYouGet.cpp" line="85"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">该URL没有视频条目。</translation>
     </message>
     <message>
-        <location filename="../parserYouGet.cpp" line="107"/>
+        <location filename="../parserYouGet.cpp" line="98"/>
         <source>Select episode</source>
         <translation type="unfinished">选集</translation>
     </message>
@@ -289,22 +289,22 @@ URL: %1
 <context>
     <name>ParserYoutubeDLBase</name>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="44"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="52"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="44"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">其他视频正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="162"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="154"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">仅音频（webm）</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="167"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="159"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">仅音频（m4a）</translation>
     </message>

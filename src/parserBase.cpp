@@ -24,18 +24,28 @@
 #include "playlistModel.h"
 #include "websiteSettings.h"
 
-ParserBase::ParserBase(QObject *parent) : QObject(parent) {}
+ParserBase::ParserBase(QObject *parent) : QObject(parent)
+{
+    connect(&m_process, &QProcess::errorOccurred, [this]() { showErrorDialog(m_process.errorString()); });
+}
 
-ParserBase::~ParserBase() {}
+ParserBase::~ParserBase()
+{
+    if (m_process.state() == QProcess::Running)
+    {
+        m_process.kill();
+        m_process.waitForFinished();
+    }
+}
 
 void ParserBase::parse(const QUrl &url, bool download)
 {
     m_url      = url;
     m_download = download;
-    result.title.clear();
-    result.stream_types.clear();
-    result.streams.clear();
-    result.danmaku_url.clear();
+    m_result.title.clear();
+    m_result.stream_types.clear();
+    m_result.streams.clear();
+    m_result.danmaku_url.clear();
     runParser(url);
 }
 
@@ -43,16 +53,16 @@ void ParserBase::finishParsing()
 {
     // replace illegal chars in title with .
     static QRegularExpression illegalChars(QStringLiteral("[\\\\/]"));
-    result.title.replace(illegalChars, QStringLiteral("."));
+    m_result.title.replace(illegalChars, QStringLiteral("."));
 
     // Stream is empty
-    if (result.streams.isEmpty())
+    if (m_result.streams.isEmpty())
     {
         showErrorDialog(tr("The video has no streams. Maybe it is a VIP video and requires login."));
     }
 
     // Has only one stream, no selection needed
-    else if (result.streams.count() == 1)
+    else if (m_result.streams.count() == 1)
     {
         finishStreamSelection(0);
     }
@@ -62,7 +72,7 @@ void ParserBase::finishParsing()
         // Find stored profile first
         Q_ASSERT(WebsiteSettings::instance() != nullptr);
         QString storedProfile = WebsiteSettings::instance()->get(m_url.host());
-        int     index         = result.stream_types.indexOf(storedProfile);
+        int     index         = m_result.stream_types.indexOf(storedProfile);
         if (index != -1)
         {
             finishStreamSelection(index);
@@ -72,11 +82,11 @@ void ParserBase::finishParsing()
         Q_ASSERT(Dialogs::instance() != nullptr);
         Dialogs::instance()->selectionDialog(
             tr("Select streams"),
-            result.stream_types,
+            m_result.stream_types,
             [this](int index, bool remember) {
-                if (remember && index >= 0 && index < result.stream_types.size())
+                if (remember && index >= 0 && index < m_result.stream_types.size())
                 {
-                    WebsiteSettings::instance()->set(m_url.host(), result.stream_types[index]);
+                    WebsiteSettings::instance()->set(m_url.host(), m_result.stream_types[index]);
                 }
                 finishStreamSelection(index);
             },
@@ -90,7 +100,7 @@ void ParserBase::finishStreamSelection(int index)
     Q_ASSERT(Downloader::instance() != nullptr);
     Q_ASSERT(PlaylistModel::instance() != nullptr);
 
-    Stream stream = result.streams[index];
+    Stream stream = m_result.streams[index];
 
     // Bind referer and user-agent
     if (!stream.referer.isEmpty())
@@ -119,14 +129,14 @@ void ParserBase::finishStreamSelection(int index)
     if (m_download)
     {
         Downloader::instance()->addTasks(
-            result.title + QLatin1Char('.') + stream.container, stream.urls, result.danmaku_url, result.subtitle_url, stream.is_dash);
+            m_result.title + QLatin1Char('.') + stream.container, stream.urls, m_result.danmaku_url, m_result.subtitle_url, stream.is_dash);
         emit downloadTasksAdded();
     }
 
     // Play
     else
     {
-        PlaylistModel::instance()->addItems(result.title, stream.urls, result.danmaku_url, result.subtitle_url, stream.is_dash);
+        PlaylistModel::instance()->addItems(m_result.title, stream.urls, m_result.danmaku_url, m_result.subtitle_url, stream.is_dash);
     }
 }
 

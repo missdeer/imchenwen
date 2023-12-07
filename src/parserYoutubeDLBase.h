@@ -27,10 +27,10 @@ public:
     {
         return &s_instance;
     }
-    explicit ParserYoutubeDLBase(QObject *parent = nullptr);
-    ~ParserYoutubeDLBase() override;
 
 protected:
+    explicit ParserYoutubeDLBase(QObject *parent = nullptr);
+    ~ParserYoutubeDLBase() override;
     void runParser(const QUrl &url) override;
     QString m_parserFileName;
 

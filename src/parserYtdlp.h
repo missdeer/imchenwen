@@ -27,11 +27,10 @@ public:
     {
         return &s_instance;
     }
-    explicit ParserYtdlp(QObject *parent = nullptr);
-    ~ParserYtdlp() override = default;
-
 
 private:
+    explicit ParserYtdlp(QObject *parent = nullptr);
+    ~ParserYtdlp() override = default;
 
     static ParserYtdlp s_instance;
 };

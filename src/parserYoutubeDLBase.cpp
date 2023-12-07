@@ -32,17 +32,9 @@ ParserYoutubeDLBase ParserYoutubeDLBase::s_instance;
 ParserYoutubeDLBase::ParserYoutubeDLBase(QObject *parent) : ParserBase(parent)
 {
     connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &ParserYoutubeDLBase::parseOutput);
-    connect(&m_process, &QProcess::errorOccurred, [&]() { showErrorDialog(m_process.errorString()); });
 }
 
-ParserYoutubeDLBase::~ParserYoutubeDLBase()
-{
-    if (m_process.state() == QProcess::Running)
-    {
-        m_process.kill();
-        m_process.waitForFinished();
-    }
-}
+ParserYoutubeDLBase::~ParserYoutubeDLBase() = default;
 
 void ParserYoutubeDLBase::runParser(const QUrl &url)
 {
@@ -91,7 +83,7 @@ void ParserYoutubeDLBase::parseOutput()
         showErrorDialog(QString::fromUtf8(m_process.readAllStandardError()));
         return;
     }
-    result.title = root[QStringLiteral("title")].toString();
+    m_result.title = root[QStringLiteral("title")].toString();
 
     // Get all available videos
     QJsonArray formats = root[QStringLiteral("formats")].toArray();
@@ -123,7 +115,7 @@ void ParserYoutubeDLBase::parseOutput()
         else
         {
             QString formatName = QStringLiteral("%1 (%2)").arg(item[QStringLiteral("format")].toString(), item[QStringLiteral("ext")].toString());
-            result.stream_types << formatName;
+            m_result.stream_types << formatName;
             videos << item;
         }
     }
@@ -153,19 +145,19 @@ void ParserYoutubeDLBase::parseOutput()
                 continue;
             }
         }
-        result.streams << stream;
+        m_result.streams << stream;
     }
 
     // Add audio only options
     if (bestWebmAudioAsr > 0)
     {
-        result.stream_types << tr("Audio only (webm)");
-        result.streams << bestWebmAudio;
+        m_result.stream_types << tr("Audio only (webm)");
+        m_result.streams << bestWebmAudio;
     }
     if (bestMp4AudioAsr > 0)
     {
-        result.stream_types << tr("Audio only (m4a)");
-        result.streams << bestMp4Audio;
+        m_result.stream_types << tr("Audio only (m4a)");
+        m_result.streams << bestMp4Audio;
     }
 
     // !TODO: add subtitle info
@@ -203,7 +195,7 @@ void ParserYoutubeDLBase::parseOutput()
             if (langNode.end() != iterNode)
             {
                 auto langFileObj    = iterNode->toObject();
-                result.subtitle_url = langFileObj[QStringLiteral("url")].toString();
+                m_result.subtitle_url = langFileObj[QStringLiteral("url")].toString();
             }
         }
     }

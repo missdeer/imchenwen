@@ -25,9 +25,6 @@ class ParserBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit ParserBase(QObject *parent = nullptr);
-    ~ParserBase() override;
-
     void parse(const QUrl &url, bool download);
 
 signals:
@@ -35,6 +32,8 @@ signals:
     void downloadTasksAdded();
 
 protected:
+    explicit ParserBase(QObject *parent = nullptr);
+    ~ParserBase() override;
     // Implemented in child class to run the parser
     virtual void runParser(const QUrl &url) = 0;
 
@@ -61,8 +60,8 @@ protected:
         QList<Stream> streams;
         QUrl          danmaku_url;
         QUrl          subtitle_url;
-    } result;
-
+    } ;
+    Result   m_result;
     QProcess m_process;
     QUrl     m_url;
     bool     m_download;
