@@ -208,8 +208,10 @@ jobs:
         if: matrix.toolset == 'icx'
         shell: cmd
         run: |
-          mkdir imchenwen
-          copy "C:\Program Files (x86)\Intel\oneAPI\compiler\${{ env.COMPILER_VERSION }}\bin\libmmd.dll" imchenwen\
+          mkdir imchenwen     
+          for /f "tokens=* usebackq" %%f in (`dir /b "C:\Program Files (x86)\Intel\oneAPI\compiler\" ^| findstr /V latest ^| sort`) do @set "LATEST_VERSION=%%f"
+          echo %LATEST_VERSION%
+          copy "C:\Program Files (x86)\Intel\oneAPI\compiler\%LATEST_VERSION%\bin\libmmd.dll" imchenwen\
           
       - name: Deploy
         shell: bash
