@@ -66,8 +66,13 @@ jobs:
       - name: download qt static
         if: ${{ steps.cache-qt-static-build.outputs.cache-hit != 'true' }}
         run: |
+          if [ ! -d "Qt/${{ env.QT_VERSION_MAC }}"]; then mkdir -p "Qt/${{ env.QT_VERSION_MAC}}"; fi
+          cd Qt/${{ env.QT_VERSION_MAC }}
           curl -sLO https://sg.yii.li:8443/Qt${{ env.QT_VERSION_MAC }}macos_static.tar.xz
           tar xf Qt${{ env.QT_VERSION_MAC }}macos_static.tar.xz
+          pwd 
+          ls -l 
+          cd -
 
       - name: Install MPV
         shell: bash
