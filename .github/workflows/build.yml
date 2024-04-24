@@ -109,7 +109,7 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE: 1
           HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
         run: |-
-          brew install openssl@3 sdl2 nasm ninja
+          brew install openssl@3 sdl2 nasm ninja expat
 
       - name: Build on macOS
         if: matrix.os == 'macos-13'
