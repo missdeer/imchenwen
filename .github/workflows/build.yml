@@ -15,6 +15,7 @@ env:
   TBB_VERSION: 2021.12.0
   VS_VER: vs2022
   QT_VERSION: 6.7.0
+  QT_VERSION_MAC: 6.6.1
                 
 jobs:
   Linux:
@@ -60,7 +61,7 @@ jobs:
           cache-name: cache-qt-static-build-macos
         with:
           path: ./Qt
-          key: qt-${{ env.QT_VERSION }}-static-${{ matrix.os }}
+          key: qt-${{ env.QT_VERSION_MAC }}-static-${{ matrix.os }}
 
       - name: download qt static
         if: ${{ steps.cache-qt-static-build.outputs.cache-hit != 'true' }}
@@ -100,7 +101,7 @@ jobs:
         run: |-
           mkdir build
           cd build
-          cmake -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
+          cmake -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION_MAC }}/macos_static" ..
           cmake --build . --config Release --parallel --verbose
 
       - name: Build on macOS
@@ -109,7 +110,7 @@ jobs:
         run: |-
           mkdir build
           cd build
-          cmake -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION }}/macos_static" ..
+          cmake -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_BUILD_TYPE=Release -G Ninja "-DCMAKE_PREFIX_PATH=$PWD/../libmpv;$PWD/../Qt/${{ env.QT_VERSION_MAC }}/macos_static" ..
           cmake --build . --config Release --parallel --verbose
 
       - name: Deploy
