@@ -80,7 +80,7 @@ jobs:
           git clone --recursive --depth=1 https://github.com/cxfksword/MPVKit.git
           cd MPVKit
           if [ ! -d libmpv ]; then mkdir libmpv; fi
-          find . -name '*' -type f | grep macos | grep -v 'Lib' | grep -v "\.h" | grep -v Info.plist | grep -v Modules | while read file; do
+          find Sources -name '*' -type f | grep macos | grep -v 'Lib' | grep -v "\.h" | grep -v Info.plist | grep -v Modules | while read file; do
             cp "$file" libmpv/
           done
           cd libmpv
@@ -97,8 +97,8 @@ jobs:
             mv "$file" "lib${name}.a"
           done
           cd ..
-          find . -name '*.a' -type f | grep macos | while read file; do cp "$file" libmpv/ ; done
-          cp libmpv/*.a ../libmpv/
+          find Sources -name '*.a' -type f | grep macos | while read file; do cp "$file" libmpv/ ; done
+          cp libmpv/* ../libmpv/
           cp -r Sources/Libmpv.xcframework/macos-arm64_x86_64/Libmpv.framework/Headers ../libmpv/include
           cd ..
           pwd
