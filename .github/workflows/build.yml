@@ -318,8 +318,8 @@ jobs:
           cp build-imchenwen-${{ matrix.mingw_arch }}/3rdparty/hlsdl.exe imchenwen-${{ matrix.mingw_prefix }}/
           cd imchenwen-${{ matrix.mingw_prefix }}
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin mingwdeployqt.exe $PWD/imchenwen.exe
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin mingwdeployqt.exe $PWD/hlsdl.exe
+          if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe ; fi
+          if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/hlsdl.exe     ; fi
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cp ../qt.conf ./
           env PATH=/${{ matrix.mingw_arch}}/bin:$PATH ../scripts/copy_filelist.sh ${{ matrix.qtprefix }}
