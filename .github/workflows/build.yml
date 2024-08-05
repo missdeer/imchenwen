@@ -110,7 +110,7 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE: 1
           HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
         run: |-
-          brew install openssl@3 sdl2 nasm ninja expat
+          brew install openssl@3 sdl2 nasm ninja expat boost
 
       - name: Build on macOS
         shell: bash
@@ -241,7 +241,6 @@ jobs:
             qt: qt6
             qtprefix: ucrt64
             qtdir: lib/cmake/Qt6
-            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/ucrt64/mingw-w64-ucrt-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
           - mingw_prefix: mingw-w64-x86_64
             mingw_arch: MINGW64
             c: gcc
@@ -249,7 +248,6 @@ jobs:
             qt: qt6
             qtprefix: mingw64
             qtdir: lib/cmake/Qt6
-            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/mingw64/mingw-w64-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
           - mingw_prefix: mingw-w64-clang-x86_64
             mingw_arch: CLANG64
             c: clang
@@ -257,13 +255,12 @@ jobs:
             qt: qt6
             qtprefix: clang64
             qtdir: lib/cmake/Qt6
-            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/clang64/mingw-w64-clang-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
     steps: 
       - uses: msys2/setup-msys2@v2
         with:
           update: true
           msystem: ${{ matrix.mingw_arch }}
-          install: python ${{ matrix.mingw_prefix }}-qt5 ${{ matrix.mingw_prefix }}-${{ matrix.qt }} ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson ${{ matrix.mingw_prefix }}-glfw ${{ matrix.mingw_prefix }}-xxhash ${{ matrix.mingw_prefix }}-glslang ${{ matrix.mingw_prefix }}-SDL2_image ${{ matrix.mingw_prefix }}-libunwind ${{ matrix.mingw_prefix }}-libcdio  ${{ matrix.mingw_prefix }}-libcdio-paranoia  ${{ matrix.mingw_prefix }}-libdvdnav  ${{ matrix.mingw_prefix }}-rubberband  ${{ matrix.mingw_prefix }}-uchardet  ${{ matrix.mingw_prefix }}-vapoursynth ${{ matrix.mingw_prefix }}-mujs ${{ matrix.mingw_prefix }}-angleproject ${{ matrix.mingw_prefix }}-llvm-libs ${{ matrix.mingw_prefix }}-clang-libs
+          install: python ${{ matrix.mingw_prefix }}-boost ${{ matrix.mingw_prefix }}-${{ matrix.qt }} ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson ${{ matrix.mingw_prefix }}-glfw ${{ matrix.mingw_prefix }}-xxhash ${{ matrix.mingw_prefix }}-glslang ${{ matrix.mingw_prefix }}-SDL2_image ${{ matrix.mingw_prefix }}-libunwind ${{ matrix.mingw_prefix }}-libcdio  ${{ matrix.mingw_prefix }}-libcdio-paranoia  ${{ matrix.mingw_prefix }}-libdvdnav  ${{ matrix.mingw_prefix }}-rubberband  ${{ matrix.mingw_prefix }}-uchardet  ${{ matrix.mingw_prefix }}-vapoursynth ${{ matrix.mingw_prefix }}-mujs ${{ matrix.mingw_prefix }}-angleproject ${{ matrix.mingw_prefix }}-llvm-libs ${{ matrix.mingw_prefix }}-clang-libs
           
       - uses: actions/checkout@v3
         with:
