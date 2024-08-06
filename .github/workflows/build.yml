@@ -71,6 +71,8 @@ jobs:
           cd Qt/${{ env.QT_VERSION_MAC }}
           curl -sLO https://sg.yii.li:8443/Qt${{ env.QT_VERSION_MAC }}macos_static.tar.xz
           tar xf Qt${{ env.QT_VERSION_MAC }}macos_static.tar.xz
+          otool -L macos_static/bin/lupdate
+          ls -l macos_static/bin
           pwd 
           ls -l 
           cd -
@@ -309,7 +311,7 @@ jobs:
           export MSYSTEM=${{ matrix.mingw_arch }}
           mkdir build-imchenwen-${{ matrix.mingw_arch }}
           cd build-imchenwen-${{ matrix.mingw_arch }}
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake "-DCMAKE_PREFIX_PATH=D:/a/_temp/msys64/${{ matrix.qtprefix }}" "-DQT_DIR=D:/a/_temp/msys64/${{ matrix.qtprefix }}/${{ matrix.qtdir }}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin cmake "-DCMAKE_PREFIX_PATH=D:/a/_temp/msys64/${{ matrix.qtprefix }}" "-DQT_DIR=D:/a/_temp/msys64/${{ matrix.qtprefix }}/${{ matrix.qtdir }}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin cmake --build . --parallel --verbose
           cd ..
           mkdir imchenwen-${{ matrix.mingw_prefix }}
@@ -317,12 +319,12 @@ jobs:
           cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/ 
           cp build-imchenwen-${{ matrix.mingw_arch }}/3rdparty/hlsdl.exe imchenwen-${{ matrix.mingw_prefix }}/
           cd imchenwen-${{ matrix.mingw_prefix }}
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/qt6-static/bin windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe
+          if [ -f "/${{ matrix.mingw_arch }}/bin/windeployqt-qt6.exe" ]; then /${{ matrix.mingw_arch }}/bin/windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe; fi
           if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe ; fi
           if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/hlsdl.exe     ; fi
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cp ../qt.conf ./
-          env PATH=/${{ matrix.mingw_arch}}/bin:$PATH ../scripts/copy_filelist.sh ${{ matrix.qtprefix }}
+          if [ -f "../scripts/copy_filelist.sh" ]; then env PATH=/${{ matrix.mingw_arch}}/bin:$PATH ../scripts/copy_filelist.sh ${{ matrix.qtprefix }} ; fi
           cd ..
           mv imchenwen-${{ matrix.mingw_prefix }} imchenwen
           
