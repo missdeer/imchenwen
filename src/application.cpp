@@ -50,7 +50,7 @@ Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
 bool Application::connectAnotherInstance()
 {
     m_client = std::make_unique<QLocalSocket>();
-    m_client->connectToServer(QStringLiteral("imchenwen_0817"), QLocalSocket::WriteOnly);
+    m_client->connectToServer(QStringLiteral("imchenwen_0517"), QLocalSocket::WriteOnly);
     m_client->waitForConnected();
     return m_client->state() == QLocalSocket::ConnectedState;
 }

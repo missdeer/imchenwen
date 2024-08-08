@@ -22,10 +22,10 @@
 #include "accessManager.h"
 
 FileDownloader::FileDownloader(const QString &filepath, const QUrl &url, QObject *parent)
-    : QObject(parent), m_file(filepath), m_url(url), m_lastPos(0)
+    : QObject(parent), m_reply(nullptr), m_file(filepath), m_url(url), m_lastPos(0)
 {
     // Open file
-    m_reply = nullptr;
+    
     if (!m_file.open(QFile::WriteOnly))
     {
         qDebug() << (QStringLiteral("Create file failed: ") + filepath);
