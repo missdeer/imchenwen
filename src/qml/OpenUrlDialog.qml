@@ -65,6 +65,9 @@ Dialog {
     onVisibleChanged: {
         if (visible) {
             openUrlInput.focus = true;
+            const re = /^(https?):\/\/[^\s/$.?#].[^\s]*$/;
+            if (re.test(Clipboard.text))
+                openUrlInput.text = Clipboard.text;
         }
     }
 }
