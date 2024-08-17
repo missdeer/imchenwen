@@ -32,11 +32,7 @@ Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
         // Opened from browser extension
         if (f.startsWith("imchenwen://"))
         {
-            f.replace("imchenwen://", "http://");
-        }
-        else if (f.startsWith("imchenwens://"))
-        {
-            f.replace("imchenwens://", "https://");
+            f = f.mid(12);
         }
         else if (f.startsWith("file://"))
         {
@@ -147,10 +143,6 @@ bool Application::event(QEvent *e)
             if (url.scheme() == QStringLiteral("imchenwen"))
             {
                 url.setScheme(QStringLiteral("http"));
-            }
-            else if (url.scheme() == QStringLiteral("imchenwens"))
-            {
-                url.setScheme(QStringLiteral("https"));
             }
             PlaylistModel::instance()->addUrl(url);
         }

@@ -147,5 +147,20 @@ int main(int argc, char *argv[])
     // Wait 0.5s to ensure OpenGL is loaded
     QTimer::singleShot(500, [&app]() { app.processFileLists(); });
 
+#if defined(Q_OS_WIN)
+    if (argc == 1)
+    {
+        QSettings mxKey(QStringLiteral(R"(HKEY_CURRENT_USER\SOFTWARE\Classes\imchenwen)"), QSettings::NativeFormat);
+        mxKey.setValue(".", QStringLiteral("URL:imchenwen Protocol"));
+        mxKey.setValue("URL Protocol", QStringLiteral(""));
+        mxKey.sync();
+
+        QSettings mxOpenKey(QStringLiteral(R"(HKEY_CURRENT_USER\SOFTWARE\Classes\imchenwen\shell\open\command)"), QSettings::NativeFormat);
+        mxOpenKey.setValue(
+            ".", QStringLiteral("\"") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QStringLiteral(R"(\imchenwen.exe" "%1")"));
+        mxKey.sync();
+    }
+#endif
+
     return QCoreApplication::exec();
 }
