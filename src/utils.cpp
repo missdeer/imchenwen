@@ -30,8 +30,13 @@ void Utils::updateParser()
     Q_ASSERT(Dialogs::instance() != nullptr);
     QStringList args;
 #ifdef Q_OS_WIN
+    QString ps1Path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/imchenwen/update-parsers.ps1");
+    if (!QFile::exists(ps1Path))
+    {
+        QFile::copy(QCoreApplication::applicationDirPath() + QStringLiteral("/update-parsers.ps1"), ps1Path);
+    }
     args << QStringLiteral("-ExecutionPolicy") << QStringLiteral("RemoteSigned");
-    args << QStringLiteral("-File") << (QCoreApplication::applicationDirPath() + QStringLiteral("/update-parsers.ps1"));
+    args << QStringLiteral("-File") << ps1Path;
     Dialogs::instance()->consoleDialog(tr("Update plugins"), QStringLiteral("powershell"), args);
 #else
     static QString shell;

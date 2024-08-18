@@ -679,8 +679,8 @@ URL: %1
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../utils.cpp" line="35"/>
-        <location filename="../utils.cpp" line="45"/>
+        <location filename="../utils.cpp" line="40"/>
+        <location filename="../utils.cpp" line="50"/>
         <source>Update plugins</source>
         <translation>更新外掛</translation>
     </message>
