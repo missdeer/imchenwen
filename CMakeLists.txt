@@ -1,4 +1,4 @@
-
+﻿
 # CMake file reference: https://github.com/euler0/mini-cmake-qt
 
 cmake_minimum_required(VERSION 3.0)
@@ -70,6 +70,19 @@ if(APPLE)
       set(APPLEOS "macosx")
     endif()
   endif()
+endif()
+
+set(CURRENT_COMPILER_ID "${CMAKE_CXX_COMPILER_ID}")
+message("Compiler ID is: ${CURRENT_COMPILER_ID}")
+set(CURRENT_SIMULATE_ID "${CMAKE_CXX_SIMULATE_ID}")
+message("Simulate ID is: ${CURRENT_SIMULATE_ID}")
+if (MSVC)
+    message("${CURRENT_COMPILER_ID}")
+    if("${CURRENT_COMPILER_ID}" STREQUAL "IntelLLVM" OR "${CURRENT_COMPILER_ID}" STREQUAL "Clang")
+        add_compile_options(/EHsc)
+    else()
+        add_compile_options(/utf-8)
+    endif()
 endif()
 
 add_subdirectory(3rdparty)
