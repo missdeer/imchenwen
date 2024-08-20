@@ -18,11 +18,9 @@
 
 #include <QFileOpenEvent>
 #include <QUrl>
-#include <QThread>
 
 #include "application.h"
 #include "playlistModel.h"
-#pragma optimize("", off)   
 Application::Application(int &argc, char **argv) : QGuiApplication(argc, argv)
 {
     // Make file list
@@ -64,7 +62,7 @@ void Application::sendFileLists()
 
     m_client->write(m_fileList.join('\n'));
     m_client->flush();
-    QThread::sleep(1);
+    m_client->waitForBytesWritten();
 }
 
 void Application::createServer()
