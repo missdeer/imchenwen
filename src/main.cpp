@@ -151,13 +151,13 @@ int main(int argc, char *argv[])
     if (argc == 1)
     {
         QSettings mxKey(QStringLiteral(R"(HKEY_CURRENT_USER\SOFTWARE\Classes\imchenwen)"), QSettings::NativeFormat);
-        mxKey.setValue(".", QStringLiteral("URL:imchenwen Protocol"));
-        mxKey.setValue("URL Protocol", QStringLiteral(""));
+        mxKey.setValue(QStringLiteral("."), QStringLiteral("URL:imchenwen Protocol"));
+        mxKey.setValue(QStringLiteral("URL Protocol"), QStringLiteral(""));
         mxKey.sync();
 
         QSettings mxOpenKey(QStringLiteral(R"(HKEY_CURRENT_USER\SOFTWARE\Classes\imchenwen\shell\open\command)"), QSettings::NativeFormat);
         mxOpenKey.setValue(
-            ".", QStringLiteral("\"") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QStringLiteral(R"(\imchenwen.exe" "%1")"));
+            QStringLiteral("."), QStringLiteral("\"") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QStringLiteral(R"(\imchenwen.exe" "%1")"));
         mxKey.sync();
     }
 #endif
