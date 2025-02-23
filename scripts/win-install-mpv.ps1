@@ -10,19 +10,19 @@ $matches = Select-String -Pattern $pattern -InputObject $response.Content -AllMa
 $downloadLink = $matches.Matches | Select-Object -First 1 -ExpandProperty Value
 
 # 构造完整的下载URL
-$baseUri = "https://versaweb.dl.sourceforge.net/project/mpv-player-windows/libmpv/"
-$fullUrl = $baseUri + $downloadLink.TrimStart('/')
+$baseUri = "https://phoenixnap.dl.sourceforge.net/project/mpv-player-windows/libmpv/"
+$fullUrl = $baseUri + $downloadLink.TrimStart('/') + "?viasf=1"
 
 # 下载文件
 $downloadPath = "..\libmpv"
 $localFilePath = $downloadPath + "\" + $downloadLink
 			   
 # 打印完整的下载URL
-Write-Host "下载 $fullUrl 到 $localFilePath"
+Write-Host "Download $fullUrl to $localFilePath"
 
 # 执行下载并打印结果
 $result = Invoke-WebRequest -Uri $fullUrl -OutFile $localFilePath
-Write-Host "下载结果: $result"
+Write-Host "Result: $result"
 
 # 使用7z解压文件
 & "C:\Program Files\7-Zip\7z.exe" x $localFilePath -o"$downloadPath" -y
