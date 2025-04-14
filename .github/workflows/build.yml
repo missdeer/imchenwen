@@ -15,8 +15,8 @@ env:
   COMPILER_VERSION: 2024.2.0
   TBB_VERSION: 2021.13.0
   VS_VER: vs2022
-  QT_VERSION: 6.7.2
-  QT_VERSION_MAC: 6.7.2
+  QT_VERSION: 6.9.0
+  QT_VERSION_MAC: 6.9.0
                 
 jobs:
   Linux:
@@ -138,7 +138,7 @@ jobs:
         toolset: [cl, icx, clang-cl]
         include:
           - toolset: clang-cl
-            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/LLVM-17.0.5-win64.exe
+            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.2/LLVM-20.1.2-win64.exe
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -243,7 +243,6 @@ jobs:
             qt: qt6
             qtprefix: ucrt64
             qtdir: lib/cmake/Qt6
-            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/ucrt64/mingw-w64-ucrt-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
           - mingw_prefix: mingw-w64-x86_64
             mingw_arch: MINGW64
             c: gcc
@@ -251,7 +250,6 @@ jobs:
             qt: qt6
             qtprefix: mingw64
             qtdir: lib/cmake/Qt6
-            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/mingw64/mingw-w64-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
           - mingw_prefix: mingw-w64-clang-x86_64
             mingw_arch: CLANG64
             c: clang
@@ -259,7 +257,6 @@ jobs:
             qt: qt6
             qtprefix: clang64
             qtdir: lib/cmake/Qt6
-            oldpkg: http://mirrors.ustc.edu.cn/msys2/mingw/clang64/mingw-w64-clang-x86_64-headers-git-11.0.0.r404.g3a137bd87-1-any.pkg.tar.zst
     steps: 
       - uses: msys2/setup-msys2@v2
         with:
