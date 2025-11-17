@@ -127,6 +127,10 @@ void ParserYoutubeDLBase::parseOutput()
         else
         {
             QString formatName = QStringLiteral("%1 (%2)").arg(item[QStringLiteral("format")].toString(), item[QStringLiteral("ext")].toString());
+            if (item[QStringLiteral("audio_channels")].isNull())
+            {
+                formatName += QStringLiteral(" (video only)");
+            }
             m_result.stream_types << formatName;
             videos << item;
         }
