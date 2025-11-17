@@ -14,13 +14,14 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
+#include <QCoreApplication>
+#include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QProcess>
 #include <QSettings>
-#include <QDir>
 
 #include "parserYoutubeDLBase.h"
 #include "accessManager.h"
@@ -45,12 +46,21 @@ void ParserYoutubeDLBase::runParser(const QUrl &url)
         return;
     }
 
-    QSettings settings;
-    auto      proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
-    auto      proxy     = settings.value(QStringLiteral("network/proxy")).toString();
+#ifdef Q_OS_WIN
+    QString             nodePath    = QCoreApplication::applicationDirPath() + QDir::separator() + QStringLiteral("node");
+    QProcessEnvironment env         = QProcessEnvironment::systemEnvironment();
+    QString             currentPath = env.value(QStringLiteral("PATH"));
+    env.insert(QStringLiteral("PATH"),
+               QStringLiteral("%1;%2;%3")
+                   .arg(currentPath, QDir::toNativeSeparators(nodePath), QDir::toNativeSeparators(QCoreApplication::applicationDirPath())));
+    m_process.setProcessEnvironment(env);
+#endif
 
-    QStringList args;
-    args << QStringLiteral("-j") << QStringLiteral("--user-agent") << QStringLiteral(DEFAULT_UA);
+    QSettings   settings;
+    auto        proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
+    auto        proxy     = settings.value(QStringLiteral("network/proxy")).toString();
+    QStringList args      = {
+        QStringLiteral("-j"), QStringLiteral("--user-agent"), QStringLiteral(DEFAULT_UA), QStringLiteral("--js-runtimes"), QStringLiteral("node")};
     if (!proxy.isEmpty() && proxyType == NetworkAccessManager::HTTP_PROXY)
     {
         args << QStringLiteral("--proxy") << proxy;
@@ -194,7 +204,7 @@ void ParserYoutubeDLBase::parseOutput()
             });
             if (langNode.end() != iterNode)
             {
-                auto langFileObj    = iterNode->toObject();
+                auto langFileObj      = iterNode->toObject();
                 m_result.subtitle_url = langFileObj[QStringLiteral("url")].toString();
             }
         }
