@@ -45,22 +45,25 @@ void ParserYoutubeDLBase::runParser(const QUrl &url)
         Dialogs::instance()->messageDialog(tr("Error"), tr("Another file is being parsed."));
         return;
     }
-
-#ifdef Q_OS_WIN
-    QString             nodePath    = QCoreApplication::applicationDirPath() + QDir::separator() + QStringLiteral("node");
-    QProcessEnvironment env         = QProcessEnvironment::systemEnvironment();
-    QString             currentPath = env.value(QStringLiteral("PATH"));
-    env.insert(QStringLiteral("PATH"),
-               QStringLiteral("%1;%2;%3")
-                   .arg(currentPath, QDir::toNativeSeparators(nodePath), QDir::toNativeSeparators(QCoreApplication::applicationDirPath())));
-    m_process.setProcessEnvironment(env);
-#endif
-
     QSettings   settings;
     auto        proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
     auto        proxy     = settings.value(QStringLiteral("network/proxy")).toString();
-    QStringList args      = {
-        QStringLiteral("-j"), QStringLiteral("--user-agent"), QStringLiteral(DEFAULT_UA), QStringLiteral("--js-runtimes"), QStringLiteral("node")};
+    QStringList args      = {QStringLiteral("-j"), QStringLiteral("--user-agent"), QStringLiteral(DEFAULT_UA), QStringLiteral("--js-runtimes")};
+#ifdef Q_OS_WIN
+    // add executable path to PATH
+    auto env  = QProcessEnvironment::systemEnvironment();
+    auto path = env.value(QStringLiteral("PATH"));
+    env.insert(QStringLiteral("PATH"), path + QDir::separator() + QCoreApplication::applicationDirPath());
+    m_process.setProcessEnvironment(env);
+
+    // add quickjs executable path to args
+    args << QStringLiteral("quickjs:") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QDir::separator() +
+                QStringLiteral("qjs.exe");
+#else
+    // assume that node is in the PATH on macOS and Linux
+    args << QStringLiteral("node");
+#endif
+
     if (!proxy.isEmpty() && proxyType == NetworkAccessManager::HTTP_PROXY)
     {
         args << QStringLiteral("--proxy") << proxy;
