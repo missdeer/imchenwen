@@ -148,7 +148,12 @@ void ParserLux::parseEpisode(QJsonObject episode)
 
         for (const auto &part : parts)
         {
-            stream.urls << QUrl(part.toObject()[QStringLiteral("url")].toString());
+            auto obj = part.toObject();
+            stream.urls << QUrl(obj[QStringLiteral("url")].toString());
+            if (obj[QStringLiteral("ext")].toString() == QStringLiteral("m4a"))
+            {
+                stream.is_dash = true;
+            }
         }
 
         // Add stream to list
