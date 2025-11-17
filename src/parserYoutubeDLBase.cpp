@@ -144,7 +144,7 @@ void ParserYoutubeDLBase::parseOutput()
         convertToStream(item, stream);
 
         // Video has no audio track? => Dash video, audio in seperate file
-        if (item[QStringLiteral("acodec")] == QStringLiteral("none"))
+        if (item[QStringLiteral("audio_channels")].isNull())
         {
             if (stream.container == QStringLiteral("webm") && bestWebmAudioAsr > 0)
             {
