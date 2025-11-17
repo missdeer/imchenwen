@@ -57,7 +57,7 @@ jobs:
 
       - name: Cache qt static build
         id: cache-qt-static-build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-qt-static-build-macos
         with:
@@ -127,7 +127,7 @@ jobs:
         run: ./scripts/deploy-macos-11.sh
 
       - name: Upload artifacts mac app bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: imchenwen-universal-${{ matrix.os }}.zip
           path: imchenwen.app
@@ -163,7 +163,7 @@ jobs:
       - name: cache intel install
         if: matrix.toolset == 'icx'
         id: cache-install
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
               C:\Program Files (x86)\Intel\oneAPI\setvars-vcvarsall.bat
@@ -220,13 +220,13 @@ jobs:
         run: ./scripts/deploy-windows-latest.sh
 
       - name: Upload artifacts windows installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: imchenwen-msvc-${{ matrix.toolset }}-x86_64-setup
           path: imchenwen-msvc-x86_64-setup.exe
             
       - name: Upload artifacts windows archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: imchenwen-msvc-${{ matrix.toolset }}-x86_64-qt6
           path: imchenwen
@@ -339,13 +339,13 @@ jobs:
           mv scripts/Output/mysetup.exe ./imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup.exe
           
       - name: upload artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           path: imchenwen
           name: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}
 
       - name: upload artifact setup
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           path: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup.exe
           name: imchenwen-${{ matrix.mingw_prefix }}-${{ matrix.qt }}-setup
