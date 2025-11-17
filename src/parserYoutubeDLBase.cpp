@@ -53,12 +53,11 @@ void ParserYoutubeDLBase::runParser(const QUrl &url)
     // add executable path to PATH
     auto env  = QProcessEnvironment::systemEnvironment();
     auto path = env.value(QStringLiteral("PATH"));
-    env.insert(QStringLiteral("PATH"), path + QDir::separator() + QCoreApplication::applicationDirPath());
+    env.insert(QStringLiteral("PATH"), path + QDir::separator() + QDir::toNativeSeparators(userResourcesPath()));
     m_process.setProcessEnvironment(env);
 
     // add quickjs executable path to args
-    args << QStringLiteral("quickjs:") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QDir::separator() +
-                QStringLiteral("qjs.exe");
+    args << QStringLiteral("quickjs");
 #else
     // assume that node is in the PATH on macOS and Linux
     args << QStringLiteral("node");
