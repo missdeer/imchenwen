@@ -97,7 +97,7 @@ echo "\n-------- Checking lux's updates -------"
 CURRENT_VERSION=$(get_current_version "lux")
 echo "Current version: $CURRENT_VERSION"
 
-LATEST_VERSION=$(get_latest_version_github "iawia002/lux")
+LATEST_VERSION=$(get_latest_version_github "missdeer/daily-weekly-build")
 if [ -n "$LATEST_VERSION" ]; then
 	echo "Latest version: $LATEST_VERSION"
 else
@@ -111,13 +111,10 @@ else
 	# Download latest version
 	echo "\n ------------ Updating lux -------------"
 	echo "Downloading latest version..."
-	URL="${GITHUB_MIRROR}/iawia002/lux/releases/download/${LATEST_VERSION}/lux_${LATEST_VERSION#v}_${LUX_SUFFIX}"
+	URL="${GITHUB_MIRROR}/missdeer/daily-weekly-build/releases/download/${LATEST_VERSION}/lux"
 	echo "$URL"
-	downloader lux.tar.gz "$URL" || exit 1
-	rm -f lux
-	tar -xvf lux.tar.gz
+	downloader lux "$URL" || exit 1
 	chmod a+x lux
-	rm -f lux.tar.gz
 	save_version_info "lux" "$LATEST_VERSION"
 fi
 

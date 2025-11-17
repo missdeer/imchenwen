@@ -61,7 +61,7 @@ $current_version = Get-Current-Version "lux"
 Write-Output "Current version: $current_version"
 
 # Get latest lux version
-$latest_version = Get-Latest-Version-Github "iawia002/lux"
+$latest_version = Get-Latest-Version-Github "missdeer/daily-weekly-build"
 Write-Output "Latest version: $latest_version"
 
 # Check if the version is latest
@@ -73,15 +73,10 @@ if ($latest_version -eq $current_version) {
 
     # Download
     Write-Output "Downloading latest version..."
-    $version_no_v = $latest_version.Substring(1)
-    $url = "$github_mirror/iawia002/lux/releases/download/$latest_version/lux_${version_no_v}_Windows_x86_64.zip"
+    $url = "$github_mirror/missdeer/daily-weekly-build/releases/download/$latest_version/lux.exe"
     Write-Output $url
-    $output = "$env:LOCALAPPDATA\imchenwen\lux.zip"
+    $output = "$env:LOCALAPPDATA\imchenwen\lux.exe"
     (New-Object System.Net.WebClient).DownloadFile($url, $output)
-
-    # Extract
-    Write-Output "Extracting lux..."
-    Expand-Archive "$output" -DestinationPath "$env:LOCALAPPDATA\imchenwen" -Force
     Save-Version-Info "lux" $latest_version
 }
 
