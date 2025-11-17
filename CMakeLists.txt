@@ -1,7 +1,7 @@
 ﻿
 # CMake file reference: https://github.com/euler0/mini-cmake-qt
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.20)
 
 
 # Basic information about project
@@ -11,7 +11,7 @@ add_definitions(-DIMCHENWEN_VERSION="${PROJECT_VERSION}")
 
 # Set additional project information
 set(COMPANY "DForD Software")
-set(COPYRIGHT "Copyright (c) 2019 - 2024 DForD Software. All rights reserved.")
+set(COPYRIGHT "Copyright (c) 2019 - 2025 DForD Software. All rights reserved.")
 set(IDENTIFIER "com.dfordsoft.imchenwen")
 
 
