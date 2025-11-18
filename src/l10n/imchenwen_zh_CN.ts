@@ -289,22 +289,22 @@ URL: %1
 <context>
     <name>ParserYoutubeDLBase</name>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="44"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="45"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="44"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="45"/>
         <source>Another file is being parsed.</source>
         <translation type="unfinished">其他视频正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="154"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="170"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">仅音频（webm）</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="159"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="175"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">仅音频（m4a）</translation>
     </message>

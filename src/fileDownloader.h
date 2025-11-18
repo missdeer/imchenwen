@@ -17,14 +17,54 @@
 #ifndef FILEDOWNLOADER_H
 #define FILEDOWNLOADER_H
 
+#include <QElapsedTimer>
 #include <QFile>
+#include <QList>
+#include <QMutex>
+#include <QPair>
 #include <QUrl>
 
 class QNetworkReply;
 
+struct ChunkInfo
+{
+    qint64         startPos;   // IMMUTABLE - original chunk start boundary
+    qint64         endPos;     // IMMUTABLE - original chunk end boundary
+    qint64         downloaded; // MUTABLE - bytes downloaded for this chunk
+    bool           isFinished;
+    QNetworkReply *reply;
+
+    // Helper methods
+    qint64 currentPos() const
+    {
+        return startPos + downloaded;
+    }
+    qint64 remaining() const
+    {
+        return (endPos >= 0) ? (endPos - startPos + 1 - downloaded) : -1; // -1 = unknown
+    }
+    qint64 size() const
+    {
+        return (endPos >= 0) ? (endPos - startPos + 1) : -1; // -1 = unknown (open-ended)
+    }
+};
+
 class FileDownloader : public QObject
 {
     Q_OBJECT
+
+public:
+    enum State
+    {
+        Idle,             // Not started or stopped
+        FetchingSize,     // Fetching file size from server
+        Downloading,      // Active download in progress
+        Paused,           // Download paused by user
+        InternalFallback, // Recovering from Range-ignored (internal restart)
+        Finished,         // Download completed successfully
+        Failed            // Download failed with error
+    };
+    Q_ENUM(State)
 
 signals:
     void started();
@@ -43,18 +83,39 @@ public:
     {
         return m_progress;
     }
+    void setThreadCount(int threadCount)
+    {
+        m_threadCount = threadCount;
+    }
 
 private:
-    QNetworkReply *m_reply;
-    QFile          m_file;
-    QUrl           m_url;
-    qint64         m_lastPos;
-    int            m_progress;
+    void fetchFileSize();
+    void createChunks();
+    void startChunkDownload(int chunkIndex);
+    void onSizeReplyFinished();
+    void onChunkFinished(int chunkIndex);
+    void onChunkReadyRead(int chunkIndex);
+    void updateProgress();
+    bool allChunksFinished() const;
+    void saveProgress();
+    void loadProgress();
 
-private slots:
-    void onFinished();
-    void onReadyRead();
-    void onDownloadProgressChanged(qint64 received, qint64 total);
+    void setState(State newState);
+
+    QNetworkReply   *m_sizeReply;
+    QList<ChunkInfo> m_chunks;
+    QFile            m_file;
+    QMutex           m_fileMutex;
+    QUrl             m_url;
+    qint64           m_fileSize;
+    qint64           m_totalDownloaded;
+    int              m_progress;
+    int              m_threadCount;
+    bool             m_isMultiThreaded;
+    State            m_state;
+    int              m_fallbackGeneration; // Invalidates stale deferred restarts
+    QString          m_progressFilePath;
+    QElapsedTimer    m_progressSaveTimer; // Throttle progress saves
 };
 
 #endif // FILEDOWNLOADER_H
