@@ -18,8 +18,10 @@
 #define PLAYLISTMODEL_H
 
 #include <QAbstractListModel>
-#include <QUrl>
 #include <QQmlEngine>
+#include <QUrl>
+
+class FileDownloader;
 
 class PlaylistModel : public QAbstractListModel
 {
@@ -56,8 +58,11 @@ public:
 
     explicit PlaylistModel(QObject *parent = nullptr);
 
-    Q_INVOKABLE void addItem(
-        const QString &title, const QUrl &fileUrl, const QUrl &danmakuUrl = QUrl(), const QUrl &audioTrackUrl = QUrl(), const QUrl &subtitleUrl = QUrl());
+    Q_INVOKABLE void addItem(const QString &title,
+                             const QUrl    &fileUrl,
+                             const QUrl    &danmakuUrl    = QUrl(),
+                             const QUrl    &audioTrackUrl = QUrl(),
+                             const QUrl    &subtitleUrl   = QUrl());
     Q_INVOKABLE void addItems(
         const QString &title, const QList<QUrl> &fileUrls, const QUrl &danmakuUrl = QUrl(), const QUrl &subtitleUrl = QUrl(), bool isDash = false);
     Q_INVOKABLE void addLocalFiles(const QList<QUrl> &fileUrls);
@@ -81,12 +86,45 @@ signals:
     void playingIndexChanged();
 
 private:
+    // Helper enum
+    enum class TrackType
+    {
+        Audio,
+        Subtitle
+    };
+
+    // Helper methods
+    bool    isYouTubeUrl(const QUrl &url);
+    bool    isResolved(int index, TrackType type);
+    QUrl    getResolvedUrl(int index, TrackType type);
+    QString generateTempPath(const QUrl &url, const QString &extension);
+
+    void resolveTrackUrls(int index, int requestToken);
+    void resolveAudioUrl(int index, int requestToken);
+    void resolveSubtitleUrl(int index, int requestToken);
+    void checkResolutionCompleteAndPlay(int index, int requestToken);
+    void playNow(int index, int requestToken);
+    void cancelPendingPlayback();
+    void cancelAllDownloads();
+
     QStringList m_titles;
     QList<QUrl> m_fileUrls;
     QList<QUrl> m_danmakuUrls;
     QList<QUrl> m_audioTrackUrls;
     QList<QUrl> m_subtitleUrls;
     int         m_playingIndex;
+
+    // Parallel lists for resolved paths (stays in sync with m_fileUrls)
+    QList<QString> m_resolvedAudioPaths;
+    QList<QString> m_resolvedSubtitlePaths;
+
+    // Active downloads (short-lived)
+    QHash<int, FileDownloader *> m_audioDownloaders;
+    QHash<int, FileDownloader *> m_subtitleDownloaders;
+
+    // Playback coordination
+    int m_pendingPlayIndex = -1;
+    int m_playRequestToken = 0;
 
     static PlaylistModel *s_instance;
 };

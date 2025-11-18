@@ -14,18 +14,21 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
+#include <QCryptographicHash>
+#include <QDir>
 #include <QFileInfo>
 #include <QSettings>
 
 #include "playlistModel.h"
 #include "dialogs.h"
+#include "fileDownloader.h"
 #include "mpvObject.h"
 #include "parserLux.h"
 #include "parserYKDL.h"
 #include "parserYouGet.h"
-#include "parserYtdlp.h"
-#include "parserYtdlPatch.h"
 #include "parserYoutubeDL.h"
+#include "parserYtdlPatch.h"
+#include "parserYtdlp.h"
 
 namespace
 {
@@ -70,6 +73,8 @@ void PlaylistModel::addItem(const QString &title, const QUrl &fileUrl, const QUr
     m_danmakuUrls << danmakuUrl;
     m_audioTrackUrls << audioTrackUrl;
     m_subtitleUrls << subtitleUrl;
+    m_resolvedAudioPaths << QString();    // Not resolved yet
+    m_resolvedSubtitlePaths << QString(); // Not resolved yet
     endInsertRows();
     playItem(index);
 }
@@ -85,7 +90,9 @@ void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, 
         m_fileUrls << fileUrls[0]; // First url is the video stream
         m_danmakuUrls << danmakuUrl;
         m_subtitleUrls << subtitleUrl;
-        m_audioTrackUrls << fileUrls[1]; // Second url is the audio stream
+        m_audioTrackUrls << fileUrls[1];   // Second url is the audio stream
+        m_resolvedAudioPaths << QString(); // Not resolved yet
+        m_resolvedSubtitlePaths << QString();
         endInsertRows();
     }
     else // Normal videos
@@ -99,7 +106,8 @@ void PlaylistModel::addItems(const QString &title, const QList<QUrl> &fileUrls, 
             m_danmakuUrls << (i == 0 ? danmakuUrl : QUrl());
             m_subtitleUrls << (i == 0 ? subtitleUrl : QUrl());
             m_audioTrackUrls << QUrl();
-            m_subtitleUrls << QUrl();
+            m_resolvedAudioPaths << QString();
+            m_resolvedSubtitlePaths << QString();
         }
         endInsertRows();
     }
@@ -117,6 +125,7 @@ void PlaylistModel::addLocalFiles(const QList<QUrl> &fileUrls)
         m_titles << QFileInfo(fileUrl.toLocalFile()).fileName();
         m_fileUrls << fileUrl;
         m_audioTrackUrls << QUrl();
+
         QFile danmakuFile(fileUrl.toLocalFile() + QStringLiteral(".danmaku"));
         if (danmakuFile.open(QFile::ReadOnly | QFile::Text))
         {
@@ -127,7 +136,10 @@ void PlaylistModel::addLocalFiles(const QList<QUrl> &fileUrls)
         {
             m_danmakuUrls << QUrl();
         }
+
         m_subtitleUrls << QUrl();
+        m_resolvedAudioPaths << QString();
+        m_resolvedSubtitlePaths << QString();
     }
     endInsertRows();
 
@@ -183,12 +195,117 @@ void PlaylistModel::removeItem(int index)
     {
         return;
     }
+
+    // CRITICAL: If pending playback would be affected by this removal, cancel it entirely
+    // This avoids the index-shift/lambda-capture mismatch bug where callbacks see
+    // a shifted m_pendingPlayIndex and treat themselves as stale
+    bool cancelPending = false;
+    if (m_pendingPlayIndex >= 0)
+    {
+        if (m_pendingPlayIndex == index)
+        {
+            // Removing the pending item itself
+            cancelPending = true;
+        }
+        else if (m_pendingPlayIndex > index)
+        {
+            // Removing an item below pending: pending index will shift
+            // Lambdas captured old index, will see mismatch and bail
+            cancelPending = true;
+        }
+    }
+
+    if (cancelPending)
+    {
+        // Cancel ALL pending downloads (they have stale index captures)
+        for (auto *downloader : m_audioDownloaders)
+        {
+            if (downloader)
+            {
+                downloader->disconnect();
+                downloader->stop();
+                downloader->deleteLater();
+            }
+        }
+        m_audioDownloaders.clear();
+
+        for (auto *downloader : m_subtitleDownloaders)
+        {
+            if (downloader)
+            {
+                downloader->disconnect();
+                downloader->stop();
+                downloader->deleteLater();
+            }
+        }
+        m_subtitleDownloaders.clear();
+
+        m_pendingPlayIndex = -1;
+        m_playRequestToken++; // Invalidate stale callbacks
+
+        qDebug() << "Canceled pending playback due to removal affecting indices";
+    }
+    else
+    {
+        // No pending playback or removal doesn't affect it
+        // Only cancel downloads for THIS index
+        if (m_audioDownloaders.contains(index))
+        {
+            auto *downloader = m_audioDownloaders.take(index);
+            downloader->disconnect();
+            downloader->stop();
+            downloader->deleteLater();
+        }
+        if (m_subtitleDownloaders.contains(index))
+        {
+            auto *downloader = m_subtitleDownloaders.take(index);
+            downloader->disconnect();
+            downloader->stop();
+            downloader->deleteLater();
+        }
+
+        // Remap downloader indices above the removed index (shift down)
+        // This is safe because no pending playback is affected
+        QHash<int, FileDownloader *> newAudioDownloaders;
+        for (auto it = m_audioDownloaders.begin(); it != m_audioDownloaders.end(); ++it)
+        {
+            int oldIndex = it.key();
+            if (oldIndex > index)
+            {
+                newAudioDownloaders[oldIndex - 1] = it.value(); // Shift down
+            }
+            else
+            {
+                newAudioDownloaders[oldIndex] = it.value(); // Keep same
+            }
+        }
+        m_audioDownloaders = newAudioDownloaders;
+
+        QHash<int, FileDownloader *> newSubtitleDownloaders;
+        for (auto it = m_subtitleDownloaders.begin(); it != m_subtitleDownloaders.end(); ++it)
+        {
+            int oldIndex = it.key();
+            if (oldIndex > index)
+            {
+                newSubtitleDownloaders[oldIndex - 1] = it.value();
+            }
+            else
+            {
+                newSubtitleDownloaders[oldIndex] = it.value();
+            }
+        }
+        m_subtitleDownloaders = newSubtitleDownloaders;
+    }
+
+    // Remove from ALL parallel lists (indices shift automatically)
     beginRemoveRows(QModelIndex(), index, index);
     m_titles.removeAt(index);
     m_fileUrls.removeAt(index);
     m_danmakuUrls.removeAt(index);
     m_audioTrackUrls.removeAt(index);
     m_subtitleUrls.removeAt(index);
+    m_resolvedAudioPaths.removeAt(index);
+    m_resolvedSubtitlePaths.removeAt(index);
     endRemoveRows();
 }
 
@@ -198,12 +315,20 @@ void PlaylistModel::clear()
     {
         return;
     }
+
+    // Cancel all downloads and pending playback
+    cancelAllDownloads();
+    m_pendingPlayIndex = -1;
+    m_playRequestToken++;
+
     beginRemoveRows(QModelIndex(), 0, m_titles.count() - 1);
     m_titles.clear();
     m_fileUrls.clear();
     m_danmakuUrls.clear();
     m_audioTrackUrls.clear();
     m_subtitleUrls.clear();
+    m_resolvedAudioPaths.clear();
+    m_resolvedSubtitlePaths.clear();
     endRemoveRows();
 }
 
@@ -213,12 +338,24 @@ void PlaylistModel::playItem(int index)
 
     if (index >= 0 && index < m_titles.count())
     {
-        MpvObject::instance()->open(m_fileUrls[index], m_danmakuUrls[index], m_audioTrackUrls[index], m_subtitleUrls[index]);
+        // Cancel any pending playback from previous call
+        cancelPendingPlayback();
+
+        m_pendingPlayIndex = index;
+        m_playRequestToken++; // Invalidate old callbacks
+        int currentToken = m_playRequestToken;
+
+        // Resolve URLs (download if needed, use cache if available)
+        resolveTrackUrls(index, currentToken);
     }
-    if (m_playingIndex != index)
+    else
     {
-        m_playingIndex = index;
-        emit playingIndexChanged();
+        // Invalid index, just update state
+        if (m_playingIndex != index)
+        {
+            m_playingIndex = index;
+            emit playingIndexChanged();
+        }
     }
 }
 
@@ -249,4 +386,371 @@ QHash<int, QByteArray> PlaylistModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[TitleRole] = QByteArrayLiteral("title");
     return roles;
+}
+
+// Helper: Check if URL is from YouTube
+bool PlaylistModel::isYouTubeUrl(const QUrl &url)
+{
+    if (!url.isValid() || url.isEmpty())
+    {
+        return false;
+    }
+
+    QString host = url.host();
+    return host.endsWith(QStringLiteral("googlevideo.com")) || host.endsWith(QStringLiteral("youtube.com"));
+}
+
+// Helper: Generate stable temp file path using SHA-256 hash
+QString PlaylistModel::generateTempPath(const QUrl &url, const QString &extension)
+{
+    // Use SHA-256 for stable, collision-resistant hash
+    QByteArray urlBytes = url.toString().toUtf8();
+    QByteArray hash     = QCryptographicHash::hash(urlBytes, QCryptographicHash::Sha256);
+
+    // Use first 128 bits (32 hex chars) to avoid collisions
+    // Birthday paradox: 50% collision at ~2^64 files with 128-bit hash
+    QString hashHex = QString::fromLatin1(hash.toHex().left(32));
+
+    // Extension must include dot
+    Q_ASSERT(extension.startsWith(QLatin1Char('.')));
+
+    return QDir::tempPath() + QStringLiteral("/imchenwen_track_") + hashHex + extension;
+}
+
+// Helper: Check if track URL is resolved to local file
+bool PlaylistModel::isResolved(int index, TrackType type)
+{
+    if (index < 0 || index >= m_resolvedAudioPaths.size())
+    {
+        return false;
+    }
+
+    QString cachedPath = (type == TrackType::Audio) ? m_resolvedAudioPaths[index] : m_resolvedSubtitlePaths[index];
+
+    if (cachedPath.isEmpty())
+    {
+        return false; // Not resolved yet
+    }
+
+    // Verify file still exists and is non-empty
+    QFileInfo fileInfo(cachedPath);
+    if (!fileInfo.exists() || fileInfo.size() == 0)
+    {
+        qDebug() << "Cached file missing or empty:" << cachedPath;
+
+        // Clear stale cache entry
+        if (type == TrackType::Audio)
+        {
+            m_resolvedAudioPaths[index] = QString();
+        }
+        else
+        {
+            m_resolvedSubtitlePaths[index] = QString();
+        }
+        return false;
+    }
+
+    return true; // Valid cached file
+}
+
+// Helper: Get resolved URL (local file if available, else original)
+QUrl PlaylistModel::getResolvedUrl(int index, TrackType type)
+{
+    if (index < 0 || index >= m_resolvedAudioPaths.size())
+    {
+        return QUrl();
+    }
+
+    QString resolvedPath = (type == TrackType::Audio) ? m_resolvedAudioPaths[index] : m_resolvedSubtitlePaths[index];
+
+    if (!resolvedPath.isEmpty() && QFile::exists(resolvedPath))
+    {
+        return QUrl::fromLocalFile(resolvedPath);
+    }
+
+    // Fallback to original URL
+    return (type == TrackType::Audio) ? m_audioTrackUrls[index] : m_subtitleUrls[index];
+}
+
+// Cancel all active downloads
+void PlaylistModel::cancelAllDownloads()
+{
+    // Cancel all audio downloads
+    for (auto *downloader : m_audioDownloaders)
+    {
+        if (downloader)
+        {
+            downloader->disconnect();
+            downloader->stop();
+            downloader->deleteLater();
+        }
+    }
+    m_audioDownloaders.clear();
+
+    // Cancel all subtitle downloads
+    for (auto *downloader : m_subtitleDownloaders)
+    {
+        if (downloader)
+        {
+            downloader->disconnect();
+            downloader->stop();
+            downloader->deleteLater();
+        }
+    }
+    m_subtitleDownloaders.clear();
+}
+
+// Cancel pending playback request
+void PlaylistModel::cancelPendingPlayback()
+{
+    if (m_pendingPlayIndex < 0)
+    {
+        return; // Nothing pending
+    }
+
+    int oldIndex = m_pendingPlayIndex;
+
+    // Stop audio download if active
+    if (m_audioDownloaders.contains(oldIndex))
+    {
+        auto *downloader = m_audioDownloaders.take(oldIndex);
+        downloader->disconnect();
+        downloader->stop();
+        downloader->deleteLater();
+    }
+
+    // Stop subtitle download if active
+    if (m_subtitleDownloaders.contains(oldIndex))
+    {
+        auto *downloader = m_subtitleDownloaders.take(oldIndex);
+        downloader->disconnect();
+        downloader->stop();
+        downloader->deleteLater();
+    }
+
+    qDebug() << "Cancelled pending playback for index:" << oldIndex;
+}
+
+// Resolve audio URL (download if YouTube, cache if available)
+void PlaylistModel::resolveAudioUrl(int index, int requestToken)
+{
+    if (index < 0 || index >= m_audioTrackUrls.size())
+    {
+        return;
+    }
+
+    QUrl    originalUrl = m_audioTrackUrls[index];
+    QString tempPath    = generateTempPath(originalUrl, QStringLiteral(".m4a"));
+
+    // Check if already cached and valid
+    QFileInfo fileInfo(tempPath);
+    if (fileInfo.exists() && fileInfo.size() > 0)
+    {
+        qDebug() << "Using cached audio track:" << tempPath;
+        m_resolvedAudioPaths[index] = tempPath;
+        checkResolutionCompleteAndPlay(index, requestToken);
+        return;
+    }
+
+    // Start download
+    qDebug() << "Downloading audio track to:" << tempPath;
+    auto *downloader          = new FileDownloader(tempPath, originalUrl, this);
+    m_audioDownloaders[index] = downloader;
+
+    connect(downloader, &FileDownloader::finished, this, [this, index, requestToken, tempPath, downloader]() {
+        // Validate request token first
+        if (requestToken != m_playRequestToken)
+        {
+            qDebug() << "Audio download completed for stale request, ignoring";
+            downloader->disconnect();
+            downloader->deleteLater();
+            m_audioDownloaders.remove(index);
+            return;
+        }
+
+        // Check download success
+        QFileInfo fileInfo(tempPath);
+        if (fileInfo.exists() && fileInfo.size() > 0)
+        {
+            qDebug() << "Audio download completed:" << tempPath;
+
+            // Store in parallel list (bounds check for safety)
+            if (index >= 0 && index < m_resolvedAudioPaths.size())
+            {
+                m_resolvedAudioPaths[index] = tempPath;
+            }
+        }
+        else
+        {
+            qDebug() << "Audio download failed or empty file:" << tempPath;
+        }
+
+        // Cleanup
+        downloader->disconnect();
+        downloader->deleteLater();
+        m_audioDownloaders.remove(index);
+
+        // Check if ready to play
+        checkResolutionCompleteAndPlay(index, requestToken);
+    });
+
+    downloader->setThreadCount(3);
+    downloader->start();
+}
+
+// Resolve subtitle URL (download if YouTube, cache if available)
+void PlaylistModel::resolveSubtitleUrl(int index, int requestToken)
+{
+    if (index < 0 || index >= m_subtitleUrls.size())
+    {
+        return;
+    }
+
+    QUrl    originalUrl = m_subtitleUrls[index];
+    QString tempPath    = generateTempPath(originalUrl, QStringLiteral(".vtt"));
+
+    // Check cache
+    QFileInfo fileInfo(tempPath);
+    if (fileInfo.exists() && fileInfo.size() > 0)
+    {
+        qDebug() << "Using cached subtitle:" << tempPath;
+        m_resolvedSubtitlePaths[index] = tempPath;
+        checkResolutionCompleteAndPlay(index, requestToken);
+        return;
+    }
+
+    // Start download
+    qDebug() << "Downloading subtitle to:" << tempPath;
+    auto *downloader             = new FileDownloader(tempPath, originalUrl, this);
+    m_subtitleDownloaders[index] = downloader;
+
+    connect(downloader, &FileDownloader::finished, this, [this, index, requestToken, tempPath, downloader]() {
+        // Validate token
+        if (requestToken != m_playRequestToken)
+        {
+            qDebug() << "Subtitle download completed for stale request, ignoring";
+            downloader->disconnect();
+            downloader->deleteLater();
+            m_subtitleDownloaders.remove(index);
+            return;
+        }
+
+        // Check success
+        QFileInfo fileInfo(tempPath);
+        if (fileInfo.exists() && fileInfo.size() > 0)
+        {
+            qDebug() << "Subtitle download completed:" << tempPath;
+
+            if (index >= 0 && index < m_resolvedSubtitlePaths.size())
+            {
+                m_resolvedSubtitlePaths[index] = tempPath;
+            }
+        }
+        else
+        {
+            qDebug() << "Subtitle download failed:" << tempPath;
+        }
+
+        // Cleanup
+        downloader->disconnect();
+        downloader->deleteLater();
+        m_subtitleDownloaders.remove(index);
+
+        // Check if ready to play
+        checkResolutionCompleteAndPlay(index, requestToken);
+    });
+
+    downloader->setThreadCount(1);
+    downloader->start();
+}
+
+// Check if all resolution is complete and play if ready
+void PlaylistModel::checkResolutionCompleteAndPlay(int index, int requestToken)
+{
+    // Validate token
+    if (requestToken != m_playRequestToken || index != m_pendingPlayIndex)
+    {
+        qDebug() << "Resolution check for stale request, ignoring";
+        return;
+    }
+
+    // Check if both tracks are resolved (or don't need resolution)
+    QUrl audioUrl    = m_audioTrackUrls[index];
+    QUrl subtitleUrl = m_subtitleUrls[index];
+
+    bool audioReady    = !isYouTubeUrl(audioUrl) || isResolved(index, TrackType::Audio);
+    bool subtitleReady = !isYouTubeUrl(subtitleUrl) || isResolved(index, TrackType::Subtitle);
+
+    // Also allow fallback: if download failed but we have original URL
+    if (!audioReady && !m_audioDownloaders.contains(index))
+    {
+        qDebug() << "Audio download failed, will use original URL";
+        audioReady = true;
+    }
+    if (!subtitleReady && !m_subtitleDownloaders.contains(index))
+    {
+        qDebug() << "Subtitle download failed, will use original URL";
+        subtitleReady = true;
+    }
+
+    if (audioReady && subtitleReady)
+    {
+        playNow(index, requestToken);
+    }
+    else
+    {
+        qDebug() << "Waiting for track resolution... audio:" << audioReady << "subtitle:" << subtitleReady;
+    }
+}
+
+// Play item now with resolved URLs
+void PlaylistModel::playNow(int index, int requestToken)
+{
+    // Validate token
+    if (requestToken != m_playRequestToken || index != m_pendingPlayIndex)
+    {
+        qDebug() << "Stale playback request, ignoring";
+        return;
+    }
+
+    // Get resolved URLs (use local path if available, else original)
+    QUrl audioUrl    = getResolvedUrl(index, TrackType::Audio);
+    QUrl subtitleUrl = getResolvedUrl(index, TrackType::Subtitle);
+
+    MpvObject::instance()->open(m_fileUrls[index], m_danmakuUrls[index], audioUrl, subtitleUrl);
+
+    // Update playing index and clear pending state
+    if (m_playingIndex != index)
+    {
+        m_playingIndex = index;
+        emit playingIndexChanged();
+    }
+    m_pendingPlayIndex = -1;
+}
+
+// Resolve track URLs and start playback when ready
+void PlaylistModel::resolveTrackUrls(int index, int requestToken)
+{
+    QUrl audioUrl    = m_audioTrackUrls[index];
+    QUrl subtitleUrl = m_subtitleUrls[index];
+
+    bool needAudioResolve    = isYouTubeUrl(audioUrl) && !isResolved(index, TrackType::Audio);
+    bool needSubtitleResolve = isYouTubeUrl(subtitleUrl) && !isResolved(index, TrackType::Subtitle);
+
+    if (!needAudioResolve && !needSubtitleResolve)
+    {
+        // Ready to play now
+        playNow(index, requestToken);
+        return;
+    }
+
+    // Start async resolution
+    if (needAudioResolve)
+    {
+        resolveAudioUrl(index, requestToken);
+    }
+    if (needSubtitleResolve)
+    {
+        resolveSubtitleUrl(index, requestToken);
+    }
 }
