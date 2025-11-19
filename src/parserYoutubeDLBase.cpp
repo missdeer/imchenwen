@@ -49,9 +49,9 @@ void ParserYoutubeDLBase::runParser(const QUrl &url)
     auto        proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
     auto        proxy     = settings.value(QStringLiteral("network/proxy")).toString();
     QStringList args      = {QStringLiteral("-j"), QStringLiteral("--user-agent"), QStringLiteral(DEFAULT_UA), QStringLiteral("--js-runtimes")};
+    auto        env       = QProcessEnvironment::systemEnvironment();
 #ifdef Q_OS_WIN
     // add executable path to PATH
-    auto env  = QProcessEnvironment::systemEnvironment();
     auto path = env.value(QStringLiteral("PATH"));
     env.insert(QStringLiteral("PATH"), path + QDir::separator() + QDir::toNativeSeparators(userResourcesPath()));
     m_process.setProcessEnvironment(env);
@@ -62,6 +62,11 @@ void ParserYoutubeDLBase::runParser(const QUrl &url)
     // assume that node is in the PATH on macOS and Linux
     args << QStringLiteral("node");
 #endif
+    auto cookiesFromBrowser = env.value(QStringLiteral("COOKIES_FROM_BROWSER"));
+    if (!cookiesFromBrowser.isEmpty())
+    {
+        args << QStringLiteral("--cookies-from-browser") << cookiesFromBrowser;
+    }
 
     if (!proxy.isEmpty() && proxyType == NetworkAccessManager::HTTP_PROXY)
     {
@@ -193,7 +198,7 @@ void ParserYoutubeDLBase::parseOutput()
             }
         }
 
-        static QStringList languagesPriorityList {QStringLiteral("zh-Hans"), QStringLiteral("en-orig"), QStringLiteral("en")};
+        static QStringList languagesPriorityList {QStringLiteral("en-orig"), QStringLiteral("en")};
         auto               iter = std::find_if(
             languagesPriorityList.begin(), languagesPriorityList.end(), [&languages](const auto &language) { return languages.contains(language); });
         if (iter != languagesPriorityList.end())

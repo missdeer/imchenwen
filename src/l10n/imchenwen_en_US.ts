@@ -206,7 +206,7 @@ Please try updating plugins.</translation>
     <name>ParserLux</name>
     <message>
         <location filename="../parserLux.cpp" line="29"/>
-        <location filename="../parserLux.cpp" line="85"/>
+        <location filename="../parserLux.cpp" line="83"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
@@ -216,12 +216,12 @@ Please try updating plugins.</translation>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="85"/>
+        <location filename="../parserLux.cpp" line="83"/>
         <source>The given url has no video item.</source>
         <translation type="unfinished">The given url has no video item.</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="98"/>
+        <location filename="../parserLux.cpp" line="96"/>
         <source>Select episode</source>
         <translation type="unfinished">Select episode</translation>
     </message>
@@ -287,12 +287,12 @@ Please try updating plugins.</translation>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="170"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="175"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">Audio only (webm)</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="175"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="180"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">Audio only (m4a)</translation>
     </message>

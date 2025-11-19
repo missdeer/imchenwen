@@ -206,7 +206,7 @@ URL: %1
     <name>ParserLux</name>
     <message>
         <location filename="../parserLux.cpp" line="29"/>
-        <location filename="../parserLux.cpp" line="85"/>
+        <location filename="../parserLux.cpp" line="83"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
@@ -216,12 +216,12 @@ URL: %1
         <translation>其他影片正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="85"/>
+        <location filename="../parserLux.cpp" line="83"/>
         <source>The given url has no video item.</source>
         <translation>該URL沒有影片條目。</translation>
     </message>
     <message>
-        <location filename="../parserLux.cpp" line="98"/>
+        <location filename="../parserLux.cpp" line="96"/>
         <source>Select episode</source>
         <translation>選集</translation>
     </message>
@@ -287,12 +287,12 @@ URL: %1
         <translation type="unfinished">其他影片正在解析中。</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="170"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="175"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">僅音訊（webm）</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="175"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="180"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">僅音訊（m4a）</translation>
     </message>

@@ -17,6 +17,8 @@
 #ifndef FILEDOWNLOADER_H
 #define FILEDOWNLOADER_H
 
+#include <cstdint>
+
 #include <QElapsedTimer>
 #include <QFile>
 #include <QList>
@@ -35,15 +37,15 @@ struct ChunkInfo
     QNetworkReply *reply;
 
     // Helper methods
-    qint64 currentPos() const
+    [[nodiscard]] qint64 currentPos() const
     {
         return startPos + downloaded;
     }
-    qint64 remaining() const
+    [[nodiscard]] qint64 remaining() const
     {
         return (endPos >= 0) ? (endPos - startPos + 1 - downloaded) : -1; // -1 = unknown
     }
-    qint64 size() const
+    [[nodiscard]] qint64 size() const
     {
         return (endPos >= 0) ? (endPos - startPos + 1) : -1; // -1 = unknown (open-ended)
     }
@@ -52,9 +54,10 @@ struct ChunkInfo
 class FileDownloader : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY_MOVE(FileDownloader)
 
 public:
-    enum State
+    enum State : std::uint8_t
     {
         Idle,             // Not started or stopped
         FetchingSize,     // Fetching file size from server
@@ -87,12 +90,19 @@ public:
     {
         m_threadCount = threadCount;
     }
+    void setCookie(const QByteArray &cookie)
+    {
+        m_cookie = cookie;
+    }
 
 private:
     void fetchFileSize();
     void createChunks();
+    void startSingleThreadDownload();
+    void discoverFileSizeFromChunk(int chunkIndex);
     void startChunkDownload(int chunkIndex);
     void onSizeReplyFinished();
+    void onChunkMetadataChanged(int chunkIndex);
     void onChunkFinished(int chunkIndex);
     void onChunkReadyRead(int chunkIndex);
     void updateProgress();
@@ -107,6 +117,7 @@ private:
     QFile            m_file;
     QMutex           m_fileMutex;
     QUrl             m_url;
+    QByteArray       m_cookie;
     qint64           m_fileSize;
     qint64           m_totalDownloaded;
     int              m_progress;

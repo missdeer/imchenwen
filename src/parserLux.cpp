@@ -32,8 +32,9 @@ void ParserLux::runParser(const QUrl &url)
 
     // Get and apply proxy settings
     QSettings                       settings;
-    NetworkAccessManager::ProxyType proxyType = static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
-    QString                         proxy     = settings.value(QStringLiteral("network/proxy")).toString();
+    NetworkAccessManager::ProxyType proxyType =
+        static_cast<NetworkAccessManager::ProxyType>(settings.value(QStringLiteral("network/proxy_type")).toInt());
+    QString proxy = settings.value(QStringLiteral("network/proxy")).toString();
 
     if (!proxy.isEmpty() && proxyType == NetworkAccessManager::HTTP_PROXY)
     {
@@ -51,13 +52,10 @@ void ParserLux::runParser(const QUrl &url)
     // Set user-agent
     QStringList args;
     args << QStringLiteral("-j"); //<< QStringLiteral("-p") << QStringLiteral("-u") << QStringLiteral(DEFAULT_UA);
-    if (QFile::exists(userResourcesPath() + QStringLiteral("/cookie.txt")))
+    QString cookieFilePath = NetworkAccessManager::instance()->cookieFileOf(url);
+    if (!cookieFilePath.isEmpty())
     {
-        args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/cookie.txt");
-    }
-    else if (QFile::exists(userResourcesPath() + QStringLiteral("/") + url.host() + QStringLiteral("_cookie.txt")))
-    {
-        args << QStringLiteral("-c") << userResourcesPath() + QStringLiteral("/") + url.host() + QStringLiteral("_cookie.txt");
+        args << QStringLiteral("-c") << cookieFilePath;
     }
     args << url.toString();
     m_process.setWorkingDirectory(userResourcesPath());

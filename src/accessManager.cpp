@@ -14,9 +14,11 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
+#include <QFile>
 #include <QNetworkProxy>
 
 #include "accessManager.h"
+#include "platform/paths.h"
 
 // Proxy factory
 class ProxyFactory : public QNetworkProxyFactory
@@ -114,4 +116,63 @@ void NetworkAccessManager::setupProxy(NetworkAccessManager::ProxyType proxyType,
         qputenv("http_proxy", proxy_str);
         qputenv("https_proxy", proxy_str);
     }
+}
+
+QString NetworkAccessManager::cookieFileOf(const QUrl &url)
+{
+    if (QFile::exists(userResourcesPath() + QStringLiteral("/cookie.txt")))
+    {
+        return userResourcesPath() + QStringLiteral("/cookie.txt");
+    }
+
+    if (QFile::exists(userResourcesPath() + QStringLiteral("/") + url.host() + QStringLiteral("_cookie.txt")))
+    {
+        return userResourcesPath() + QStringLiteral("/") + url.host() + QStringLiteral("_cookie.txt");
+    }
+
+    return {};
+}
+
+QByteArray NetworkAccessManager::cookieOf(const QUrl &url)
+{
+    QString cookieFilePath = cookieFileOf(url);
+
+    QFile cookieFile(cookieFilePath);
+    if (cookieFile.exists() && cookieFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QByteArray cookie = cookieFile.readAll().trimmed();
+        cookieFile.close();
+        return cookie;
+    }
+    return {};
+}
+
+QByteArray NetworkAccessManager::userAgentOf(const QUrl &url)
+{
+    return m_ua_table[url.host()].isEmpty() ? s_defaultUA : m_ua_table[url.host()];
+}
+
+void NetworkAccessManager::addUserAgent(const QUrl &url, const QByteArray &ua)
+{
+    m_ua_table[url.host()] = ua;
+}
+
+QByteArray NetworkAccessManager::refererOf(const QUrl &url)
+{
+    return m_refererTable[url.host()];
+}
+
+void NetworkAccessManager::addReferer(const QUrl &url, const QByteArray &referer)
+{
+    m_refererTable[url.host()] = referer;
+}
+
+bool NetworkAccessManager::urlIsUnseekable(const QUrl &url)
+{
+    return m_unseekableHosts.contains(url.host());
+}
+
+void NetworkAccessManager::addUnseekableHost(const QString &host)
+{
+    m_unseekableHosts << host;
 }

@@ -48,32 +48,18 @@ public:
 
     Q_INVOKABLE void setupProxy(ProxyType proxyType, const QString &proxy = QString(), bool proxyOnlyForParsing = false);
 
-    void addUnseekableHost(const QString &host)
-    {
-        m_unseekableHosts << host;
-    }
-    bool urlIsUnseekable(const QUrl &url)
-    {
-        return m_unseekableHosts.contains(url.host());
-    }
+    void addUnseekableHost(const QString &host);
+    bool urlIsUnseekable(const QUrl &url);
 
-    void addReferer(const QUrl &url, const QByteArray &referer)
-    {
-        m_refererTable[url.host()] = referer;
-    }
-    QByteArray refererOf(const QUrl &url)
-    {
-        return m_refererTable[url.host()];
-    }
+    void       addReferer(const QUrl &url, const QByteArray &referer);
+    QByteArray refererOf(const QUrl &url);
 
-    void addUserAgent(const QUrl &url, const QByteArray &ua)
-    {
-        m_ua_table[url.host()] = ua;
-    }
-    QByteArray userAgentOf(const QUrl &url)
-    {
-        return m_ua_table[url.host()].isEmpty() ? s_defaultUA : m_ua_table[url.host()];
-    }
+    void       addUserAgent(const QUrl &url, const QByteArray &ua);
+    QByteArray userAgentOf(const QUrl &url);
+
+    QString cookieFileOf(const QUrl &url);
+
+    QByteArray cookieOf(const QUrl &url);
 
 private:
     ProxyFactory              *m_proxyFactory;

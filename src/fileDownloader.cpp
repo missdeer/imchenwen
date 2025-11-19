@@ -72,7 +72,9 @@ FileDownloader::~FileDownloader()
 void FileDownloader::setState(State newState)
 {
     if (m_state == newState)
+    {
         return;
+    }
 
     qDebug() << QStringLiteral("State transition: %1 -> %2").arg(m_state).arg(newState);
     m_state = newState;
@@ -178,6 +180,14 @@ void FileDownloader::start()
         m_threadCount     = 1;
     }
 
+    // Optimization: If single thread, skip size check and start downloading immediately
+    // This saves one HTTP RTT. We will discover file size from the chunk response.
+    if (m_threadCount == 1)
+    {
+        startSingleThreadDownload();
+        return;
+    }
+
     // Fetch file size first
     setState(FetchingSize);
     fetchFileSize();
@@ -271,6 +281,10 @@ void FileDownloader::stop()
 void FileDownloader::fetchFileSize()
 {
     QNetworkRequest request(m_url);
+    if (!m_cookie.isEmpty())
+    {
+        request.setRawHeader(QByteArrayLiteral("Cookie"), m_cookie);
+    }
     request.setRawHeader(QByteArrayLiteral("Range"), QByteArrayLiteral("bytes=0-0"));
 
     m_sizeReply = NetworkAccessManager::instance()->head(request);
@@ -392,6 +406,194 @@ void FileDownloader::onSizeReplyFinished()
     }
 }
 
+void FileDownloader::onChunkMetadataChanged(int chunkIndex)
+{
+    if (chunkIndex < 0 || chunkIndex >= m_chunks.size())
+    {
+        return;
+    }
+
+    ChunkInfo &chunk = m_chunks[chunkIndex];
+    if (chunk.reply == nullptr)
+    {
+        return;
+    }
+
+    int status = chunk.reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // CRITICAL: Check if server ignored our Range request for non-zero offset
+    if (chunk.startPos > 0 && status == 200)
+    {
+        qDebug() << QStringLiteral("Server returned 200 instead of 206 for chunk %1 (offset %2) - server does not support Range")
+                        .arg(chunkIndex)
+                        .arg(chunk.startPos);
+
+        // CRITICAL: Disconnect and delete the reply to prevent stray callbacks
+        chunk.reply->disconnect();
+        chunk.reply->abort();
+        chunk.reply->deleteLater();
+        chunk.reply = nullptr;
+
+        qDebug() << "Truncating file to 0 and restarting without Range support";
+
+        // Transition to InternalFallback state
+        setState(InternalFallback);
+
+        // Increment generation to invalidate any previous deferred restarts
+        ++m_fallbackGeneration;
+        int currentGeneration = m_fallbackGeneration;
+
+        // CRITICAL: Truncate BEFORE closing the file
+        if (m_file.isOpen())
+        {
+            m_file.resize(0);
+            m_file.flush();
+        }
+
+        // Delete progress file - this prevents the restart from loading stale state
+        QFile::remove(m_progressFilePath);
+
+        // Mark URL as unseekable to prevent future Range requests
+        NetworkAccessManager::instance()->addUnseekableHost(m_url.host());
+
+        // Stop all downloads (closes file, sets state to Idle)
+        stop();
+
+        // Clear all state
+        m_chunks.clear();
+        m_totalDownloaded = 0;
+        m_fileSize        = -1;
+
+        // Reopen the file for writing
+        if (!m_file.open(QFile::WriteOnly))
+        {
+            qDebug() << QStringLiteral("Failed to reopen file after truncation: %1").arg(m_file.fileName());
+            setState(Failed);
+            return;
+        }
+
+        // Set parameters for restart
+        m_isMultiThreaded = false;
+        m_threadCount     = 1;
+
+        // CRITICAL: Defer restart to event loop to avoid reentrancy
+        // Capture generation to detect if stop() was called
+        QTimer::singleShot(0, this, [this, currentGeneration]() {
+            // Check if this restart is still valid (not canceled by stop())
+            if (m_fallbackGeneration != currentGeneration)
+            {
+                qDebug() << QStringLiteral("Fallback restart canceled (generation %1 != %2)").arg(currentGeneration).arg(m_fallbackGeneration);
+                return;
+            }
+
+            // Check state is still Idle (stop() should have set it)
+            if (m_state != Idle)
+            {
+                qDebug() << QStringLiteral("Fallback restart aborted, state is %1 not Idle").arg(m_state);
+                return;
+            }
+
+            qDebug() << "Executing deferred fallback restart";
+            start();
+        });
+    }
+    // Also validate Content-Range header matches our request
+    else if (status == 206 && chunk.endPos >= 0)
+    {
+        QString contentRange = QString::fromUtf8(chunk.reply->rawHeader(QByteArrayLiteral("Content-Range")));
+        // Expected format: "bytes start-end/total"
+        if (!contentRange.isEmpty())
+        {
+            qDebug() << QStringLiteral("Chunk %1 Content-Range: %2").arg(chunkIndex).arg(contentRange);
+            // Could add strict validation here
+        }
+    }
+
+    discoverFileSizeFromChunk(chunkIndex);
+}
+
+void FileDownloader::discoverFileSizeFromChunk(int chunkIndex)
+{
+    if (m_fileSize > 0)
+    {
+        return;
+    }
+
+    if (chunkIndex < 0 || chunkIndex >= m_chunks.size())
+    {
+        return;
+    }
+
+    const ChunkInfo &chunk = m_chunks[chunkIndex];
+    if (chunk.reply == nullptr)
+    {
+        return;
+    }
+
+    int status = chunk.reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // Lazy size discovery: If we skipped fetchFileSize(), we might not know m_fileSize yet.
+    // Try to learn it from Content-Range or Content-Length.
+    QString contentRange = QString::fromUtf8(chunk.reply->rawHeader(QByteArrayLiteral("Content-Range")));
+    if (!contentRange.isEmpty())
+    {
+        // Parse "bytes start-end/total"
+        qsizetype slashPos = contentRange.indexOf(QLatin1Char('/'));
+        if (slashPos != -1)
+        {
+            qint64 total = contentRange.mid(slashPos + 1).toLongLong();
+            if (total > 0)
+            {
+                m_fileSize = total;
+                qDebug() << QStringLiteral("Discovered file size from Content-Range: %1").arg(m_fileSize);
+
+                // Update the open-ended chunk endPos if now known
+                if (chunk.endPos == -1)
+                {
+                    // Note: We don't strictly enforce endPos for the single chunk case
+                    // but it helps with progress calculation
+                }
+            }
+        }
+    }
+    else if (status == 200)
+    {
+        // If 200 OK, Content-Length is the full file size
+        qint64 len = chunk.reply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+        if (len > 0)
+        {
+            m_fileSize = len;
+            qDebug() << QStringLiteral("Discovered file size from Content-Length: %1").arg(m_fileSize);
+        }
+    }
+}
+
+void FileDownloader::startSingleThreadDownload()
+{
+    m_isMultiThreaded = false;
+
+    // Create single chunk starting from current file size (resume if possible)
+    // We optimistically assume Range support. If not supported, onChunkMetadataChanged
+    // will handle the fallback (truncate and restart).
+    m_chunks.clear();
+
+    qint64 existingSize = m_file.size();
+
+    ChunkInfo chunk {};
+    chunk.startPos   = existingSize;
+    chunk.endPos     = -1; // Unknown end
+    chunk.downloaded = 0;
+    chunk.isFinished = false;
+    chunk.reply      = nullptr;
+    m_chunks.append(chunk);
+
+    qDebug() << QStringLiteral("Single thread optimization: skipping size check, starting at %1").arg(existingSize);
+
+    setState(Downloading);
+    startChunkDownload(0);
+    emit started();
+}
+
 void FileDownloader::createChunks()
 {
     // Only create chunks if we don't already have them (e.g., from loadProgress())
@@ -410,9 +612,11 @@ void FileDownloader::createChunks()
     // Reset total downloaded when creating fresh chunks
     m_totalDownloaded = 0;
 
-    // Calculate chunk size (minimum 256KB per chunk)
-    constexpr qint64 minChunkSize = 256LL * 1024;
-    qint64           chunkSize    = qMax(m_fileSize / m_threadCount, minChunkSize);
+    // Calculate chunk size (minimum 1MB per chunk)
+    constexpr qint64 minChunkSize = 1024LL * 1024;
+    // Use 4x chunks per thread to improve concurrency (load balancing)
+    int    targetChunkCount = m_threadCount * 4;
+    qint64 chunkSize        = qMax(m_fileSize / targetChunkCount, minChunkSize);
 
     qint64 currentPos = 0;
 
@@ -448,6 +652,10 @@ void FileDownloader::startChunkDownload(int chunkIndex)
 
     // Create range request based on current position
     QNetworkRequest request(m_url);
+    if (!m_cookie.isEmpty())
+    {
+        request.setRawHeader(QByteArrayLiteral("Cookie"), m_cookie);
+    }
 
     if (chunk.endPos >= 0)
     {
@@ -473,104 +681,7 @@ void FileDownloader::startChunkDownload(int chunkIndex)
 
     // CRITICAL: For non-zero startPos chunks, we MUST validate the response before writing
     // Use metaDataChanged signal to check headers before readyRead
-    connect(chunk.reply, &QNetworkReply::metaDataChanged, this, [this, chunkIndex]() {
-        if (chunkIndex < 0 || chunkIndex >= m_chunks.size())
-            return;
-
-        ChunkInfo &chunk = m_chunks[chunkIndex];
-        if (chunk.reply == nullptr)
-            return;
-
-        int status = chunk.reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        // CRITICAL: Check if server ignored our Range request for non-zero offset
-        if (chunk.startPos > 0 && status == 200)
-        {
-            qDebug() << QStringLiteral("Server returned 200 instead of 206 for chunk %1 (offset %2) - server does not support Range")
-                            .arg(chunkIndex)
-                            .arg(chunk.startPos);
-
-            // CRITICAL: Disconnect and delete the reply to prevent stray callbacks
-            chunk.reply->disconnect();
-            chunk.reply->abort();
-            chunk.reply->deleteLater();
-            chunk.reply = nullptr;
-
-            qDebug() << "Truncating file to 0 and restarting without Range support";
-
-            // Transition to InternalFallback state
-            setState(InternalFallback);
-
-            // Increment generation to invalidate any previous deferred restarts
-            ++m_fallbackGeneration;
-            int currentGeneration = m_fallbackGeneration;
-
-            // CRITICAL: Truncate BEFORE closing the file
-            if (m_file.isOpen())
-            {
-                m_file.resize(0);
-                m_file.flush();
-            }
-
-            // Delete progress file - this prevents the restart from loading stale state
-            QFile::remove(m_progressFilePath);
-
-            // Mark URL as unseekable to prevent future Range requests
-            NetworkAccessManager::instance()->addUnseekableHost(m_url.host());
-
-            // Stop all downloads (closes file, sets state to Idle)
-            stop();
-
-            // Clear all state
-            m_chunks.clear();
-            m_totalDownloaded = 0;
-            m_fileSize        = -1;
-
-            // Reopen the file for writing
-            if (!m_file.open(QFile::WriteOnly))
-            {
-                qDebug() << QStringLiteral("Failed to reopen file after truncation: %1").arg(m_file.fileName());
-                setState(Failed);
-                return;
-            }
-
-            // Set parameters for restart
-            m_isMultiThreaded = false;
-            m_threadCount     = 1;
-
-            // CRITICAL: Defer restart to event loop to avoid reentrancy
-            // Capture generation to detect if stop() was called
-            QTimer::singleShot(0, this, [this, currentGeneration]() {
-                // Check if this restart is still valid (not canceled by stop())
-                if (m_fallbackGeneration != currentGeneration)
-                {
-                    qDebug() << QStringLiteral("Fallback restart canceled (generation %1 != %2)").arg(currentGeneration).arg(m_fallbackGeneration);
-                    return;
-                }
-
-                // Check state is still Idle (stop() should have set it)
-                if (m_state != Idle)
-                {
-                    qDebug() << QStringLiteral("Fallback restart aborted, state is %1 not Idle").arg(m_state);
-                    return;
-                }
-
-                qDebug() << "Executing deferred fallback restart";
-                start();
-            });
-        }
-        // Also validate Content-Range header matches our request
-        else if (status == 206 && chunk.endPos >= 0)
-        {
-            QString contentRange = QString::fromUtf8(chunk.reply->rawHeader(QByteArrayLiteral("Content-Range")));
-            // Expected format: "bytes start-end/total"
-            if (!contentRange.isEmpty())
-            {
-                qDebug() << QStringLiteral("Chunk %1 Content-Range: %2").arg(chunkIndex).arg(contentRange);
-                // Could add strict validation here
-            }
-        }
-    });
+    connect(chunk.reply, &QNetworkReply::metaDataChanged, this, [this, chunkIndex]() { onChunkMetadataChanged(chunkIndex); });
 
     // Use lambda to capture chunk index
     connect(chunk.reply, &QNetworkReply::readyRead, this, [this, chunkIndex]() { onChunkReadyRead(chunkIndex); });
@@ -588,6 +699,15 @@ void FileDownloader::onChunkReadyRead(int chunkIndex)
     ChunkInfo &chunk = m_chunks[chunkIndex];
     if (chunk.reply == nullptr)
     {
+        return;
+    }
+
+    int status = chunk.reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (status != 200 && status != 206)
+    {
+        qDebug() << QStringLiteral("Aborting chunk %1 due to invalid status code: %2").arg(chunkIndex).arg(status);
+        chunk.reply->abort();
         return;
     }
 
@@ -648,28 +768,32 @@ void FileDownloader::onChunkFinished(int chunkIndex)
     }
 
     // Write remaining data
-    QByteArray remainingData = chunk.reply->readAll();
-    if (!remainingData.isEmpty())
-    {
-        QMutexLocker locker(&m_fileMutex);
-        if (m_file.seek(chunk.currentPos()))
-        {
-            qint64 written = m_file.write(remainingData);
-            if (written > 0)
-            {
-                chunk.downloaded += written;
-                m_totalDownloaded += written;
-            }
-            else if (written < 0)
-            {
-                qDebug() << QStringLiteral("Write error in chunk %1: %2").arg(chunkIndex).arg(m_file.errorString());
-            }
-        }
-    }
-
     int                         status      = chunk.reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QNetworkReply::NetworkError error       = chunk.reply->error();
     QString                     errorString = chunk.reply->errorString();
+
+    // Only write remaining data if status is valid
+    if (status == 200 || status == 206)
+    {
+        QByteArray remainingData = chunk.reply->readAll();
+        if (!remainingData.isEmpty())
+        {
+            QMutexLocker locker(&m_fileMutex);
+            if (m_file.seek(chunk.currentPos()))
+            {
+                qint64 written = m_file.write(remainingData);
+                if (written > 0)
+                {
+                    chunk.downloaded += written;
+                    m_totalDownloaded += written;
+                }
+                else if (written < 0)
+                {
+                    qDebug() << QStringLiteral("Write error in chunk %1: %2").arg(chunkIndex).arg(m_file.errorString());
+                }
+            }
+        }
+    }
 
     // Handle redirects
     if (status == 301 || status == 302)

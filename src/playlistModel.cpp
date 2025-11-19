@@ -20,6 +20,7 @@
 #include <QSettings>
 
 #include "playlistModel.h"
+#include "accessManager.h"
 #include "dialogs.h"
 #include "fileDownloader.h"
 #include "mpvObject.h"
@@ -458,7 +459,7 @@ QUrl PlaylistModel::getResolvedUrl(int index, TrackType type)
 {
     if (index < 0 || index >= m_resolvedAudioPaths.size())
     {
-        return QUrl();
+        return {};
     }
 
     QString resolvedPath = (type == TrackType::Audio) ? m_resolvedAudioPaths[index] : m_resolvedSubtitlePaths[index];
@@ -594,7 +595,7 @@ void PlaylistModel::resolveAudioUrl(int index, int requestToken)
         checkResolutionCompleteAndPlay(index, requestToken);
     });
 
-    downloader->setThreadCount(3);
+    downloader->setThreadCount(5);
     downloader->start();
 }
 
@@ -621,7 +622,14 @@ void PlaylistModel::resolveSubtitleUrl(int index, int requestToken)
 
     // Start download
     qDebug() << "Downloading subtitle to:" << tempPath;
-    auto *downloader             = new FileDownloader(tempPath, originalUrl, this);
+    auto *downloader = new FileDownloader(tempPath, originalUrl, this);
+
+    QByteArray cookie = NetworkAccessManager::instance()->cookieOf(originalUrl);
+    if (!cookie.isEmpty())
+    {
+        downloader->setCookie(cookie);
+    }
+
     m_subtitleDownloaders[index] = downloader;
 
     connect(downloader, &FileDownloader::finished, this, [this, index, requestToken, tempPath, downloader]() {
