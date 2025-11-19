@@ -39,6 +39,7 @@ Item {
         id: videoSettings
         category: "video"
         property alias hwdec: hwdecComboBox.currentIndex
+        property alias subtitle_font: subtitleFontButton.text
     }
 
     // Network settings
@@ -164,6 +165,22 @@ Item {
             Label {
                 text: qsTr("(*): Restart needed")
                 Layout.columnSpan: 2
+            }
+
+            Label {
+                text: qsTr("Subtitle font:")
+                Layout.columnSpan: 2
+            }
+            Button {
+                id: subtitleFontButton
+                text: qsTr("Subtitle Font")
+                Layout.columnSpan: 2
+                onClicked: fontDialog.open()
+            }
+            FontDialog {
+                id: fontDialog
+                title: qsTr("Subtitle Font")
+                onAccepted: subtitleFontButton.text = fontDialog.currentFont.family
             }
 
             // Cache

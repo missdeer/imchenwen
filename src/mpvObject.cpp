@@ -26,12 +26,11 @@
 #include <QStandardPaths>
 #include <QTimer>
 
+#include "mpvObject.h"
 #include "accessManager.h"
 #include "danmakuLoader.h"
-#include "mpvObject.h"
 #include "platform/graphics.h"
 #include "playlistModel.h"
-
 
 /* MPV Renderer */
 class MpvRenderer : public QQuickFramebufferObject::Renderer
@@ -121,7 +120,8 @@ MpvObject::MpvObject(QQuickItem *parent) : QQuickFramebufferObject(parent)
     m_mpv.set_option("merge-files", true);
     m_mpv.set_option("screenshot-directory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation).toUtf8().constData());
     m_mpv.set_option("reset-on-next-file", "speed,video-aspect,af,sub-visibility,audio-delay,pause");
-    auto subFont = qEnvironmentVariable("IMCHENWEN_SUB_FONT");
+
+    auto subFont = settings.value(QStringLiteral("video/subtitle_font")).toString();
     if (!subFont.isEmpty())
     {
         m_mpv.set_option("sub-font", subFont.toUtf8().constData());
