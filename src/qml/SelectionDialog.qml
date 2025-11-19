@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
- 
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -21,12 +21,12 @@ import com.dfordsoft.imchenwen
 
 Dialog {
     id: selectionDialog
-    
+
     property var items: []
     property alias currentIndex: listView.currentIndex
     property alias checked: checkbox.checked
     property alias checkboxText: checkbox.text
-    
+
     width: 400
     height: 400
     title: qsTr("Selection")
@@ -41,25 +41,28 @@ Dialog {
             Layout.fillHeight: true
             Layout.margins: 0
             clip: true
-    
+
             ListView {
                 id: listView
                 property int mouseOverIndex: -1
                 anchors.fill: parent
                 model: items
-            
+
                 delegate: Rectangle {
                     property bool hovered: false
-                    height: 25
+                    height: Math.max(itemText.implicitHeight + 2, 25)
                     width: listView.width
                     color: index == listView.currentIndex ? SkinColor.listItemSelected : hovered ? SkinColor.listItemHovered : "transparent"
-                
+
                     Label {
+                        id: itemText
                         text: modelData
                         anchors.fill: parent
                         verticalAlignment: Label.AlignVCenter
+                        wrapMode: Text.WordWrap
+                        width: parent.width
                     }
-                
+
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
@@ -80,4 +83,3 @@ Dialog {
         }
     }
 }
-

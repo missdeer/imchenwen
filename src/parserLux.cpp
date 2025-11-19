@@ -51,7 +51,7 @@ void ParserLux::runParser(const QUrl &url)
 
     // Set user-agent
     QStringList args;
-    args << QStringLiteral("-j"); //<< QStringLiteral("-p") << QStringLiteral("-u") << QStringLiteral(DEFAULT_UA);
+    args << QStringLiteral("-j") << QStringLiteral("-p") << QStringLiteral("-u") << QStringLiteral(DEFAULT_UA);
     QString cookieFilePath = NetworkAccessManager::instance()->cookieFileOf(url);
     if (!cookieFilePath.isEmpty())
     {
