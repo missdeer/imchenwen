@@ -93,7 +93,7 @@ void ParserLux::parseOutput()
         {
             titles << episode.toObject()[QStringLiteral("title")].toString();
             Dialogs::instance()->selectionDialog(
-                tr("Select episode"), titles, [=](int index, bool) { parseEpisode(episodes[index].toObject()); }, QString());
+                tr("Select episode"), titles, [&episodes, this](int index, bool) { parseEpisode(episodes[index].toObject()); }, QString());
         }
     }
 }
