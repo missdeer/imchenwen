@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
- 
+
 import QtQuick
 import Qt.labs.settings as QSettings
 import QtQuick.Controls
@@ -22,7 +22,6 @@ import QtQuick.Layouts
 import com.dfordsoft.imchenwen
 
 Item {
-    
     id: window
 
     // Player settings
@@ -34,14 +33,14 @@ Item {
         property alias url_open_mode: openUrlComboBox.currentIndex
         property alias autoplay: autoplayCheckBox.checked
     }
-    
+
     // Video settings
     QSettings.Settings {
         id: videoSettings
         category: "video"
         property alias hwdec: hwdecComboBox.currentIndex
     }
-        
+
     // Network settings
     QSettings.Settings {
         id: networkSettings
@@ -56,13 +55,20 @@ Item {
         onProxy_typeChanged: accessManager.setupProxy(proxy_type, proxy, proxy_only_for_parsing)
         onProxy_only_for_parsingChanged: accessManager.setupProxy(proxy_type, proxy, proxy_only_for_parsing)
     }
-    
+
     // Downloader settings
     QSettings.Settings {
         id: downloaderSettings
         category: "downloader"
         property url save_to: Utils.movieLocation()
         property alias max_threads: maxThreadsSpinBox.value
+    }
+
+    // Web settings
+    QSettings.Settings {
+        id: webSettings
+        category: "web"
+        property alias cookies_from_browser: cookiesFromBrowserTextField.text
     }
 
     // Apply skin settings at init
@@ -74,11 +80,11 @@ Item {
     ScrollView {
         anchors.fill: parent
         clip: true
-        
+
         GridLayout {
             columns: 2
             columnSpacing: 10
-            
+
             // Interface
             Label {
                 text: qsTr("Interface")
@@ -87,11 +93,16 @@ Item {
                 Layout.columnSpan: 2
             }
 
-            Label { text: qsTr("Theme") + " (*):" }
+            Label {
+                text: qsTr("Theme") + " (*):"
+            }
             ComboBox {
                 id: themeComboBox
-                model: if (Qt.platform.os === "windows") { [ "Classic", "Material", "Win10" ] }
-                else { [ "Classic", "Material", "Universal"] }
+                model: if (Qt.platform.os === "windows") {
+                    ["Classic", "Material", "Win10"];
+                } else {
+                    ["Classic", "Material", "Universal"];
+                }
                 currentIndex: 1
             }
 
@@ -103,9 +114,12 @@ Item {
                 Layout.columnSpan: 2
                 onToggled: SkinColor.darkModeSet = checked
             }
-            
-            Label { text: qsTr("(*): Restart needed"); Layout.columnSpan: 2 }
-            
+
+            Label {
+                text: qsTr("(*): Restart needed")
+                Layout.columnSpan: 2
+            }
+
             // Play
             Label {
                 text: qsTr("Play")
@@ -115,10 +129,12 @@ Item {
                 Layout.topMargin: 20
             }
 
-            Label { text: qsTr("Open URL:") }
+            Label {
+                text: qsTr("Open URL:")
+            }
             ComboBox {
                 id: openUrlComboBox
-                model: [ qsTr("Question"), qsTr("Play"), qsTr("Download") ]
+                model: [qsTr("Question"), qsTr("Play"), qsTr("Download")]
             }
 
             CheckBox {
@@ -137,13 +153,18 @@ Item {
                 Layout.topMargin: 20
             }
 
-            Label { text: qsTr("Decode") + " (*):" }
+            Label {
+                text: qsTr("Decode") + " (*):"
+            }
             ComboBox {
                 id: hwdecComboBox
-                model: [ "auto", "vaapi", "vdpau", "nvdec" ]
+                model: ["auto", "vaapi", "vdpau", "nvdec"]
             }
-            
-            Label { text: qsTr("(*): Restart needed"); Layout.columnSpan: 2 }
+
+            Label {
+                text: qsTr("(*): Restart needed")
+                Layout.columnSpan: 2
+            }
 
             // Cache
             Label {
@@ -160,7 +181,10 @@ Item {
                 Layout.columnSpan: 2
             }
 
-            Label { text: qsTr("Forward (MB):"); enabled: limitCacheCheckBox.checked }
+            Label {
+                text: qsTr("Forward (MB):")
+                enabled: limitCacheCheckBox.checked
+            }
             SpinBox {
                 id: forwardCacheSpinBox
                 from: 1
@@ -170,7 +194,10 @@ Item {
                 enabled: limitCacheCheckBox.checked
             }
 
-            Label { text: qsTr("Backward (MB):"); enabled: limitCacheCheckBox.checked }
+            Label {
+                text: qsTr("Backward (MB):")
+                enabled: limitCacheCheckBox.checked
+            }
             SpinBox {
                 id: backwardCacheSpinBox
                 from: 1
@@ -187,16 +214,22 @@ Item {
                 font.pointSize: 16
                 Layout.columnSpan: 2
                 Layout.topMargin: 20
-            }            
+            }
 
-            Label { text: qsTr("Proxy mode:"); Layout.columnSpan: 2 }
-            ComboBox {
-                id: proxyModeComboBox
-                model: [ "no", "http", "socks5" ]
+            Label {
+                text: qsTr("Proxy mode:")
                 Layout.columnSpan: 2
             }
-            
-            Label { text: qsTr("Proxy:"); Layout.columnSpan: 2 }
+            ComboBox {
+                id: proxyModeComboBox
+                model: ["no", "http", "socks5"]
+                Layout.columnSpan: 2
+            }
+
+            Label {
+                text: qsTr("Proxy:")
+                Layout.columnSpan: 2
+            }
             TextField {
                 id: proxyInput
                 selectByMouse: true
@@ -204,13 +237,13 @@ Item {
                 Layout.fillWidth: true
                 color: !text.match(/^[A-Za-z0-9\.]+:\d+$/) ? "red" : SkinColor.darkMode ? "white" : "black"
             }
-            
+
             Label {
                 text: qsTr("Note: Socks5 is not supported by online videos.")
                 wrapMode: Text.WordWrap
                 Layout.columnSpan: 2
             }
-            
+
             CheckBox {
                 id: proxyParsingOnlyCheckBox
                 text: qsTr("Use proxy only for parsing videos")
@@ -225,17 +258,29 @@ Item {
                 Layout.columnSpan: 2
                 Layout.topMargin: 20
             }
-            
-            Label { text: qsTr("Maximum number of threads:"); Layout.columnSpan: 2 }
-            SpinBox { id: maxThreadsSpinBox; from: 0; to: 100; value: 5; Layout.columnSpan: 2 }
-            
-            Label { text: qsTr("Save to:"); Layout.columnSpan: 2 }
+
+            Label {
+                text: qsTr("Maximum number of threads:")
+                Layout.columnSpan: 2
+            }
+            SpinBox {
+                id: maxThreadsSpinBox
+                from: 0
+                to: 100
+                value: 5
+                Layout.columnSpan: 2
+            }
+
+            Label {
+                text: qsTr("Save to:")
+                Layout.columnSpan: 2
+            }
             Button {
                 id: saveToButton
-                text: if (Qt.platform.os === "windows" ) {
-                    downloaderSettings.save_to.toString().replace("file:///", "").replace(/\//g, '\\')
+                text: if (Qt.platform.os === "windows") {
+                    downloaderSettings.save_to.toString().replace("file:///", "").replace(/\//g, '\\');
                 } else {
-                    downloaderSettings.save_to.toString().replace("file://", "")
+                    downloaderSettings.save_to.toString().replace("file://", "");
                 }
                 Layout.columnSpan: 2
                 onClicked: folderDialog.open()
@@ -257,7 +302,10 @@ Item {
                 Layout.columnSpan: 2
                 Layout.topMargin: 20
             }
-            Label { text: qsTr("Quality choice:"); Layout.columnSpan: 2 }
+            Label {
+                text: qsTr("Quality choice:")
+                Layout.columnSpan: 2
+            }
             ComboBox {
                 id: qualityComboBox
                 model: WebsiteSettings.websites
@@ -273,6 +321,17 @@ Item {
                         WebsiteSettings.remove(WebsiteSettings.websites[index]);
                     }
                 }
+            }
+            Label {
+                text: qsTr("Cookies from browser:")
+                Layout.columnSpan: 2
+            }
+            TextField {
+                id: cookiesFromBrowserTextField
+                selectByMouse: true
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                color: !text.match(/^[A-Za-z0-9\.]+:\d+$/) ? "red" : SkinColor.darkMode ? "white" : "black"
             }
         }
     }

@@ -62,7 +62,7 @@ void ParserYoutubeDLBase::runParser(const QUrl &url)
     // assume that node is in the PATH on macOS and Linux
     args << QStringLiteral("node");
 #endif
-    auto cookiesFromBrowser = env.value(QStringLiteral("COOKIES_FROM_BROWSER"));
+    auto cookiesFromBrowser = settings.value(QStringLiteral("web/cookies_from_browser")).toString();
     if (!cookiesFromBrowser.isEmpty())
     {
         args << QStringLiteral("--cookies-from-browser") << cookiesFromBrowser;

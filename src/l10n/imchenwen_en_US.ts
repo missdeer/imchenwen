@@ -287,12 +287,12 @@ Please try updating plugins.</translation>
         <translation type="unfinished">Another file is being parsed.</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="175"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="185"/>
         <source>Audio only (webm)</source>
         <translation type="unfinished">Audio only (webm)</translation>
     </message>
     <message>
-        <location filename="../parserYoutubeDLBase.cpp" line="180"/>
+        <location filename="../parserYoutubeDLBase.cpp" line="190"/>
         <source>Audio only (m4a)</source>
         <translation type="unfinished">Audio only (m4a)</translation>
     </message>
@@ -360,44 +360,44 @@ Please try updating plugins.</translation>
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../qml/Settings.qml" line="84"/>
+        <location filename="../qml/Settings.qml" line="90"/>
         <source>Interface</source>
         <translation type="unfinished">Interface</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="90"/>
+        <location filename="../qml/Settings.qml" line="97"/>
         <source>Theme</source>
         <translation type="unfinished">Theme</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="100"/>
+        <location filename="../qml/Settings.qml" line="111"/>
         <source>Dark mode</source>
         <translation type="unfinished">Dark mode</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="107"/>
-        <location filename="../qml/Settings.qml" line="146"/>
+        <location filename="../qml/Settings.qml" line="119"/>
+        <location filename="../qml/Settings.qml" line="165"/>
         <source>(*): Restart needed</source>
         <translation type="unfinished">(*): Restart needed</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="111"/>
-        <location filename="../qml/Settings.qml" line="121"/>
+        <location filename="../qml/Settings.qml" line="125"/>
+        <location filename="../qml/Settings.qml" line="137"/>
         <source>Play</source>
         <translation type="unfinished">Play</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="118"/>
+        <location filename="../qml/Settings.qml" line="133"/>
         <source>Open URL:</source>
         <translation type="unfinished">Open URL:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="121"/>
+        <location filename="../qml/Settings.qml" line="137"/>
         <source>Question</source>
         <translation type="unfinished">Question</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="121"/>
+        <location filename="../qml/Settings.qml" line="137"/>
         <source>Download</source>
         <translation type="unfinished">Download</translation>
     </message>
@@ -410,17 +410,17 @@ Please try updating plugins.</translation>
         <translation type="obsolete">Auto</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="126"/>
+        <location filename="../qml/Settings.qml" line="142"/>
         <source>Play videos after being added to playlist</source>
         <translation type="unfinished">Play videos after being added to playlist</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="133"/>
+        <location filename="../qml/Settings.qml" line="149"/>
         <source>Video</source>
         <translation type="unfinished">Video</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="140"/>
+        <location filename="../qml/Settings.qml" line="157"/>
         <source>Decode</source>
         <translation type="unfinished">Decode</translation>
     </message>
@@ -453,79 +453,84 @@ Please try updating plugins.</translation>
         <translation type="obsolete">Set to 0 to let imchenwen choose automatically.</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="150"/>
+        <location filename="../qml/Settings.qml" line="171"/>
         <source>Cache</source>
         <translation type="unfinished">Cache</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="159"/>
+        <location filename="../qml/Settings.qml" line="180"/>
         <source>Limit cache size (Restart needed)</source>
         <translation type="unfinished">Limit cache size (Restart needed)</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="163"/>
+        <location filename="../qml/Settings.qml" line="185"/>
         <source>Forward (MB):</source>
         <translation type="unfinished">Forward (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="173"/>
+        <location filename="../qml/Settings.qml" line="198"/>
         <source>Backward (MB):</source>
         <translation type="unfinished">Backward (MB):</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="185"/>
+        <location filename="../qml/Settings.qml" line="212"/>
         <source>Proxy</source>
         <translation type="unfinished">Proxy</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="192"/>
+        <location filename="../qml/Settings.qml" line="220"/>
         <source>Proxy mode:</source>
         <translation type="unfinished">Proxy mode:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="199"/>
+        <location filename="../qml/Settings.qml" line="230"/>
         <source>Proxy:</source>
         <translation type="unfinished">Proxy:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="209"/>
+        <location filename="../qml/Settings.qml" line="242"/>
         <source>Note: Socks5 is not supported by online videos.</source>
         <translation type="unfinished">Note: Socks5 is not supported by online videos.</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="216"/>
+        <location filename="../qml/Settings.qml" line="249"/>
         <source>Use proxy only for parsing videos</source>
         <translation type="unfinished">Use proxy only for parsing videos</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="222"/>
+        <location filename="../qml/Settings.qml" line="255"/>
         <source>Downloader</source>
         <translation type="unfinished">Downloader</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="229"/>
+        <location filename="../qml/Settings.qml" line="263"/>
         <source>Maximum number of threads:</source>
         <translation type="unfinished">Maximum number of threads:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="232"/>
+        <location filename="../qml/Settings.qml" line="275"/>
         <source>Save to:</source>
         <translation type="unfinished">Save to:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="254"/>
+        <location filename="../qml/Settings.qml" line="299"/>
         <source>Website settings</source>
         <translation type="unfinished">Website settings</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="260"/>
+        <location filename="../qml/Settings.qml" line="306"/>
         <source>Quality choice:</source>
         <translation type="unfinished">Quality choice:</translation>
     </message>
     <message>
-        <location filename="../qml/Settings.qml" line="268"/>
+        <location filename="../qml/Settings.qml" line="316"/>
         <source>Remove</source>
         <translation type="unfinished">Remove</translation>
+    </message>
+    <message>
+        <location filename="../qml/Settings.qml" line="326"/>
+        <source>Cookies from browser:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
