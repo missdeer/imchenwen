@@ -121,12 +121,6 @@ MpvObject::MpvObject(QQuickItem *parent) : QQuickFramebufferObject(parent)
     m_mpv.set_option("screenshot-directory", QStandardPaths::writableLocation(QStandardPaths::PicturesLocation).toUtf8().constData());
     m_mpv.set_option("reset-on-next-file", "speed,video-aspect,af,sub-visibility,audio-delay,pause");
 
-    auto subFont = settings.value(QStringLiteral("video/subtitle_font")).toString();
-    if (!subFont.isEmpty())
-    {
-        m_mpv.set_option("sub-font", subFont.toUtf8().constData());
-    }
-
     m_mpv.observe_property("duration");
     m_mpv.observe_property("playback-time");
     m_mpv.observe_property("paused-for-cache");
@@ -248,6 +242,12 @@ void MpvObject::open(const QUrl &fileUrl, const QUrl &danmakuUrl, const QUrl &au
         m_mpv.set_option("stream-lavf-o", "");
         m_mpv.set_option("force-seekable", false);
         m_mpv.set_option("http-proxy", "");
+    }
+
+    auto subFont = settings.value(QStringLiteral("video/subtitle_font")).toString();
+    if (!subFont.isEmpty())
+    {
+        m_mpv.set_option("sub-font", subFont.toUtf8().constData());
     }
 
     QByteArray  fileuri_str = (fileUrl.isLocalFile() ? fileUrl.toLocalFile() : fileUrl.toString()).toUtf8();
