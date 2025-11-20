@@ -15,8 +15,8 @@ env:
   COMPILER_VERSION: 2024.2.0
   TBB_VERSION: 2021.13.0
   VS_VER: vs2022
-  QT_VERSION: 6.9.0
-  QT_VERSION_MAC: 6.9.0
+  QT_VERSION: 6.10.0
+  QT_VERSION_MAC: 6.10.0
                 
 jobs:
   Linux:
@@ -27,9 +27,11 @@ jobs:
           submodules: true
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
+          aqtversion: '==3.1.*'
+          
 
       - name: Install Linux dependencies
         run: |-
@@ -48,7 +50,11 @@ jobs:
   macOS:
     strategy:
       matrix:
-        os: [macos-latest]
+        include:
+          - os: macos-13
+            osx_architectures: x86_64
+          - os: macos-14
+            osx_architectures: arm64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -146,9 +152,10 @@ jobs:
           submodules: true
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
+          aqtversion: '==3.1.*'
 
       - name: Set up clang for Windows
         if: matrix.toolset == 'clang-cl'
