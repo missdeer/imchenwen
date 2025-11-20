@@ -4,3 +4,12 @@
 [submodule "3rdparty/danmaku2ass_cpp"]
 	path = 3rdparty/danmaku2ass_cpp
 	url = https://github.com/coslyk/danmaku2ass_cpp
+[submodule "3rdparty/zlib"]
+	path = 3rdparty/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "3rdparty/brotli"]
+	path = 3rdparty/brotli
+	url = https://github.com/google/brotli.git
+[submodule "3rdparty/zstd"]
+	path = 3rdparty/zstd
+	url = https://github.com/facebook/zstd.git

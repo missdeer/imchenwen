@@ -171,8 +171,22 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Network
     Qt${QT_VERSION_MAJOR}::OpenGL
     ${MPV_LIBRARY}
+    brotlidec brotlicommon
     Danmaku2AssCPP)
 
+
+IF(ZLIB_FOUND)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+ELSE()
+    target_link_libraries(${PROJECT_NAME} PRIVATE zlibstatic)
+ENDIF()
+
+IF(ZSTD_FOUND)
+    target_link_libraries(${PROJECT_NAME} PRIVATE zstd::libzstd)
+ELSE()
+    target_link_libraries(${PROJECT_NAME} PRIVATE libzstd_static)
+ENDIF()
+ 
 fix_win_compiler()
 
 # Enable all compilation warnings

@@ -1,3 +1,31 @@
+cmake_minimum_required(VERSION 3.22)
+project(3rdparty)
+
+
+IF(APPLE OR MINGW)
+    find_package(ZLIB)
+ENDIF()
+IF(NOT ZLIB_FOUND)
+    set(ZLIB_BUILD_TESTING OFF)
+    set(ZLIB_BUILD_SHARED OFF)
+    set(ZLIB_BUILD_MINIZIP OFF)
+    add_subdirectory (zlib)
+ENDIF()
+
+if(MINGW)
+    find_package(ZSTD)
+endif()
+if(NOT ZSTD_FOUND)
+    set(ZSTD_BUILD_TESTS OFF)
+    set(ZSTD_BUILD_STATIC ON)
+    set(ZSTD_BUILD_SHARED OFF)
+    set(ZSTD_BUILD_PROGRAMS OFF)
+    add_subdirectory (zstd/build/cmake)
+endif()
+
+set(BROTLI_BUILD_TOOLS OFF)
+set(BROTLI_DISABLE_TESTS ON)
+add_subdirectory (brotli)
 
 #### danmaku2ass ####
 add_subdirectory(danmaku2ass_cpp)
