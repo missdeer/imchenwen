@@ -355,8 +355,9 @@ jobs:
           cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/ 
           cp build-imchenwen-${{ matrix.mingw_arch }}/3rdparty/hlsdl.exe imchenwen-${{ matrix.mingw_prefix }}/
           cd imchenwen-${{ matrix.mingw_prefix }}
-          if [ -f "/${{ matrix.mingw_arch }}/bin/windeployqt-qt6.exe" ]; then /${{ matrix.mingw_arch }}/bin/windeployqt-qt6.exe --qmldir="$PWD/../src/qml" $PWD/imchenwen.exe; fi
-          if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/imchenwen.exe ; fi
+          pwd
+          ls -l
+          if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe "--qmldir=$PWD/../src/qml" $PWD/imchenwen.exe ; fi
           if [ -f "/${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe" ]; then /${{ matrix.mingw_arch }}/bin/mingwdeployqt.exe $PWD/hlsdl.exe     ; fi
           cp /${{ matrix.mingw_arch }}/bin/ffmpeg.exe ./
           cp ../qt.conf ./
