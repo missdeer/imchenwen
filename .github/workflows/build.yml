@@ -354,6 +354,7 @@ jobs:
           cp src/scripts/update-parsers.ps1 imchenwen-${{ matrix.mingw_prefix }}/
           cp build-imchenwen-${{ matrix.mingw_arch }}/src/imchenwen.exe imchenwen-${{ matrix.mingw_prefix }}/ 
           cp build-imchenwen-${{ matrix.mingw_arch }}/3rdparty/hlsdl.exe imchenwen-${{ matrix.mingw_prefix }}/
+          find build-imchenwen-${{ matrix.mingw_arch }}/3rdparty -name '*Danmaku2AssCPP.dll' -type f -exec cp {} imchenwen-${{ matrix.mingw_prefix }}/ \;
           cd imchenwen-${{ matrix.mingw_prefix }}
           pwd
           ls -l
