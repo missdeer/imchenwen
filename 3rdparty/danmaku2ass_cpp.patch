@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ff9d5bb..a342f2b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.20)
+ 
+ include_directories(include)
+ 
+@@ -15,6 +15,3 @@ set(DANMAKU2ASS_SRC
+ add_library(Danmaku2AssCPP ${DANMAKU2ASS_SRC})
+ set_target_properties(Danmaku2AssCPP PROPERTIES CXX_STANDARD 11)
+ 
+-add_executable(danmaku2ass src/main.c)
+-set_target_properties(danmaku2ass PROPERTIES C_STANDARD 99)
+-target_link_libraries(danmaku2ass Danmaku2AssCPP)
+\ No newline at end of file

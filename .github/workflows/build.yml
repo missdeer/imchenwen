@@ -118,7 +118,7 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE: 1
           HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
         run: |-
-          brew install openssl@3 sdl2 nasm ninja expat boost
+          brew install openssl@3 sdl2 nasm ninja expat boost zlib zstd brotli
 
       - name: Build on macOS
         shell: bash
@@ -156,6 +156,12 @@ jobs:
         with:
           version: ${{ env.QT_VERSION }}
           aqtversion: '==3.1.*'
+          
+
+      - name: Patch danmaku2ass_cpp
+        run: |
+          cd 3rdparty\danmaku2ass_cpp
+          git apply ..\danmaku2ass_cpp.patch
 
       - name: Set up clang for Windows
         if: matrix.toolset == 'clang-cl'
@@ -269,7 +275,7 @@ jobs:
         with:
           update: true
           msystem: ${{ matrix.mingw_arch }}
-          install: python ${{ matrix.mingw_prefix }}-boost ${{ matrix.mingw_prefix }}-${{ matrix.qt }} ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson ${{ matrix.mingw_prefix }}-glfw ${{ matrix.mingw_prefix }}-xxhash ${{ matrix.mingw_prefix }}-glslang ${{ matrix.mingw_prefix }}-SDL2_image ${{ matrix.mingw_prefix }}-libunwind ${{ matrix.mingw_prefix }}-libcdio  ${{ matrix.mingw_prefix }}-libcdio-paranoia  ${{ matrix.mingw_prefix }}-libdvdnav  ${{ matrix.mingw_prefix }}-rubberband  ${{ matrix.mingw_prefix }}-uchardet  ${{ matrix.mingw_prefix }}-vapoursynth ${{ matrix.mingw_prefix }}-mujs ${{ matrix.mingw_prefix }}-angleproject ${{ matrix.mingw_prefix }}-llvm-libs ${{ matrix.mingw_prefix }}-clang-libs
+          install: python ${{ matrix.mingw_prefix }}-zstd ${{ matrix.mingw_prefix}}-zlib ${{ matrix.mingw_prefix }}-boost ${{ matrix.mingw_prefix }}-${{ matrix.qt }} ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson ${{ matrix.mingw_prefix }}-glfw ${{ matrix.mingw_prefix }}-xxhash ${{ matrix.mingw_prefix }}-glslang ${{ matrix.mingw_prefix }}-SDL2_image ${{ matrix.mingw_prefix }}-libunwind ${{ matrix.mingw_prefix }}-libcdio  ${{ matrix.mingw_prefix }}-libcdio-paranoia  ${{ matrix.mingw_prefix }}-libdvdnav  ${{ matrix.mingw_prefix }}-rubberband  ${{ matrix.mingw_prefix }}-uchardet  ${{ matrix.mingw_prefix }}-vapoursynth ${{ matrix.mingw_prefix }}-mujs ${{ matrix.mingw_prefix }}-angleproject ${{ matrix.mingw_prefix }}-llvm-libs ${{ matrix.mingw_prefix }}-clang-libs
           
       - uses: actions/checkout@v3
         with:
@@ -279,6 +285,11 @@ jobs:
         run: |
           cd 3rdparty\hlsdl
           git apply ..\hlsdl.patch
+          
+      - name: patch danmaku2ass_cpp 
+        run: |
+          cd 3rdparty\danmaku2ass_cpp
+          git apply ..\danmaku2ass_cpp.patch
           
       - name: clone mingwdeployqt
         run: |
