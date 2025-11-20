@@ -14,13 +14,19 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-#include "graphics.h"
 #include <mpv/client.h>
-#include <QSettings>
-#include <QGuiApplication>
-#include <qpa/qplatformnativeinterface.h>
-#include "../mpvObject.h"
 
+#include <QGuiApplication>
+#include <QSettings>
+
+#include "graphics.h"
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#    include <QNativeInterface>
+#else
+#    include <qpa/qplatformnativeinterface.h>
+#endif
+#include "../mpvObject.h"
 
 // Attempt to reuse mpv's code for detecting whether we want GLX or EGL (which
 // is tricky to do because of hardware decoding concerns). This is not pretty,
@@ -53,10 +59,9 @@ static std::string probeHwdecInterop()
     return result;
 }
 
-
 void Graphics::detectOpenGLEarly()
 {
-    MpvObject::Hwdec hwdec = (MpvObject::Hwdec) QSettings().value(QStringLiteral("video/hwdec")).toInt();
+    MpvObject::Hwdec hwdec = (MpvObject::Hwdec)QSettings().value(QStringLiteral("video/hwdec")).toInt();
     if (hwdec == MpvObject::VAAPI)
     {
         qputenv("QT_XCB_GL_INTEGRATION", QByteArrayLiteral("xcb_egl"));
@@ -70,29 +75,44 @@ void Graphics::detectOpenGLEarly()
     }
 }
 
+void Graphics::detectOpenGLLate() {}
 
-void Graphics::detectOpenGLLate()
+void *Graphics::x11Display()
 {
-}
-
-
-void* Graphics::x11Display()
-{
-    if (QGuiApplication::platformName() == QLatin1String("xcb"))  // is x11
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (QGuiApplication::platformName() == QLatin1String("xcb")) // X11 平台
+    {
+        if (auto x11App = qGuiApp->nativeInterface<QNativeInterface::QX11Application>())
+        {
+            return static_cast<void *>(x11App->display());
+        }
+    }
+#else
+    if (QGuiApplication::platformName() == QLatin1String("xcb")) // is x11
     {
         Q_ASSERT(QGuiApplication::platformNativeInterface() != nullptr);
         return QGuiApplication::platformNativeInterface()->nativeResourceForWindow(QByteArrayLiteral("display"), nullptr);
     }
+#endif
     return nullptr;
 }
 
-
-void* Graphics::waylandDisplay()
+void *Graphics::waylandDisplay()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (QGuiApplication::platformName() != QLatin1String("xcb")) // is not x11
+    {
+        if (auto wlApp = qGuiApp->nativeInterface<QNativeInterface::QWaylandApplication>())
+        {
+            return static_cast<void *>(wlApp->display());
+        }
+    }
+#else
     if (QGuiApplication::platformName() != QLatin1String("xcb")) // is not x11
     {
         Q_ASSERT(QGuiApplication::platformNativeInterface() != nullptr);
         return QGuiApplication::platformNativeInterface()->nativeResourceForWindow(QByteArrayLiteral("display"), nullptr);
     }
+#endif
     return nullptr;
 }
