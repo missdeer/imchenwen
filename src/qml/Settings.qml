@@ -100,9 +100,9 @@ Item {
             ComboBox {
                 id: themeComboBox
                 model: if (Qt.platform.os === "windows") {
-                    ["Classic", "Material", "Win10"];
+                    ["Classic", "Material", "Win10", "Fusion", "Imagine"];
                 } else {
-                    ["Classic", "Material", "Universal"];
+                    ["Classic", "Material", "Universal", "Fusion", "Imagine"];
                 }
                 currentIndex: 1
             }

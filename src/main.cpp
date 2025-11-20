@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // Force to use OpenGL in Qt6
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
-#endif 
+#endif
 
     // Set application attributes
     QCoreApplication::setOrganizationName(QStringLiteral("DForD Software"));
@@ -86,11 +86,12 @@ int main(int argc, char *argv[])
         QCoreApplication::installTranslator(&translator);
     }
     QTranslator qttranslator;
-    #if defined(Q_OS_MAC)
-    if (qttranslator.load(QStringLiteral("qt_") + QLocale::system().name(), QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources/translations")))
-    #else
+#if defined(Q_OS_MAC)
+    if (qttranslator.load(QStringLiteral("qt_") + QLocale::system().name(),
+                          QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources/translations")))
+#else
     if (qttranslator.load(QStringLiteral("qt_") + QLocale::system().name(), QCoreApplication::applicationDirPath() + QStringLiteral("/translations")))
-    #endif
+#endif
     {
         QCoreApplication::installTranslator(&qttranslator);
     }
@@ -99,12 +100,12 @@ int main(int argc, char *argv[])
     engine.addImportPath(QCoreApplication::applicationDirPath() + QStringLiteral("/qml"));
     engine.addImportPath(QStringLiteral("qrc:/"));
 
-    // Set UI style
-    #if defined(Q_OS_WIN)
+// Set UI style
+#if defined(Q_OS_WIN)
     const int defaultTheme = 2;
-    #else
+#else
     const int defaultTheme = 0;
-    #endif
+#endif
     switch (QSettings().value(QStringLiteral("player/theme"), defaultTheme).toInt())
     {
     case 0: // Classic
@@ -117,6 +118,14 @@ int main(int argc, char *argv[])
 
     case 2: // Win10
         qputenv("QT_QUICK_CONTROLS_STYLE", QByteArrayLiteral("Universal"));
+        break;
+
+    case 3: // Fusion
+        qputenv("QT_QUICK_CONTROLS_STYLE", QByteArrayLiteral("Fusion"));
+        break;
+
+    case 4: // Imagine
+        qputenv("QT_QUICK_CONTROLS_STYLE", QByteArrayLiteral("Imagine"));
         break;
     }
 
@@ -156,8 +165,9 @@ int main(int argc, char *argv[])
         mxKey.sync();
 
         QSettings mxOpenKey(QStringLiteral(R"(HKEY_CURRENT_USER\SOFTWARE\Classes\imchenwen\shell\open\command)"), QSettings::NativeFormat);
-        mxOpenKey.setValue(
-            QStringLiteral("."), QStringLiteral("\"") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QStringLiteral(R"(\imchenwen.exe" "%1")"));
+        mxOpenKey.setValue(QStringLiteral("."),
+                           QStringLiteral("\"") + QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) +
+                               QStringLiteral(R"(\imchenwen.exe" "%1")"));
         mxKey.sync();
     }
 #endif
