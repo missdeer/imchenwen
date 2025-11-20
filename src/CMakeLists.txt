@@ -1,3 +1,9 @@
+IF(APPLE OR MINGW)
+    find_package(ZLIB REQUIRED)
+ENDIF()
+IF(MINGW)
+    find_package(ZSTD)
+ENDIF()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
