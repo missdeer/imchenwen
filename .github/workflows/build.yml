@@ -61,28 +61,12 @@ jobs:
         with:
           submodules: true
 
-      - name: Cache qt static build
-        id: cache-qt-static-build
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-qt-static-build-macos
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
         with:
-          path: ./Qt
-          key: qt-${{ env.QT_VERSION_MAC }}-static-${{ matrix.os }}
-
-      - name: download qt static
-        if: ${{ steps.cache-qt-static-build.outputs.cache-hit != 'true' }}
-        run: |
-          mkdir -p "Qt/${{ env.QT_VERSION_MAC}}"
-          cd Qt/${{ env.QT_VERSION_MAC }}
-          curl -sLO https://sg.yii.li:8443/Qt${{ env.QT_VERSION_MAC }}macos_static.tar.xz
-          tar xf Qt${{ env.QT_VERSION_MAC }}macos_static.tar.xz
-          otool -L macos_static/bin/lupdate
-          ls -l macos_static/bin
-          pwd 
-          ls -l 
-          cd -
-
+          version: ${{ env.QT_VERSION }}
+          aqtversion: '==3.1.*'
+          
       - name: Install MPV
         shell: bash
         run: |
