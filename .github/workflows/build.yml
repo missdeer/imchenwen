@@ -61,6 +61,11 @@ jobs:
         with:
           submodules: true
 
+      - name: Patch danmaku2ass_cpp
+        run: |
+          cd 3rdparty/danmaku2ass_cpp
+          git apply --verbose ../danmaku2ass_cpp.patch
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -150,11 +155,7 @@ jobs:
       - name: Patch danmaku2ass_cpp
         run: |
           cd 3rdparty\danmaku2ass_cpp
-          dir .
-          type CMakeLists.txt
-          type ..\danmaku2ass_cpp.patch
           git apply --verbose ..\danmaku2ass_cpp.patch
-          dir .
 
       - name: Set up clang for Windows
         if: matrix.toolset == 'clang-cl'
@@ -287,11 +288,7 @@ jobs:
       - name: patch danmaku2ass_cpp 
         run: |
           cd 3rdparty\danmaku2ass_cpp
-          dir .
-          type CMakeLists.txt
-          type ..\danmaku2ass_cpp.patch
           git apply --verbose ..\danmaku2ass_cpp.patch
-          dir .
           
       - name: clone mingwdeployqt
         run: |
