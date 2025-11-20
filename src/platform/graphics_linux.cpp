@@ -22,7 +22,7 @@
 #include "graphics.h"
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#    include <QNativeInterface>
+#    include <QtCore/qnativeinterface.h>
 #else
 #    include <qpa/qplatformnativeinterface.h>
 #endif
@@ -48,7 +48,7 @@ static std::string probeHwdecInterop()
     mpv.set_option("border", false);
     if (mpv.initialize() < 0)
     {
-        return std::string();
+        return {};
     }
 
     result = mpv.get_property_string("hwdec-interop");
@@ -61,7 +61,7 @@ static std::string probeHwdecInterop()
 
 void Graphics::detectOpenGLEarly()
 {
-    MpvObject::Hwdec hwdec = (MpvObject::Hwdec)QSettings().value(QStringLiteral("video/hwdec")).toInt();
+    MpvObject::Hwdec hwdec = static_cast<MpvObject::Hwdec>(QSettings().value(QStringLiteral("video/hwdec")).toInt());
     if (hwdec == MpvObject::VAAPI)
     {
         qputenv("QT_XCB_GL_INTEGRATION", QByteArrayLiteral("xcb_egl"));
