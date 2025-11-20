@@ -57,18 +57,9 @@ index ed2a2bb..2ad1637 100644
  
      public:
 diff --git a/include/Danmaku2ASS/CommentParser.h b/include/Danmaku2ASS/CommentParser.h
-index 8d3e3f1..37ce3aa 100644
+index 8d3e3f1..5006c82 100644
 --- a/include/Danmaku2ASS/CommentParser.h
 +++ b/include/Danmaku2ASS/CommentParser.h
-@@ -7,7 +7,7 @@
- namespace Danmaku2ASS
- {
- 
--    enum CommentType
-+    enum DANMAKU2ASS_EXPORT CommentType
-     {
-         COMMENT_TYPE_UNKNOWN = 0,
-         COMMENT_TYPE_ACFUN = 1,
 @@ -16,7 +16,7 @@ namespace Danmaku2ASS
      };
  
