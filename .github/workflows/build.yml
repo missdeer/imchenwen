@@ -147,6 +147,11 @@ jobs:
             clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.2/LLVM-20.1.2-win64.exe
     runs-on: windows-latest
     steps:
+      - name: Configure git EOL to LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - uses: actions/checkout@v3
         with:
           submodules: true
@@ -280,6 +285,11 @@ jobs:
           update: true
           msystem: ${{ matrix.mingw_arch }}
           install: python ${{ matrix.mingw_prefix }}-zstd ${{ matrix.mingw_prefix}}-zlib ${{ matrix.mingw_prefix }}-boost ${{ matrix.mingw_prefix }}-${{ matrix.qt }} ${{ matrix.mingw_prefix }}-cmake ${{ matrix.mingw_prefix }}-pkg-config ${{ matrix.mingw_prefix }}-python3 ${{ matrix.mingw_prefix }}-gcc ${{ matrix.mingw_prefix }}-ffmpeg ${{ matrix.mingw_prefix }}-libjpeg-turbo ${{ matrix.mingw_prefix }}-lua51 ${{ matrix.mingw_prefix }}-meson ${{ matrix.mingw_prefix }}-glfw ${{ matrix.mingw_prefix }}-xxhash ${{ matrix.mingw_prefix }}-glslang ${{ matrix.mingw_prefix }}-SDL2_image ${{ matrix.mingw_prefix }}-libunwind ${{ matrix.mingw_prefix }}-libcdio  ${{ matrix.mingw_prefix }}-libcdio-paranoia  ${{ matrix.mingw_prefix }}-libdvdnav  ${{ matrix.mingw_prefix }}-rubberband  ${{ matrix.mingw_prefix }}-uchardet  ${{ matrix.mingw_prefix }}-vapoursynth ${{ matrix.mingw_prefix }}-mujs ${{ matrix.mingw_prefix }}-angleproject ${{ matrix.mingw_prefix }}-llvm-libs ${{ matrix.mingw_prefix }}-clang-libs
+          
+      - name: Configure git EOL to LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
           
       - uses: actions/checkout@v3
         with:
