@@ -21,7 +21,7 @@ function Get-Latest-Version-Github {
     )
     $url = "https://api.github.com/repos/$repo/releases/latest"
     try {
-        $response = Invoke-WebRequest $url -ErrorAction Stop
+        $response = Invoke-WebRequest $url -ErrorAction Stop  -UseBasicParsing
         return (ConvertFrom-Json -InputObject $response).tag_name
     }
     catch {
